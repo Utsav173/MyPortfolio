@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col,  Ratio } from "react-bootstrap";
+import { Container, Row, Col, Ratio } from "react-bootstrap";
 // import ProjectCard from "./ProjectCards";
 import Particle from "../Particle";
 import { CgWebsite } from "react-icons/cg";
 import { BsGithub } from "react-icons/bs";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import { Dots } from "react-preloaders";
 
 function Projects() {
   const [gitpro, setGitpro] = useState([]);
@@ -19,7 +20,7 @@ function Projects() {
         setGitpro(data);
       });
   };
-console.log(gitpro)
+  console.log(gitpro);
   useEffect(() => {
     fetchData();
   }, []);
@@ -36,13 +37,25 @@ console.log(gitpro)
         </p>
         <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
           {gitpro.map((e) => {
-            return (
+            return !e ? (
+              <Dots />
+            ) : (
               <Col md={5} className="project-card" key={e.id}>
-                <Card className="project-card-view" style={{border: "1px solid rgb(94 202 255 / 62%)"}}>
+                <Card
+                  className="project-card-view"
+                  style={{ border: "1px solid rgb(94 202 255 / 62%)" }}
+                >
                   <Card.Body>
-                  <Ratio aspectRatio="16x9" style={{marginBottom:10}}>
-                  <embed type="image/svg+xml" src={`https://${e.homepage}`} />
-                  </Ratio>
+                    {e.homepage ? (
+                      <Ratio aspectRatio="16x9" style={{ marginBottom: 10 }}>
+                        <embed
+                          type="image/svg+xml"
+                          src={!e.homepage ? <Dots /> : `https://${e.homepage}`}
+                        />
+                      </Ratio>
+                    ) : (
+                      ""
+                    )}
                     <Card.Title variant="h3">{e.name}</Card.Title>
                     <Card.Text style={{ textAlign: "justify" }}>
                       Description: {e.description}
@@ -59,7 +72,7 @@ console.log(gitpro)
 
                     {e.homepage ? (
                       <Button
-                      exact
+                        exact
                         variant="primary"
                         href={`https://${e.homepage}`}
                         target="_blank"

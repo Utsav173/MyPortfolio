@@ -142,9 +142,9 @@ button:focus {
 
 @media (max-width: 767px) {
   .navbar {
-    padding: 1rem 2rem !important;
+    padding: 0.4rem 2rem !important;
     font-size: 1.4rem !important;
-    background-color: #181a27 !important;
+    background-color: #07090eb0 !important;
   }
   .navbar-nav .nav-item a::after {
     display: none !important;
@@ -466,7 +466,7 @@ button:focus {
   opacity: 0.9 !important;
   transition: all 0.5s ease 0s !important;
   height: 100% !important;
-  border: 1px solid rgb(94 202 255 / 62%);
+  border: 1px solid rgba(0, 113, 169, 0.62);
  
 }
 
@@ -493,7 +493,7 @@ button:focus {
   padding-left: 25px !important;
   padding-right: 25px !important;
   height: auto !important;
-  border: 1px solid rgb(94 202 255 / 62%);
+  border: 1px solid rgba(0, 37, 101, 0.62);
 }
 
 .blog-card-view {
