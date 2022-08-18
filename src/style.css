@@ -1,7 +1,7 @@
 html {
   --section-background-color: linear-gradient(
     to bottom left,
-    rgba(0, 0, 0, 0.285),
+    rgba(72, 134, 200, 0.258),
     rgba(0, 0, 0, 0.904)
   );
 
@@ -460,17 +460,31 @@ button:focus {
 }
 
 .project-card-view {
-  box-shadow: 0 4px 5px 3px rgba(13, 16, 22, 0.459) !important;
+  box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.169) !important;
   color: white !important;
   background-color: transparent !important;
   opacity: 0.9 !important;
   transition: all 0.5s ease 0s !important;
   height: 100% !important;
+  border: 1px solid rgb(94 202 255 / 62%);
+ 
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border-radius: 0.25rem;
 }
 .project-card-view:hover {
   transform: scale(1.02) !important;
   overflow: hidden !important;
-  box-shadow: 0 4px 4px 5px rgba(44, 63, 83, 0.561) !important;
+  box-shadow: 0px 9px 14px 6px rgb(0 0 0 / 56%) !important;
+  border: none;
 }
 
 .blog-card {
@@ -479,6 +493,7 @@ button:focus {
   padding-left: 25px !important;
   padding-right: 25px !important;
   height: auto !important;
+  border: 1px solid rgb(94 202 255 / 62%);
 }
 
 .blog-card-view {
@@ -487,6 +502,7 @@ button:focus {
   color: white !important;
   transition: all 0.5s ease 0s !important;
   height: 100% !important;
+ 
 }
 
 .blog-link {

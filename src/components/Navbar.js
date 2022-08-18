@@ -37,8 +37,8 @@ function NavBar() {
       className={navColour ? "sticky" : "navbar"}
     >
       <Container>
-        <Navbar.Brand href="/" className="d-flex">
-          UK
+        <Navbar.Brand className="d-flex">
+          <Nav.Link as={Link} to="/" onClick={() => updateExpanded(false)} style={{color:'white', fontSize:'bold'}}>UK</Nav.Link>
         </Navbar.Brand>
         <Navbar.Toggle
           aria-controls="responsive-navbar-nav"
