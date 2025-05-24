@@ -315,10 +315,12 @@ export function ContactSection() {
                       ? "noopener noreferrer"
                       : undefined
                   }
-                  className="flex items-center gap-4 text-lg text-foreground/90 hover:text-primary transition-colors group"
+                  className="flex items-center gap-4 text-lg text-foreground/90 hover:text-primary transition-all duration-200 group"
                 >
-                  <item.icon className="size-6 text-primary/90 group-hover:text-primary transition-colors shrink-0" />
-                  <span className="truncate">{item.text}</span>
+                  <item.icon className="size-6 text-primary/90 group-hover:text-primary group-hover:scale-110 transition-all duration-200 shrink-0" />
+                  <span className="truncate transition-colors duration-200">
+                    {item.text}
+                  </span>
                 </a>
               ))}
             </div>

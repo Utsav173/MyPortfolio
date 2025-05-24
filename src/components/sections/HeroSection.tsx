@@ -6,6 +6,7 @@ import { ArrowRight, DownloadCloud } from "lucide-react";
 import React, { useEffect, useRef, lazy, Suspense } from "react";
 import anime from "animejs/lib/anime.es.js";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
 
 const MatrixDataStream = lazy(
   () => import("@/components/threed/MatrixDataStream")
@@ -18,7 +19,7 @@ export function HeroSection() {
   const p2Ref = useRef<HTMLParagraphElement>(null);
   const ctaContainerRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
-
+  const theme = useTheme();
   useEffect(() => {
     if (!sectionRef.current) return;
 
@@ -137,8 +138,6 @@ export function HeroSection() {
       <Suspense
         fallback={<div className="absolute inset-0 -z-20 bg-background" />}
       >
-        {/* The MatrixDataStream uses the 'parent' passed by ThreeCanvas, which is its own mount div. 
-            Mouse events for the sketch are bound to this parent (HeroSection div) by DataStreamSketchFactory. */}
         <MatrixDataStream className="absolute inset-0 -z-10" />
       </Suspense>
       <div className="container mx-auto relative z-10">

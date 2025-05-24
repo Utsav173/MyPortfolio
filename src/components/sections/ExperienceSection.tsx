@@ -202,13 +202,6 @@ export function ExperienceSection() {
           Professional <span className="text-primary">Journey</span>
         </h2>
         <div ref={timelineContainerRef} className="relative max-w-3xl mx-auto">
-          {/* Adjusted left positioning: 
-              - For left-3.5 (14px), dot is size-7 (28px). (14 - 28/2) = 0.
-              - For left-4 (16px), dot is size-8 (32px). (16 - 32/2) = 0.
-              The line should be in the center of the dot. Dot width/2 - line width/2.
-              If dot is size-7 (28px) and line is w-0.5 (2px), center is 14px - 1px = 13px.
-              If dot is size-8 (32px) and line is w-1 (4px), center is 16px - 2px = 14px.
-          */}
           <div
             className="timeline-line-animated absolute top-0 left-[calc(0.875rem-1px)] md:left-[calc(1rem-2px)] w-0.5 md:w-1 bg-primary/50 origin-top"
             style={{ height: "calc(100% - 2rem)" }}
@@ -222,7 +215,7 @@ export function ExperienceSection() {
                 ref={(el) => {
                   experienceItemRefs.current[index] = el;
                 }}
-                className="relative pl-10 md:pl-12 mb-12 group"
+                className="relative pl-10 md:pl-12 mb-12 group/expitem"
               >
                 <div
                   className="css-timeline-dot absolute left-0 top-1 size-7 md:size-8 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 md:border-4 border-background"
@@ -255,7 +248,7 @@ export function ExperienceSection() {
                         {exp.keyProjects.map((project) => (
                           <div
                             key={project.name}
-                            className="p-3 md:p-4 border rounded-md md:rounded-lg bg-card/60 dark:bg-card/30 shadow-sm hover:border-primary/40 transition-colors duration-200"
+                            className="p-3 md:p-4 border rounded-md md:rounded-lg bg-card/60 dark:bg-card/30 shadow-sm hover:border-primary/40 transition-colors duration-200 group/projectcard"
                           >
                             <p className="font-semibold text-card-foreground text-sm md:text-base">
                               {project.name}
@@ -265,7 +258,7 @@ export function ExperienceSection() {
                                 <Badge
                                   key={t}
                                   variant="outline"
-                                  className="text-[0.7rem] md:text-xs px-2 py-0.5 border-primary/40 text-primary/80 bg-primary/5 hover:bg-primary/10"
+                                  className="text-[0.7rem] md:text-xs px-2 py-0.5 border-primary/40 text-primary/80 bg-primary/5 hover:bg-primary/10 transition-all duration-150 group-hover/projectcard:scale-[1.03] group-hover/projectcard:shadow-sm"
                                 >
                                   {t}
                                 </Badge>

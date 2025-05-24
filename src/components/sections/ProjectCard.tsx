@@ -119,13 +119,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
             {project.name}
           </Link>
         </CardTitle>
-        <CardDescription className="text-muted-foreground text-[0.85rem] leading-relaxed mb-3 line-clamp-3 flex-grow min-h-[3.9em]">
+        <CardDescription className="text-muted-foreground text-[0.85rem] leading-relaxed mb-3 line-clamp-4 flex-grow min-h-[5.2em]">
           {displayDescription}
         </CardDescription>
         <div className="mt-auto pt-3">
           <div className="flex flex-wrap gap-1.5 min-h-[2em]">
             {project.techStack && project.techStack.length > 0
-              ? project.techStack.slice(0, 4).map((tech) => (
+              ? project.techStack.slice(0, 5).map((tech) => (
                   <Badge
                     key={tech}
                     variant="outline"
@@ -184,7 +184,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           (!project.techStack ||
             !project.techStack.includes(project.language) ||
             project.techStack.length === 0 ||
-            project.techStack.length > 4) && (
+            project.techStack.length > 5) && (
             <Badge
               variant="secondary"
               className="text-[0.65rem] bg-muted/70 text-muted-foreground font-medium px-1.5 py-0.5"
