@@ -14,7 +14,7 @@ const MATRIX_CONFIG = {
   },
   font: {
     // Font settings for rendering characters to the texture atlas.
-    size: 12, // Base font size in pixels.
+    size: 32, // Base font size in pixels.
     renderScale: 1, // Multiplier for font size during atlas rendering (e.g., 2 for 2x resolution on atlas).
     // stack:
     //   "var(--font-geist-mono), var(--font-noto-gujarati), var(--font-noto-devanagari), monospace", // CSS font-family stack.
@@ -27,8 +27,8 @@ const MATRIX_CONFIG = {
   },
   scene: {
     // General scene parameters.
-    glyphCount: 500, // Total number of glyphs (falling characters/streams) to render.
-    maxDepth: 25.0, // Maximum Z-depth (distance from camera) for glyphs.
+    glyphCount: 150, // Total number of glyphs (falling characters/streams) to render.
+    maxDepth: 30.0, // Maximum Z-depth (distance from camera) for glyphs.
     falloffDepth: 20.0, // Z-depth at which glyphs start to fade out completely.
     streamHeight: 15.0, // The virtual height of a single falling stream of characters before it repeats.
     sceneWidth: 28, // The width of the 3D space where glyphs are distributed horizontally.

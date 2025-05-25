@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import anime from "animejs/lib/anime.es.js";
 import { ProjectCard, type Project } from "./ProjectCard";
 import { Button } from "@/components/ui/button";
 import { getRemainingPublicProjects } from "@/lib/github";
 import { Loader2 } from "lucide-react";
+import { animate, stagger } from "animejs";
 
 interface ProjectsSectionProps {
   projects: Project[];
@@ -38,15 +38,17 @@ export function ProjectsSection({
       targets.forEach((t) => {
         if (t) t.style.opacity = "0";
       });
-      anime({
-        targets: targets.filter((t) => t),
-        opacity: [0, 1],
-        translateY: [30, 0],
-        scale: [0.97, 1],
-        duration: 500,
-        easing: "easeOutExpo",
-        delay: anime.stagger(100, { from: "first" }),
-      });
+      animate(
+        targets.filter((t) => t),
+        {
+          opacity: [0, 1],
+          translateY: [30, 0],
+          scale: [0.97, 1],
+          duration: 500,
+          easing: "easeOutExpo",
+          delay: stagger(100, { from: "first" }),
+        }
+      );
     }
   }, []);
 
@@ -62,8 +64,7 @@ export function ProjectsSection({
               currentHeadingRef &&
               !animatedCards.current.has("heading")
             ) {
-              anime({
-                targets: currentHeadingRef,
+              animate(currentHeadingRef, {
                 opacity: [0, 1],
                 translateY: [20, 0],
                 filter: ["blur(2px)", "blur(0px)"],

@@ -217,7 +217,6 @@ async function mapRepoToProject(
 
 export async function getFeaturedProjects(): Promise<Project[]> {
   const projects: Project[] = [];
-  console.log("Attempting to fetch featured projects...");
 
   for (const detail of featuredRepoDetails) {
     const repoData = await fetchGitHubRepo(detail.owner, detail.name);
@@ -229,18 +228,11 @@ export async function getFeaturedProjects(): Promise<Project[]> {
       );
     }
   }
-  console.log(
-    `Successfully fetched ${projects.length} out of ${featuredRepoDetails.length} defined featured projects.`
-  );
+
   return projects;
 }
 
 export async function getRemainingPublicProjects(): Promise<Project[]> {
-  console.log(
-    "Attempting to fetch remaining public projects for user:",
-    GITHUB_USERNAME
-  );
-
   const allUserRepos = await fetchUserRepos(GITHUB_USERNAME);
   if (!allUserRepos || allUserRepos.length === 0) {
     console.warn(
@@ -248,10 +240,6 @@ export async function getRemainingPublicProjects(): Promise<Project[]> {
     );
     return [];
   }
-
-  console.log(
-    `Fetched a total of ${allUserRepos.length} public repositories for ${GITHUB_USERNAME}.`
-  );
 
   const featuredRepoFullNames = new Set(
     featuredRepoDetails.map((fr) => `${fr.owner}/${fr.name}`.toLowerCase())
@@ -265,8 +253,6 @@ export async function getRemainingPublicProjects(): Promise<Project[]> {
   }
 
   const remainingProjects = await Promise.all(remainingProjectsPromises);
-  console.log(
-    `Identified ${remainingProjects.length} remaining public projects after filtering out the ${featuredRepoDetails.length} featured ones.`
-  );
+
   return remainingProjects;
 }

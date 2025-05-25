@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,19 +20,32 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { toast as sonnerToast } from "sonner";
-import anime from "animejs/lib/anime.es.js";
+import { animate } from "animejs";
 import { z } from "zod";
 import { contactFormSchema } from "@/lib/validations";
 
 type FormData = z.infer<typeof contactFormSchema>;
 type FormErrors = Partial<Record<keyof FormData, string[] | undefined>>;
 
+type AnimeInstance = ReturnType<typeof animate>;
+
+type AnimConfig = {
+  opacity: [number, number];
+  translateY?: [number, number];
+  translateX?: [number, number];
+  filter: [string, string];
+  duration: number;
+  delay?: number;
+};
+
+const initialFormData: FormData = {
+  name: "",
+  email: "",
+  message: "",
+};
+
 export function ContactSection() {
-  const [formData, setFormDataState] = useState<FormData>({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [formData, setFormDataState] = useState<FormData>(initialFormData);
   const [errors, setErrorsState] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmittingState] = useState(false);
 
@@ -36,45 +55,67 @@ export function ContactSection() {
   const formElRef = useRef<HTMLFormElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
 
-  const animatedElements = useRef({
+  const headingAnimation = useRef<AnimeInstance | null>(null);
+  const getInTouchAnimation = useRef<AnimeInstance | null>(null);
+  const formElAnimation = useRef<AnimeInstance | null>(null);
+
+  const animatedElementsStatus = useRef<{ [key: string]: boolean }>({
     heading: false,
     getInTouch: false,
     form: false,
   });
 
-  useEffect(() => {
-    const currentSectionRef = sectionRef.current;
-    const elementsToAnimate = [
+  const elementsToAnimate = useMemo(
+    () => [
       {
         ref: headingRef,
         name: "heading",
+        animationRef: headingAnimation,
         config: {
+          opacity: [0, 1],
           translateY: [30, 0],
           filter: ["blur(4px)", "blur(0px)"],
           duration: 800,
-        },
+        } as AnimConfig,
       },
       {
         ref: getInTouchRef,
         name: "getInTouch",
+        animationRef: getInTouchAnimation,
         config: {
+          opacity: [0, 1],
           translateX: [-50, 0],
           filter: ["blur(4px)", "blur(0px)"],
           duration: 800,
           delay: 100,
-        },
+        } as AnimConfig,
       },
       {
         ref: formElRef,
         name: "form",
+        animationRef: formElAnimation,
         config: {
+          opacity: [0, 1],
           translateX: [50, 0],
           filter: ["blur(4px)", "blur(0px)"],
           duration: 800,
           delay: 200,
-        },
+        } as AnimConfig,
       },
-    ];
+    ],
+    []
+  );
+
+  const observerOptions = useMemo(
+    () => ({
+      threshold: 0.15,
+      rootMargin: "0px 0px -50px 0px",
+    }),
+    []
+  );
+
+  useEffect(() => {
+    const currentAnimatedStatus = animatedElementsStatus.current;
 
     elementsToAnimate.forEach((item) => {
       if (item.ref.current) {
@@ -88,63 +129,26 @@ export function ContactSection() {
     ) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const targetRefName = elementsToAnimate.find(
+          const animatableElement = elementsToAnimate.find(
             (el) => el.ref.current === entry.target
-          )?.name;
+          );
 
           if (
-            targetRefName === "heading" &&
-            headingRef.current &&
-            !animatedElements.current.heading
+            animatableElement &&
+            animatableElement.ref.current &&
+            !currentAnimatedStatus[animatableElement.name]
           ) {
-            anime({
-              targets: headingRef.current,
-              opacity: [0, 1],
-              ...elementsToAnimate[0].config,
-            });
-            animatedElements.current.heading = true;
-          }
-          if (
-            targetRefName === "getInTouch" &&
-            getInTouchRef.current &&
-            !animatedElements.current.getInTouch
-          ) {
-            anime({
-              targets: getInTouchRef.current,
-              opacity: [0, 1],
-              ...elementsToAnimate[1].config,
-            });
-            animatedElements.current.getInTouch = true;
-          }
-          if (
-            targetRefName === "form" &&
-            formElRef.current &&
-            !animatedElements.current.form
-          ) {
-            anime({
-              targets: formElRef.current,
-              opacity: [0, 1],
-              ...elementsToAnimate[2].config,
-            });
-            animatedElements.current.form = true;
-          }
-
-          if (
-            targetRefName &&
-            animatedElements.current[
-              targetRefName as keyof typeof animatedElements.current
-            ]
-          ) {
+            animatableElement.animationRef.current = animate(
+              animatableElement.ref.current,
+              animatableElement.config
+            );
+            currentAnimatedStatus[animatableElement.name] = true;
             observerInstance.unobserve(entry.target);
           }
         }
       });
     };
 
-    const observerOptions = {
-      threshold: 0.15,
-      rootMargin: "0px 0px -50px 0px",
-    };
     const observer = new IntersectionObserver(
       observerCallback,
       observerOptions
@@ -161,102 +165,103 @@ export function ContactSection() {
         if (item.ref.current) {
           observer.unobserve(item.ref.current);
         }
-      });
-      anime.remove([
-        headingRef.current,
-        getInTouchRef.current,
-        formElRef.current,
-      ]);
-    };
-  }, []);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormDataState((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof FormData]) {
-      setErrorsState((prev) => ({ ...prev, [name]: undefined }));
-    }
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setErrorsState({});
-
-    const validationResult = contactFormSchema.safeParse(formData);
-    if (!validationResult.success) {
-      setErrorsState(validationResult.error.flatten().fieldErrors);
-      sonnerToast.error("Validation Failed", {
-        description: "Please check the form for errors.",
-        duration: 4000,
-      });
-      return;
-    }
-
-    setIsSubmittingState(true);
-    if (submitButtonRef.current) {
-      anime({
-        targets: submitButtonRef.current,
-        opacity: 0.7,
-        duration: 200,
-        easing: "linear",
-        begin: () => {
-          if (submitButtonRef.current)
-            submitButtonRef.current.style.pointerEvents = "none";
-        },
-      });
-    }
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(validationResult.data),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        sonnerToast.success("Message Sent!", {
-          description:
-            result.message ||
-            "Thanks for reaching out. I'll get back to you soon.",
-          duration: 5000,
-        });
-        setFormDataState({ name: "", email: "", message: "" });
-      } else {
-        sonnerToast.error("Submission Failed", {
-          description:
-            result.message || "Could not send your message. Please try again.",
-          duration: 5000,
-        });
-        if (result.errors) {
-          setErrorsState(result.errors);
+        if (item.animationRef.current) {
+          item.animationRef.current.pause();
         }
-      }
-    } catch (error) {
-      console.error("Contact form submission error:", error);
-      sonnerToast.error("Submission Error", {
-        description: "An unexpected error occurred. Please try again later.",
-        duration: 5000,
       });
-    } finally {
-      setIsSubmittingState(false);
+    };
+  }, [elementsToAnimate, observerOptions]);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      setFormDataState((prev) => ({ ...prev, [name]: value }));
+      if (errors[name as keyof FormData]) {
+        setErrorsState((prev) => ({ ...prev, [name]: undefined }));
+      }
+    },
+    [errors]
+  );
+
+  const handleSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setErrorsState({});
+
+      const validationResult = contactFormSchema.safeParse(formData);
+      if (!validationResult.success) {
+        setErrorsState(validationResult.error.flatten().fieldErrors);
+        sonnerToast.error("Validation Failed", {
+          description: "Please check the form for errors.",
+          duration: 4000,
+        });
+        return;
+      }
+
+      setIsSubmittingState(true);
       if (submitButtonRef.current) {
-        anime({
-          targets: submitButtonRef.current,
-          opacity: 1,
+        animate(submitButtonRef.current, {
+          opacity: 0.7,
           duration: 200,
           easing: "linear",
-          complete: () => {
+          begin: () => {
             if (submitButtonRef.current)
-              submitButtonRef.current.style.pointerEvents = "auto";
+              submitButtonRef.current.style.pointerEvents = "none";
           },
         });
       }
-    }
-  };
+
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(validationResult.data),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          sonnerToast.success("Message Sent!", {
+            description:
+              result.message ||
+              "Thanks for reaching out. I'll get back to you soon.",
+            duration: 5000,
+          });
+          setFormDataState(initialFormData);
+        } else {
+          sonnerToast.error("Submission Failed", {
+            description:
+              result.message ||
+              "Could not send your message. Please try again.",
+            duration: 5000,
+          });
+          if (result.errors) {
+            setErrorsState(result.errors);
+          }
+        }
+      } catch (error) {
+        console.error("Contact form submission error:", error);
+        sonnerToast.error("Submission Error", {
+          description: "An unexpected error occurred. Please try again later.",
+          duration: 5000,
+        });
+      } finally {
+        setIsSubmittingState(false);
+        if (submitButtonRef.current) {
+          animate(submitButtonRef.current, {
+            opacity: 1,
+            duration: 200,
+            easing: "linear",
+            complete: () => {
+              if (submitButtonRef.current)
+                submitButtonRef.current.style.pointerEvents = "auto";
+            },
+          });
+        }
+      }
+    },
+    [formData]
+  );
 
   const { name, email, message } = formData;
 

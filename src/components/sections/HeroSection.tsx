@@ -3,131 +3,143 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, DownloadCloud } from "lucide-react";
-import React, { useEffect, useRef, lazy, Suspense } from "react";
-import anime from "animejs/lib/anime.es.js";
-import { cn } from "@/lib/utils";
+import React, { useEffect, useRef, lazy, Suspense, useCallback } from "react";
+import { animate, utils, stagger, svg } from "animejs";
+import { cn, MASK_PATH_D, SVG_MAIN_PATH_D } from "@/lib/utils";
 import { useTheme } from "next-themes";
 
 const MatrixDataStream = lazy(
   () => import("@/components/threed/MatrixDataStream")
 );
 
+type AnimeInstance = ReturnType<typeof animate>;
+
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const nameRef = useRef<HTMLHeadingElement>(null);
+  const svgRef = useRef<SVGPathElement | null>(null);
   const p1Ref = useRef<HTMLParagraphElement>(null);
   const p2Ref = useRef<HTMLParagraphElement>(null);
   const ctaContainerRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
-  const theme = useTheme();
-  useEffect(() => {
-    if (!sectionRef.current) return;
 
-    const tl = anime.timeline({
-      easing: "easeOutExpo",
-      delay: 500,
-    });
+  const scrollIndicatorAnimationRef = useRef<AnimeInstance | null>(null);
+  const { theme } = useTheme();
 
-    if (p1Ref.current) {
-      p1Ref.current.style.opacity = "0";
-      tl.add({
-        targets: p1Ref.current,
-        opacity: [0, 1],
-        translateY: [20, 0],
-        filter: ["blur(2px)", "blur(0px)"],
-        duration: 700,
-      });
-    }
+  const initialSetup = useCallback(() => {
+    const elementsToReset = [
+      p1Ref.current,
+      p2Ref.current,
+      scrollIndicatorRef.current,
+    ];
+    elementsToReset.forEach((el) => el && utils.set(el, { opacity: 0 }));
 
-    if (nameRef.current) {
-      const nameEl = nameRef.current;
-      nameEl.style.opacity = "0";
-      const nameText = nameEl.dataset.text || "Utsav Khatri";
-      nameEl.innerHTML = "";
-
-      nameText.split("").forEach((char) => {
-        const span = document.createElement("span");
-        span.textContent = char === " " ? "\u00A0" : char;
-        span.style.display = "inline-block";
-        span.style.opacity = "0";
-        nameEl.appendChild(span);
-      });
-
-      tl.add(
-        {
-          targets: nameEl.querySelectorAll("span"),
-          opacity: [0, 1],
-          translateY: [() => anime.random(25, 50), 0],
-          rotateX: [() => anime.random(-90, -60), 0],
-          scale: [0.8, 1],
-          duration: 1200,
-          delay: anime.stagger(40, { start: 0, easing: "easeOutQuad" }),
-          easing: "spring(1, 80, 15, 0)",
-        },
-        "-=400"
-      );
-      nameEl.style.opacity = "1";
-    }
-
-    if (p2Ref.current) {
-      p2Ref.current.style.opacity = "0";
-      tl.add(
-        {
-          targets: p2Ref.current,
-          opacity: [0, 1],
-          translateY: [20, 0],
-          filter: ["blur(2px)", "blur(0px)"],
-          duration: 900,
-        },
-        "-=800"
-      );
-    }
+    if (p1Ref.current) utils.set(p1Ref.current, { translateY: 20 });
+    if (p2Ref.current) utils.set(p2Ref.current, { translateY: 20 });
+    if (scrollIndicatorRef.current)
+      utils.set(scrollIndicatorRef.current, { translateY: -10 });
 
     if (ctaContainerRef.current) {
-      const ctaElements = Array.from(
-        ctaContainerRef.current.children
-      ) as HTMLElement[];
-      ctaElements.forEach((el) => (el.style.opacity = "0"));
-      tl.add(
-        {
-          targets: ctaElements,
-          opacity: [0, 1],
-          translateY: [20, 0],
-          scale: [0.95, 1],
-          duration: 700,
-          delay: anime.stagger(100, { start: 0 }),
-          easing: "easeOutBack",
-        },
-        "-=600"
+      (Array.from(ctaContainerRef.current.children) as HTMLElement[]).forEach(
+        (el) => utils.set(el, { opacity: 0, translateY: 20, scale: 0.95 })
       );
     }
+  }, []);
 
-    if (scrollIndicatorRef.current) {
-      scrollIndicatorRef.current.style.opacity = "0";
-      anime({
-        targets: scrollIndicatorRef.current,
-        opacity: [0, 1],
-        translateY: [
-          { value: -15, duration: 800, easing: "easeOutBounce" },
-          { value: 0, duration: 800, easing: "easeInBounce" },
-        ],
+  useEffect(() => {
+    initialSetup();
+
+    const p1El = p1Ref.current;
+    // const namePathElement =
+    //   svgRef.current?.querySelector<SVGPathElement>(".visibleNamePath");
+
+    // console.log(namePathElement);
+
+    const p2El = p2Ref.current;
+    const ctaEl = ctaContainerRef.current;
+    const scrollEl = scrollIndicatorRef.current;
+
+    if (!p1El || !p2El || !ctaEl || !scrollEl) {
+      return;
+    }
+
+    const ctaElements = ctaEl
+      ? (Array.from(ctaEl.children) as HTMLElement[])
+      : [];
+
+    if (scrollIndicatorAnimationRef.current) {
+      scrollIndicatorAnimationRef.current.pause();
+    }
+
+    animate(p1El, {
+      opacity: [0, 1],
+      translateY: [20, 0],
+      duration: 800,
+      easing: "easeOutQuart",
+      delay: 0,
+    });
+
+    const pathElement = svgRef.current;
+    if (pathElement) {
+      animate(svg.createDrawable(pathElement), {
+        draw: ["0 0", "0 1", "1 1"],
+        duration: 2000,
+        easing: "inOutQuad",
+        delay: 600,
         loop: true,
-        direction: "alternate",
-        delay: tl.duration + 300,
-        duration: 1600,
+      });
+    }
+
+    animate(p2El, {
+      opacity: [0, 1],
+      translateY: [20, 0],
+      duration: 600,
+      easing: "easeOutQuart",
+      delay: 800,
+    });
+
+    if (ctaElements.length > 0) {
+      animate(ctaElements, {
+        opacity: [0, 1],
+        translateY: [20, 0],
+        scale: [0.9, 1],
+        duration: 500,
+        easing: "easeOutBack",
+        delay: stagger(150, { start: 1000 }),
+        complete: () => {
+          if (scrollEl && !scrollIndicatorAnimationRef.current?.began) {
+            scrollIndicatorAnimationRef.current = animate(scrollEl, {
+              opacity: [0, 0.6],
+              translateY: [
+                { value: -10, duration: 1000 },
+                { value: 0, duration: 1000 },
+              ],
+              loop: true,
+              direction: "alternate",
+              duration: 2000,
+              easing: "easeInOutSine",
+            });
+          }
+        },
       });
     }
 
     return () => {
-      anime.remove(p1Ref.current);
-      if (nameRef.current)
-        anime.remove(nameRef.current.querySelectorAll("span"));
-      anime.remove(p2Ref.current);
-      if (ctaContainerRef.current)
-        anime.remove(Array.from(ctaContainerRef.current.children));
-      anime.remove(scrollIndicatorRef.current);
+      if (scrollIndicatorAnimationRef.current) {
+        scrollIndicatorAnimationRef.current.pause();
+      }
     };
-  }, []);
+  }, [theme, initialSetup]);
+
+  const handleProjectScroll = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      const projectsSection = document.querySelector("#projects");
+      if (projectsSection) {
+        projectsSection.scrollIntoView({ behavior: "smooth" });
+      }
+    },
+    []
+  );
 
   return (
     <section
@@ -147,26 +159,54 @@ export function HeroSection() {
         >
           Hello, I'm
         </p>
-        <h1 ref={nameRef} data-text="Utsav Khatri" className="text-balance">
-          Utsav Khatri
-        </h1>
+
+        <div
+          aria-label="Utsav Khatri"
+          className="flex justify-center items-center my-3 md:my-4"
+        >
+          <svg
+            width="498"
+            height="64"
+            viewBox="0 0 498 64"
+            className="max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl h-auto text-foreground"
+          >
+            <mask
+              id="path-1-outside-1_2_2"
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="498"
+              height="64"
+              fill="black"
+            >
+              <rect fill="white" width="498" height="64" />
+              <path d={MASK_PATH_D} className="visibleNamePath" />
+            </mask>
+            <path
+              className="visibleNamePath"
+              d={SVG_MAIN_PATH_D}
+              ref={svgRef}
+              fill="#338CFF"
+              mask="url(#path-1-outside-1_2_2)"
+            />
+          </svg>
+        </div>
+
         <p
           ref={p2Ref}
-          className="mx-auto mt-6 max-w-3xl text-lg md:text-xl text-muted-foreground"
+          className="mx-auto mt-3 md:mt-4 max-w-3xl text-lg md:text-xl text-muted-foreground"
         >
           A{" "}
           <span className="text-primary font-semibold">
             Full Stack Developer
           </span>{" "}
-          based in Gujarat, India. I specialize in crafting scalable,
-          cloud-native web applications and robust APIs, with a keen interest in
-          leveraging AI to build intelligent solutions.
+          based in Gujarat, India.
         </p>
 
         <div
           ref={ctaContainerRef}
           className={cn(
-            "mt-10 flex flex-col items-center justify-center gap-4",
+            "mt-8 md:mt-10 flex flex-col items-center justify-center gap-4 select-none",
             "sm:flex-row sm:flex-wrap"
           )}
         >
@@ -180,13 +220,7 @@ export function HeroSection() {
           >
             <Link
               href="#projects"
-              onClick={(e) => {
-                e.preventDefault();
-                const projectsSection = document.querySelector("#projects");
-                if (projectsSection) {
-                  projectsSection.scrollIntoView({ behavior: "smooth" });
-                }
-              }}
+              onClick={handleProjectScroll}
               className="flex items-center justify-center"
             >
               Explore Projects
@@ -220,7 +254,7 @@ export function HeroSection() {
       </div>
       <div
         ref={scrollIndicatorRef}
-        className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-10"
+        className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-10 opacity-0"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -6,9 +6,9 @@ import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Button } from "@/components/ui/button";
 import React, { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import anime from "animejs/lib/anime.es.js";
 import { Logo } from "@/components/Logo";
 import { Download } from "lucide-react";
+import { animate } from "animejs";
 
 const navItems = [
   { href: "#about", label: "About" },
@@ -111,8 +111,7 @@ export function Navbar() {
     // Initial header animation
     if (headerRef.current) {
       headerRef.current.style.opacity = "0"; // Set initial for anime
-      anime({
-        targets: headerRef.current,
+      animate(headerRef.current, {
         translateY: [-100, 0],
         opacity: [0, 1],
         duration: 700,
@@ -136,8 +135,7 @@ export function Navbar() {
         : null;
 
       if (activeLink) {
-        anime({
-          targets: indicatorRef.current,
+        animate(indicatorRef.current, {
           width: activeLink.offsetWidth,
           translateX: activeLink.offsetLeft,
           opacity: 1,
@@ -146,8 +144,7 @@ export function Navbar() {
         });
       } else {
         // Animate out smoothly
-        anime({
-          targets: indicatorRef.current,
+        animate(indicatorRef.current, {
           width: 0,
           opacity: 0,
           duration: 300,
@@ -201,7 +198,7 @@ export function Navbar() {
             style={{ width: 0, opacity: 0 }} // Initial state
           />
         </nav>
-        <div className="flex items-center justify-end space-x-2 md:ml-6">
+        <div className="flex items-center justify-end space-x-2 max-sm:ml-4">
           <Button
             variant="outline"
             size="sm"
@@ -215,7 +212,7 @@ export function Navbar() {
             )}
           >
             <a
-              href="/resume_utsav_khatri.pdf"
+              href="https://raw.githubusercontent.com/Utsav173/MyPortfolio/refs/heads/master/public/resume_utsav_khatri.pdf"
               target="_blank"
               rel="noopener noreferrer"
               download="resume_utsav_khatri.pdf"

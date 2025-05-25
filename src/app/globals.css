@@ -113,7 +113,7 @@
   --muted: oklch(0.2 0.022 245);
   --muted-foreground: oklch(0.62 0.012 225);
 
-  --accent: oklch(0.68 0.17 185);
+  --accent: oklch(0.681 0.1 248.37);
   --accent-foreground: oklch(0.04 0.01 185);
 
   --destructive: oklch(0.62 0.23 28);
@@ -161,9 +161,6 @@
   section {
     @apply py-20 md:py-28 lg:py-32 relative;
   }
-  section:last-of-type {
-    @apply pb-16 md:pb-20 lg:pb-24;
-  }
 
   h1,
   h2,
@@ -203,6 +200,10 @@
   textarea:focus-visible,
   select:focus-visible {
     @apply ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  [aria-label="Notifications alt+T"] {
+    @apply hidden;
   }
 }
 

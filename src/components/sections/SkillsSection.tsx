@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import anime from "animejs/lib/anime.es.js";
+import { animate, JSAnimation } from "animejs";
 import {
   Code2,
   Server,
@@ -169,36 +169,29 @@ const SkillItemDisplay: React.FC<{
   skill: SkillItemData;
   itemColor?: string;
 }> = ({ skill, itemColor }) => {
-  const FallbackIcon = skill.fallbackIcon || Code2;
   const effectiveColor = itemColor || "currentColor";
   const itemRef = useRef<HTMLDivElement>(null);
   const iconContainerRef = useRef<HTMLSpanElement>(null);
 
   const handleMouseEnter = () => {
-    anime.remove(itemRef.current);
-    anime.remove(
-      iconContainerRef.current?.querySelector("svg") as SVGSVGElement
-    );
-    anime({
-      targets: itemRef.current,
+    animate(itemRef.current as HTMLElement, {
       translateY: -8,
       scale: 1.05,
       boxShadow:
         "0px 10px 20px -5px rgba(0,0,0,0.2), 0px 4px 8px -3px rgba(0,0,0,0.15)",
       duration: 300,
-      easing: "easeOutExpo",
+      ease: "easeOutExpo",
     });
     if (iconContainerRef.current?.querySelector("svg")) {
-      anime({
-        targets: iconContainerRef.current.querySelector("svg"),
+      animate(iconContainerRef.current.querySelector("svg") as SVGSVGElement, {
         rotateZ: [
-          { value: -8, duration: 120, easing: "easeInOutSine" },
-          { value: 8, duration: 120, easing: "easeInOutSine" },
-          { value: 0, duration: 120, easing: "easeInOutSine" },
+          { value: -8, duration: 120, ease: "easeInOutSine" },
+          { value: 8, duration: 120, ease: "easeInOutSine" },
+          { value: 0, duration: 120, ease: "easeInOutSine" },
         ],
         scale: [
-          { value: 1.1, duration: 180, easing: "easeOutSine" },
-          { value: 1, duration: 180, easing: "easeInSine" },
+          { value: 1.1, duration: 180, ease: "easeOutSine" },
+          { value: 1, duration: 180, ease: "easeInSine" },
         ],
         loop: false,
         duration: 360,
@@ -207,26 +200,20 @@ const SkillItemDisplay: React.FC<{
   };
 
   const handleMouseLeave = () => {
-    anime.remove(itemRef.current);
-    anime.remove(
-      iconContainerRef.current?.querySelector("svg") as SVGSVGElement
-    );
-    anime({
-      targets: itemRef.current,
+    animate(itemRef.current as HTMLElement, {
       translateY: 0,
       scale: 1,
       boxShadow:
         "0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -2px rgba(0,0,0,0.07)",
       duration: 250,
-      easing: "easeOutQuad",
+      ease: "easeOutQuad",
     });
     if (iconContainerRef.current?.querySelector("svg")) {
-      anime({
-        targets: iconContainerRef.current.querySelector("svg"),
+      animate(iconContainerRef.current.querySelector("svg") as SVGSVGElement, {
         rotateZ: 0,
         scale: 1,
         duration: 200,
-        easing: "easeOutQuad",
+        ease: "easeOutQuad",
       });
     }
   };
@@ -238,7 +225,7 @@ const SkillItemDisplay: React.FC<{
         "flex-none snap-start bg-card border border-border/70 rounded-xl p-3 shadow-md",
         "flex flex-col items-center justify-center text-center",
         "w-[110px] md:w-[120px] h-[130px] md:h-[140px]",
-        "transition-all duration-300 ease-out cursor-default"
+        "cursor-default"
       )}
       title={skill.name}
       onMouseEnter={handleMouseEnter}
@@ -269,72 +256,63 @@ const SkillCategoryCarousel: React.FC<{
   const categoryRef = useRef<HTMLDivElement>(null);
   const carouselWrapperRef = useRef<HTMLDivElement>(null);
   const carouselContentRef = useRef<HTMLDivElement>(null);
+  const animationInstanceRef = useRef<JSAnimation | null>(null);
+
   const itemWidthRef = useRef(0);
+  const gapRef = useRef(0);
 
-  const [isOverflowing, setIsOverflowing] = useState(false);
-  const itemsToRender = categoryData.skills;
+  const initialFadeInComplete = useRef(false);
+  const [isCarouselReady, setIsCarouselReady] = useState(false);
+  const isHoveringRef = useRef(false);
 
-  const animatedOnce = useRef(false);
   const categoryColor = `hsl(${(globalIndex * 50 + 200) % 360}, 70%, 65%)`;
 
-  const calculateLayout = useCallback(() => {
+  const itemsToRender =
+    categoryData.skills.length > 0
+      ? [...categoryData.skills, ...categoryData.skills]
+      : [];
+
+  const setupCarouselLayout = useCallback(() => {
     if (
       !carouselWrapperRef.current ||
       !carouselContentRef.current ||
       categoryData.skills.length === 0
     ) {
-      return {
-        shouldOverflow: false,
-        gap: 0,
-      };
+      setIsCarouselReady(false);
+      return;
     }
-
-    const wrapperEl = carouselWrapperRef.current;
     const contentEl = carouselContentRef.current;
-
     itemWidthRef.current = window.matchMedia("(min-width: 768px)").matches
       ? 120
       : 110;
 
-    const computedStyle = getComputedStyle(contentEl);
-    const gapString = computedStyle.gap || computedStyle.columnGap || "12px";
-    const gapValue = parseFloat(gapString);
+    const isMd = window.matchMedia("(min-width: 768px)").matches;
+    gapRef.current = isMd ? 16 : 12;
 
-    const originalSkillsCount = categoryData.skills.length;
-    const singleSetWidth = originalSkillsCount * itemWidthRef.current;
-    const singleSetWidthWithGaps =
-      singleSetWidth +
-      (originalSkillsCount > 0 ? (originalSkillsCount - 1) * gapValue : 0);
+    contentEl.style.minWidth = "max-content";
 
-    const wrapperWidth = wrapperEl.offsetWidth;
-    const shouldOverflow = singleSetWidthWithGaps > wrapperWidth;
-
-    setIsOverflowing(shouldOverflow);
-
-    return {
-      shouldOverflow,
-      gap: gapValue,
-    };
+    if (initialFadeInComplete.current) {
+      setIsCarouselReady(true);
+    }
   }, [categoryData.skills]);
 
   useEffect(() => {
-    const currentCategoryRef = categoryRef.current;
-    if (currentCategoryRef) {
-      currentCategoryRef.style.opacity = "0";
+    const currentCategoryEl = categoryRef.current;
+    if (currentCategoryEl) {
+      currentCategoryEl.style.opacity = "0";
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              anime({
-                targets: currentCategoryRef,
+              animate(currentCategoryEl, {
                 opacity: [0, 1],
                 translateY: [30, 0],
                 duration: 600,
-                easing: "easeOutExpo",
+                ease: "easeOutExpo",
                 delay: globalIndex * 100,
                 complete: () => {
-                  animatedOnce.current = true;
-                  calculateLayout();
+                  initialFadeInComplete.current = true;
+                  setupCarouselLayout();
                 },
               });
               observer.unobserve(entry.target);
@@ -343,18 +321,21 @@ const SkillCategoryCarousel: React.FC<{
         },
         { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
       );
-      observer.observe(currentCategoryRef);
+      observer.observe(currentCategoryEl);
       return () => observer.disconnect();
     }
-  }, [globalIndex, calculateLayout]);
+  }, [globalIndex, setupCarouselLayout]);
 
   useEffect(() => {
     let debounceTimer: NodeJS.Timeout;
     const handleResize = () => {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
-        if (animatedOnce.current) {
-          calculateLayout();
+        if (initialFadeInComplete.current) {
+          setIsCarouselReady(false);
+          requestAnimationFrame(() => {
+            setupCarouselLayout();
+          });
         }
       }, 250);
     };
@@ -363,23 +344,92 @@ const SkillCategoryCarousel: React.FC<{
       clearTimeout(debounceTimer);
       window.removeEventListener("resize", handleResize);
     };
-  }, [calculateLayout]);
+  }, [setupCarouselLayout]);
 
   useEffect(() => {
-    if (!animatedOnce.current || !carouselContentRef.current) return;
     const contentEl = carouselContentRef.current;
+    if (
+      !isCarouselReady ||
+      !contentEl ||
+      categoryData.skills.length === 0 ||
+      itemWidthRef.current === 0
+    ) {
+      if (animationInstanceRef.current) {
+        animationInstanceRef.current.pause();
+        animationInstanceRef.current = null;
+      }
+      if (contentEl) contentEl.style.transform = "translateX(0px)";
+      return;
+    }
 
-    anime.remove(contentEl);
-    contentEl.style.transform = "";
-    contentEl.style.minWidth = "max-content";
-  }, [isOverflowing, categoryData.skills, animatedOnce]);
+    if (animationInstanceRef.current) {
+      animationInstanceRef.current.pause();
+    }
 
-  if (categoryData.skills.length === 0) return null;
+    const originalSkillsCount = categoryData.skills.length;
+    const totalDistanceToAnimate =
+      (itemWidthRef.current + gapRef.current) * originalSkillsCount;
+    const animationDuration = originalSkillsCount * 3500;
+
+    if (
+      totalDistanceToAnimate === 0 ||
+      animationDuration === 0 ||
+      isNaN(totalDistanceToAnimate) ||
+      isNaN(animationDuration)
+    ) {
+      if (contentEl) contentEl.style.transform = "translateX(0px)";
+      return;
+    }
+
+    const isForwardDirection = globalIndex % 2 === 0;
+    let translateXParams: [string, string];
+
+    if (isForwardDirection) {
+      translateXParams = ["0px", `-${totalDistanceToAnimate}px`];
+    } else {
+      translateXParams = [`-${totalDistanceToAnimate}px`, "0px"];
+    }
+
+    animationInstanceRef.current = animate(contentEl, {
+      translateX: translateXParams,
+      duration: animationDuration,
+      ease: "linear",
+      loop: true,
+      autoplay: !isHoveringRef.current,
+    });
+
+    return () => {
+      if (animationInstanceRef.current) {
+        animationInstanceRef.current.pause();
+        animationInstanceRef.current = null;
+      }
+    };
+  }, [isCarouselReady, categoryData.skills, globalIndex]);
+
+  const handleCarouselMouseEnter = useCallback(() => {
+    isHoveringRef.current = true;
+    if (animationInstanceRef.current) {
+      animationInstanceRef.current.pause();
+    }
+  }, []);
+
+  const handleCarouselMouseLeave = useCallback(() => {
+    isHoveringRef.current = false;
+    if (animationInstanceRef.current) {
+      if (isCarouselReady && categoryData.skills.length > 0) {
+        animationInstanceRef.current.play();
+      }
+    }
+  }, [isCarouselReady, categoryData.skills.length]);
+
+  if (categoryData.skills.length === 0) {
+    return null;
+  }
 
   const CategoryIcon = categoryData.categoryIcon;
 
   return (
-    <div ref={categoryRef} className="mb-12 md:mb-16">
+    <div ref={categoryRef} className="mb-12 md:mb-16" style={{ opacity: 0 }}>
       <div className="flex items-center mb-6 md:mb-7">
         <CategoryIcon className="mr-3 md:mr-3.5 size-7 md:size-8 text-primary" />
         <h3 className="text-xl md:text-2xl font-semibold text-foreground">
@@ -388,7 +438,9 @@ const SkillCategoryCarousel: React.FC<{
       </div>
       <div
         ref={carouselWrapperRef}
-        className="relative overflow-x-auto snap-x snap-mandatory group py-2 -my-2"
+        className="relative overflow-x-hidden group py-2 -my-2"
+        onMouseEnter={handleCarouselMouseEnter}
+        onMouseLeave={handleCarouselMouseLeave}
       >
         <div
           ref={carouselContentRef}
@@ -397,16 +449,20 @@ const SkillCategoryCarousel: React.FC<{
         >
           {itemsToRender.map((skill, idx) => (
             <SkillItemDisplay
-              key={`${skill.iconifyString}-${skill.name}-${idx}`}
+              key={`${skill.iconifyString}-${
+                skill.name
+              }-${idx}-${globalIndex}-${
+                idx >= categoryData.skills.length ? "dup" : "orig"
+              }`}
               skill={skill}
               itemColor={categoryColor}
             />
           ))}
         </div>
-        {isOverflowing && (
+        {categoryData.skills.length > 0 && (
           <>
-            <div className="absolute top-0 left-0 h-full w-12 bg-gradient-to-r from-background via-background/80 to-transparent dark:from-secondary/5 dark:via-secondary/5/80 pointer-events-none opacity-100 group-hover:opacity-30 transition-opacity z-10"></div>
-            <div className="absolute top-0 right-0 h-full w-12 bg-gradient-to-l from-background via-background/80 to-transparent dark:from-secondary/5 dark:via-secondary/5/80 pointer-events-none opacity-100 group-hover:opacity-30 transition-opacity z-10"></div>
+            <div className="absolute top-0 -left-5.5 h-full w-12 bg-gradient-to-r from-background via-background/80 to-transparent dark:from-secondary/5 dark:via-secondary/5/80 pointer-events-none opacity-100 group-hover:opacity-30 transition-opacity z-10"></div>
+            <div className="absolute top-0 -right-5.5 h-full w-12 bg-gradient-to-l from-background via-background/80 to-transparent dark:from-secondary/5 dark:via-secondary/5/80 pointer-events-none opacity-100 group-hover:opacity-30 transition-opacity z-10"></div>
           </>
         )}
       </div>
@@ -427,13 +483,12 @@ export function SkillsSection() {
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting && !animatedHeading.current) {
-              anime({
-                targets: currentHeadingRef,
+              animate(currentHeadingRef, {
                 opacity: [0, 1],
                 translateY: [25, 0],
                 filter: ["blur(3px)", "blur(0px)"],
                 duration: 750,
-                easing: "easeOutExpo",
+                ease: "easeOutExpo",
               });
               animatedHeading.current = true;
               observer.unobserve(entry.target);
@@ -457,6 +512,7 @@ export function SkillsSection() {
         <h2
           ref={headingRef}
           className="mb-16 md:mb-20 text-center text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter"
+          style={{ opacity: 0 }}
         >
           My <span className="text-primary">Technical Toolkit</span>
         </h2>

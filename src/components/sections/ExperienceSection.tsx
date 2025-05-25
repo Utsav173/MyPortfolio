@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import anime from "animejs/lib/anime.es.js";
+import {
+  animate,
+  createTimeline,
+  createSpring,
+  JSAnimation,
+  Target,
+  Timeline,
+} from "animejs";
 import { Badge } from "@/components/ui/badge";
 import { Briefcase } from "lucide-react";
 
@@ -39,12 +46,49 @@ const experiencesData = [
   },
 ];
 
+// Define a more specific type for Animation Parameters compatible with Anime.js v4
+interface AnimeV4Params {
+  translateY?:
+    | [number, number]
+    | number
+    | ((
+        target: Target,
+        index: number,
+        targetsLength: number
+      ) => string | number);
+  filter?: [string, string];
+  duration?:
+    | number
+    | ((target: Target, index: number, targetsLength: number) => number);
+  ease?:
+    | string
+    | ((target: Target, index: number, targetsLength: number) => string)
+    | { mass: number; stiffness: number; damping: number; velocity?: number };
+  opacity?:
+    | [number, number]
+    | number
+    | ((target: Target, index: number, targetsLength: number) => number);
+  scaleY?:
+    | [number, number]
+    | number
+    | ((target: Target, index: number, targetsLength: number) => number);
+  scale?:
+    | [number, number]
+    | number
+    | ((target: Target, index: number, targetsLength: number) => number);
+  delay?:
+    | number
+    | ((target: Target, index: number, targetsLength: number) => number);
+  // Add other properties as needed, ensuring they match Anime.js v4 types
+}
+
 export function ExperienceSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
   const experienceItemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const animatedElements = useRef(new Set<HTMLElement>());
+  const animationInstances = useRef<(JSAnimation | Timeline)[]>([]);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -55,7 +99,7 @@ export function ExperienceSection() {
 
     const initAndObserve = (
       targetRef: React.RefObject<HTMLElement>,
-      animationConfig: anime.AnimeParams,
+      animationConfig: AnimeV4Params,
       isLine: boolean = false
     ) => {
       const element = targetRef.current;
@@ -63,10 +107,13 @@ export function ExperienceSection() {
         element.style.opacity = "0";
         if (isLine) {
           element.style.transform = "scaleY(0)";
-          element.style.opacity = "0.5";
-        } else if (animationConfig.translateY) {
+          element.style.opacity = "0.5"; // Initial opacity for line before animation
+        } else if (
+          animationConfig.translateY &&
+          Array.isArray(animationConfig.translateY)
+        ) {
           element.style.transform = `translateY(${
-            (animationConfig.translateY as number[])[0]
+            (animationConfig.translateY as [number, number])[0]
           }px)`;
         }
 
@@ -77,11 +124,12 @@ export function ExperienceSection() {
                 entry.isIntersecting &&
                 !animatedElements.current.has(element)
               ) {
-                anime({
-                  targets: element,
+                const anim = animate(element, {
+                  // Anime.js v4 animate call
                   opacity: [0, 1],
                   ...animationConfig,
-                });
+                } as any); // Use 'as any' here if type conflicts persist, or refine AnimeV4Params
+                animationInstances.current.push(anim);
                 animatedElements.current.add(element);
                 observer.unobserve(element);
               }
@@ -100,7 +148,7 @@ export function ExperienceSection() {
       translateY: [30, 0],
       filter: ["blur(3px)", "blur(0px)"],
       duration: 800,
-      easing: "easeOutExpo",
+      ease: "easeOutExpo",
     });
 
     if (timelineContainerRef.current) {
@@ -113,9 +161,9 @@ export function ExperienceSection() {
           lineRef,
           {
             scaleY: [0, 1],
-            opacity: [0.5, 1],
+            opacity: [0.5, 1], // Animate opacity from its initial 0.5 set in initAndObserve
             duration: 2000,
-            easing: "easeInOutSine",
+            ease: "easeInOutSine",
           },
           true
         );
@@ -148,13 +196,13 @@ export function ExperienceSection() {
                 entry.isIntersecting &&
                 !animatedElements.current.has(itemEl)
               ) {
-                const tl = anime.timeline({
-                  easing: "easeOutExpo",
-                  delay: index * 100,
+                const tl = createTimeline({
+                  // Anime.js v4 createTimeline
+                  defaults: { ease: "easeOutExpo" },
+                  delay: index * 100, // This delay applies to the timeline start
                 });
                 if (contentElement) {
-                  tl.add({
-                    targets: contentElement,
+                  tl.add(contentElement, {
                     opacity: [0, 1],
                     translateY: [30, 0],
                     duration: 600,
@@ -162,16 +210,21 @@ export function ExperienceSection() {
                 }
                 if (cssDotElement) {
                   tl.add(
+                    cssDotElement,
                     {
-                      targets: cssDotElement,
                       opacity: [0, 1],
                       scale: [0, 1],
                       duration: 500,
-                      easing: "spring(1, 70, 12, 0)",
+                      ease: createSpring({
+                        mass: 1,
+                        stiffness: 70,
+                        damping: 12,
+                      }),
                     },
                     "-=500"
                   );
                 }
+                animationInstances.current.push(tl);
                 animatedElements.current.add(itemEl);
                 observer.unobserve(itemEl);
               }
@@ -184,6 +237,10 @@ export function ExperienceSection() {
     });
 
     return () => {
+      animationInstances.current.forEach((instance) => {
+        instance.revert();
+      });
+      animationInstances.current = [];
       animatedElements.current.clear();
     };
   }, []);

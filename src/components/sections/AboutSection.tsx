@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import anime from "animejs/lib/anime.es.js";
+import { createTimeline, stagger, createScope } from "animejs";
 
 export function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -10,6 +10,7 @@ export function AboutSection() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const paragraphRefs = useRef<(HTMLParagraphElement | null)[]>([]);
   const animatedOnce = useRef(false);
+  const animationScopeRef = useRef<any>(null);
 
   useEffect(() => {
     paragraphRefs.current = paragraphRefs.current.slice(0, 3);
@@ -24,117 +25,137 @@ export function AboutSection() {
       if (el) el.style.opacity = "0";
     });
 
-    const animateAboutSection = () => {
-      if (animatedOnce.current || !currentSectionRef) return;
+    if (currentSectionRef) {
+      animationScopeRef.current = createScope({ root: currentSectionRef }).add(
+        (scope: any) => {
+          scope.add("triggerAboutAnimation", () => {
+            if (animatedOnce.current || !currentSectionRef) return;
 
-      const tl = anime.timeline({
-        easing: "easeOutExpo",
-        complete: () => {
-          animatedOnce.current = true;
-        },
-      });
+            const tl = createTimeline({
+              defaults: {
+                ease: "outExpo",
+              },
+              onComplete: () => {
+                animatedOnce.current = true;
+              },
+            });
 
-      if (imageContainerRef.current) {
-        tl.add({
-          targets: imageContainerRef.current,
-          opacity: [0, 1],
-          translateX: [-60, 0],
-          scale: [0.9, 1],
-          filter: ["blur(4px) grayscale(20%)", "blur(0px) grayscale(0%)"],
-          duration: 900,
-        });
-      }
-
-      if (headingRef.current) {
-        const existingSpans = Array.from(
-          headingRef.current.querySelectorAll("span.text-primary")
-        );
-        const originalHTMLMap = new Map<HTMLElement, string>();
-        existingSpans.forEach((span) =>
-          originalHTMLMap.set(span as HTMLElement, span.outerHTML)
-        );
-
-        const textNodesAndWords: (string | HTMLElement)[] = [];
-        Array.from(headingRef.current.childNodes).forEach((node) => {
-          if (node.nodeType === Node.TEXT_NODE && node.textContent?.trim()) {
-            node.textContent
-              .trim()
-              .split(/(\s+)/)
-              .filter(Boolean)
-              .forEach((word) => textNodesAndWords.push(word));
-          } else if (
-            node instanceof HTMLElement &&
-            node.classList.contains("text-primary")
-          ) {
-            textNodesAndWords.push(node);
-          } else if (node instanceof HTMLElement) {
-            textNodesAndWords.push(node.outerHTML);
-          }
-        });
-
-        headingRef.current.innerHTML = "";
-        const animatableWordSpans: HTMLElement[] = [];
-
-        textNodesAndWords.forEach((item) => {
-          if (typeof item === "string") {
-            if (item.match(/^\s+$/)) {
-              headingRef.current?.appendChild(document.createTextNode(item));
-            } else {
-              const span = document.createElement("span");
-              span.textContent = item;
-              span.style.display = "inline-block";
-              span.style.opacity = "0";
-              headingRef.current?.appendChild(span);
-              animatableWordSpans.push(span);
+            if (imageContainerRef.current) {
+              tl.add(imageContainerRef.current, {
+                opacity: [0, 1],
+                translateX: [-60, 0],
+                scale: [0.9, 1],
+                filter: ["blur(4px) grayscale(20%)", "blur(0px) grayscale(0%)"],
+                duration: 900,
+              });
             }
-          } else if (item instanceof HTMLElement) {
-            headingRef.current?.appendChild(item);
 
-            item.style.display = "inline-block";
-            item.style.opacity = "0";
-            animatableWordSpans.push(item);
-          }
-        });
+            if (headingRef.current) {
+              const existingSpans = Array.from(
+                headingRef.current.querySelectorAll("span.text-primary")
+              );
+              const originalHTMLMap = new Map<HTMLElement, string>();
+              existingSpans.forEach((span) =>
+                originalHTMLMap.set(span as HTMLElement, span.outerHTML)
+              );
 
-        if (animatableWordSpans.length > 0) {
-          tl.add(
-            {
-              targets: animatableWordSpans,
-              opacity: [0, 1],
-              translateY: [20, 0],
-              skewX: [-5, 0],
-              duration: 700,
-              delay: anime.stagger(50),
-            },
-            imageContainerRef.current ? "-=700" : 0
-          );
+              const textNodesAndWords: (string | HTMLElement)[] = [];
+              Array.from(headingRef.current.childNodes).forEach((node) => {
+                if (
+                  node.nodeType === Node.TEXT_NODE &&
+                  node.textContent?.trim()
+                ) {
+                  node.textContent
+                    .trim()
+                    .split(/(\s+)/)
+                    .filter(Boolean)
+                    .forEach((word) => textNodesAndWords.push(word));
+                } else if (
+                  node instanceof HTMLElement &&
+                  node.classList.contains("text-primary")
+                ) {
+                  textNodesAndWords.push(node);
+                } else if (node instanceof HTMLElement) {
+                  textNodesAndWords.push(node.outerHTML);
+                }
+              });
+
+              headingRef.current.innerHTML = "";
+              const animatableWordSpans: HTMLElement[] = [];
+
+              textNodesAndWords.forEach((item) => {
+                if (typeof item === "string") {
+                  if (item.match(/^\s+$/)) {
+                    headingRef.current?.appendChild(
+                      document.createTextNode(item)
+                    );
+                  } else {
+                    const span = document.createElement("span");
+                    span.textContent = item;
+                    span.style.display = "inline-block";
+                    span.style.opacity = "0";
+                    headingRef.current?.appendChild(span);
+                    animatableWordSpans.push(span);
+                  }
+                } else if (item instanceof HTMLElement) {
+                  headingRef.current?.appendChild(item);
+                  item.style.display = "inline-block";
+                  item.style.opacity = "0";
+                  animatableWordSpans.push(item);
+                }
+              });
+
+              if (animatableWordSpans.length > 0) {
+                tl.add(
+                  animatableWordSpans,
+                  {
+                    opacity: [0, 1],
+                    translateY: [20, 0],
+                    skewX: [-5, 0],
+                    duration: 700,
+                    delay: stagger(50),
+                  },
+                  imageContainerRef.current ? "-=700" : 0
+                );
+              }
+
+              if (headingRef.current) headingRef.current.style.opacity = "1";
+            }
+
+            const validParagraphs = paragraphRefs.current.filter(
+              (el) => el !== null
+            ) as HTMLParagraphElement[];
+            if (validParagraphs.length > 0) {
+              tl.add(
+                validParagraphs,
+                {
+                  opacity: [0, 1],
+                  translateY: [15, 0],
+                  filter: ["blur(1px)", "blur(0px)"],
+                  duration: 750,
+                  delay: stagger(80),
+                },
+                "-=600"
+              );
+            }
+          });
         }
+      );
+    }
 
-        if (headingRef.current) headingRef.current.style.opacity = "1";
-      }
-
-      const validParagraphs = paragraphRefs.current.filter(
-        (el) => el !== null
-      ) as HTMLParagraphElement[];
-      if (validParagraphs.length > 0) {
-        tl.add(
-          {
-            targets: validParagraphs,
-            opacity: [0, 1],
-            translateY: [15, 0],
-            filter: ["blur(1px)", "blur(0px)"],
-            duration: 750,
-            delay: anime.stagger(80),
-          },
-          "-=600"
-        );
+    const animateAboutSection = () => {
+      if (
+        animationScopeRef.current &&
+        animationScopeRef.current.methods.triggerAboutAnimation
+      ) {
+        animationScopeRef.current.methods.triggerAboutAnimation();
       }
     };
 
     const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting && !animatedOnce.current) {
+        if (entry.isIntersecting) {
           animateAboutSection();
         }
       });
@@ -148,14 +169,8 @@ export function AboutSection() {
       if (currentSectionRef) {
         observer.unobserve(currentSectionRef);
       }
-
-      const allAnimatedElements = [
-        imageContainerRef.current,
-        headingRef.current,
-        ...(paragraphRefs.current.filter((el) => el) as HTMLElement[]),
-      ].filter(Boolean);
-      if (allAnimatedElements.length > 0) {
-        anime.remove(allAnimatedElements);
+      if (animationScopeRef.current) {
+        animationScopeRef.current.revert();
       }
     };
   }, []);
