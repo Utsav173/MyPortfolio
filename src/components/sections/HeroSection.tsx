@@ -267,7 +267,7 @@ export function HeroSection() {
               href="https://raw.githubusercontent.com/Utsav173/MyPortfolio/refs/heads/master/public/resume_utsav_khatri.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              download="Utsav_Khatri_Resume.pdf"
+              download="resume_utsav_khatri.pdf"
               className="flex items-center justify-center"
             >
               <DownloadCloud className="mr-2.5 size-5 resume-button-icon" />

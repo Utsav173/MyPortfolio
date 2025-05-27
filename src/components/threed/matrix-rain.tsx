@@ -636,14 +636,17 @@ const MatrixRain: React.FC<MatrixRainProps> = ({
           );
         }
 
-        const effectiveDespawnThreshold = despawnY - charEffectiveHeight * 2.5;
-        if (sprite.position.y < effectiveDespawnThreshold) {
+        const absoluteDespawnY = despawnY - charEffectiveHeight * 4;
+        if (sprite.position.y < absoluteDespawnY) {
           spritesToRemove.push(sprite);
         } else if (
           material.opacity < 0.005 &&
           sprite.position.y <
             spawnY -
-              charEffectiveHeight * (config.SPRITE_FADE_IN_DISTANCE_CHARS + 1)
+              charEffectiveHeight *
+                (config.SPRITE_FADE_IN_DISTANCE_CHARS +
+                  config.LEADING_CHAR_TAIL_LENGTH +
+                  2.5)
         ) {
           spritesToRemove.push(sprite);
         }

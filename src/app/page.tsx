@@ -9,28 +9,13 @@ import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
-import { getFeaturedProjects } from "@/lib/github";
 import MatrixRain from "@/components/threed/matrix-rain";
 import { defaultConfig } from "@/components/threed/matrix-rain-config";
-import { Project } from "@/components/sections/ProjectCard";
 
 export default function Home() {
   const { resolvedTheme } = useTheme();
   const matrixWrapperRef = useRef<HTMLDivElement>(null);
-  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
   const mainContentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const projects = await getFeaturedProjects();
-        setFeaturedProjects(projects);
-      } catch (error) {
-        console.error("Failed to fetch featured projects on client:", error);
-      }
-    };
-    fetchProjects();
-  }, []);
 
   useEffect(() => {
     const matrixWrapper = matrixWrapperRef.current;
@@ -50,7 +35,6 @@ export default function Home() {
         aboutEffectStartScrollPos + aboutHeight * 0.4;
 
       let targetOpacity = 0;
-      let transformYValue = scrollY * 0.3;
 
       if (scrollY < heroEffectEndScrollPos) {
         targetOpacity = 1;
@@ -107,7 +91,7 @@ export default function Home() {
         <AboutSection />
         <SkillsSection />
         <ExperienceSection />
-        <ProjectsSection projects={featuredProjects} />
+        <ProjectsSection />
         <ContactSection />
         <footer className="py-8 border-t border-border/40 bg-background dark:bg-neutral-900 relative z-10">
           <div className="container flex flex-col items-center justify-center gap-4 md:h-16 md:flex-row mx-auto">

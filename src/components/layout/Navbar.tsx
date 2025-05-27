@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Button } from "@/components/ui/button";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/Logo";
 import { Download } from "lucide-react";
@@ -19,9 +19,7 @@ const navItems = [
 ];
 
 export function Navbar() {
-  const [activeSection, setActiveSection] = useState<string | null>(null);
   const headerRef = useRef<HTMLElement>(null);
-  const indicatorRef = useRef<HTMLSpanElement>(null);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
   useEffect(() => {
@@ -31,63 +29,9 @@ export function Navbar() {
         sectionRefs.current[item.href.substring(1)] = element;
       }
     });
+  }, []);
 
-    const handleScroll = () => {
-      let currentSectionId: string | null = null;
-      const viewportHeight = window.innerHeight;
-      const scrollY = window.scrollY;
-      const activationThresholdTop = viewportHeight * 0.4;
-
-      const heroSection = document.getElementById("hero");
-      if (heroSection && scrollY < heroSection.offsetHeight * 0.6) {
-        currentSectionId = null;
-      } else {
-        let maxVisibleHeight = 0;
-        for (const item of navItems) {
-          const sectionName = item.href.substring(1);
-          const sectionElement = sectionRefs.current[sectionName];
-
-          if (sectionElement) {
-            const rect = sectionElement.getBoundingClientRect();
-            const elementTopInViewport = rect.top;
-            const elementBottomInViewport = rect.bottom;
-
-            const visibleHeight = Math.max(
-              0,
-              Math.min(elementBottomInViewport, viewportHeight) -
-                Math.max(elementTopInViewport, 0)
-            );
-
-            const navBarHeightEstimate = 80;
-            if (
-              elementTopInViewport <
-                navBarHeightEstimate + activationThresholdTop &&
-              elementBottomInViewport > navBarHeightEstimate
-            ) {
-              if (visibleHeight >= maxVisibleHeight) {
-                maxVisibleHeight = visibleHeight;
-                currentSectionId = sectionName;
-              }
-            }
-          }
-        }
-      }
-
-      if (
-        window.scrollY + viewportHeight >=
-        document.documentElement.scrollHeight - 5
-      ) {
-        currentSectionId = "contact";
-      }
-
-      if (activeSection !== currentSectionId) {
-        setActiveSection(currentSectionId);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
+  useEffect(() => {
     if (headerRef.current) {
       headerRef.current.style.opacity = "0";
       headerRef.current.style.transform = "scale(0.9) translateY(-20px)";
@@ -100,38 +44,7 @@ export function Navbar() {
         delay: 300,
       });
     }
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [activeSection]);
-
-  useEffect(() => {
-    if (indicatorRef.current && headerRef.current) {
-      const activeLink = activeSection
-        ? (headerRef.current.querySelector(
-            `a[href="#${activeSection}"]`
-          ) as HTMLElement)
-        : null;
-
-      if (activeLink) {
-        animate(indicatorRef.current, {
-          width: activeLink.offsetWidth,
-          translateX: activeLink.offsetLeft,
-          opacity: 1,
-          duration: 400,
-          easing: "easeOutQuint",
-        });
-      } else {
-        animate(indicatorRef.current, {
-          width: 0,
-          opacity: 0,
-          duration: 300,
-          easing: "easeOutQuint",
-        });
-      }
-    }
-  }, [activeSection]);
+  }, []);
 
   return (
     <header
@@ -168,22 +81,15 @@ export function Navbar() {
               className={cn(
                 "px-3 py-2 rounded-md text-xs lg:text-sm font-medium transition-colors duration-200 relative outline-none",
                 "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                activeSection === item.href.substring(1)
-                  ? "text-primary"
-                  : "text-foreground/70 hover:text-primary"
+                "text-foreground/70 hover:text-primary"
               )}
             >
               {item.label}
             </Link>
           ))}
-          <span
-            ref={indicatorRef}
-            className="absolute bottom-[calc(50%-10px)] left-0 h-0.5 bg-primary rounded-full"
-            style={{ width: 0, opacity: 0, transform: "translateY(10px)" }}
-          />
         </nav>
 
-        <div className="flex items-center justify-end gap-2 shrink-0">
+        <div className="flex items-center justify-end gap-1 sm:gap-2 shrink-0">
           <Button
             variant="outline"
             size="sm"

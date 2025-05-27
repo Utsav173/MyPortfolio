@@ -1,29 +1,29 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import Link from 'next/link';
-import { Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import * as React from "react";
+import Link from "next/link";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { Logo } from '@/components/Logo';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/sheet";
+import { Logo } from "@/components/Logo";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: '#about', label: 'About' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#contact', label: 'Contact' },
+  { href: "#about", label: "About" },
+  { href: "#skills", label: "Skills" },
+  { href: "#experience", label: "Experience" },
+  { href: "#projects", label: "Projects" },
+  { href: "#contact", label: "Contact" },
 ];
 
 const resumeUrl =
-  'https://raw.githubusercontent.com/Utsav173/MyPortfolio/refs/heads/master/public/resume_utsav_khatri.pdf';
+  "https://raw.githubusercontent.com/Utsav173/MyPortfolio/refs/heads/master/public/resume_utsav_khatri.pdf";
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -36,7 +36,7 @@ export function MobileMenu() {
       const yOffset = -70;
       const y =
         targetElement.getBoundingClientRect().top + window.scrollY + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
@@ -55,9 +55,9 @@ export function MobileMenu() {
       <SheetContent
         side="left"
         className={cn(
-          'w-[300px] sm:w-[360px] p-0',
-          'bg-background/85 dark:bg-neutral-900/85 backdrop-blur-lg',
-          'border-r border-border/30'
+          "w-[300px] sm:w-[360px] p-0",
+          "bg-background/85 dark:bg-neutral-900/85 backdrop-blur-lg",
+          "border-r border-border/30"
         )}
       >
         <SheetHeader className="p-4 sm:p-6 border-b border-border/30">
