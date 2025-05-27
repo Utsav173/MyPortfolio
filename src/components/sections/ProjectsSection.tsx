@@ -14,7 +14,7 @@ import { Loader2 } from "lucide-react";
 import { animate, stagger } from "animejs";
 import { cn } from "@/lib/utils";
 
-const PROJECTS_INITIAL_DISPLAY_COUNT = 6;
+const PROJECTS_INITIAL_DISPLAY_COUNT = 7;
 const PROJECTS_INCREMENT = 6;
 
 export function ProjectsSection() {
@@ -224,15 +224,14 @@ export function ProjectsSection() {
   }
 
   const getCardClassName = (index: number): string => {
-    const patternIndex = index % 9;
-
+    const patternIndex = index % 7;
     switch (patternIndex) {
       case 0:
         return "md:col-span-2";
       case 1:
         return "md:col-span-1";
       case 2:
-        return "md:col-span-2";
+        return "md:col-span-1";
       case 3:
         return "md:col-span-1";
       case 4:
@@ -240,10 +239,6 @@ export function ProjectsSection() {
       case 5:
         return "md:col-span-2";
       case 6:
-        return "md:col-span-1";
-      case 7:
-        return "md:col-span-1";
-      case 8:
         return "md:col-span-1";
       default:
         return "md:col-span-1";
