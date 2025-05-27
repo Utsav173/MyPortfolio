@@ -249,6 +249,8 @@ const SkillItemDisplay: React.FC<{
   );
 };
 
+const MIN_REPETITIONS_FOR_FILL = 5;
+
 const SkillCategoryCarousel: React.FC<{
   categoryData: SkillCategoryData;
   globalIndex: number;
@@ -260,17 +262,14 @@ const SkillCategoryCarousel: React.FC<{
 
   const itemWidthRef = useRef(0);
   const gapRef = useRef(0);
+  const singleOriginalSetWidthRef = useRef(0);
 
+  const [itemsToRender, setItemsToRender] = useState<SkillItemData[]>([]);
   const initialFadeInComplete = useRef(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
   const isHoveringRef = useRef(false);
 
   const categoryColor = `hsl(${(globalIndex * 50 + 200) % 360}, 70%, 65%)`;
-
-  const itemsToRender =
-    categoryData.skills.length > 0
-      ? [...categoryData.skills, ...categoryData.skills]
-      : [];
 
   const setupCarouselLayout = useCallback(() => {
     if (
@@ -279,17 +278,32 @@ const SkillCategoryCarousel: React.FC<{
       categoryData.skills.length === 0
     ) {
       setIsCarouselReady(false);
+      setItemsToRender([]);
       return;
     }
-    const contentEl = carouselContentRef.current;
-    itemWidthRef.current = window.matchMedia("(min-width: 768px)").matches
-      ? 120
-      : 110;
 
     const isMd = window.matchMedia("(min-width: 768px)").matches;
+    itemWidthRef.current = isMd ? 120 : 110;
     gapRef.current = isMd ? 16 : 12;
 
-    contentEl.style.minWidth = "max-content";
+    singleOriginalSetWidthRef.current =
+      (itemWidthRef.current + gapRef.current) * categoryData.skills.length;
+
+    const wrapperWidth = carouselWrapperRef.current.offsetWidth;
+    const necessaryRepetitions = Math.max(
+      MIN_REPETITIONS_FOR_FILL,
+      Math.ceil((wrapperWidth * 2.5) / (singleOriginalSetWidthRef.current || 1))
+    );
+
+    const newItemsToRender: SkillItemData[] = [];
+    if (categoryData.skills.length > 0) {
+      for (let i = 0; i < necessaryRepetitions; i++) {
+        newItemsToRender.push(...categoryData.skills);
+      }
+    }
+    setItemsToRender(newItemsToRender);
+
+    carouselContentRef.current.style.minWidth = "max-content";
 
     if (initialFadeInComplete.current) {
       setIsCarouselReady(true);
@@ -322,7 +336,9 @@ const SkillCategoryCarousel: React.FC<{
         { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
       );
       observer.observe(currentCategoryEl);
-      return () => observer.disconnect();
+      return () => {
+        if (currentCategoryEl) observer.unobserve(currentCategoryEl);
+      };
     }
   }, [globalIndex, setupCarouselLayout]);
 
@@ -351,8 +367,9 @@ const SkillCategoryCarousel: React.FC<{
     if (
       !isCarouselReady ||
       !contentEl ||
-      categoryData.skills.length === 0 ||
-      itemWidthRef.current === 0
+      itemsToRender.length === 0 ||
+      singleOriginalSetWidthRef.current === 0 ||
+      categoryData.skills.length === 0
     ) {
       if (animationInstanceRef.current) {
         animationInstanceRef.current.pause();
@@ -364,17 +381,16 @@ const SkillCategoryCarousel: React.FC<{
 
     if (animationInstanceRef.current) {
       animationInstanceRef.current.pause();
+      animationInstanceRef.current = null;
     }
 
-    const originalSkillsCount = categoryData.skills.length;
-    const totalDistanceToAnimate =
-      (itemWidthRef.current + gapRef.current) * originalSkillsCount;
-    const animationDuration = originalSkillsCount * 3500;
+    const distanceToAnimateForLoop = singleOriginalSetWidthRef.current;
+    const animationDuration = categoryData.skills.length * 6000;
 
     if (
-      totalDistanceToAnimate === 0 ||
-      animationDuration === 0 ||
-      isNaN(totalDistanceToAnimate) ||
+      distanceToAnimateForLoop <= 0 ||
+      animationDuration <= 0 ||
+      isNaN(distanceToAnimateForLoop) ||
       isNaN(animationDuration)
     ) {
       if (contentEl) contentEl.style.transform = "translateX(0px)";
@@ -385,15 +401,17 @@ const SkillCategoryCarousel: React.FC<{
     let translateXParams: [string, string];
 
     if (isForwardDirection) {
-      translateXParams = ["0px", `-${totalDistanceToAnimate}px`];
+      contentEl.style.transform = "translateX(0px)";
+      translateXParams = ["0px", `-${distanceToAnimateForLoop}px`];
     } else {
-      translateXParams = [`-${totalDistanceToAnimate}px`, "0px"];
+      contentEl.style.transform = `translateX(-${distanceToAnimateForLoop}px)`;
+      translateXParams = [`-${distanceToAnimateForLoop}px`, "0px"];
     }
 
     animationInstanceRef.current = animate(contentEl, {
       translateX: translateXParams,
       duration: animationDuration,
-      ease: "linear",
+      easing: "linear",
       loop: true,
       autoplay: !isHoveringRef.current,
     });
@@ -404,7 +422,7 @@ const SkillCategoryCarousel: React.FC<{
         animationInstanceRef.current = null;
       }
     };
-  }, [isCarouselReady, categoryData.skills, globalIndex]);
+  }, [isCarouselReady, itemsToRender, categoryData.skills.length, globalIndex]);
 
   const handleCarouselMouseEnter = useCallback(() => {
     isHoveringRef.current = true;
@@ -415,12 +433,14 @@ const SkillCategoryCarousel: React.FC<{
 
   const handleCarouselMouseLeave = useCallback(() => {
     isHoveringRef.current = false;
-    if (animationInstanceRef.current) {
-      if (isCarouselReady && categoryData.skills.length > 0) {
-        animationInstanceRef.current.play();
-      }
+    if (
+      animationInstanceRef.current &&
+      isCarouselReady &&
+      itemsToRender.length > 0
+    ) {
+      animationInstanceRef.current.play();
     }
-  }, [isCarouselReady, categoryData.skills.length]);
+  }, [isCarouselReady, itemsToRender.length]);
 
   if (categoryData.skills.length === 0) {
     return null;
@@ -451,15 +471,17 @@ const SkillCategoryCarousel: React.FC<{
             <SkillItemDisplay
               key={`${skill.iconifyString}-${
                 skill.name
-              }-${idx}-${globalIndex}-${
-                idx >= categoryData.skills.length ? "dup" : "orig"
+              }-${idx}-${globalIndex}-rep${
+                categoryData.skills.length > 0
+                  ? Math.floor(idx / categoryData.skills.length)
+                  : 0
               }`}
               skill={skill}
               itemColor={categoryColor}
             />
           ))}
         </div>
-        {categoryData.skills.length > 0 && (
+        {itemsToRender.length > 0 && (
           <>
             <div className="absolute top-0 -left-5.5 h-full w-12 bg-gradient-to-r from-background via-background/80 to-transparent dark:from-secondary/5 dark:via-secondary/5/80 pointer-events-none opacity-100 group-hover:opacity-30 transition-opacity z-10"></div>
             <div className="absolute top-0 -right-5.5 h-full w-12 bg-gradient-to-l from-background via-background/80 to-transparent dark:from-secondary/5 dark:via-secondary/5/80 pointer-events-none opacity-100 group-hover:opacity-30 transition-opacity z-10"></div>
@@ -498,7 +520,9 @@ export function SkillsSection() {
         { threshold: 0.1, rootMargin: "0px 0px -60px 0px" }
       );
       observer.observe(currentHeadingRef);
-      return () => observer.disconnect();
+      return () => {
+        if (currentHeadingRef) observer.unobserve(currentHeadingRef);
+      };
     }
   }, []);
 
@@ -519,7 +543,7 @@ export function SkillsSection() {
         <div>
           {skillsData.map((category, idx) => (
             <SkillCategoryCarousel
-              key={category.category}
+              key={category.category + idx}
               categoryData={category}
               globalIndex={idx}
             />

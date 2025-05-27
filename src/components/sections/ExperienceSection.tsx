@@ -1,120 +1,82 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from 'react';
 import {
   animate,
   createTimeline,
   createSpring,
-  JSAnimation,
-  Target,
-  Timeline,
-} from "animejs";
-import { Badge } from "@/components/ui/badge";
-import { Briefcase } from "lucide-react";
+  type JSAnimation,
+  type Timeline,
+} from 'animejs';
+import { Badge } from '@/components/ui/badge';
+import { Briefcase } from 'lucide-react';
 
 const experiencesData = [
   {
-    role: "Web Developer",
-    company: "Zignuts Technolab, Gujarat, India",
-    duration: "January 2023 - Present",
+    role: 'Web Developer',
+    company: 'Zignuts Technolab, Gujarat, India',
+    duration: 'January 2023 - Present',
     responsibilities: [
-      "Spearheaded development of critical project components, demonstrating advanced technical leadership.",
-      "Engineered and deployed robust, high-availability RESTful APIs using Node.js and Express.js, achieving significant improvements in API response times via query optimization (PostgreSQL) and caching (Redis).",
-      "Developed highly scalable backend services and microservices, efficiently processing substantial daily data transaction volumes.",
-      "Led end-to-end design and implementation of complex, intuitive UIs with React.js, Redux, and Material-UI.",
-      "Integrated comprehensive security modules, including JWT-based authentication and RBAC.",
-      "Mentored junior developers and championed CI/CD pipeline improvements (GitHub Actions, Jenkins).",
+      'Spearheaded development of critical project components, demonstrating advanced technical leadership.',
+      'Engineered and deployed robust, high-availability RESTful APIs using Node.js and Express.js, achieving significant improvements in API response times via query optimization (PostgreSQL) and caching (Redis).',
+      'Developed highly scalable backend services and microservices, efficiently processing substantial daily data transaction volumes.',
+      'Led end-to-end design and implementation of complex, intuitive UIs with React.js, Redux, and Material-UI.',
+      'Integrated comprehensive security modules, including JWT-based authentication and RBAC.',
+      'Mentored junior developers and championed CI/CD pipeline improvements (GitHub Actions, Jenkins).',
     ],
     keyProjects: [
       {
-        name: "Restaurant Inventory Management System",
-        tech: ["Node.js", "Strapi v4", "PostgreSQL", "JWT", "RBAC"],
+        name: 'Restaurant Inventory Management System',
+        tech: ['Node.js', 'Strapi v4', 'PostgreSQL', 'JWT', 'RBAC'],
       },
       {
-        name: "Comprehensive Education Management Platform",
-        tech: ["Node.js", "Sails.js", "PostgreSQL", "AWS SQS"],
+        name: 'Comprehensive Education Management Platform',
+        tech: ['Node.js', 'Sails.js', 'PostgreSQL', 'AWS SQS'],
       },
       {
-        name: "Financial Transaction Management System",
-        tech: ["Node.js", "Sails.js", "SQL", "Recharts"],
+        name: 'Financial Transaction Management System',
+        tech: ['Node.js', 'Sails.js', 'SQL', 'Recharts'],
       },
       {
-        name: "Cloud Procurement & Bidding Platform",
-        tech: ["Node.js", "Express.js", "Socket.io", "AWS"],
+        name: 'Cloud Procurement & Bidding Platform',
+        tech: ['Node.js', 'Express.js', 'Socket.io', 'AWS'],
       },
     ],
   },
 ];
 
-// Define a more specific type for Animation Parameters compatible with Anime.js v4
-interface AnimeV4Params {
-  translateY?:
-    | [number, number]
-    | number
-    | ((
-        target: Target,
-        index: number,
-        targetsLength: number
-      ) => string | number);
-  filter?: [string, string];
-  duration?:
-    | number
-    | ((target: Target, index: number, targetsLength: number) => number);
-  ease?:
-    | string
-    | ((target: Target, index: number, targetsLength: number) => string)
-    | { mass: number; stiffness: number; damping: number; velocity?: number };
-  opacity?:
-    | [number, number]
-    | number
-    | ((target: Target, index: number, targetsLength: number) => number);
-  scaleY?:
-    | [number, number]
-    | number
-    | ((target: Target, index: number, targetsLength: number) => number);
-  scale?:
-    | [number, number]
-    | number
-    | ((target: Target, index: number, targetsLength: number) => number);
-  delay?:
-    | number
-    | ((target: Target, index: number, targetsLength: number) => number);
-  // Add other properties as needed, ensuring they match Anime.js v4 types
-}
-
 export function ExperienceSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
+  const timelineLineRef = useRef<HTMLDivElement>(null);
   const experienceItemRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   const animatedElements = useRef(new Set<HTMLElement>());
-  const animationInstances = useRef<(JSAnimation | Timeline)[]>([]);
+  const animationInstances = useRef<Map<HTMLElement, JSAnimation | Timeline>>(
+    new Map()
+  );
+  const observerStore = useRef<Map<HTMLElement, IntersectionObserver>>(
+    new Map()
+  );
 
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    experienceItemRefs.current = experienceItemRefs.current.slice(
-      0,
-      experiencesData.length
-    );
-
-    const initAndObserve = (
-      targetRef: React.RefObject<HTMLElement>,
-      animationConfig: AnimeV4Params,
-      isLine: boolean = false
-    ) => {
-      const element = targetRef.current;
+  const initAndObserveItem = useCallback(
+    (element: HTMLDivElement | null, index: number) => {
       if (element && !animatedElements.current.has(element)) {
-        element.style.opacity = "0";
-        if (isLine) {
-          element.style.transform = "scaleY(0)";
-          element.style.opacity = "0.5"; // Initial opacity for line before animation
-        } else if (
-          animationConfig.translateY &&
-          Array.isArray(animationConfig.translateY)
-        ) {
-          element.style.transform = `translateY(${
-            (animationConfig.translateY as [number, number])[0]
-          }px)`;
+        const cssDotElement = element.querySelector(
+          '.css-timeline-dot'
+        ) as HTMLElement | null;
+        const contentElement = element.querySelector(
+          '.timeline-content-animated'
+        ) as HTMLElement | null;
+
+        if (cssDotElement) {
+          cssDotElement.style.opacity = '0';
+          cssDotElement.style.transform = 'scale(0)';
+        }
+        if (contentElement) {
+          contentElement.style.opacity = '0';
+          contentElement.style.transform = 'translateY(30px)';
         }
 
         const observer = new IntersectionObserver(
@@ -124,82 +86,9 @@ export function ExperienceSection() {
                 entry.isIntersecting &&
                 !animatedElements.current.has(element)
               ) {
-                const anim = animate(element, {
-                  // Anime.js v4 animate call
-                  opacity: [0, 1],
-                  ...animationConfig,
-                } as any); // Use 'as any' here if type conflicts persist, or refine AnimeV4Params
-                animationInstances.current.push(anim);
-                animatedElements.current.add(element);
-                observer.unobserve(element);
-              }
-            });
-          },
-          {
-            threshold: isLine ? 0.05 : 0.15,
-            rootMargin: isLine ? "0px 0px -100px 0px" : "0px 0px -40px 0px",
-          }
-        );
-        observer.observe(element);
-      }
-    };
-
-    initAndObserve(headingRef as React.RefObject<HTMLElement>, {
-      translateY: [30, 0],
-      filter: ["blur(3px)", "blur(0px)"],
-      duration: 800,
-      ease: "easeOutExpo",
-    });
-
-    if (timelineContainerRef.current) {
-      const timelineLineEl = timelineContainerRef.current.querySelector(
-        ".timeline-line-animated"
-      ) as HTMLElement | null;
-      if (timelineLineEl) {
-        const lineRef = { current: timelineLineEl };
-        initAndObserve(
-          lineRef,
-          {
-            scaleY: [0, 1],
-            opacity: [0.5, 1], // Animate opacity from its initial 0.5 set in initAndObserve
-            duration: 2000,
-            ease: "easeInOutSine",
-          },
-          true
-        );
-      }
-    }
-
-    experienceItemRefs.current.forEach((itemElRef, index) => {
-      const itemEl = itemElRef;
-      if (itemEl) {
-        const cssDotElement = itemEl.querySelector(
-          ".css-timeline-dot"
-        ) as HTMLElement | null;
-        const contentElement = itemEl.querySelector(
-          ".timeline-content-animated"
-        ) as HTMLElement | null;
-
-        if (cssDotElement) {
-          cssDotElement.style.opacity = "0";
-          cssDotElement.style.transform = "scale(0)";
-        }
-        if (contentElement) {
-          contentElement.style.opacity = "0";
-          contentElement.style.transform = "translateY(30px)";
-        }
-
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (
-                entry.isIntersecting &&
-                !animatedElements.current.has(itemEl)
-              ) {
                 const tl = createTimeline({
-                  // Anime.js v4 createTimeline
-                  defaults: { ease: "easeOutExpo" },
-                  delay: index * 100, // This delay applies to the timeline start
+                  defaults: { ease: 'easeOutExpo' },
+                  delay: index * 50,
                 });
                 if (contentElement) {
                   tl.add(contentElement, {
@@ -221,29 +110,148 @@ export function ExperienceSection() {
                         damping: 12,
                       }),
                     },
-                    "-=500"
+                    '-=500'
                   );
                 }
-                animationInstances.current.push(tl);
-                animatedElements.current.add(itemEl);
-                observer.unobserve(itemEl);
+                animationInstances.current.set(element, tl);
+                animatedElements.current.add(element);
+                observer.unobserve(element);
+                observerStore.current.delete(element);
               }
             });
           },
-          { threshold: 0.2, rootMargin: "0px 0px -30px 0px" }
+          { threshold: 0.2, rootMargin: '0px 0px -30px 0px' }
         );
-        observer.observe(itemEl);
+        observer.observe(element);
+        observerStore.current.set(element, observer);
       }
+    },
+    []
+  );
+
+  useEffect(() => {
+    const currentSectionRef = sectionRef.current;
+    const currentHeadingRef = headingRef.current;
+    const currentTimelineLineRef = timelineLineRef.current;
+    const currentTimelineContainerRef = timelineContainerRef.current;
+
+    const headingObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (
+            entry.isIntersecting &&
+            currentHeadingRef &&
+            !animatedElements.current.has(currentHeadingRef)
+          ) {
+            const anim = animate(currentHeadingRef, {
+              opacity: [0, 1],
+              translateY: [30, 0],
+              filter: ['blur(3px)', 'blur(0px)'],
+              duration: 800,
+              ease: 'easeOutExpo',
+            });
+            animationInstances.current.set(currentHeadingRef, anim);
+            animatedElements.current.add(currentHeadingRef);
+            observerStore.current.get(currentHeadingRef)?.disconnect();
+            observerStore.current.delete(currentHeadingRef);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    if (currentHeadingRef && !animatedElements.current.has(currentHeadingRef)) {
+      currentHeadingRef.style.opacity = '0';
+      currentHeadingRef.style.transform = 'translateY(30px)';
+      headingObserver.observe(currentHeadingRef);
+      observerStore.current.set(currentHeadingRef, headingObserver);
+    }
+
+    experienceItemRefs.current.forEach((itemEl, index) => {
+      initAndObserveItem(itemEl, index);
     });
 
+    let lineAnimationInstance: JSAnimation | null = null;
+
+    const handleScroll = () => {
+      if (
+        !currentTimelineLineRef ||
+        !currentTimelineContainerRef ||
+        !currentSectionRef
+      )
+        return;
+
+      const containerRect = currentTimelineContainerRef.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      const startOffset = viewportHeight * 0.75;
+      const scrollStartPoint = containerRect.top - startOffset;
+      const endOffset = viewportHeight * 0.25;
+      const scrollableHeight =
+        containerRect.height - (viewportHeight - startOffset) - endOffset;
+
+      if (scrollableHeight <= 0) {
+        const isContainerFullyVisibleOrPast = containerRect.bottom < endOffset;
+        const isContainerNotYetVisible = containerRect.top > startOffset;
+        if (isContainerFullyVisibleOrPast) {
+          currentTimelineLineRef.style.transform = `scaleY(1)`;
+        } else if (isContainerNotYetVisible) {
+          currentTimelineLineRef.style.transform = `scaleY(0)`;
+        } else {
+          currentTimelineLineRef.style.transform = `scaleY(1)`; // Default to full if content short
+        }
+        return;
+      }
+      const currentScrollProgress = Math.max(
+        0,
+        Math.min(1, -scrollStartPoint / scrollableHeight)
+      );
+
+      if (!lineAnimationInstance && currentTimelineLineRef) {
+        currentTimelineLineRef.style.transformOrigin = 'top';
+        currentTimelineLineRef.style.transform = 'scaleY(0)';
+        lineAnimationInstance = animate(currentTimelineLineRef, {
+          scaleY: 1,
+          duration: 1000,
+          autoplay: false,
+          easing: 'linear',
+        });
+        animationInstances.current.set(
+          currentTimelineLineRef,
+          lineAnimationInstance
+        );
+      }
+
+      if (lineAnimationInstance) {
+        lineAnimationInstance.seek(
+          currentScrollProgress * lineAnimationInstance.duration
+        );
+      }
+    };
+
+    if (currentTimelineLineRef) {
+      currentTimelineLineRef.style.opacity = '1';
+      currentTimelineLineRef.style.transform = 'scaleY(0)';
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
     return () => {
+      window.removeEventListener('scroll', handleScroll);
+
+      observerStore.current.forEach((observer) => observer.disconnect());
+      observerStore.current.clear();
+
       animationInstances.current.forEach((instance) => {
-        instance.revert();
+        if (instance && typeof instance.pause === 'function') {
+          instance.pause();
+        }
       });
-      animationInstances.current = [];
+      animationInstances.current.clear();
       animatedElements.current.clear();
     };
-  }, []);
+  }, [initAndObserveItem]);
 
   return (
     <section
@@ -260,8 +268,9 @@ export function ExperienceSection() {
         </h2>
         <div ref={timelineContainerRef} className="relative max-w-3xl mx-auto">
           <div
-            className="timeline-line-animated absolute top-0 left-[calc(0.875rem-1px)] md:left-[calc(1rem-2px)] w-0.5 md:w-1 bg-primary/50 origin-top"
-            style={{ height: "calc(100% - 2rem)" }}
+            ref={timelineLineRef}
+            className="absolute top-0 left-[calc(0.875rem-1px)] md:left-[calc(1rem-2px)] w-0.5 md:w-1 bg-primary/80 origin-top"
+            style={{ height: 'calc(100% - 1rem)', transform: 'scaleY(0)' }}
             aria-hidden="true"
           ></div>
 
@@ -276,7 +285,7 @@ export function ExperienceSection() {
               >
                 <div
                   className="css-timeline-dot absolute left-0 top-1 size-7 md:size-8 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 md:border-4 border-background"
-                  style={{ transformOrigin: "center center" }}
+                  style={{ transformOrigin: 'center center' }}
                 >
                   <Briefcase className="size-3.5 md:size-4 text-primary-foreground" />
                 </div>

@@ -88,6 +88,18 @@
 
   --hero-particle-color: oklch(0.5 0.15 250);
   --tw-shadow-color: oklch(0.2 0.018 240 / 0.08);
+
+  --matrix-light-leading-rgb: 0.35 0.08 190;
+  --matrix-light-regular-rgb: 0.45 0.05 190;
+
+  --matrix-light-regular: oklch(var(--matrix-light-regular-rgb));
+  --matrix-light-leading: oklch(var(--matrix-light-leading-rgb));
+
+  --matrix-light-regular-ultra-rgb: var(--matrix-light-regular-rgb);
+  --matrix-light-leading-ultra-rgb: var(--matrix-light-leading-rgb);
+
+  --matrix-light-regular-ultra: oklch(var(--matrix-light-regular-ultra-rgb));
+  --matrix-light-leading-ultra: oklch(var(--matrix-light-leading-ultra-rgb));
 }
 
 .dark {
@@ -126,6 +138,18 @@
 
   --hero-particle-color: oklch(var(--primary-oklch-values) / 0.75);
   --tw-shadow-color: oklch(0 0 0 / 0.25);
+
+  --matrix-dark-leading-rgb: 0.75 0.22 145;
+  --matrix-dark-regular-rgb: 0.6 0.15 145;
+
+  --matrix-dark-regular: oklch(var(--matrix-dark-regular-rgb));
+  --matrix-dark-leading: oklch(var(--matrix-dark-leading-rgb));
+
+  --matrix-dark-regular-ultra-rgb: var(--matrix-dark-regular-rgb);
+  --matrix-dark-leading-ultra-rgb: var(--matrix-dark-leading-rgb);
+
+  --matrix-dark-regular-ultra: oklch(var(--matrix-dark-regular-ultra-rgb));
+  --matrix-dark-leading-ultra: oklch(var(--matrix-dark-leading-ultra-rgb));
 }
 
 @layer base {
@@ -231,30 +255,24 @@
 
 .scrollbar-thin {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) var(--color-primary-foreground); /* Adjust colors as needed */
+  scrollbar-color: var(--color-primary) var(--color-primary-foreground);
 }
 .scrollbar-thin::-webkit-scrollbar {
   height: 8px;
   width: 8px;
 }
 .scrollbar-thin::-webkit-scrollbar-track {
-  background: oklch(
-    var(--primary-oklch-values) / 0.1
-  ); /* Use oklch for consistency */
+  background: oklch(var(--primary-oklch-values) / 0.1);
   border-radius: var(--radius-full);
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: oklch(
-    var(--primary-oklch-values) / 0.5
-  ); /* Use oklch for consistency */
+  background-color: oklch(var(--primary-oklch-values) / 0.5);
   border-radius: var(--radius-full);
   border: 2px solid transparent;
   background-clip: content-box;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background-color: oklch(
-    var(--primary-oklch-values) / 0.7
-  ); /* Use oklch for consistency */
+  background-color: oklch(var(--primary-oklch-values) / 0.7);
 }
 
 @keyframes bounceOnce {

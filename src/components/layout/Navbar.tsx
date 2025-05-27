@@ -19,7 +19,6 @@ const navItems = [
 ];
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const headerRef = useRef<HTMLElement>(null);
   const indicatorRef = useRef<HTMLSpanElement>(null);
@@ -34,26 +33,16 @@ export function Navbar() {
     });
 
     const handleScroll = () => {
-      const newScrolled = window.scrollY > 50;
-      if (newScrolled !== scrolled) {
-        setScrolled(newScrolled);
-      }
-
       let currentSectionId: string | null = null;
       const viewportHeight = window.innerHeight;
       const scrollY = window.scrollY;
-
       const activationThresholdTop = viewportHeight * 0.4;
+
       const heroSection = document.getElementById("hero");
-      if (heroSection) {
-        if (scrollY < viewportHeight * 0.4) {
-          currentSectionId = null;
-        }
-      }
-
-      if (currentSectionId === null) {
+      if (heroSection && scrollY < heroSection.offsetHeight * 0.6) {
+        currentSectionId = null;
+      } else {
         let maxVisibleHeight = 0;
-
         for (const item of navItems) {
           const sectionName = item.href.substring(1);
           const sectionElement = sectionRefs.current[sectionName];
@@ -69,20 +58,13 @@ export function Navbar() {
                 Math.max(elementTopInViewport, 0)
             );
 
+            const navBarHeightEstimate = 80;
             if (
-              elementTopInViewport < activationThresholdTop &&
-              elementBottomInViewport > activationThresholdTop
+              elementTopInViewport <
+                navBarHeightEstimate + activationThresholdTop &&
+              elementBottomInViewport > navBarHeightEstimate
             ) {
-              if (visibleHeight > maxVisibleHeight) {
-                maxVisibleHeight = visibleHeight;
-                currentSectionId = sectionName;
-              }
-            } else if (
-              !currentSectionId &&
-              elementTopInViewport < viewportHeight &&
-              elementBottomInViewport > 0
-            ) {
-              if (visibleHeight > maxVisibleHeight) {
+              if (visibleHeight >= maxVisibleHeight) {
                 maxVisibleHeight = visibleHeight;
                 currentSectionId = sectionName;
               }
@@ -91,12 +73,10 @@ export function Navbar() {
         }
       }
 
-      // Special case for 'contact' section if at the very bottom of the page
       if (
         window.scrollY + viewportHeight >=
         document.documentElement.scrollHeight - 5
       ) {
-        // 5px buffer
         currentSectionId = "contact";
       }
 
@@ -106,25 +86,25 @@ export function Navbar() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    handleScroll();
 
-    // Initial header animation
     if (headerRef.current) {
-      headerRef.current.style.opacity = "0"; // Set initial for anime
+      headerRef.current.style.opacity = "0";
+      headerRef.current.style.transform = "scale(0.9) translateY(-20px)";
       animate(headerRef.current, {
-        translateY: [-100, 0],
+        translateY: ["-20px", "0px"],
+        scale: [0.9, 1],
         opacity: [0, 1],
-        duration: 700,
-        easing: "easeOutExpo",
-        delay: 200,
+        duration: 600,
+        easing: "easeOutQuint",
+        delay: 300,
       });
     }
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // scrolled removed from deps to avoid re-running sectionRefs population
+  }, [activeSection]);
 
   useEffect(() => {
     if (indicatorRef.current && headerRef.current) {
@@ -143,7 +123,6 @@ export function Navbar() {
           easing: "easeOutQuint",
         });
       } else {
-        // Animate out smoothly
         animate(indicatorRef.current, {
           width: 0,
           opacity: 0,
@@ -158,15 +137,17 @@ export function Navbar() {
     <header
       ref={headerRef}
       className={cn(
-        "sticky top-0 z-50 w-full border-b transition-all duration-300 ease-out",
-        scrolled
-          ? "border-border/40 bg-background/85 backdrop-blur-lg shadow-sm"
-          : "border-transparent bg-transparent"
+        "fixed top-3 sm:top-4 left-1/2 -translate-x-1/2 z-50",
+        "w-[calc(100%-1.5rem)] sm:w-auto",
+        "transition-opacity duration-300 ease-out",
+        "bg-background/75 dark:bg-neutral-900/75 backdrop-blur-xl",
+        "rounded-full border border-border/30 shadow-lg dark:shadow-primary/10"
       )}
     >
-      <div className="container flex h-[72px] max-w-screen-xl items-center">
-        <Logo />
-        <nav className="hidden md:flex items-center space-x-1 ml-auto relative">
+      <div className="flex h-[48px] sm:h-[52px] items-center justify-between px-3 sm:px-4 gap-3 sm:gap-4">
+        <Logo className="shrink-0" />
+
+        <nav className="hidden md:flex items-center space-x-1 relative mx-auto">
           {navItems.map((item) => (
             <Link
               key={item.label}
@@ -176,14 +157,17 @@ export function Navbar() {
                 const targetSection =
                   sectionRefs.current[item.href.substring(1)];
                 if (targetSection) {
-                  targetSection.scrollIntoView({
-                    behavior: "smooth",
-                  });
+                  const yOffset = -70;
+                  const y =
+                    targetSection.getBoundingClientRect().top +
+                    window.scrollY +
+                    yOffset;
+                  window.scrollTo({ top: y, behavior: "smooth" });
                 }
-                setActiveSection(item.href.substring(1));
               }}
               className={cn(
-                "px-4 py-2.5 rounded-md text-sm font-medium transition-colors duration-200 relative outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                "px-3 py-2 rounded-md text-xs lg:text-sm font-medium transition-colors duration-200 relative outline-none",
+                "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 activeSection === item.href.substring(1)
                   ? "text-primary"
                   : "text-foreground/70 hover:text-primary"
@@ -194,21 +178,22 @@ export function Navbar() {
           ))}
           <span
             ref={indicatorRef}
-            className="absolute bottom-0 left-0 h-0.5 bg-primary rounded-full"
-            style={{ width: 0, opacity: 0 }} // Initial state
+            className="absolute bottom-[calc(50%-10px)] left-0 h-0.5 bg-primary rounded-full"
+            style={{ width: 0, opacity: 0, transform: "translateY(10px)" }}
           />
         </nav>
-        <div className="flex items-center justify-end space-x-2 max-sm:ml-4">
+
+        <div className="flex items-center justify-end gap-2 shrink-0">
           <Button
             variant="outline"
             size="sm"
             asChild
             className={cn(
-              "hidden sm:flex group text-[13px] h-auto transition-all duration-300",
+              "hidden sm:flex group text-[11px] lg:text-xs h-auto transition-all duration-300",
               "border-primary/40 hover:border-primary text-primary/90 hover:text-primary hover:bg-primary/10",
               "dark:border-primary/30 dark:hover:border-primary/70 dark:text-primary/80 dark:hover:text-primary dark:hover:bg-primary/10",
               "focus-visible:ring-primary/50",
-              "px-3.5 py-1.5"
+              "px-2.5 py-1 lg:px-3 lg:py-1.5 rounded-full"
             )}
           >
             <a
@@ -219,7 +204,7 @@ export function Navbar() {
               className="flex items-center justify-center"
             >
               Resume
-              <Download className="ml-1.5 size-3.5 resume-button-icon" />
+              <Download className="ml-1 sm:ml-1.5 size-3" />
             </a>
           </Button>
           <ModeToggle />

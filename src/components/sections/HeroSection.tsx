@@ -3,45 +3,49 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, DownloadCloud } from "lucide-react";
-import React, { useEffect, useRef, lazy, Suspense, useCallback } from "react";
-import { animate, utils, stagger, svg } from "animejs";
+import React, { useEffect, useRef, useCallback } from "react";
+import { animate, utils, stagger, type JSAnimation } from "animejs";
 import { cn, MASK_PATH_D, SVG_MAIN_PATH_D } from "@/lib/utils";
 import { useTheme } from "next-themes";
 
-const MatrixDataStream = lazy(
-  () => import("@/components/threed/MatrixDataStream")
-);
-
-type AnimeInstance = ReturnType<typeof animate>;
-
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const svgRef = useRef<SVGPathElement | null>(null);
+  const svgPathRef = useRef<SVGPathElement | null>(null);
   const p1Ref = useRef<HTMLParagraphElement>(null);
   const p2Ref = useRef<HTMLParagraphElement>(null);
   const ctaContainerRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
-  const scrollIndicatorAnimationRef = useRef<AnimeInstance | null>(null);
-  const { theme } = useTheme();
+  const scrollIndicatorAnimationRef = useRef<JSAnimation | null>(null);
+  const svgNameAnimationRef = useRef<JSAnimation | null>(null);
+
+  const { resolvedTheme } = useTheme();
 
   const initialSetup = useCallback(() => {
-    const elementsToReset = [
+    const elements = [
       p1Ref.current,
       p2Ref.current,
       scrollIndicatorRef.current,
+      ...(ctaContainerRef.current?.children || []),
+      svgPathRef.current,
     ];
-    elementsToReset.forEach((el) => el && utils.set(el, { opacity: 0 }));
 
-    if (p1Ref.current) utils.set(p1Ref.current, { translateY: 20 });
-    if (p2Ref.current) utils.set(p2Ref.current, { translateY: 20 });
-    if (scrollIndicatorRef.current)
-      utils.set(scrollIndicatorRef.current, { translateY: -10 });
-
-    if (ctaContainerRef.current) {
-      (Array.from(ctaContainerRef.current.children) as HTMLElement[]).forEach(
-        (el) => utils.set(el, { opacity: 0, translateY: 20, scale: 0.95 })
-      );
+    elements.forEach((el) => {
+      if (el) {
+        utils.set(el, { opacity: 0 });
+        if (el !== svgPathRef.current && el !== scrollIndicatorRef.current) {
+          utils.set(el, { translateY: 20 });
+        }
+        if (el === scrollIndicatorRef.current) {
+          utils.set(el, { translateY: -10 });
+        }
+      }
+    });
+    if (svgPathRef.current) {
+      utils.set(svgPathRef.current, {
+        opacity: 0.6,
+        filter: "drop-shadow(0 0 2px transparent)",
+      });
     }
   }, []);
 
@@ -49,64 +53,85 @@ export function HeroSection() {
     initialSetup();
 
     const p1El = p1Ref.current;
-    // const namePathElement =
-    //   svgRef.current?.querySelector<SVGPathElement>(".visibleNamePath");
-
-    // console.log(namePathElement);
-
     const p2El = p2Ref.current;
     const ctaEl = ctaContainerRef.current;
     const scrollEl = scrollIndicatorRef.current;
+    const svgPathEl = svgPathRef.current;
 
-    if (!p1El || !p2El || !ctaEl || !scrollEl) {
-      return;
-    }
+    const baseDelay = 200;
 
-    const ctaElements = ctaEl
-      ? (Array.from(ctaEl.children) as HTMLElement[])
-      : [];
-
-    if (scrollIndicatorAnimationRef.current) {
-      scrollIndicatorAnimationRef.current.pause();
-    }
-
-    animate(p1El, {
-      opacity: [0, 1],
-      translateY: [20, 0],
-      duration: 800,
-      easing: "easeOutQuart",
-      delay: 0,
-    });
-
-    const pathElement = svgRef.current;
-    if (pathElement) {
-      animate(svg.createDrawable(pathElement), {
-        draw: ["0 0", "0 1", "1 1"],
-        duration: 2000,
-        easing: "inOutQuad",
-        delay: 600,
-        loop: true,
+    if (p1El) {
+      animate(p1El, {
+        opacity: [0, 1],
+        translateY: [20, 0],
+        duration: 800,
+        easing: "easeOutQuart",
+        delay: baseDelay,
       });
     }
 
-    animate(p2El, {
-      opacity: [0, 1],
-      translateY: [20, 0],
-      duration: 600,
-      easing: "easeOutQuart",
-      delay: 800,
-    });
+    if (svgPathEl) {
+      svgPathEl.style.fill = "currentColor";
 
-    if (ctaElements.length > 0) {
-      animate(ctaElements, {
+      const glowColor =
+        resolvedTheme === "dark"
+          ? "rgba(var(--primary-oklch-values-raw, 0.62 0.2 220), 0.7)"
+          : "rgba(var(--primary-oklch-values-raw, 0.58 0.23 225), 0.5)";
+      const brighterGlowColor =
+        resolvedTheme === "dark"
+          ? "rgba(var(--primary-oklch-values-raw, 0.62 0.2 220), 0.9)"
+          : "rgba(var(--primary-oklch-values-raw, 0.58 0.23 225), 0.7)";
+
+      svgNameAnimationRef.current = animate(svgPathEl, {
+        opacity: [
+          { value: 0.6, duration: 1000, easing: "easeInOutSine" },
+          { value: 1, duration: 800, easing: "easeInOutSine" },
+          { value: 0.6, duration: 1200, easing: "easeInOutSine" },
+        ],
+        filter: [
+          {
+            value: `drop-shadow(0 0 3px ${glowColor}) drop-shadow(0 0 8px ${glowColor})`,
+            duration: 1000,
+            easing: "easeInOutSine",
+          },
+          {
+            value: `drop-shadow(0 0 6px ${brighterGlowColor}) drop-shadow(0 0 15px ${brighterGlowColor})`,
+            duration: 800,
+            easing: "easeInOutSine",
+          },
+          {
+            value: `drop-shadow(0 0 3px ${glowColor}) drop-shadow(0 0 8px ${glowColor})`,
+            duration: 1200,
+            easing: "easeInOutSine",
+          },
+        ],
+        loop: true,
+        direction: "alternate",
+        delay: baseDelay + 400,
+      });
+    }
+
+    if (p2El) {
+      animate(p2El, {
+        opacity: [0, 1],
+        translateY: [20, 0],
+        duration: 600,
+        easing: "easeOutQuart",
+        delay: baseDelay + 600,
+      });
+    }
+
+    if (ctaEl && ctaEl.children.length > 0) {
+      const ctaChildren = Array.from(ctaEl.children) as HTMLElement[];
+      animate(ctaChildren, {
         opacity: [0, 1],
         translateY: [20, 0],
         scale: [0.9, 1],
         duration: 500,
         easing: "easeOutBack",
-        delay: stagger(150, { start: 1000 }),
+        delay: stagger(150, { start: baseDelay + 800 }),
         complete: () => {
-          if (scrollEl && !scrollIndicatorAnimationRef.current?.began) {
+          if (scrollEl) {
             scrollIndicatorAnimationRef.current = animate(scrollEl, {
               opacity: [0, 0.6],
               translateY: [
@@ -124,11 +149,11 @@ export function HeroSection() {
     }
 
     return () => {
-      if (scrollIndicatorAnimationRef.current) {
+      if (scrollIndicatorAnimationRef.current)
         scrollIndicatorAnimationRef.current.pause();
-      }
+      if (svgNameAnimationRef.current) svgNameAnimationRef.current.pause();
     };
-  }, [theme, initialSetup]);
+  }, [resolvedTheme, initialSetup]);
 
   const handleProjectScroll = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -145,13 +170,8 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="hero"
-      className="min-h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden pt-20 md:pt-0"
+      className="min-h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden pt-20 md:pt-0 bg-transparent"
     >
-      <Suspense
-        fallback={<div className="absolute inset-0 -z-20 bg-background" />}
-      >
-        <MatrixDataStream className="absolute inset-0 -z-10" />
-      </Suspense>
       <div className="container mx-auto relative z-10">
         <p
           ref={p1Ref}
@@ -168,7 +188,7 @@ export function HeroSection() {
             width="498"
             height="64"
             viewBox="0 0 498 64"
-            className="max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl h-auto text-foreground"
+            className="max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl h-auto text-foreground" // text-foreground will provide base for currentColor
           >
             <mask
               id="path-1-outside-1_2_2"
@@ -185,9 +205,13 @@ export function HeroSection() {
             <path
               className="visibleNamePath"
               d={SVG_MAIN_PATH_D}
-              ref={svgRef}
-              fill="#338CFF"
+              ref={svgPathRef}
+              fill="currentColor"
               mask="url(#path-1-outside-1_2_2)"
+              style={{
+                opacity: 0.7,
+                filter: "drop-shadow(0 0 2px transparent)",
+              }}
             />
           </svg>
         </div>
@@ -240,7 +264,7 @@ export function HeroSection() {
             )}
           >
             <a
-              href="/resume_utsav_khatri.pdf"
+              href="https://raw.githubusercontent.com/Utsav173/MyPortfolio/refs/heads/master/public/resume_utsav_khatri.pdf"
               target="_blank"
               rel="noopener noreferrer"
               download="Utsav_Khatri_Resume.pdf"

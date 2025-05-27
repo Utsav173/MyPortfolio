@@ -179,12 +179,12 @@ export function AboutSection() {
     <section
       id="about"
       ref={sectionRef}
-      className="bg-background dark:bg-secondary/10"
+      className="bg-gradient-to-b from-transparent via-primary/75 to-primary"
     >
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div ref={imageContainerRef}>
-            <div className="w-full max-w-[400px] md:max-w-full aspect-square bg-muted rounded-2xl shadow-2xl mx-auto flex items-center justify-center overflow-hidden border-4 border-primary/10 hover:border-primary/50 transition-all duration-300 ease-out hover:shadow-primary/20">
+            <div className="w-full max-w-[400px] md:max-w-full aspect-square bg-muted/30 dark:bg-card/30 backdrop-blur-sm rounded-2xl shadow-2xl mx-auto flex items-center justify-center overflow-hidden border-4 border-primary/10 hover:border-primary/50 transition-all duration-300 ease-out hover:shadow-primary/20">
               <Image
                 src="/images/utsav-khatri.webp"
                 alt="Utsav Khatri"
