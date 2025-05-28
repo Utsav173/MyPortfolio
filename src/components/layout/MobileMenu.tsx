@@ -57,7 +57,8 @@ export function MobileMenu() {
         className={cn(
           "w-[300px] sm:w-[360px] p-0",
           "bg-background/85 dark:bg-neutral-900/85 backdrop-blur-lg",
-          "border-r border-border/30"
+          "border-r border-border/30",
+          "m-4 h-[96dvh] rounded-2xl"
         )}
       >
         <SheetHeader className="p-4 sm:p-6 border-b border-border/30">

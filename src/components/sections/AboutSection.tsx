@@ -2,8 +2,9 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
-export function AboutSection() {
+export function AboutSection({ className }: { className?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -50,7 +51,10 @@ export function AboutSection() {
     <section
       id="about"
       ref={sectionRef}
-      className="bg-transparent dark:bg-transparent"
+      className={cn(
+        className,
+        "bg-transparent dark:bg-transparent content-section"
+      )}
     >
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-16 lg:gap-24 items-center">

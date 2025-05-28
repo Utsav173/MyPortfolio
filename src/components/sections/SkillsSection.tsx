@@ -492,7 +492,7 @@ const SkillCategoryCarousel: React.FC<{
   );
 };
 
-export function SkillsSection() {
+export function SkillsSection({ className }: { className?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const animatedHeading = useRef(false);
@@ -530,7 +530,10 @@ export function SkillsSection() {
     <section
       id="skills"
       ref={sectionRef}
-      className="bg-background dark:bg-secondary/5 py-16 md:py-24"
+      className={cn(
+        className,
+        "bg-background dark:bg-secondary/5 py-16 md:py-24"
+      )}
     >
       <div className="container mx-auto px-4">
         <h2

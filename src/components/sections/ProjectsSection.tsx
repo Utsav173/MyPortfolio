@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 const PROJECTS_INITIAL_DISPLAY_COUNT = 7;
 const PROJECTS_INCREMENT = 6;
 
-export function ProjectsSection() {
+export function ProjectsSection({ className }: { className?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const projectCardsContainerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -246,7 +246,11 @@ export function ProjectsSection() {
   };
 
   return (
-    <section id="projects" ref={sectionRef} className="py-16 md:py-24">
+    <section
+      id="projects"
+      ref={sectionRef}
+      className={cn(className, "py-16 md:py-24")}
+    >
       <div className="container mx-auto px-4">
         <h2
           ref={headingRef}

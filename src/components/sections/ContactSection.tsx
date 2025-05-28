@@ -23,6 +23,7 @@ import { toast as sonnerToast } from "sonner";
 import { animate } from "animejs";
 import { z } from "zod";
 import { contactFormSchema } from "@/lib/validations";
+import { cn } from "@/lib/utils";
 
 type FormData = z.infer<typeof contactFormSchema>;
 type FormErrors = Partial<Record<keyof FormData, string[] | undefined>>;
@@ -44,7 +45,7 @@ const initialFormData: FormData = {
   message: "",
 };
 
-export function ContactSection() {
+export function ContactSection({ className }: { className?: string }) {
   const [formData, setFormDataState] = useState<FormData>(initialFormData);
   const [errors, setErrorsState] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmittingState] = useState(false);
@@ -269,7 +270,10 @@ export function ContactSection() {
     <section
       id="contact"
       ref={sectionRef}
-      className="bg-secondary/20 dark:bg-secondary/5"
+      className={cn(
+        className,
+        "bg-secondary/20 dark:bg-secondary/5 py-20 md:py-28 lg:py-32"
+      )}
     >
       <div className="container mx-auto px-4">
         <h2
@@ -411,7 +415,7 @@ export function ContactSection() {
                 onChange={handleChange}
                 aria-invalid={!!errors.message}
                 aria-describedby={errors.message ? "message-error" : undefined}
-                className="bg-card/60 dark:bg-card/70 text-base p-3 focus:ring-primary focus:border-primary min-h-[120px]"
+                className="bg-card/60 dark:bg-card/70 text-base p-3 focus:ring-primary focus:border-primary min-h-[120px] resize-none"
               />
               {errors.message && (
                 <p

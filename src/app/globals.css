@@ -75,9 +75,9 @@
   --muted: oklch(0.9 0.007 230);
   --muted-foreground: oklch(0.42 0.015 240);
 
-  --accent: oklch(0.62 0.2 190);
-  --accent-foreground: oklch(0.05 0.01 190);
-  --matrix-font-color: #222222;
+  --accent: oklch(0.63 0.21 210);
+  --accent-foreground: oklch(0.1 0.02 210);
+
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(0.99 0.003 240);
 
@@ -88,16 +88,6 @@
 
   --hero-particle-color: oklch(0.5 0.15 250);
   --tw-shadow-color: oklch(0.2 0.018 240 / 0.08);
-
-  --matrix-effect-light-regular-color: #3a7ca5;
-  --matrix-effect-light-leading-color: #16425b;
-
-  --matrix-effect-light-regular-ultra-color: var(
-    --matrix-effect-light-regular-color
-  );
-  --matrix-effect-light-leading-ultra-color: var(
-    --matrix-effect-light-leading-color
-  );
 }
 
 .dark {
@@ -116,15 +106,15 @@
   --primary: oklch(0.62 0.2 220);
   --primary-foreground: oklch(0.98 0.005 220);
   --primary-oklch-values: 0.62 0.2 220;
-  --matrix-font-color: #ffffff;
+
   --secondary: oklch(0.18 0.022 245);
   --secondary-foreground: oklch(0.82 0.01 225);
 
   --muted: oklch(0.2 0.022 245);
   --muted-foreground: oklch(0.62 0.012 225);
 
-  --accent: oklch(0.681 0.1 248.37);
-  --accent-foreground: oklch(0.04 0.01 185);
+  --accent: oklch(0.67 0.16 250);
+  --accent-foreground: oklch(0.98 0.005 250);
 
   --destructive: oklch(0.62 0.23 28);
   --destructive-foreground: oklch(0.99 0.003 230);
@@ -136,16 +126,6 @@
 
   --hero-particle-color: oklch(var(--primary-oklch-values) / 0.75);
   --tw-shadow-color: oklch(0 0 0 / 0.25);
-
-  --matrix-effect-dark-regular-color: #2a9d8f;
-  --matrix-effect-dark-leading-color: #e9c46a;
-
-  --matrix-effect-dark-regular-ultra-color: var(
-    --matrix-effect-dark-regular-color
-  );
-  --matrix-effect-dark-leading-ultra-color: var(
-    --matrix-effect-dark-leading-color
-  );
 }
 
 @layer base {
