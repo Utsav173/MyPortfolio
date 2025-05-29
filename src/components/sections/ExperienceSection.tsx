@@ -182,8 +182,8 @@ export function ExperienceSection({ className }: { className?: string }) {
 
       lineScrollTriggerInstance = ScrollTrigger.create({
         trigger: currentTimelineContainerRef,
-        start: "top bottom-=100px",
-        end: "bottom top+=100px", 
+        start: "top bottom", 
+        end: "bottom top",   
         scrub: 0.3,
         invalidateOnRefresh: true,
         animation: gsap.to(currentTimelineLineRef, {
@@ -251,13 +251,10 @@ export function ExperienceSection({ className }: { className?: string }) {
                   className="css-timeline-dot absolute left-0 top-1 size-6 sm:size-7 md:size-8 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 md:border-4 border-background"
                   style={{ transformOrigin: "center center" }}
                 >
-                  <Briefcase className="size-3 sm:size-3.5 md:size-4 text-primary-foreground" />{" "}
-                  {/* Adjusted size */}
+                  <Briefcase className="size-3 sm:size-3.5 md:size-4 text-primary-foreground" />
                 </div>
 
                 <div className="timeline-content-animated ml-1 sm:ml-2">
-                  {" "}
-                  {/* Adjusted margin */}
                   <p className="text-xs text-muted-foreground mb-1 sm:mb-1.5 font-mono tracking-wide">
                     {exp.duration}
                   </p>
