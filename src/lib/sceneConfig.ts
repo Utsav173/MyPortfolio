@@ -32,8 +32,8 @@ export const defaultSceneConfig = {
     trailColorBaseLightHex: "#404659",
     splashColorDarkThemeHex: "#E0E2EE",
     splashColorLightThemeHex: "#6A6AFF",
-    splashDuration: 0.2,
-    splashScaleFactor: 1.5,
+    splashDuration: 0.4,
+    splashScaleFactor: 3,
   },
   camera: {
     fov: 50,

@@ -46,7 +46,7 @@ export default function Home() {
     gsap.killTweensOf(cameraControlsRef.current);
     gsap.killTweensOf(matrixContainerRef.current);
 
-    gsap.set(matrixContainerRef.current, { opacity: 1 }); // Default to visible
+    gsap.set(matrixContainerRef.current, { opacity: 1 }); 
 
     if (sections.length >= 1) {
       const heroSection = sections[0];
@@ -56,7 +56,7 @@ export default function Home() {
 
       if (sections.length >= 2) {
         const aboutSection = sections[1];
-        endFadeTriggerElement = aboutSection; // Fade out based on AboutSection
+        endFadeTriggerElement = aboutSection; 
       }
 
       console.log(
@@ -70,18 +70,18 @@ export default function Home() {
         ease: "none",
         scrollTrigger: {
           trigger: endFadeTriggerElement,
-          start: startFadePosition, // Start fading when bottom of trigger element is at viewport center
-          end: endFadePosition, // Fully faded when bottom of trigger element leaves top of viewport
+          start: startFadePosition, 
+          end: endFadePosition, 
           scrub: 0.5,
           invalidateOnRefresh: true,
-          // markers: true, // IMPORTANT: Uncomment this to see GSAP markers for debugging
+          
         },
       });
     } else {
       console.warn(
         "No sections with '.content-section' found. MatrixRain opacity not animated."
       );
-      gsap.set(matrixContainerRef.current, { opacity: 1 }); // Or 0 if it should be hidden
+      gsap.set(matrixContainerRef.current, { opacity: 1 }); 
     }
 
     if (sections.length >= 3) {
@@ -116,9 +116,9 @@ export default function Home() {
         .to(
           cameraControlsRef.current,
           {
-            yPos: 45,
+            yPos: 30,
             lookAtY: 15,
-            zPos: 120,
+            zPos: 115,
             ease: commonEase,
             duration: durationSegment,
           },
@@ -127,9 +127,9 @@ export default function Home() {
         .to(
           cameraControlsRef.current,
           {
-            yPos: 50,
+            yPos: 20,
             lookAtY: 18,
-            zPos: 115,
+            zPos: 105,
             ease: commonEase,
             duration: durationSegment,
           },
@@ -144,7 +144,7 @@ export default function Home() {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       gsap.killTweensOf(cameraControlsRef.current);
       if (matrixContainerRef.current) {
-        // Ensure ref is still valid
+        
         gsap.killTweensOf(matrixContainerRef.current);
       }
     };

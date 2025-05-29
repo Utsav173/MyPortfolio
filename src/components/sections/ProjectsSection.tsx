@@ -14,8 +14,8 @@ import { Loader2 } from "lucide-react";
 import { animate, stagger } from "animejs";
 import { cn } from "@/lib/utils";
 
-const PROJECTS_INITIAL_DISPLAY_COUNT = 7;
-const PROJECTS_INCREMENT = 6;
+const PROJECTS_INITIAL_DISPLAY_COUNT = 8;
+const PROJECTS_INCREMENT = 7;
 
 export function ProjectsSection({ className }: { className?: string }) {
   const sectionRef = useRef<HTMLElement>(null);

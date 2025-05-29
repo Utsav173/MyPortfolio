@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useCallback, useMemo } from "react";
-import * as THREE from "three";
+import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import * as THREE from 'three';
 import {
   SceneConfig,
   defaultSceneConfig as importedDefaultConfig,
   parseConfigColors,
-} from "@/lib/sceneConfig";
-import { cn } from "@/lib/utils";
+} from '@/lib/sceneConfig';
+import { cn } from '@/lib/utils';
 
 interface CameraControls {
   xPos: number;
@@ -41,16 +41,16 @@ function createCharacterAtlas(): {
   atlasTexture: THREE.Texture;
   charUVMap: Map<string, { u: number; v: number; w: number; h: number }>;
 } {
-  const atlasCanvas = document.createElement("canvas");
+  const atlasCanvas = document.createElement('canvas');
   atlasCanvas.width = CHARS_PER_ROW * CHAR_TEXTURE_SIZE;
   atlasCanvas.height = NUM_ROWS * CHAR_TEXTURE_SIZE;
-  const context = atlasCanvas.getContext("2d");
-  if (!context) throw new Error("Cannot get 2D context for atlas");
+  const context = atlasCanvas.getContext('2d');
+  if (!context) throw new Error('Cannot get 2D context for atlas');
 
-  context.fillStyle = "white";
+  context.fillStyle = 'white';
   context.font = `bold ${CHAR_TEXTURE_SIZE * 0.75}px monospace`;
-  context.textAlign = "center";
-  context.textBaseline = "middle";
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
 
   const charUVMap = new Map<
     string,
@@ -77,26 +77,15 @@ function createCharacterAtlas(): {
   });
 
   if (GLYPH_CHARS.length > 0) {
-    const firstChar = GLYPH_CHARS[0];
-    if (charUVMap.has(firstChar)) {
-      const firstCharMap = charUVMap.get(firstChar)!;
+    const firstCharMap = charUVMap.get(GLYPH_CHARS[0]);
+    if (firstCharMap) {
       DEFAULT_CHAR_MAP.u = firstCharMap.u;
       DEFAULT_CHAR_MAP.v = firstCharMap.v;
       DEFAULT_CHAR_MAP.w = firstCharMap.w;
       DEFAULT_CHAR_MAP.h = firstCharMap.h;
-
-      SPLASH_CHAR_MAP =
-        charUVMap.get(".") ||
-        charUVMap.get("・") ||
-        charUVMap.get("o") ||
-        firstCharMap;
-    } else {
-      DEFAULT_CHAR_MAP.u = 0;
-      DEFAULT_CHAR_MAP.v = 1.0 - cellHeightUV;
-      DEFAULT_CHAR_MAP.w = cellWidthUV;
-      DEFAULT_CHAR_MAP.h = cellHeightUV;
-      SPLASH_CHAR_MAP = DEFAULT_CHAR_MAP;
     }
+    SPLASH_CHAR_MAP =
+      charUVMap.get('・') || charUVMap.get('.') || charUVMap.get("o") || DEFAULT_CHAR_MAP;
   }
 
   const atlasTexture = new THREE.Texture(atlasCanvas);
@@ -115,15 +104,15 @@ class Plane {
     uHillLightColor: { value: THREE.Color };
   };
   mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial>;
-  collisionMesh: THREE.Mesh<THREE.PlaneGeometry, THREE.Material>;
+  collisionMesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
   timeFactor: number;
   planeSize: number;
-  config: SceneConfig["plane"];
+  config: SceneConfig['plane'];
 
   constructor(
     scene: THREE.Scene,
     initialThemeAdjust: number,
-    config: SceneConfig["plane"]
+    config: SceneConfig['plane']
   ) {
     this.config = config;
     this.planeSize = this.config.size;
@@ -133,7 +122,7 @@ class Plane {
     } as Partial<SceneConfig>).plane;
 
     this.uniforms = {
-      time: { type: "f", value: 0 },
+      time: { type: 'f', value: 0 },
       uThemeAdjust: { value: initialThemeAdjust },
       uHillDarkColor: { value: parsedPlaneColors.hillDarkColor.clone() },
       uHillLightColor: { value: parsedPlaneColors.hillLightColor.clone() },
@@ -182,14 +171,14 @@ void main(void){vec3 updatePosition=(rotateMatrixX(radians(90.))*vec4(position,1
             uniform vec3 uHillLightColor;
             void main(void) {
               float opacityFactor = (110.0 - length(vPosition)) / ${this.planeSize.toFixed(
-                1
-              )}; 
+      1
+    )}; 
               float opacityDark = smoothstep(0.0, 0.9, opacityFactor) * ${this.config.opacityFactorDark.toFixed(
-                2
-              )};
+      2
+    )};
               float opacityLight = smoothstep(0.0, 0.9, opacityFactor) * ${this.config.opacityFactorLight.toFixed(
-                2
-              )};
+      2
+    )};
               float baseOpacity = mix(opacityDark, opacityLight, uThemeAdjust);
               vec3 color = mix(uHillDarkColor, uHillLightColor, uThemeAdjust);
               gl_FragColor = vec4(color, baseOpacity);
@@ -206,12 +195,181 @@ void main(void){vec3 updatePosition=(rotateMatrixX(radians(90.))*vec4(position,1
     this.mesh = new THREE.Mesh(geometry, material);
     scene.add(this.mesh);
 
-    this.collisionMesh = new THREE.Mesh(
-      collisionGeometry,
-      new THREE.MeshBasicMaterial({ visible: false })
-    );
+    const collisionMaterial = new THREE.MeshBasicMaterial({ visible: false });
+    this.collisionMesh = new THREE.Mesh(collisionGeometry, collisionMaterial);
+    this.collisionMesh.rotation.x = -Math.PI / 2;
     this.updateCollisionMeshVertices();
     scene.add(this.collisionMesh);
+  }
+
+  private static _floor_vec3(v: THREE.Vector3): THREE.Vector3 {
+    return v.clone().floor();
+  }
+  private static _fract_vec3(v: THREE.Vector3): THREE.Vector3 {
+    return v.clone().sub(this._floor_vec3(v.clone()));
+  }
+  private static _floor_vec4(v: THREE.Vector4): THREE.Vector4 {
+    return v.clone().floor();
+  }
+  private static _fract_vec4(v: THREE.Vector4): THREE.Vector4 {
+    return v.clone().sub(this._floor_vec4(v.clone()));
+  }
+
+  private static _mod289_vec3(x: THREE.Vector3): THREE.Vector3 {
+    return x
+      .clone()
+      .sub(
+        this._floor_vec3(x.clone().multiplyScalar(1.0 / 289.0)).multiplyScalar(
+          289.0
+        )
+      );
+  }
+  private static _mod289_vec4(x: THREE.Vector4): THREE.Vector4 {
+    const floorVal = this._floor_vec4(x.clone().multiplyScalar(1.0 / 289.0));
+    return x.clone().sub(floorVal.multiplyScalar(289.0));
+  }
+
+  private static _permute_vec4(x: THREE.Vector4): THREE.Vector4 {
+    return this._mod289_vec4(
+      x.clone().multiplyScalar(34.0).addScalar(1.0).multiply(x)
+    );
+  }
+
+  private static _taylorInvSqrt_vec4(r: THREE.Vector4): THREE.Vector4 {
+    return new THREE.Vector4(
+      1.79284291400159 - 0.85373472095314 * r.x,
+      1.79284291400159 - 0.85373472095314 * r.y,
+      1.79284291400159 - 0.85373472095314 * r.z,
+      1.79284291400159 - 0.85373472095314 * r.w
+    );
+  }
+
+  private static _fade_vec3(t: THREE.Vector3): THREE.Vector3 {
+    const t_c = t.clone();
+    const t_6_15 = t_c.clone().multiplyScalar(6.0).subScalar(15.0);
+    const t_mul_t_6_15 = t_c.clone().multiply(t_6_15);
+    const inner = t_mul_t_6_15.addScalar(10.0);
+    return t_c.clone().multiply(t_c).multiply(t_c).multiply(inner);
+  }
+
+  private static _abs_vec4(v: THREE.Vector4): THREE.Vector4 {
+    return new THREE.Vector4(
+      Math.abs(v.x),
+      Math.abs(v.y),
+      Math.abs(v.z),
+      Math.abs(v.w)
+    );
+  }
+
+  private static _step_s_v4(edge: number, x: THREE.Vector4): THREE.Vector4 {
+    return new THREE.Vector4(
+      x.x < edge ? 0.0 : 1.0,
+      x.y < edge ? 0.0 : 1.0,
+      x.z < edge ? 0.0 : 1.0,
+      x.w < edge ? 0.0 : 1.0
+    );
+  }
+
+  private static _cnoise(P: THREE.Vector3): number {
+    const Pi0 = this._floor_vec3(P);
+    const Pi1 = Pi0.clone().addScalar(1.0);
+
+    const Pi0_mod = this._mod289_vec3(Pi0);
+    const Pi1_mod = this._mod289_vec3(Pi1);
+
+    const Pf0 = this._fract_vec3(P);
+    const Pf1 = Pf0.clone().subScalar(1.0);
+
+    const ix = new THREE.Vector4(Pi0_mod.x, Pi1_mod.x, Pi0_mod.x, Pi1_mod.x);
+    const iy = new THREE.Vector4(Pi0_mod.y, Pi0_mod.y, Pi1_mod.y, Pi1_mod.y);
+    const iz0 = new THREE.Vector4(Pi0_mod.z, Pi0_mod.z, Pi0_mod.z, Pi0_mod.z);
+    const iz1 = new THREE.Vector4(Pi1_mod.z, Pi1_mod.z, Pi1_mod.z, Pi1_mod.z);
+
+    const ixy = this._permute_vec4(this._permute_vec4(ix).add(iy));
+    const ixy0 = this._permute_vec4(ixy.clone().add(iz0));
+    const ixy1 = this._permute_vec4(ixy.clone().add(iz1));
+
+    let gx0 = ixy0.clone().multiplyScalar(1.0 / 7.0);
+    let gy0 = this._fract_vec4(
+      this._floor_vec4(gx0.clone()).multiplyScalar(1.0 / 7.0)
+    ).subScalar(0.5);
+    gx0 = this._fract_vec4(gx0);
+    const gz0 = new THREE.Vector4(0.5, 0.5, 0.5, 0.5)
+      .sub(this._abs_vec4(gx0))
+      .sub(this._abs_vec4(gy0));
+    const sz0 = this._step_s_v4(0.0, gz0);
+
+    gx0.sub(sz0.clone().multiply(this._step_s_v4(0.0, gx0).subScalar(0.5)));
+    gy0.sub(sz0.clone().multiply(this._step_s_v4(0.0, gy0).subScalar(0.5)));
+
+    let gx1 = ixy1.clone().multiplyScalar(1.0 / 7.0);
+    let gy1 = this._fract_vec4(
+      this._floor_vec4(gx1.clone()).multiplyScalar(1.0 / 7.0)
+    ).subScalar(0.5);
+    gx1 = this._fract_vec4(gx1);
+    const gz1 = new THREE.Vector4(0.5, 0.5, 0.5, 0.5)
+      .sub(this._abs_vec4(gx1))
+      .sub(this._abs_vec4(gy1));
+    const sz1 = this._step_s_v4(0.0, gz1);
+
+    gx1.sub(sz1.clone().multiply(this._step_s_v4(0.0, gx1).subScalar(0.5)));
+    gy1.sub(sz1.clone().multiply(this._step_s_v4(0.0, gy1).subScalar(0.5)));
+
+    const g000 = new THREE.Vector3(gx0.x, gy0.x, gz0.x);
+    const g100 = new THREE.Vector3(gx0.y, gy0.y, gz0.y);
+    const g010 = new THREE.Vector3(gx0.z, gy0.z, gz0.z);
+    const g110 = new THREE.Vector3(gx0.w, gy0.w, gz0.w);
+    const g001 = new THREE.Vector3(gx1.x, gy1.x, gz1.x);
+    const g101 = new THREE.Vector3(gx1.y, gy1.y, gz1.y);
+    const g011 = new THREE.Vector3(gx1.z, gy1.z, gz1.z);
+    const g111 = new THREE.Vector3(gx1.w, gy1.w, gz1.w);
+
+    const norm0 = this._taylorInvSqrt_vec4(
+      new THREE.Vector4(
+        g000.dot(g000),
+        g010.dot(g010),
+        g100.dot(g100),
+        g110.dot(g110)
+      )
+    );
+    g000.multiplyScalar(norm0.x);
+    g010.multiplyScalar(norm0.y);
+    g100.multiplyScalar(norm0.z);
+    g110.multiplyScalar(norm0.w);
+
+    const norm1 = this._taylorInvSqrt_vec4(
+      new THREE.Vector4(
+        g001.dot(g001),
+        g011.dot(g011),
+        g101.dot(g101),
+        g111.dot(g111)
+      )
+    );
+    g001.multiplyScalar(norm1.x);
+    g011.multiplyScalar(norm1.y);
+    g101.multiplyScalar(norm1.z);
+    g111.multiplyScalar(norm1.w);
+
+    const n000 = g000.dot(Pf0);
+    const n100 = g100.dot(new THREE.Vector3(Pf1.x, Pf0.y, Pf0.z));
+    const n010 = g010.dot(new THREE.Vector3(Pf0.x, Pf1.y, Pf0.z));
+    const n110 = g110.dot(new THREE.Vector3(Pf1.x, Pf1.y, Pf0.z));
+    const n001 = g001.dot(new THREE.Vector3(Pf0.x, Pf0.y, Pf1.z));
+    const n101 = g101.dot(new THREE.Vector3(Pf1.x, Pf0.y, Pf1.z));
+    const n011 = g011.dot(new THREE.Vector3(Pf0.x, Pf1.y, Pf1.z));
+    const n111 = g111.dot(Pf1);
+
+    const fade_xyz = this._fade_vec3(Pf0);
+
+    const n_z_vec4 = new THREE.Vector4(n000, n100, n010, n110);
+    const n_z1_vec4 = new THREE.Vector4(n001, n101, n011, n111);
+    const n_z = n_z_vec4.lerp(n_z1_vec4, fade_xyz.z);
+
+    const n_yz_x = THREE.MathUtils.lerp(n_z.x, n_z.z, fade_xyz.y);
+    const n_yz_y = THREE.MathUtils.lerp(n_z.y, n_z.w, fade_xyz.y);
+
+    const n_xyz = THREE.MathUtils.lerp(n_yz_x, n_yz_y, fade_xyz.x);
+    return 2.2 * n_xyz;
   }
 
   setTheme(
@@ -225,36 +383,35 @@ void main(void){vec3 updatePosition=(rotateMatrixX(radians(90.))*vec4(position,1
   }
 
   updateCollisionMeshVertices() {
-    const positions = this.collisionMesh.geometry.attributes.position;
+    const positions = this.collisionMesh.geometry.attributes
+      .position as THREE.BufferAttribute;
     const timeVal = this.uniforms.time.value;
-    const tempVec = new THREE.Vector3();
 
     for (let i = 0; i < positions.count; i++) {
-      tempVec.fromBufferAttribute(positions, i);
-      const pX = tempVec.x;
+      const shader_plane_x = positions.getX(i);
+      const shader_plane_y_for_noise = -positions.getY(i);
+
+      const noiseArgX = shader_plane_x;
+      const noiseArgY = 0.0;
+      const noiseArgZ = shader_plane_y_for_noise + timeVal * -18.0;
+
       const sinWave = Math.sin(
-        THREE.MathUtils.degToRad((pX / (this.planeSize / 2)) * 90.0)
+        THREE.MathUtils.degToRad((noiseArgX / (this.planeSize / 2)) * 90.0)
       );
 
+      const noiseVecInput = new THREE.Vector3(noiseArgX, noiseArgY, noiseArgZ);
+      const noise1 = Plane._cnoise(noiseVecInput.clone().multiplyScalar(0.065));
+      const noise2 = Plane._cnoise(noiseVecInput.clone().multiplyScalar(0.045));
+      const noise3 = Plane._cnoise(noiseVecInput.clone().multiplyScalar(0.28));
+
       let displacement = 0;
-
-      const noise1 =
-        Math.sin(pX * 0.065 + timeVal * -18.0 * 0.065) *
-        Math.cos(0.0 * 0.065 + timeVal * -18.0 * 0.065);
-      const noise2 =
-        Math.sin(pX * 0.045 + timeVal * -18.0 * 0.045) *
-        Math.cos(0.0 * 0.045 + timeVal * -18.0 * 0.045);
-      const noise3 =
-        Math.sin(pX * 0.28 + timeVal * -18.0 * 0.28) *
-        Math.cos(0.0 * 0.28 + timeVal * -18.0 * 0.28);
-
       displacement += noise1 * sinWave * this.config.noiseStrength.hill1;
       displacement += noise2 * sinWave * this.config.noiseStrength.hill2;
       displacement += noise3 * (Math.abs(sinWave) * 1.7 + 0.4);
       displacement +=
         Math.pow(sinWave, 2.0) * this.config.noiseStrength.overall;
 
-      positions.setY(i, displacement * 0.3);
+      positions.setZ(i, displacement);
     }
     positions.needsUpdate = true;
     this.collisionMesh.geometry.computeBoundingSphere();
@@ -321,7 +478,7 @@ class RainEffect {
   private collisionPlane: THREE.Mesh;
   private themeAdjust: number;
   private nextStreamId = 0;
-  private config: SceneConfig["rain"];
+  private config: SceneConfig['rain'];
 
   private instanceOffsetAttribute!: THREE.InstancedBufferAttribute;
   private instanceColorOpacityAttribute!: THREE.InstancedBufferAttribute;
@@ -340,7 +497,7 @@ class RainEffect {
     },
     collisionPlane: THREE.Mesh,
     initialThemeAdjust: number,
-    config: SceneConfig["rain"]
+    config: SceneConfig['rain']
   ) {
     this.scene = scene;
     this.config = config;
@@ -417,7 +574,6 @@ class RainEffect {
       this.config.charHeight * this.config.charAspect,
       this.config.charHeight
     );
-
     const material = new THREE.ShaderMaterial({
       uniforms: { uAtlasMap: { value: this.atlasTexture } },
       vertexShader: `precision highp float; attribute vec4 instanceOffset; attribute vec4 instanceColorOpacity; varying vec2 vAtlasUv; varying vec4 vColorOpacity; void main() { vAtlasUv = uv * instanceOffset.zw + instanceOffset.xy; vColorOpacity = instanceColorOpacity; vec4 worldPosition = instanceMatrix * vec4(position, 1.0); vec4 viewPosition = modelViewMatrix * worldPosition; gl_Position = projectionMatrix * viewPosition; }`,
@@ -436,7 +592,6 @@ class RainEffect {
 
     const offsets = new Float32Array(this.maxParticles * 4);
     const colorsOpacities = new Float32Array(this.maxParticles * 4);
-
     this.instanceOffsetAttribute = new THREE.InstancedBufferAttribute(
       offsets,
       4
@@ -446,11 +601,11 @@ class RainEffect {
       4
     );
     this.instancedMesh.geometry.setAttribute(
-      "instanceOffset",
+      'instanceOffset',
       this.instanceOffsetAttribute
     );
     this.instancedMesh.geometry.setAttribute(
-      "instanceColorOpacity",
+      'instanceColorOpacity',
       this.instanceColorOpacityAttribute
     );
   }
@@ -499,7 +654,8 @@ class RainEffect {
   }
 
   private getRandomCharMap() {
-    const char = GLYPH_CHARS[Math.floor(Math.random() * GLYPH_CHARS.length)];
+    const char =
+      GLYPH_CHARS[Math.floor(Math.random() * GLYPH_CHARS.length)];
     return this.charUVMap.get(char) || DEFAULT_CHAR_MAP;
   }
 
@@ -554,7 +710,6 @@ class RainEffect {
     this.dummy.updateMatrix();
     if (this.instancedMesh)
       this.instancedMesh.setMatrixAt(pIndex, this.dummy.matrix);
-
     if (this.instanceOffsetAttribute)
       this.instanceOffsetAttribute.setXYZW(
         pIndex,
@@ -574,15 +729,15 @@ class RainEffect {
   }
 
   update(deltaTime: number) {
-    if (!this.instancedMesh) return;
+    if (!this.instancedMesh || !this.collisionPlane) return;
 
     let needsMatrixUpdate = false;
     let needsOffsetUpdate = false;
     let needsColorOpacityUpdate = false;
 
     const collisionChecksThisFrame = Math.min(
-      10,
-      Math.ceil(this.streamCount / 7)
+      this.streamCount,
+      Math.ceil(this.streamCount / 5)
     );
     let raycastCounter = 0;
     const streamsToReset = new Set<number>();
@@ -594,33 +749,41 @@ class RainEffect {
 
       if (p.isSplashing) {
         p.splashTimer -= deltaTime;
-        p.opacity = Math.max(0, p.splashTimer / this.config.splashDuration);
+        p.opacity = Math.max(0.01, p.splashTimer / this.config.splashDuration);
         p.scale =
           1.0 +
           (this.config.splashScaleFactor - 1.0) *
-            Math.sin(
-              (1.0 - p.splashTimer / this.config.splashDuration) * Math.PI
-            );
+          Math.sin(
+            (1.0 - p.splashTimer / this.config.splashDuration) * Math.PI
+          );
+        p.color.copy(this.currentSplashColor);
+        p.charMap = SPLASH_CHAR_MAP;
 
         if (p.splashTimer <= 0) {
           streamsToReset.add(p.currentStreamId);
           p.isSplashing = false;
           p.scale = 1.0;
         }
-        if (this.instanceColorOpacityAttribute)
-          this.instanceColorOpacityAttribute.setW(i, p.opacity);
-        needsColorOpacityUpdate = true;
-        needsMatrixUpdate = true;
+
         this.updateInstanceData(i);
+        needsMatrixUpdate = true;
+        needsOffsetUpdate = true;
+        needsColorOpacityUpdate = true;
         continue;
       }
 
       p.y -= p.speedY * deltaTime;
+
+      this.dummy.position.set(p.x, p.y, p.z);
+      this.dummy.scale.set(p.scale, p.scale, p.scale);
+      this.dummy.updateMatrix();
+      if (this.instancedMesh)
+        this.instancedMesh.setMatrixAt(i, this.dummy.matrix);
       needsMatrixUpdate = true;
 
       if (p.streamIndex > 0 && Math.random() < 0.006) {
         p.charMap = this.getRandomCharMap();
-        if (this.instanceOffsetAttribute)
+        if (this.instanceOffsetAttribute) {
           this.instanceOffsetAttribute.setXYZW(
             i,
             p.charMap.u,
@@ -628,54 +791,58 @@ class RainEffect {
             p.charMap.w,
             p.charMap.h
           );
-        needsOffsetUpdate = true;
+          needsOffsetUpdate = true;
+        }
       }
 
       if (
         p.streamIndex === 0 &&
-        p.y < this.yTop - 20 &&
-        raycastCounter < collisionChecksThisFrame
+        p.y < this.yTop &&
+        raycastCounter < collisionChecksThisFrame &&
+        this.collisionPlane.geometry.boundingSphere
       ) {
         raycastCounter++;
-        this.raycaster.set(
-          new THREE.Vector3(p.x, p.y + this.config.charHeight * 0.3, p.z),
-          new THREE.Vector3(0, -1, 0)
+        const rayOrigin = new THREE.Vector3(
+          p.x,
+          p.y + this.config.charHeight * 0.3,
+          p.z
         );
+        this.raycaster.set(rayOrigin, new THREE.Vector3(0, -1, 0));
+
         const intersects = this.raycaster.intersectObject(
           this.collisionPlane,
           false
         );
-        if (
-          intersects.length > 0 &&
-          p.y <= intersects[0].point.y + this.config.charHeight * 0.05
-        ) {
-          if (!p.isSplashing) {
-            p.isSplashing = true;
-            p.splashTimer = this.config.splashDuration;
-            p.color.copy(this.currentSplashColor);
-            p.opacity = 1.0;
-            p.charMap = SPLASH_CHAR_MAP;
-            p.scale = this.config.splashScaleFactor;
 
-            if (this.instanceOffsetAttribute)
-              this.instanceOffsetAttribute.setXYZW(
-                i,
-                p.charMap.u,
-                p.charMap.v,
-                p.charMap.w,
-                p.charMap.h
-              );
-            needsOffsetUpdate = true;
-            needsColorOpacityUpdate = true;
+        if (intersects.length > 0) {
+          const hitPoint = intersects[0].point;
+          const hitY = hitPoint.y;
+          const collisionThreshold = hitY + this.config.charHeight * 0.05;
 
-            for (let k = 0; k < this.particles.length; k++) {
-              if (
-                this.particles[k].currentStreamId === p.currentStreamId &&
-                this.particles[k].id !== p.id
-              ) {
-                this.particles[k].opacity = 0;
-                if (this.instanceColorOpacityAttribute)
-                  this.instanceColorOpacityAttribute.setW(k, 0);
+          if (p.y <= collisionThreshold) {
+            if (!p.isSplashing) {
+              p.isSplashing = true;
+              p.splashTimer = this.config.splashDuration;
+              p.color.copy(this.currentSplashColor);
+              p.opacity = 1.0;
+              p.charMap = SPLASH_CHAR_MAP;
+              p.scale = this.config.splashScaleFactor;
+
+              this.updateInstanceData(i);
+              needsOffsetUpdate = true;
+              needsColorOpacityUpdate = true;
+              needsMatrixUpdate = true;
+
+              for (let k = 0; k < this.particles.length; k++) {
+                if (
+                  this.particles[k].currentStreamId === p.currentStreamId &&
+                  this.particles[k].id !== p.id
+                ) {
+                  this.particles[k].opacity = 0;
+                  if (this.instanceColorOpacityAttribute) {
+                    this.instanceColorOpacityAttribute.setW(k, 0);
+                  }
+                }
               }
             }
           }
@@ -685,15 +852,10 @@ class RainEffect {
       if (p.y < this.yBottom && p.streamIndex === 0 && !p.isSplashing) {
         streamsToReset.add(p.currentStreamId);
       }
-
-      if (!streamsToReset.has(p.currentStreamId) && !p.isSplashing) {
-        this.updateInstanceData(i);
-      }
     }
 
     streamsToReset.forEach((streamId) => {
       this.resetStream(streamId);
-
       needsMatrixUpdate = true;
       needsOffsetUpdate = true;
       needsColorOpacityUpdate = true;
@@ -723,7 +885,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
   currentTheme,
   cameraControls,
   dynamicConfig,
-  className = "",
+  className = '',
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -748,13 +910,13 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
   );
 
   const themeConfig = useMemo(() => {
-    const isDark = currentTheme === "dark";
+    const isDark = currentTheme === 'dark';
     return {
       themeAdjust: isDark ? 0.0 : 1.0,
       bgColor: isDark
         ? parsedActiveConfig.themeColors.darkBg.clone()
         : parsedActiveConfig.themeColors.lightBg.clone(),
-      overlayTextColor: isDark ? "text-gray-300" : "text-gray-800",
+      overlayTextColor: isDark ? 'text-gray-300' : 'text-gray-800',
     };
   }, [currentTheme, parsedActiveConfig]);
 
@@ -778,8 +940,9 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!canvasRef.current || typeof window === "undefined" || !currentTheme)
+    if (!canvasRef.current || typeof window === 'undefined' || !currentTheme) {
       return;
+    }
     const canvas = canvasRef.current;
 
     if (!atlasDataRef.current) {
@@ -787,9 +950,9 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
     }
     const { atlasTexture, charUVMap } = atlasDataRef.current;
 
-    const currentThemeAdjust = currentTheme === "dark" ? 0.0 : 1.0;
+    const currentThemeAdjust = currentTheme === 'dark' ? 0.0 : 1.0;
     const currentBgColor =
-      currentTheme === "dark"
+      currentTheme === 'dark'
         ? parsedActiveConfig.themeColors.darkBg.clone()
         : parsedActiveConfig.themeColors.lightBg.clone();
 
@@ -797,7 +960,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
       rendererRef.current = new THREE.WebGLRenderer({
         canvas: canvas,
         antialias: true,
-        powerPreference: "high-performance",
+        powerPreference: 'high-performance',
         alpha: true,
       });
       rendererRef.current.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
@@ -808,10 +971,21 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
         parsedActiveConfig.camera.near,
         parsedActiveConfig.camera.far
       );
+      cameraRef.current.position.set(
+        parsedActiveConfig.camera.initialXPos,
+        parsedActiveConfig.camera.initialYPos,
+        parsedActiveConfig.camera.initialZPos
+      );
+      cameraRef.current.lookAt(
+        parsedActiveConfig.camera.initialLookAtX,
+        parsedActiveConfig.camera.initialLookAtY,
+        parsedActiveConfig.camera.initialLookAtZ
+      );
       clockRef.current = new THREE.Clock();
     }
 
     rendererRef.current.setClearColor(currentBgColor, 1.0);
+    canvasRef.current.style.backgroundColor = 'transparent';
 
     if (planeInstanceRef.current) {
       planeInstanceRef.current.dispose();
@@ -822,7 +996,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
       parsedActiveConfig.plane
     );
 
-    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
     const streamCount = isMobile
       ? parsedActiveConfig.rain.streamCountMobile
       : parsedActiveConfig.rain.streamCountDesktop;
@@ -851,10 +1025,9 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
     );
 
     handleResize();
-
-    const listenerKey = "listenersInitializedThreeSceneFinalSplashV5";
-    if (!(window as any)[listenerKey]) {
-      window.addEventListener("resize", handleResize);
+    const listenerKey = 'listenersInitializedThreeSceneFinalSplashV5';
+    if (!window[listenerKey as any]) {
+      window.addEventListener('resize', handleResize);
       (window as any)[listenerKey] = true;
     }
 
@@ -867,8 +1040,9 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
         !cameraRef.current ||
         !planeInstanceRef.current ||
         !rainEffectInstanceRef.current
-      )
+      ) {
         return;
+      }
 
       const delta = Math.min(clockRef.current.getDelta(), 0.05);
 
@@ -895,24 +1069,28 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
     animate();
 
     return () => {
-      if (animationFrameIdRef.current)
+      if (animationFrameIdRef.current) {
         cancelAnimationFrame(animationFrameIdRef.current);
+      }
     };
   }, [handleResize, currentTheme, cameraControls, parsedActiveConfig]);
 
   useEffect(() => {
     return () => {
-      const listenerKey = "listenersInitializedThreeSceneFinalSplashV5";
-      if (animationFrameIdRef.current)
+      const listenerKey = 'listenersInitializedThreeSceneFinalSplashV5';
+      if (animationFrameIdRef.current) {
         cancelAnimationFrame(animationFrameIdRef.current);
-
+        animationFrameIdRef.current = null;
+      }
       if ((window as any)[listenerKey]) {
-        window.removeEventListener("resize", handleResize);
+        window.removeEventListener('resize', handleResize);
         (window as any)[listenerKey] = false;
       }
 
       rainEffectInstanceRef.current?.dispose();
+      rainEffectInstanceRef.current = null;
       planeInstanceRef.current?.dispose();
+      planeInstanceRef.current = null;
 
       if (atlasDataRef.current) {
         atlasDataRef.current.atlasTexture.dispose();
@@ -933,16 +1111,12 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
             }
           }
         });
-        sceneRef.current.clear();
       }
       rendererRef.current?.dispose();
-
       rendererRef.current = null;
       sceneRef.current = null;
       cameraRef.current = null;
       clockRef.current = null;
-      planeInstanceRef.current = null;
-      rainEffectInstanceRef.current = null;
     };
   }, [handleResize]);
 

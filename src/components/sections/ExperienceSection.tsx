@@ -182,8 +182,8 @@ export function ExperienceSection({ className }: { className?: string }) {
 
       lineScrollTriggerInstance = ScrollTrigger.create({
         trigger: currentTimelineContainerRef,
-        start: "top bottom-=15%",
-        end: "bottom top+=15%",
+        start: "top bottom-=100px",
+        end: "bottom top+=100px", 
         scrub: 0.3,
         invalidateOnRefresh: true,
         animation: gsap.to(currentTimelineLineRef, {
