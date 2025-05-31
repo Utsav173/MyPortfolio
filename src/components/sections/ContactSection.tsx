@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,7 +14,9 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { toast as sonnerToast } from "sonner";
-import { animate } from "animejs";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { z } from "zod";
 import { contactFormSchema } from "@/lib/validations";
 import { cn } from "@/lib/utils";
@@ -28,24 +24,19 @@ import { cn } from "@/lib/utils";
 type FormData = z.infer<typeof contactFormSchema>;
 type FormErrors = Partial<Record<keyof FormData, string[] | undefined>>;
 
-type AnimeInstance = ReturnType<typeof animate>;
-
-type AnimConfig = {
-  opacity: [number, number];
-  translateY?: [number, number];
-  translateX?: [number, number];
-  filter: [string, string];
-  duration: number;
-  delay?: number;
-};
-
 const initialFormData: FormData = {
   name: "",
   email: "",
   message: "",
 };
 
-export function ContactSection({ className }: { className?: string }) {
+export function ContactSection({
+  className,
+  id,
+}: {
+  className?: string;
+  id?: string;
+}) {
   const [formData, setFormDataState] = useState<FormData>(initialFormData);
   const [errors, setErrorsState] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmittingState] = useState(false);
@@ -56,122 +47,72 @@ export function ContactSection({ className }: { className?: string }) {
   const formElRef = useRef<HTMLFormElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
 
-  const headingAnimation = useRef<AnimeInstance | null>(null);
-  const getInTouchAnimation = useRef<AnimeInstance | null>(null);
-  const formElAnimation = useRef<AnimeInstance | null>(null);
-
-  const animatedElementsStatus = useRef<{ [key: string]: boolean }>({
-    heading: false,
-    getInTouch: false,
-    form: false,
-  });
-
-  const elementsToAnimate = useMemo(
-    () => [
-      {
-        ref: headingRef,
-        name: "heading",
-        animationRef: headingAnimation,
-        config: {
-          opacity: [0, 1],
-          translateY: [30, 0],
-          filter: ["blur(4px)", "blur(0px)"],
-          duration: 800,
-        } as AnimConfig,
-      },
-      {
-        ref: getInTouchRef,
-        name: "getInTouch",
-        animationRef: getInTouchAnimation,
-        config: {
-          opacity: [0, 1],
-          translateX: [-50, 0],
-          filter: ["blur(4px)", "blur(0px)"],
-          duration: 800,
-          delay: 100,
-        } as AnimConfig,
-      },
-      {
-        ref: formElRef,
-        name: "form",
-        animationRef: formElAnimation,
-        config: {
-          opacity: [0, 1],
-          translateX: [50, 0],
-          filter: ["blur(4px)", "blur(0px)"],
-          duration: 800,
-          delay: 200,
-        } as AnimConfig,
-      },
-    ],
-    []
-  );
-
-  const observerOptions = useMemo(
-    () => ({
-      threshold: 0.15,
-      rootMargin: "0px 0px -50px 0px",
-    }),
-    []
-  );
-
-  useEffect(() => {
-    const currentAnimatedStatus = animatedElementsStatus.current;
-
-    elementsToAnimate.forEach((item) => {
-      if (item.ref.current) {
-        item.ref.current.style.opacity = "0";
+  useGSAP(
+    () => {
+      if (headingRef.current) {
+        gsap.set(headingRef.current, {
+          opacity: 0,
+          y: 40,
+          filter: "blur(6px)",
+        });
       }
-    });
-
-    const observerCallback = (
-      entries: IntersectionObserverEntry[],
-      observerInstance: IntersectionObserver
-    ) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const animatableElement = elementsToAnimate.find(
-            (el) => el.ref.current === entry.target
-          );
-
-          if (
-            animatableElement &&
-            animatableElement.ref.current &&
-            !currentAnimatedStatus[animatableElement.name]
-          ) {
-            animatableElement.animationRef.current = animate(
-              animatableElement.ref.current,
-              animatableElement.config
-            );
-            currentAnimatedStatus[animatableElement.name] = true;
-            observerInstance.unobserve(entry.target);
-          }
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(
-      observerCallback,
-      observerOptions
-    );
-
-    elementsToAnimate.forEach((item) => {
-      if (item.ref.current) {
-        observer.observe(item.ref.current);
+      if (getInTouchRef.current) {
+        gsap.set(getInTouchRef.current, {
+          opacity: 0,
+          x: -60,
+          filter: "blur(6px)",
+        });
       }
-    });
+      if (formElRef.current) {
+        gsap.set(formElRef.current, {
+          opacity: 0,
+          x: 60,
+          filter: "blur(6px)",
+        });
+      }
 
-    return () => {
-      elementsToAnimate.forEach((item) => {
-        if (item.ref.current) {
-          observer.unobserve(item.ref.current);
-        }
-        if (item.animationRef.current) {
-          item.animationRef.current.pause();
-        }
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: {
+          ease: "power3.out",
+          duration: 1,
+        },
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          once: true,
+        },
       });
-    };
-  }, [elementsToAnimate, observerOptions]);
+
+      tl.to(headingRef.current, {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.8,
+      })
+        .to(
+          getInTouchRef.current,
+          {
+            opacity: 1,
+            x: 0,
+            filter: "blur(0px)",
+            duration: 0.8,
+          },
+          "-=0.6"
+        )
+        .to(
+          formElRef.current,
+          {
+            opacity: 1,
+            x: 0,
+            filter: "blur(0px)",
+            duration: 0.8,
+          },
+          "-=0.6"
+        );
+    },
+    { scope: sectionRef }
+  );
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -188,7 +129,6 @@ export function ContactSection({ className }: { className?: string }) {
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       setErrorsState({});
-
       const validationResult = contactFormSchema.safeParse(formData);
       if (!validationResult.success) {
         setErrorsState(validationResult.error.flatten().fieldErrors);
@@ -198,29 +138,27 @@ export function ContactSection({ className }: { className?: string }) {
         });
         return;
       }
-
       setIsSubmittingState(true);
       if (submitButtonRef.current) {
-        animate(submitButtonRef.current, {
+        gsap.to(submitButtonRef.current, {
           opacity: 0.7,
-          duration: 200,
-          easing: "linear",
-          begin: () => {
-            if (submitButtonRef.current)
+          scale: 0.98,
+          duration: 0.2,
+          ease: "power2.out",
+          onStart: () => {
+            if (submitButtonRef.current) {
               submitButtonRef.current.style.pointerEvents = "none";
+            }
           },
         });
       }
-
       try {
         const response = await fetch("/api/contact", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(validationResult.data),
         });
-
         const result = await response.json();
-
         if (response.ok) {
           sonnerToast.success("Message Sent!", {
             description:
@@ -229,6 +167,15 @@ export function ContactSection({ className }: { className?: string }) {
             duration: 5000,
           });
           setFormDataState(initialFormData);
+          if (submitButtonRef.current) {
+            gsap.to(submitButtonRef.current, {
+              scale: 1.05,
+              duration: 0.1,
+              yoyo: true,
+              repeat: 1,
+              ease: "power2.inOut",
+            });
+          }
         } else {
           sonnerToast.error("Submission Failed", {
             description:
@@ -241,7 +188,6 @@ export function ContactSection({ className }: { className?: string }) {
           }
         }
       } catch (error) {
-        console.error("Contact form submission error:", error);
         sonnerToast.error("Submission Error", {
           description: "An unexpected error occurred. Please try again later.",
           duration: 5000,
@@ -249,13 +195,15 @@ export function ContactSection({ className }: { className?: string }) {
       } finally {
         setIsSubmittingState(false);
         if (submitButtonRef.current) {
-          animate(submitButtonRef.current, {
+          gsap.to(submitButtonRef.current, {
             opacity: 1,
-            duration: 200,
-            easing: "linear",
-            complete: () => {
-              if (submitButtonRef.current)
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.out",
+            onComplete: () => {
+              if (submitButtonRef.current) {
                 submitButtonRef.current.style.pointerEvents = "auto";
+              }
             },
           });
         }
@@ -268,7 +216,7 @@ export function ContactSection({ className }: { className?: string }) {
 
   return (
     <section
-      id="contact"
+      id={id}
       ref={sectionRef}
       className={cn(
         className,
@@ -324,10 +272,26 @@ export function ContactSection({ className }: { className?: string }) {
                       ? "noopener noreferrer"
                       : undefined
                   }
-                  className="flex items-center gap-4 text-lg text-foreground/90 hover:text-primary transition-all duration-200 group"
+                  className="flex items-center gap-4 text-lg text-foreground/90 hover:text-primary transition-all duration-300 group"
+                  onMouseEnter={(e) => {
+                    gsap.to(e.currentTarget.querySelector(".icon"), {
+                      scale: 1.1,
+                      rotate: 5,
+                      duration: 0.3,
+                      ease: "power2.out",
+                    });
+                  }}
+                  onMouseLeave={(e) => {
+                    gsap.to(e.currentTarget.querySelector(".icon"), {
+                      scale: 1,
+                      rotate: 0,
+                      duration: 0.3,
+                      ease: "power2.out",
+                    });
+                  }}
                 >
-                  <item.icon className="size-6 text-primary/90 group-hover:text-primary group-hover:scale-110 transition-all duration-200 shrink-0" />
-                  <span className="truncate transition-colors duration-200">
+                  <item.icon className="icon size-6 text-primary/90 group-hover:text-primary transition-colors duration-300 shrink-0" />
+                  <span className="truncate transition-colors duration-300">
                     {item.text}
                   </span>
                 </a>
@@ -359,7 +323,21 @@ export function ContactSection({ className }: { className?: string }) {
                 onChange={handleChange}
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? "name-error" : undefined}
-                className="bg-card/60 dark:bg-card/70 text-base p-3 focus:ring-primary focus:border-primary h-11"
+                className="bg-card/60 dark:bg-card/70 text-base p-3 focus:ring-primary focus:border-primary h-11 transition-all duration-300"
+                onFocus={(e) => {
+                  gsap.to(e.target, {
+                    scale: 1.02,
+                    duration: 0.2,
+                    ease: "power2.out",
+                  });
+                }}
+                onBlur={(e) => {
+                  gsap.to(e.target, {
+                    scale: 1,
+                    duration: 0.2,
+                    ease: "power2.out",
+                  });
+                }}
               />
               {errors.name && (
                 <p
@@ -387,7 +365,21 @@ export function ContactSection({ className }: { className?: string }) {
                 onChange={handleChange}
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? "email-error" : undefined}
-                className="bg-card/60 dark:bg-card/70 text-base p-3 focus:ring-primary focus:border-primary h-11"
+                className="bg-card/60 dark:bg-card/70 text-base p-3 focus:ring-primary focus:border-primary h-11 transition-all duration-300"
+                onFocus={(e) => {
+                  gsap.to(e.target, {
+                    scale: 1.02,
+                    duration: 0.2,
+                    ease: "power2.out",
+                  });
+                }}
+                onBlur={(e) => {
+                  gsap.to(e.target, {
+                    scale: 1,
+                    duration: 0.2,
+                    ease: "power2.out",
+                  });
+                }}
               />
               {errors.email && (
                 <p
@@ -415,7 +407,21 @@ export function ContactSection({ className }: { className?: string }) {
                 onChange={handleChange}
                 aria-invalid={!!errors.message}
                 aria-describedby={errors.message ? "message-error" : undefined}
-                className="bg-card/60 dark:bg-card/70 text-base p-3 focus:ring-primary focus:border-primary min-h-[120px] resize-none"
+                className="bg-card/60 dark:bg-card/70 text-base p-3 focus:ring-primary focus:border-primary min-h-[120px] resize-none transition-all duration-300"
+                onFocus={(e) => {
+                  gsap.to(e.target, {
+                    scale: 1.02,
+                    duration: 0.2,
+                    ease: "power2.out",
+                  });
+                }}
+                onBlur={(e) => {
+                  gsap.to(e.target, {
+                    scale: 1,
+                    duration: 0.2,
+                    ease: "power2.out",
+                  });
+                }}
               />
               {errors.message && (
                 <p
@@ -433,6 +439,24 @@ export function ContactSection({ className }: { className?: string }) {
               size="lg"
               className="w-full shadow-lg hover:shadow-primary/40 transition-all duration-300 group text-base py-3 h-12 hover:bg-primary/90"
               disabled={isSubmitting}
+              onMouseEnter={(e) => {
+                if (!isSubmitting) {
+                  gsap.to(e.currentTarget, {
+                    y: -2,
+                    duration: 0.2,
+                    ease: "power2.out",
+                  });
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isSubmitting) {
+                  gsap.to(e.currentTarget, {
+                    y: 0,
+                    duration: 0.2,
+                    ease: "power2.out",
+                  });
+                }
+              }}
             >
               {isSubmitting ? (
                 <Loader2 className="mr-2 size-5 animate-spin" />

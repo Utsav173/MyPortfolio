@@ -128,6 +128,26 @@ export default function RootLayout({
         >
           {children}
           <Toaster richColors position="top-right" closeButton />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org/",
+                "@type": "Person",
+                name: "Utsav Khatri",
+                url:
+                  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+                image: "/images/utsav-khatri.webp",
+                jobTitle: "Full Stack Developer",
+                description:
+                  "Results-oriented Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies with a keen interest in AI.",
+                sameAs: [
+                  "https://www.linkedin.com/in/utsav-khatri/",
+                  "https://github.com/utsav-khatri",
+                ],
+              }),
+            }}
+          />
         </ThemeProvider>
       </body>
     </html>

@@ -1,16 +1,16 @@
-import Link from 'next/link';
+import Link from "next/link";
 import {
   CardContent,
   CardFooter,
   CardTitle,
   CardDescription,
   Card,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Github, ExternalLink, Star, GitFork, PackagePlus } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import React, { useRef, useState, HTMLAttributes } from 'react';
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Github, ExternalLink, Star, GitFork, PackagePlus } from "lucide-react";
+import { cn } from "@/lib/utils";
+import React, { useRef, useState, HTMLAttributes } from "react";
 
 export interface Project {
   id: number | string;
@@ -25,7 +25,7 @@ export interface Project {
   topics: string[];
   imageUrl?: string;
   techStack?: string[];
-  className?: string; // For Bento Grid spanning
+  className?: string;
 }
 
 interface ProjectCardProps extends HTMLAttributes<HTMLDivElement> {
@@ -39,7 +39,7 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const displayDescription =
     project.description ||
-    'A personal project exploring web development concepts and technologies.';
+    "A personal project exploring web development concepts and technologies.";
 
   const cardRef = useRef<HTMLDivElement>(null);
   const [spotlightStyle, setSpotlightStyle] = useState({});
@@ -50,8 +50,8 @@ export function ProjectCard({
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     setSpotlightStyle({
-      '--mouse-x': `${x}px`,
-      '--mouse-y': `${y}px`,
+      "--mouse-x": `${x}px`,
+      "--mouse-y": `${y}px`,
       opacity: 1,
     });
   };
@@ -74,14 +74,31 @@ export function ProjectCard({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        'group relative flex flex-col h-full overflow-hidden rounded-xl border bg-card shadow-md',
-        'transition-shadow duration-300 ease-in-out hover:shadow-primary/20', // Subtle shadow change on hover
-        'focus-within:ring-2 focus-within:ring-primary/50 focus-within:ring-offset-2 focus-within:ring-offset-background',
+        "group relative flex flex-col h-full overflow-hidden rounded-xl border bg-card shadow-md",
+        "transition-shadow duration-300 ease-in-out hover:shadow-primary/20",
+        "focus-within:ring-2 focus-within:ring-primary/50 focus-within:ring-offset-2 focus-within:ring-offset-background",
         className
       )}
-      style={{ ...props.style } as React.CSSProperties} // Combine passed style with spotlightStyle potentially later if needed
+      style={{ ...props.style } as React.CSSProperties}
       {...props}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "SoftwareApplication",
+            name: project.name,
+            description: displayDescription,
+            url: project.homepage || project.html_url,
+            image: project.imageUrl || "/images/default-project-image.png",
+            operatingSystem: "Web",
+            applicationCategory: "WebApplication",
+            programmingLanguage: primaryLanguage || "JavaScript",
+            keywords: project.topics.join(", ") || techToDisplay.join(", "),
+          }),
+        }}
+      />
       <div
         className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={
@@ -96,14 +113,14 @@ export function ProjectCard({
         <div className="flex justify-between items-start">
           <PackagePlus size={36} className="text-primary/70 mb-2 shrink-0" />
           <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
-            {typeof project.stargazers_count === 'number' &&
+            {typeof project.stargazers_count === "number" &&
               project.stargazers_count > 0 && (
                 <span className="flex items-center gap-1">
                   <Star className="size-3.5 fill-yellow-400 text-yellow-500" />
                   {project.stargazers_count}
                 </span>
               )}
-            {typeof project.forks_count === 'number' &&
+            {typeof project.forks_count === "number" &&
               project.forks_count > 0 && (
                 <span className="flex items-center gap-1">
                   <GitFork className="size-3.5" />
@@ -112,7 +129,6 @@ export function ProjectCard({
               )}
           </div>
         </div>
-
         <CardTitle className="text-lg lg:text-xl font-semibold line-clamp-2 group-hover:text-primary transition-colors duration-200">
           <Link
             href={project.homepage || project.html_url}
@@ -124,11 +140,9 @@ export function ProjectCard({
             {project.name}
           </Link>
         </CardTitle>
-
         <CardDescription className="text-muted-foreground text-sm leading-relaxed line-clamp-3 flex-grow min-h-[3.9em]">
           {displayDescription}
         </CardDescription>
-
         <div className="mt-auto pt-2">
           <p className="text-xs font-semibold text-muted-foreground mb-1.5">
             Tech Stack:
@@ -154,7 +168,6 @@ export function ProjectCard({
           </div>
         </div>
       </CardContent>
-
       <CardFooter className="p-3 pt-2 flex items-center justify-end gap-2 border-t mt-auto relative z-[1]">
         <Button
           variant="ghost"

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useTheme } from "next-themes";
 import { Navbar } from "@/components/layout/Navbar";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -9,11 +9,13 @@ import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import FooterSection from "@/components/sections/FooterSection";
 import MatrixRain from "@/components/threed/matrix-rain";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function Home() {
   const { resolvedTheme } = useTheme();
@@ -25,130 +27,107 @@ export default function Home() {
     lookAtY: 10,
     lookAtZ: 0,
   });
-  const mainTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const matrixContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!scrollContainerRef.current || !matrixContainerRef.current) return;
-
-    const sections = gsap.utils.toArray(".content-section") as HTMLElement[];
-    console.log(
-      "Found sections with '.content-section':",
-      sections.map((s) => s.id || s.className.split(" ")[0])
-    );
-    console.log("Number of sections found:", sections.length);
-
-    if (mainTimelineRef.current) {
-      mainTimelineRef.current.kill();
-    }
-    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    gsap.killTweensOf(cameraControlsRef.current);
-    gsap.killTweensOf(matrixContainerRef.current);
-
-    gsap.set(matrixContainerRef.current, { opacity: 1 }); 
-
-    if (sections.length >= 1) {
-      const heroSection = sections[0];
-      let endFadeTriggerElement = heroSection;
-      let startFadePosition = "bottom center";
-      let endFadePosition = "bottom top";
-
-      if (sections.length >= 2) {
-        const aboutSection = sections[1];
-        endFadeTriggerElement = aboutSection; 
+  useGSAP(
+    () => {
+      if (!scrollContainerRef.current || !matrixContainerRef.current) {
+        return;
       }
 
-      console.log(
-        "Fade out trigger element:",
-        endFadeTriggerElement.id ||
-          endFadeTriggerElement.className.split(" ")[0]
-      );
+      const sections = gsap.utils.toArray(".content-section") as HTMLElement[];
+      gsap.set(matrixContainerRef.current, { opacity: 1 });
 
-      gsap.to(matrixContainerRef.current, {
-        opacity: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: endFadeTriggerElement,
-          start: startFadePosition, 
-          end: endFadePosition, 
-          scrub: 0.5,
-          invalidateOnRefresh: true,
-          
-        },
-      });
-    } else {
-      console.warn(
-        "No sections with '.content-section' found. MatrixRain opacity not animated."
-      );
-      gsap.set(matrixContainerRef.current, { opacity: 1 }); 
-    }
+      if (sections.length >= 1) {
+        const heroSection = sections[0];
+        let endFadeTriggerElement = heroSection;
+        let startFadePosition = "bottom center";
+        let endFadePosition = "bottom top";
 
-    if (sections.length >= 3) {
-      mainTimelineRef.current = gsap.timeline({
-        scrollTrigger: {
-          trigger: scrollContainerRef.current,
-          start: "top top",
-          end: () =>
-            `+=${
-              scrollContainerRef.current!.scrollHeight - window.innerHeight
-            }`,
-          scrub: 1.2,
-          invalidateOnRefresh: true,
-        },
-      });
+        if (sections.length >= 2) {
+          const aboutSection = sections[1];
+          endFadeTriggerElement = aboutSection;
+        }
 
-      const commonEase = "power1.inOut";
-      const durationSegment = 1;
-
-      mainTimelineRef.current
-        .to(
-          cameraControlsRef.current,
-          {
-            yPos: 40,
-            lookAtY: 12,
-            zPos: 125,
-            ease: commonEase,
-            duration: durationSegment,
+        gsap.to(matrixContainerRef.current, {
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: endFadeTriggerElement,
+            start: startFadePosition,
+            end: endFadePosition,
+            scrub: 0.5,
+            invalidateOnRefresh: true,
           },
-          0
-        )
-        .to(
-          cameraControlsRef.current,
-          {
-            yPos: 30,
-            lookAtY: 15,
-            zPos: 115,
-            ease: commonEase,
-            duration: durationSegment,
-          },
-          durationSegment
-        )
-        .to(
-          cameraControlsRef.current,
-          {
-            yPos: 20,
-            lookAtY: 18,
-            zPos: 105,
-            ease: commonEase,
-            duration: durationSegment,
-          },
-          durationSegment * 2
-        );
-    }
-
-    return () => {
-      if (mainTimelineRef.current) {
-        mainTimelineRef.current.kill();
+        });
+      } else {
+        gsap.set(matrixContainerRef.current, { opacity: 1 });
       }
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      gsap.killTweensOf(cameraControlsRef.current);
-      if (matrixContainerRef.current) {
-        
-        gsap.killTweensOf(matrixContainerRef.current);
+
+      if (sections.length >= 3) {
+        const mainTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: scrollContainerRef.current,
+            start: "top top",
+            end: () =>
+              `+=${
+                scrollContainerRef.current!.scrollHeight - window.innerHeight
+              }`,
+            scrub: 1.2,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        const commonEase = "power1.inOut";
+        const durationSegment = 1;
+
+        mainTimeline
+          .to(
+            cameraControlsRef.current,
+            {
+              yPos: 40,
+              lookAtY: 12,
+              zPos: 125,
+              ease: commonEase,
+              duration: durationSegment,
+            },
+            0
+          )
+          .to(
+            cameraControlsRef.current,
+            {
+              yPos: 30,
+              lookAtY: 15,
+              zPos: 115,
+              ease: commonEase,
+              duration: durationSegment,
+            },
+            durationSegment
+          )
+          .to(
+            cameraControlsRef.current,
+            {
+              yPos: 20,
+              lookAtY: 18,
+              zPos: 105,
+              ease: commonEase,
+              duration: durationSegment,
+            },
+            durationSegment * 2
+          );
       }
-    };
-  }, []);
+
+      const refreshTimeout = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 200);
+
+      return () => {
+        clearTimeout(refreshTimeout);
+      };
+    },
+    { scope: scrollContainerRef, dependencies: [resolvedTheme] }
+  );
 
   return (
     <div ref={scrollContainerRef} className="flex min-h-screen flex-col">
@@ -165,21 +144,13 @@ export default function Home() {
       <Navbar className="relative z-10" />
 
       <main className="flex-grow relative z-0">
-        <HeroSection className="content-section" />
-        <AboutSection className="content-section" />
-        <SkillsSection className="content-section" />
-        <ExperienceSection className="content-section" />
-        <ProjectsSection className="content-section" />
-        <ContactSection className="content-section" />
-
-        <footer className="py-8 border-t border-border/40 bg-background dark:bg-neutral-900 relative z-10">
-          <div className="container flex flex-col items-center justify-center gap-4 md:h-16 md:flex-row mx-auto">
-            <p className="text-balance text-center text-sm leading-loose text-muted-foreground">
-              Designed & Built by Utsav Khatri. © {new Date().getFullYear()}.
-              All rights reserved.
-            </p>
-          </div>
-        </footer>
+        <HeroSection id="hero" className="content-section" />
+        <AboutSection id="about" className="content-section" />
+        <SkillsSection id="skills" className="content-section" />
+        <ExperienceSection id="experience" className="content-section" />
+        <ProjectsSection id="projects" className="content-section" />
+        <ContactSection id="contact" className="content-section" />
+        <FooterSection />
       </main>
     </div>
   );

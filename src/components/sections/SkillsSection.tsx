@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { Icon } from "@iconify/react";
 import { cn } from "@/lib/utils";
+import { useGSAP } from "@gsap/react"; // For potential future GSAP animations
 
 interface SkillItemData {
   name: string;
@@ -225,7 +226,7 @@ const SkillItemDisplay: React.FC<{
         "flex-none snap-start bg-card border border-border/70 rounded-xl p-3 shadow-md",
         "flex flex-col items-center justify-center text-center",
         "w-[110px] md:w-[120px] h-[130px] md:h-[140px]",
-        "cursor-default"
+        "cursor-default z-10"
       )}
       title={skill.name}
       onMouseEnter={handleMouseEnter}
@@ -259,16 +260,13 @@ const SkillCategoryCarousel: React.FC<{
   const carouselWrapperRef = useRef<HTMLDivElement>(null);
   const carouselContentRef = useRef<HTMLDivElement>(null);
   const animationInstanceRef = useRef<JSAnimation | null>(null);
-
   const itemWidthRef = useRef(0);
   const gapRef = useRef(0);
   const singleOriginalSetWidthRef = useRef(0);
-
   const [itemsToRender, setItemsToRender] = useState<SkillItemData[]>([]);
   const initialFadeInComplete = useRef(false);
   const [isCarouselReady, setIsCarouselReady] = useState(false);
   const isHoveringRef = useRef(false);
-
   const categoryColor = `hsl(${(globalIndex * 50 + 200) % 360}, 70%, 65%)`;
 
   const setupCarouselLayout = useCallback(() => {
@@ -281,20 +279,16 @@ const SkillCategoryCarousel: React.FC<{
       setItemsToRender([]);
       return;
     }
-
     const isMd = window.matchMedia("(min-width: 768px)").matches;
     itemWidthRef.current = isMd ? 120 : 110;
     gapRef.current = isMd ? 16 : 12;
-
     singleOriginalSetWidthRef.current =
       (itemWidthRef.current + gapRef.current) * categoryData.skills.length;
-
     const wrapperWidth = carouselWrapperRef.current.offsetWidth;
     const necessaryRepetitions = Math.max(
       MIN_REPETITIONS_FOR_FILL,
       Math.ceil((wrapperWidth * 2.5) / (singleOriginalSetWidthRef.current || 1))
     );
-
     const newItemsToRender: SkillItemData[] = [];
     if (categoryData.skills.length > 0) {
       for (let i = 0; i < necessaryRepetitions; i++) {
@@ -302,9 +296,7 @@ const SkillCategoryCarousel: React.FC<{
       }
     }
     setItemsToRender(newItemsToRender);
-
     carouselContentRef.current.style.minWidth = "max-content";
-
     if (initialFadeInComplete.current) {
       setIsCarouselReady(true);
     }
@@ -378,15 +370,12 @@ const SkillCategoryCarousel: React.FC<{
       if (contentEl) contentEl.style.transform = "translateX(0px)";
       return;
     }
-
     if (animationInstanceRef.current) {
       animationInstanceRef.current.pause();
       animationInstanceRef.current = null;
     }
-
     const distanceToAnimateForLoop = singleOriginalSetWidthRef.current;
     const animationDuration = categoryData.skills.length * 6000;
-
     if (
       distanceToAnimateForLoop <= 0 ||
       animationDuration <= 0 ||
@@ -396,10 +385,8 @@ const SkillCategoryCarousel: React.FC<{
       if (contentEl) contentEl.style.transform = "translateX(0px)";
       return;
     }
-
     const isForwardDirection = globalIndex % 2 === 0;
     let translateXParams: [string, string];
-
     if (isForwardDirection) {
       contentEl.style.transform = "translateX(0px)";
       translateXParams = ["0px", `-${distanceToAnimateForLoop}px`];
@@ -407,7 +394,6 @@ const SkillCategoryCarousel: React.FC<{
       contentEl.style.transform = `translateX(-${distanceToAnimateForLoop}px)`;
       translateXParams = [`-${distanceToAnimateForLoop}px`, "0px"];
     }
-
     animationInstanceRef.current = animate(contentEl, {
       translateX: translateXParams,
       duration: animationDuration,
@@ -415,7 +401,6 @@ const SkillCategoryCarousel: React.FC<{
       loop: true,
       autoplay: !isHoveringRef.current,
     });
-
     return () => {
       if (animationInstanceRef.current) {
         animationInstanceRef.current.pause();
@@ -445,7 +430,6 @@ const SkillCategoryCarousel: React.FC<{
   if (categoryData.skills.length === 0) {
     return null;
   }
-
   const CategoryIcon = categoryData.categoryIcon;
 
   return (
@@ -464,7 +448,7 @@ const SkillCategoryCarousel: React.FC<{
       >
         <div
           ref={carouselContentRef}
-          className="flex gap-x-3 md:gap-x-4"
+          className="flex gap-x-3 md:gap-x-4 py-2"
           style={{ willChange: "transform" }}
         >
           {itemsToRender.map((skill, idx) => (
@@ -492,7 +476,13 @@ const SkillCategoryCarousel: React.FC<{
   );
 };
 
-export function SkillsSection({ className }: { className?: string }) {
+export function SkillsSection({
+  className,
+  id,
+}: {
+  className?: string;
+  id?: string;
+}) {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const animatedHeading = useRef(false);
@@ -528,7 +518,7 @@ export function SkillsSection({ className }: { className?: string }) {
 
   return (
     <section
-      id="skills"
+      id={id}
       ref={sectionRef}
       className={cn(
         className,

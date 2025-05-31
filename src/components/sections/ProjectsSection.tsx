@@ -13,11 +13,18 @@ import { getFeaturedProjects, getRemainingPublicProjects } from "@/lib/github";
 import { Loader2 } from "lucide-react";
 import { animate, stagger } from "animejs";
 import { cn } from "@/lib/utils";
+import { useGSAP } from "@gsap/react"; // For potential future GSAP animations
 
 const PROJECTS_INITIAL_DISPLAY_COUNT = 8;
 const PROJECTS_INCREMENT = 7;
 
-export function ProjectsSection({ className }: { className?: string }) {
+export function ProjectsSection({
+  className,
+  id,
+}: {
+  className?: string;
+  id?: string;
+}) {
   const sectionRef = useRef<HTMLElement>(null);
   const projectCardsContainerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -28,16 +35,13 @@ export function ProjectsSection({ className }: { className?: string }) {
   const [additionalProjectsData, setAdditionalProjectsData] = useState<
     Project[]
   >([]);
-
   const [displayedCount, setDisplayedCount] = useState<number>(
     PROJECTS_INITIAL_DISPLAY_COUNT
   );
-
   const [isLoadingInitial, setIsLoadingInitial] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasAttemptedFetchRemaining, setHasAttemptedFetchRemaining] =
     useState(false);
-
   const animatedCards = useRef(new Set<string>());
 
   const allAvailableProjects = useMemo(() => {
@@ -78,7 +82,6 @@ export function ProjectsSection({ className }: { className?: string }) {
         const projects = await getFeaturedProjects();
         setFeaturedProjectsData(projects);
       } catch (error) {
-        console.error("Failed to fetch featured projects on client:", error);
         setFeaturedProjectsData([]);
       }
       setIsLoadingInitial(false);
@@ -127,7 +130,6 @@ export function ProjectsSection({ className }: { className?: string }) {
     const cardElements = Array.from(
       projectCardsContainerRef.current?.children || []
     ) as HTMLElement[];
-
     const newlyDisplayedCardElements = cardElements.filter((card) => {
       const projectId = card.dataset.projectId;
       const isActuallyDisplayed = currentDisplayedProjects.some(
@@ -139,7 +141,6 @@ export function ProjectsSection({ className }: { className?: string }) {
         !animatedCards.current.has(projectId)
       );
     });
-
     if (newlyDisplayedCardElements.length > 0) {
       animateInCards(newlyDisplayedCardElements);
       newlyDisplayedCardElements.forEach((card) => {
@@ -151,7 +152,6 @@ export function ProjectsSection({ className }: { className?: string }) {
 
   const handleShowMore = async () => {
     if (isLoadingMore) return;
-
     if (displayedCount < allAvailableProjects.length) {
       setDisplayedCount((prev) =>
         Math.min(prev + PROJECTS_INCREMENT, allAvailableProjects.length)
@@ -161,14 +161,12 @@ export function ProjectsSection({ className }: { className?: string }) {
       try {
         const remainingProjectsFromApi = await getRemainingPublicProjects();
         setHasAttemptedFetchRemaining(true);
-
         const existingProjectIds = new Set(
           allAvailableProjects.map((p) => p.id)
         );
         const newUniqueProjects = remainingProjectsFromApi.filter(
           (rp) => !existingProjectIds.has(rp.id)
         );
-
         if (newUniqueProjects.length > 0) {
           setAdditionalProjectsData((prev) => [...prev, ...newUniqueProjects]);
           setDisplayedCount((prev) =>
@@ -179,7 +177,6 @@ export function ProjectsSection({ className }: { className?: string }) {
           );
         }
       } catch (error) {
-        console.error("Failed to fetch remaining projects:", error);
         setHasAttemptedFetchRemaining(true);
       }
       setIsLoadingMore(false);
@@ -193,7 +190,7 @@ export function ProjectsSection({ className }: { className?: string }) {
   if (isLoadingInitial && featuredProjectsData.length === 0) {
     return (
       <section
-        id="projects"
+        id={id}
         ref={sectionRef}
         className="py-16 md:py-24 min-h-[400px] flex items-center justify-center"
       >
@@ -207,7 +204,7 @@ export function ProjectsSection({ className }: { className?: string }) {
 
   if (!isLoadingInitial && allAvailableProjects.length === 0) {
     return (
-      <section id="projects" ref={sectionRef} className="py-16 md:py-24">
+      <section id={id} ref={sectionRef} className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <h2
             ref={headingRef}
@@ -247,7 +244,7 @@ export function ProjectsSection({ className }: { className?: string }) {
 
   return (
     <section
-      id="projects"
+      id={id}
       ref={sectionRef}
       className={cn(className, "py-16 md:py-24")}
     >

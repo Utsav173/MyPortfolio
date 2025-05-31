@@ -3,12 +3,19 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, DownloadCloud } from "lucide-react";
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useRef, useCallback } from "react";
 import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 
-export function HeroSection({ className }: { className?: string }) {
+export function HeroSection({
+  className,
+  id,
+}: {
+  className?: string;
+  id?: string;
+}) {
   const sectionRef = useRef<HTMLElement>(null);
   const nameContainerRef = useRef<HTMLHeadingElement | null>(null);
   const p1Ref = useRef<HTMLParagraphElement | null>(null);
@@ -18,9 +25,6 @@ export function HeroSection({ className }: { className?: string }) {
 
   const { resolvedTheme } = useTheme();
   const nameChars = "Utsav Khatri".split("");
-
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
-  const scrollIndicatorLoopRef = useRef<gsap.core.Tween | null>(null);
 
   const initialSetup = useCallback(() => {
     gsap.set([p1Ref.current, p2Ref.current], { opacity: 0, y: 20 });
@@ -43,123 +47,113 @@ export function HeroSection({ className }: { className?: string }) {
     gsap.set(scrollIndicatorRef.current, { opacity: 0, y: -10 });
   }, []);
 
-  useEffect(() => {
-    initialSetup();
+  useGSAP(
+    () => {
+      initialSetup();
 
-    if (tlRef.current) {
-      tlRef.current.kill();
-    }
-    if (scrollIndicatorLoopRef.current) {
-      scrollIndicatorLoopRef.current.kill();
-    }
-
-    tlRef.current = gsap.timeline({
-      defaults: { ease: "power3.out", duration: 0.8 },
-    });
-
-    let primaryColor = "oklch(0.58 0.23 225)";
-    if (typeof window !== "undefined") {
-      primaryColor =
-        resolvedTheme === "dark"
-          ? getComputedStyle(document.documentElement)
-              .getPropertyValue("--primary")
-              .trim() || "oklch(0.62 0.2 220)"
-          : getComputedStyle(document.documentElement)
-              .getPropertyValue("--primary")
-              .trim() || "oklch(0.58 0.23 225)";
-    }
-
-    const oklchToOklcha = (colorStr: string, alpha: number) => {
-      if (colorStr.startsWith("oklch(")) {
-        return colorStr
-          .replace("oklch(", "oklcha(")
-          .replace(")", `/ ${alpha})`);
-      }
-      return colorStr;
-    };
-
-    const initialGlow = `0 0 5px ${oklchToOklcha(
-      primaryColor,
-      0.3
-    )}, 0 0 10px ${oklchToOklcha(primaryColor, 0.2)}`;
-    const peakGlow = `0 0 12px ${oklchToOklcha(
-      primaryColor,
-      0.5
-    )}, 0 0 24px ${oklchToOklcha(primaryColor, 0.3)}`;
-    const subtleEndGlow = `0 0 3px ${oklchToOklcha(
-      primaryColor,
-      0.15
-    )}, 0 0 6px ${oklchToOklcha(primaryColor, 0.1)}`;
-
-    tlRef.current
-      .to(p1Ref.current, { opacity: 1, y: 0 }, 0.2)
-      .to(
-        nameContainerRef.current?.querySelectorAll(".name-char") || [],
-        {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          scale: 1,
-          stagger: 0.06,
-          duration: 0.7,
-          ease: "power3.out",
-        },
-        "-=0.6"
-      )
-      .to(
-        nameContainerRef.current,
-        {
-          textShadow: initialGlow,
-          duration: 0.3,
-          ease: "power1.inOut",
-        },
-        "-=0.3"
-      )
-      .to(nameContainerRef.current, {
-        textShadow: peakGlow,
-        duration: 0.4,
-        ease: "power2.inOut",
-      })
-      .to(nameContainerRef.current, {
-        textShadow: subtleEndGlow,
-        duration: 0.6,
-        ease: "power2.out",
-      })
-      .to(p2Ref.current, { opacity: 1, y: 0, duration: 0.6 }, "-=1.0")
-      .to(
-        ctaContainerRef.current?.children || [],
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          stagger: 0.15,
-          duration: 0.5,
-          ease: "back.out(1.7)",
-        },
-        "-=0.7"
-      )
-      .to(
-        scrollIndicatorRef.current,
-        { opacity: 0.6, y: 0, duration: 0.5, ease: "sine.inOut" },
-        "-=0.3"
-      )
-      .add(() => {
-        if (scrollIndicatorRef.current) {
-          scrollIndicatorLoopRef.current = gsap.to(scrollIndicatorRef.current, {
-            y: 10,
-            repeat: -1,
-            yoyo: true,
-            duration: 1.5,
-            ease: "sine.inOut",
-          });
-        }
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out", duration: 0.8 },
       });
 
-    return () => {
-      tlRef.current?.kill();
-      scrollIndicatorLoopRef.current?.kill();
-    };
-  }, [resolvedTheme, initialSetup]);
+      let primaryColor = "oklch(0.58 0.23 225)";
+      if (typeof window !== "undefined") {
+        primaryColor =
+          resolvedTheme === "dark"
+            ? getComputedStyle(document.documentElement)
+                .getPropertyValue("--primary")
+                .trim() || "oklch(0.62 0.2 220)"
+            : getComputedStyle(document.documentElement)
+                .getPropertyValue("--primary")
+                .trim() || "oklch(0.58 0.23 225)";
+      }
+
+      const oklchToOklcha = (colorStr: string, alpha: number) => {
+        if (colorStr.startsWith("oklch(")) {
+          return colorStr
+            .replace("oklch(", "oklcha(")
+            .replace(")", `/ ${alpha})`);
+        }
+        return colorStr;
+      };
+
+      const initialGlow = `0 0 5px ${oklchToOklcha(
+        primaryColor,
+        0.3
+      )}, 0 0 10px ${oklchToOklcha(primaryColor, 0.2)}`;
+      const peakGlow = `0 0 12px ${oklchToOklcha(
+        primaryColor,
+        0.5
+      )}, 0 0 24px ${oklchToOklcha(primaryColor, 0.3)}`;
+      const subtleEndGlow = `0 0 3px ${oklchToOklcha(
+        primaryColor,
+        0.15
+      )}, 0 0 6px ${oklchToOklcha(primaryColor, 0.1)}`;
+
+      tl.to(p1Ref.current, { opacity: 1, y: 0 }, 0.2)
+        .to(
+          nameContainerRef.current?.querySelectorAll(".name-char") || [],
+          {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            scale: 1,
+            stagger: 0.06,
+            duration: 0.7,
+            ease: "power3.out",
+          },
+          "-=0.6"
+        )
+        .to(
+          nameContainerRef.current,
+          {
+            textShadow: initialGlow,
+            duration: 0.3,
+            ease: "power1.inOut",
+          },
+          "-=0.3"
+        )
+        .to(nameContainerRef.current, {
+          textShadow: peakGlow,
+          duration: 0.4,
+          ease: "power2.inOut",
+        })
+        .to(nameContainerRef.current, {
+          textShadow: subtleEndGlow,
+          duration: 0.6,
+          ease: "power2.out",
+        })
+        .to(p2Ref.current, { opacity: 1, y: 0, duration: 0.6 }, "-=1.0")
+        .to(
+          ctaContainerRef.current?.children || [],
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            stagger: 0.15,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+          },
+          "-=0.7"
+        )
+        .to(
+          scrollIndicatorRef.current,
+          { opacity: 0.6, y: 0, duration: 0.5, ease: "sine.inOut" },
+          "-=0.3"
+        )
+        .add(() => {
+          if (scrollIndicatorRef.current) {
+            gsap.to(scrollIndicatorRef.current, {
+              y: 10,
+              repeat: -1,
+              yoyo: true,
+              duration: 1.5,
+              ease: "sine.inOut",
+            });
+          }
+        });
+    },
+    { scope: sectionRef, dependencies: [resolvedTheme, initialSetup] }
+  );
 
   const handleProjectScroll = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -175,10 +169,10 @@ export function HeroSection({ className }: { className?: string }) {
   return (
     <section
       ref={sectionRef}
-      id="hero"
+      id={id}
       className={cn(
         className,
-        "content-section min-h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden pt-20 sm:pt-16 md:pt-0 bg-transparent"
+        "min-h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden bg-transparent"
       )}
     >
       <div className="container mx-auto relative z-10">
@@ -188,7 +182,6 @@ export function HeroSection({ className }: { className?: string }) {
         >
           Hello, I'm
         </p>
-
         <h1
           ref={nameContainerRef}
           aria-label="Utsav Khatri"
@@ -208,7 +201,6 @@ export function HeroSection({ className }: { className?: string }) {
             </span>
           ))}
         </h1>
-
         <p
           ref={p2Ref}
           className="mx-auto mt-2 sm:mt-3 md:mt-4 max-w-xl sm:max-w-2xl md:max-w-3xl text-base sm:text-lg md:text-xl text-muted-foreground px-2 sm:px-0"
@@ -219,7 +211,6 @@ export function HeroSection({ className }: { className?: string }) {
           </span>{" "}
           based in Gujarat, India.
         </p>
-
         <div
           ref={ctaContainerRef}
           className={cn(
@@ -244,7 +235,6 @@ export function HeroSection({ className }: { className?: string }) {
               <ArrowRight className="ml-2 size-4 sm:ml-2.5 sm:size-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
-
           <Button
             size="default"
             variant="outline"

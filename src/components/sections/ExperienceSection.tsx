@@ -1,20 +1,17 @@
 "use client";
 
-import React, { useEffect, useRef, useCallback } from "react";
-import {
-  animate,
-  createTimeline,
-  createSpring,
-  type JSAnimation,
-  type Timeline,
-} from "animejs";
+import React, { useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger);
+interface ExperienceSectionProps {
+  className?: string;
+  id?: string;
+}
 
 const experiencesData = [
   {
@@ -50,177 +47,169 @@ const experiencesData = [
   },
 ];
 
-export function ExperienceSection({ className }: { className?: string }) {
+export function ExperienceSection({ className, id }: ExperienceSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
   const timelineLineRef = useRef<HTMLDivElement>(null);
   const experienceItemRefs = useRef<(HTMLDivElement | null)[]>([]);
-
   const animatedElements = useRef(new Set<HTMLElement>());
-  const animationInstances = useRef<Map<HTMLElement, JSAnimation | Timeline>>(
-    new Map()
-  );
-  const observerStore = useRef<Map<HTMLElement, IntersectionObserver>>(
-    new Map()
-  );
+  const timelineScrollTrigger = useRef<ScrollTrigger | null>(null);
 
-  const initAndObserveItem = useCallback(
-    (element: HTMLDivElement | null, index: number) => {
-      if (element && !animatedElements.current.has(element)) {
-        const cssDotElement = element.querySelector(
-          ".css-timeline-dot"
-        ) as HTMLElement | null;
-        const contentElement = element.querySelector(
-          ".timeline-content-animated"
-        ) as HTMLElement | null;
+  useGSAP(
+    () => {
+      const currentHeadingRef = headingRef.current;
+      const currentTimelineLineRef = timelineLineRef.current;
+      const currentTimelineContainerRef = timelineContainerRef.current;
 
-        if (cssDotElement) {
-          cssDotElement.style.opacity = "0";
-          cssDotElement.style.transform = "scale(0)";
-        }
-        if (contentElement) {
-          contentElement.style.opacity = "0";
-          contentElement.style.transform = "translateY(30px)";
-        }
+      // Clean up any existing timeline ScrollTrigger
+      if (timelineScrollTrigger.current) {
+        timelineScrollTrigger.current.kill();
+        timelineScrollTrigger.current = null;
+      }
 
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (
-                entry.isIntersecting &&
-                !animatedElements.current.has(element)
-              ) {
-                const tl = createTimeline({
-                  defaults: { ease: "easeOutExpo" },
-                  delay: index * 50,
-                });
+      // Heading animation
+      if (
+        currentHeadingRef &&
+        !animatedElements.current.has(currentHeadingRef)
+      ) {
+        gsap.set(currentHeadingRef, { opacity: 0, y: 30, filter: "blur(3px)" });
+        ScrollTrigger.create({
+          trigger: currentHeadingRef,
+          start: "top 80%",
+          once: true,
+          onEnter: () => {
+            gsap.to(currentHeadingRef, {
+              opacity: 1,
+              y: 0,
+              filter: "blur(0px)",
+              duration: 0.8,
+              ease: "power2.out",
+            });
+            animatedElements.current.add(currentHeadingRef);
+          },
+        });
+      }
+
+      // Experience items animation
+      experienceItemRefs.current.forEach((itemEl, index) => {
+        if (itemEl && !animatedElements.current.has(itemEl)) {
+          const cssDotElement = itemEl.querySelector(
+            ".css-timeline-dot"
+          ) as HTMLElement | null;
+          const contentElement = itemEl.querySelector(
+            ".timeline-content-animated"
+          ) as HTMLElement | null;
+
+          if (cssDotElement) gsap.set(cssDotElement, { opacity: 0, scale: 0 });
+          if (contentElement) gsap.set(contentElement, { opacity: 0, y: 30 });
+
+          ScrollTrigger.create({
+            trigger: itemEl,
+            start: "top 85%",
+            once: true,
+            onEnter: () => {
+              if (!animatedElements.current.has(itemEl!)) {
+                const tl = gsap.timeline({ delay: index * 0.1 });
                 if (contentElement) {
-                  tl.add(contentElement, {
-                    opacity: [0, 1],
-                    translateY: [30, 0],
-                    duration: 600,
+                  tl.to(contentElement, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    ease: "power2.out",
                   });
                 }
                 if (cssDotElement) {
-                  tl.add(
+                  tl.to(
                     cssDotElement,
                     {
-                      opacity: [0, 1],
-                      scale: [0, 1],
-                      duration: 500,
-                      ease: createSpring({
-                        mass: 1,
-                        stiffness: 70,
-                        damping: 12,
-                      }),
+                      opacity: 1,
+                      scale: 1,
+                      duration: 0.5,
+                      ease: "back.out(1.7)",
                     },
-                    "-=500"
+                    "-=0.3"
                   );
                 }
-                animationInstances.current.set(element, tl);
-                animatedElements.current.add(element);
-                observer.unobserve(element);
-                observerStore.current.delete(element);
+                animatedElements.current.add(itemEl!);
               }
-            });
-          },
-          { threshold: 0.2, rootMargin: "0px 0px -30px 0px" }
-        );
-        observer.observe(element);
-        observerStore.current.set(element, observer);
-      }
-    },
-    []
-  );
-
-  useEffect(() => {
-    const currentHeadingRef = headingRef.current;
-    const currentTimelineLineRef = timelineLineRef.current;
-    const currentTimelineContainerRef = timelineContainerRef.current;
-
-    let lineScrollTriggerInstance: ScrollTrigger | null = null;
-
-    const headingObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (
-            entry.isIntersecting &&
-            currentHeadingRef &&
-            !animatedElements.current.has(currentHeadingRef)
-          ) {
-            const anim = animate(currentHeadingRef, {
-              opacity: [0, 1],
-              translateY: [30, 0],
-              filter: ["blur(3px)", "blur(0px)"],
-              duration: 800,
-              ease: "easeOutExpo",
-            });
-            animationInstances.current.set(currentHeadingRef, anim);
-            animatedElements.current.add(currentHeadingRef);
-            observerStore.current.get(currentHeadingRef)?.disconnect();
-            observerStore.current.delete(currentHeadingRef);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
-    );
-
-    if (currentHeadingRef && !animatedElements.current.has(currentHeadingRef)) {
-      currentHeadingRef.style.opacity = "0";
-      currentHeadingRef.style.transform = "translateY(30px)";
-      headingObserver.observe(currentHeadingRef);
-      observerStore.current.set(currentHeadingRef, headingObserver);
-    }
-
-    experienceItemRefs.current.forEach((itemEl, index) => {
-      initAndObserveItem(itemEl, index);
-    });
-
-    if (currentTimelineLineRef && currentTimelineContainerRef) {
-      gsap.set(currentTimelineLineRef, { scaleY: 0, transformOrigin: "top" });
-
-      lineScrollTriggerInstance = ScrollTrigger.create({
-        trigger: currentTimelineContainerRef,
-        start: "top bottom", 
-        end: "bottom top",   
-        scrub: 0.3,
-        invalidateOnRefresh: true,
-        animation: gsap.to(currentTimelineLineRef, {
-          scaleY: 1,
-          ease: "none",
-        }),
-      });
-    }
-
-    return () => {
-      if (lineScrollTriggerInstance) {
-        lineScrollTriggerInstance.kill();
-      }
-      if (currentTimelineLineRef) {
-        gsap.killTweensOf(currentTimelineLineRef);
-      }
-
-      observerStore.current.forEach((observer) => observer.disconnect());
-      observerStore.current.clear();
-
-      animationInstances.current.forEach((instance) => {
-        if (instance && typeof instance.pause === "function") {
-          instance.pause();
+            },
+          });
         }
       });
-      animationInstances.current.clear();
-      animatedElements.current.clear();
-    };
-  }, [initAndObserveItem]);
+
+      // Timeline line animation - Fixed version
+      if (currentTimelineLineRef && currentTimelineContainerRef) {
+        gsap.set(currentTimelineLineRef, {
+          scaleY: 0,
+          transformOrigin: "top center",
+        });
+
+        // Wait a bit to ensure DOM is ready
+        const timelineTimeout = setTimeout(() => {
+          timelineScrollTrigger.current = ScrollTrigger.create({
+            trigger: currentTimelineContainerRef,
+            start: "top 70%",
+            end: "bottom 30%",
+            scrub: 0.5,
+            invalidateOnRefresh: true,
+            refreshPriority: -1,
+            onUpdate: (self) => {
+              if (currentTimelineLineRef) {
+                const progress = Math.max(0, Math.min(1, self.progress));
+                gsap.set(currentTimelineLineRef, {
+                  scaleY: progress,
+                  force3D: true,
+                });
+              }
+            },
+            onRefresh: () => {
+              if (currentTimelineLineRef) {
+                gsap.set(currentTimelineLineRef, {
+                  scaleY: 0,
+                  transformOrigin: "top center",
+                });
+              }
+            },
+          });
+        }, 200);
+
+        return () => {
+          clearTimeout(timelineTimeout);
+          if (timelineScrollTrigger.current) {
+            timelineScrollTrigger.current.kill();
+            timelineScrollTrigger.current = null;
+          }
+        };
+      }
+
+      // Refresh ScrollTrigger after a delay to ensure all elements are properly positioned
+      const refreshTimeout = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 300);
+
+      return () => {
+        clearTimeout(refreshTimeout);
+        if (timelineScrollTrigger.current) {
+          timelineScrollTrigger.current.kill();
+          timelineScrollTrigger.current = null;
+        }
+      };
+    },
+    {
+      scope: sectionRef,
+      revertOnUpdate: true,
+      dependencies: [id], // Add id as dependency to ensure unique triggers
+    }
+  );
 
   return (
     <section
-      id="experience"
+      id={id}
       ref={sectionRef}
       className={cn(
         className,
-        "bg-secondary/20 dark:bg-secondary/5 py-20 md:py-28 lg:py-32"
+        "content-section bg-secondary/20 dark:bg-secondary/5 py-20 md:py-28 lg:py-32"
       )}
     >
       <div className="container mx-auto px-4">
@@ -233,27 +222,25 @@ export function ExperienceSection({ className }: { className?: string }) {
         <div ref={timelineContainerRef} className="relative max-w-3xl mx-auto">
           <div
             ref={timelineLineRef}
-            className="absolute top-0 left-[calc(0.75rem-1px)] sm:left-[calc(0.875rem-1px)] md:left-[calc(1rem-2px)] w-0.5 md:w-1 bg-primary/80 origin-top"
+            className="absolute top-0 left-[calc(0.75rem-1px)] sm:left-[calc(0.875rem-1px)] md:left-[calc(1rem-2px)] w-0.5 md:w-1 bg-primary/80 origin-top will-change-transform"
             style={{ height: "calc(100% - 1rem)" }}
             aria-hidden="true"
           ></div>
-
           {experiencesData.map((exp, index) => {
             return (
               <div
-                key={exp.company + exp.duration}
+                key={`${exp.company}-${exp.duration}-${index}`}
                 ref={(el) => {
                   experienceItemRefs.current[index] = el;
                 }}
                 className="relative pl-8 sm:pl-10 md:pl-12 mb-10 sm:mb-12 group/expitem"
               >
                 <div
-                  className="css-timeline-dot absolute left-0 top-1 size-6 sm:size-7 md:size-8 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 md:border-4 border-background"
+                  className="css-timeline-dot absolute left-0 top-1 size-6 sm:size-7 md:size-8 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 md:border-4 border-background will-change-transform"
                   style={{ transformOrigin: "center center" }}
                 >
                   <Briefcase className="size-3 sm:size-3.5 md:size-4 text-primary-foreground" />
                 </div>
-
                 <div className="timeline-content-animated ml-1 sm:ml-2">
                   <p className="text-xs text-muted-foreground mb-1 sm:mb-1.5 font-mono tracking-wide">
                     {exp.duration}
@@ -275,18 +262,18 @@ export function ExperienceSection({ className }: { className?: string }) {
                         Key Projects:
                       </h4>
                       <div className="space-y-2.5 sm:space-y-3">
-                        {exp.keyProjects.map((project) => (
+                        {exp.keyProjects.map((project, projectIndex) => (
                           <div
-                            key={project.name}
+                            key={`${project.name}-${projectIndex}`}
                             className="p-2.5 sm:p-3 md:p-4 border rounded-md md:rounded-lg bg-card/60 dark:bg-card/30 shadow-sm hover:border-primary/40 transition-colors duration-200 group/projectcard"
                           >
                             <p className="font-semibold text-card-foreground text-[0.85rem] sm:text-sm md:text-base">
                               {project.name}
                             </p>
                             <div className="flex flex-wrap gap-1 sm:gap-1.5 mt-1.5 sm:mt-2">
-                              {project.tech.map((t) => (
+                              {project.tech.map((t, techIndex) => (
                                 <Badge
-                                  key={t}
+                                  key={`${t}-${techIndex}`}
                                   variant="outline"
                                   className="text-[0.65rem] sm:text-[0.7rem] md:text-xs px-1.5 sm:px-2 py-0.5 border-primary/40 text-primary/80 bg-primary/5 hover:bg-primary/10 transition-all duration-150 group-hover/projectcard:scale-[1.03] group-hover/projectcard:shadow-sm"
                                 >
