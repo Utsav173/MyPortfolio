@@ -1,13 +1,16 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useCallback, useMemo } from 'react';
-import * as THREE from 'three';
+import React, { useEffect, useRef, useCallback, useMemo } from "react";
+import * as THREE from "three";
 import {
   SceneConfig,
   defaultSceneConfig as importedDefaultConfig,
   parseConfigColors,
-} from '@/lib/sceneConfig';
-import { cn } from '@/lib/utils';
+  ParsedSceneConfig,
+  ParsedPlaneConfig,
+  ParsedRainConfig,
+} from "@/lib/sceneConfig";
+import { cn } from "@/lib/utils";
 
 interface CameraControls {
   xPos: number;
@@ -27,7 +30,8 @@ interface ThreeSceneProps {
 
 const PROGRAMMATIC_CHARS_STR =
   "0123456789ABCDEF!@#$%^&*()_+-=[]{};':\"\\|,.<>/?~";
-const SANSKRIT_CHARS_STR = "अआइईउऊऋएऐओऔकखगघङचछजझञटठडढणتثدधनपफबभमयरलवशषसह";
+
+const SANSKRIT_CHARS_STR = "अआइईउऊऋएऐओऔकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह";
 
 const GLYPH_CHARS = (PROGRAMMATIC_CHARS_STR + SANSKRIT_CHARS_STR).split("");
 
@@ -41,16 +45,16 @@ function createCharacterAtlas(): {
   atlasTexture: THREE.Texture;
   charUVMap: Map<string, { u: number; v: number; w: number; h: number }>;
 } {
-  const atlasCanvas = document.createElement('canvas');
+  const atlasCanvas = document.createElement("canvas");
   atlasCanvas.width = CHARS_PER_ROW * CHAR_TEXTURE_SIZE;
   atlasCanvas.height = NUM_ROWS * CHAR_TEXTURE_SIZE;
-  const context = atlasCanvas.getContext('2d');
-  if (!context) throw new Error('Cannot get 2D context for atlas');
+  const context = atlasCanvas.getContext("2d");
+  if (!context) throw new Error("Cannot get 2D context for atlas");
 
-  context.fillStyle = 'white';
+  context.fillStyle = "white";
   context.font = `bold ${CHAR_TEXTURE_SIZE * 0.75}px monospace`;
-  context.textAlign = 'center';
-  context.textBaseline = 'middle';
+  context.textAlign = "center";
+  context.textBaseline = "middle";
 
   const charUVMap = new Map<
     string,
@@ -85,7 +89,10 @@ function createCharacterAtlas(): {
       DEFAULT_CHAR_MAP.h = firstCharMap.h;
     }
     SPLASH_CHAR_MAP =
-      charUVMap.get('・') || charUVMap.get('.') || charUVMap.get("o") || DEFAULT_CHAR_MAP;
+      charUVMap.get("・") ||
+      charUVMap.get(".") ||
+      charUVMap.get("o") ||
+      DEFAULT_CHAR_MAP;
   }
 
   const atlasTexture = new THREE.Texture(atlasCanvas);
@@ -107,25 +114,21 @@ class Plane {
   collisionMesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
   timeFactor: number;
   planeSize: number;
-  config: SceneConfig['plane'];
+  config: ParsedPlaneConfig;
 
   constructor(
     scene: THREE.Scene,
     initialThemeAdjust: number,
-    config: SceneConfig['plane']
+    config: ParsedPlaneConfig
   ) {
     this.config = config;
     this.planeSize = this.config.size;
 
-    const parsedPlaneColors = parseConfigColors({
-      plane: this.config,
-    } as Partial<SceneConfig>).plane;
-
     this.uniforms = {
-      time: { type: 'f', value: 0 },
+      time: { type: "f", value: 0 },
       uThemeAdjust: { value: initialThemeAdjust },
-      uHillDarkColor: { value: parsedPlaneColors.hillDarkColor.clone() },
-      uHillLightColor: { value: parsedPlaneColors.hillLightColor.clone() },
+      uHillDarkColor: { value: this.config.hillDarkColor.clone() },
+      uHillLightColor: { value: this.config.hillLightColor.clone() },
     };
     this.timeFactor = this.config.timeFactor;
 
@@ -171,14 +174,14 @@ void main(void){vec3 updatePosition=(rotateMatrixX(radians(90.))*vec4(position,1
             uniform vec3 uHillLightColor;
             void main(void) {
               float opacityFactor = (110.0 - length(vPosition)) / ${this.planeSize.toFixed(
-      1
-    )}; 
+                1
+              )}; 
               float opacityDark = smoothstep(0.0, 0.9, opacityFactor) * ${this.config.opacityFactorDark.toFixed(
-      2
-    )};
+                2
+              )};
               float opacityLight = smoothstep(0.0, 0.9, opacityFactor) * ${this.config.opacityFactorLight.toFixed(
-      2
-    )};
+                2
+              )};
               float baseOpacity = mix(opacityDark, opacityLight, uThemeAdjust);
               vec3 color = mix(uHillDarkColor, uHillLightColor, uThemeAdjust);
               gl_FragColor = vec4(color, baseOpacity);
@@ -478,7 +481,7 @@ class RainEffect {
   private collisionPlane: THREE.Mesh;
   private themeAdjust: number;
   private nextStreamId = 0;
-  private config: SceneConfig['rain'];
+  private config: ParsedRainConfig;
 
   private instanceOffsetAttribute!: THREE.InstancedBufferAttribute;
   private instanceColorOpacityAttribute!: THREE.InstancedBufferAttribute;
@@ -497,7 +500,7 @@ class RainEffect {
     },
     collisionPlane: THREE.Mesh,
     initialThemeAdjust: number,
-    config: SceneConfig['rain']
+    config: ParsedRainConfig
   ) {
     this.scene = scene;
     this.config = config;
@@ -513,18 +516,15 @@ class RainEffect {
     this.collisionPlane = collisionPlane;
     this.themeAdjust = initialThemeAdjust;
 
-    const parsedRainColors = parseConfigColors({
-      rain: this.config,
-    } as Partial<SceneConfig>).rain;
     this.currentLeadColor =
       this.themeAdjust === 0
-        ? parsedRainColors.leadColorDark.clone()
-        : parsedRainColors.leadColorLight.clone();
+        ? this.config.leadColorDark.clone()
+        : this.config.leadColorLight.clone();
     this.currentTrailColorBase =
       this.themeAdjust === 0
-        ? parsedRainColors.trailColorBaseDark.clone()
-        : parsedRainColors.trailColorBaseLight.clone();
-    this.currentSplashColor = parsedRainColors.splashColor.clone();
+        ? this.config.trailColorBaseDark.clone()
+        : this.config.trailColorBaseLight.clone();
+    this.currentSplashColor = this.config.splashColor.clone();
 
     this.raycaster = new THREE.Raycaster();
     this.raycaster.far = (yTop - yBottom) * 1.5;
@@ -535,18 +535,15 @@ class RainEffect {
 
   setTheme(themeAdjust: number) {
     this.themeAdjust = themeAdjust;
-    const parsedRainColors = parseConfigColors({
-      rain: this.config,
-    } as Partial<SceneConfig>).rain;
     this.currentLeadColor =
       this.themeAdjust === 0
-        ? parsedRainColors.leadColorDark.clone()
-        : parsedRainColors.leadColorLight.clone();
+        ? this.config.leadColorDark.clone()
+        : this.config.leadColorLight.clone();
     this.currentTrailColorBase =
       this.themeAdjust === 0
-        ? parsedRainColors.trailColorBaseDark.clone()
-        : parsedRainColors.trailColorBaseLight.clone();
-    this.currentSplashColor = parsedRainColors.splashColor.clone();
+        ? this.config.trailColorBaseDark.clone()
+        : this.config.trailColorBaseLight.clone();
+    this.currentSplashColor = this.config.splashColor.clone();
 
     for (let i = 0; i < this.particles.length; i++) {
       const p = this.particles[i];
@@ -601,11 +598,11 @@ class RainEffect {
       4
     );
     this.instancedMesh.geometry.setAttribute(
-      'instanceOffset',
+      "instanceOffset",
       this.instanceOffsetAttribute
     );
     this.instancedMesh.geometry.setAttribute(
-      'instanceColorOpacity',
+      "instanceColorOpacity",
       this.instanceColorOpacityAttribute
     );
   }
@@ -654,8 +651,7 @@ class RainEffect {
   }
 
   private getRandomCharMap() {
-    const char =
-      GLYPH_CHARS[Math.floor(Math.random() * GLYPH_CHARS.length)];
+    const char = GLYPH_CHARS[Math.floor(Math.random() * GLYPH_CHARS.length)];
     return this.charUVMap.get(char) || DEFAULT_CHAR_MAP;
   }
 
@@ -753,9 +749,9 @@ class RainEffect {
         p.scale =
           1.0 +
           (this.config.splashScaleFactor - 1.0) *
-          Math.sin(
-            (1.0 - p.splashTimer / this.config.splashDuration) * Math.PI
-          );
+            Math.sin(
+              (1.0 - p.splashTimer / this.config.splashDuration) * Math.PI
+            );
         p.color.copy(this.currentSplashColor);
         p.charMap = SPLASH_CHAR_MAP;
 
@@ -885,7 +881,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
   currentTheme,
   cameraControls,
   dynamicConfig,
-  className = '',
+  className = "",
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -904,19 +900,24 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
     () => dynamicConfig || importedDefaultConfig,
     [dynamicConfig]
   );
-  const parsedActiveConfig = useMemo(
-    () => parseConfigColors(activeConfig),
-    [activeConfig]
+
+  const parsedActiveConfig: ParsedSceneConfig = useMemo(
+    () =>
+      parseConfigColors(
+        activeConfig,
+        currentTheme === "dark" ? "dark" : "light"
+      ),
+    [activeConfig, currentTheme]
   );
 
   const themeConfig = useMemo(() => {
-    const isDark = currentTheme === 'dark';
+    const isDark = currentTheme === "dark";
     return {
       themeAdjust: isDark ? 0.0 : 1.0,
       bgColor: isDark
         ? parsedActiveConfig.themeColors.darkBg.clone()
         : parsedActiveConfig.themeColors.lightBg.clone(),
-      overlayTextColor: isDark ? 'text-gray-300' : 'text-gray-800',
+      overlayTextColor: isDark ? "text-gray-300" : "text-gray-800",
     };
   }, [currentTheme, parsedActiveConfig]);
 
@@ -940,7 +941,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!canvasRef.current || typeof window === 'undefined' || !currentTheme) {
+    if (!canvasRef.current || typeof window === "undefined" || !currentTheme) {
       return;
     }
     const canvas = canvasRef.current;
@@ -950,17 +951,14 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
     }
     const { atlasTexture, charUVMap } = atlasDataRef.current;
 
-    const currentThemeAdjust = currentTheme === 'dark' ? 0.0 : 1.0;
-    const currentBgColor =
-      currentTheme === 'dark'
-        ? parsedActiveConfig.themeColors.darkBg.clone()
-        : parsedActiveConfig.themeColors.lightBg.clone();
+    const currentThemeAdjust = themeConfig.themeAdjust;
+    const currentBgColor = themeConfig.bgColor;
 
     if (!rendererRef.current) {
       rendererRef.current = new THREE.WebGLRenderer({
         canvas: canvas,
         antialias: true,
-        powerPreference: 'high-performance',
+        powerPreference: "high-performance",
         alpha: true,
       });
       rendererRef.current.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
@@ -985,7 +983,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
     }
 
     rendererRef.current.setClearColor(currentBgColor, 1.0);
-    canvasRef.current.style.backgroundColor = 'transparent';
+    canvasRef.current.style.backgroundColor = "transparent";
 
     if (planeInstanceRef.current) {
       planeInstanceRef.current.dispose();
@@ -996,7 +994,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
       parsedActiveConfig.plane
     );
 
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
     const streamCount = isMobile
       ? parsedActiveConfig.rain.streamCountMobile
       : parsedActiveConfig.rain.streamCountDesktop;
@@ -1025,9 +1023,9 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
     );
 
     handleResize();
-    const listenerKey = 'listenersInitializedThreeSceneFinalSplashV5';
+    const listenerKey = "listenersInitializedThreeSceneFinalSplashV5";
     if (!window[listenerKey as any]) {
-      window.addEventListener('resize', handleResize);
+      window.addEventListener("resize", handleResize);
       (window as any)[listenerKey] = true;
     }
 
@@ -1073,17 +1071,23 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
         cancelAnimationFrame(animationFrameIdRef.current);
       }
     };
-  }, [handleResize, currentTheme, cameraControls, parsedActiveConfig]);
+  }, [
+    handleResize,
+    currentTheme,
+    cameraControls,
+    parsedActiveConfig,
+    themeConfig,
+  ]);
 
   useEffect(() => {
     return () => {
-      const listenerKey = 'listenersInitializedThreeSceneFinalSplashV5';
+      const listenerKey = "listenersInitializedThreeSceneFinalSplashV5";
       if (animationFrameIdRef.current) {
         cancelAnimationFrame(animationFrameIdRef.current);
         animationFrameIdRef.current = null;
       }
       if ((window as any)[listenerKey]) {
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener("resize", handleResize);
         (window as any)[listenerKey] = false;
       }
 

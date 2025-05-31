@@ -97,20 +97,9 @@ export default function Home() {
           .to(
             cameraControlsRef.current,
             {
-              yPos: 30,
-              lookAtY: 15,
+              yPos: 25,
+              lookAtY: 30,
               zPos: 115,
-              ease: commonEase,
-              duration: durationSegment,
-            },
-            durationSegment
-          )
-          .to(
-            cameraControlsRef.current,
-            {
-              yPos: 20,
-              lookAtY: 18,
-              zPos: 105,
               ease: commonEase,
               duration: durationSegment,
             },

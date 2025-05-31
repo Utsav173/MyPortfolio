@@ -1,22 +1,21 @@
 "use client";
 
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { ProjectCard, type Project } from "./ProjectCard";
 import { Button } from "@/components/ui/button";
-import { getFeaturedProjects, getRemainingPublicProjects } from "@/lib/github";
 import { Loader2 } from "lucide-react";
-import { animate, stagger } from "animejs";
 import { cn } from "@/lib/utils";
-import { useGSAP } from "@gsap/react"; // For potential future GSAP animations
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
-const PROJECTS_INITIAL_DISPLAY_COUNT = 8;
-const PROJECTS_INCREMENT = 7;
+gsap.registerPlugin(useGSAP);
+
+const PROJECTS_INITIAL_DISPLAY_COUNT = 6;
+const PROJECTS_INCREMENT = 4;
+
+const FEATURED_PROJECT_IDS: (number | string)[] = [
+  727342843, 657660151, 952619337, 922037774, 904861772, 583853098,
+];
 
 export function ProjectsSection({
   className,
@@ -29,260 +28,242 @@ export function ProjectsSection({
   const projectCardsContainerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
-  const [featuredProjectsData, setFeaturedProjectsData] = useState<Project[]>(
-    []
-  );
-  const [additionalProjectsData, setAdditionalProjectsData] = useState<
-    Project[]
-  >([]);
+  const [allProjectsData, setAllProjectsData] = useState<Project[]>([]);
   const [displayedCount, setDisplayedCount] = useState<number>(
     PROJECTS_INITIAL_DISPLAY_COUNT
   );
   const [isLoadingInitial, setIsLoadingInitial] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [hasAttemptedFetchRemaining, setHasAttemptedFetchRemaining] =
-    useState(false);
   const animatedCards = useRef(new Set<string>());
 
-  const allAvailableProjects = useMemo(() => {
-    const combined = [...featuredProjectsData, ...additionalProjectsData];
-    const uniqueProjects = Array.from(
-      new Map(combined.map((p) => [p.id || p.name, p])).values()
-    );
-    return uniqueProjects;
-  }, [featuredProjectsData, additionalProjectsData]);
-
-  const currentDisplayedProjects = useMemo(() => {
-    return allAvailableProjects.slice(0, displayedCount);
-  }, [allAvailableProjects, displayedCount]);
-
-  const animateInCards = useCallback((targets: HTMLElement[]) => {
-    if (targets.length > 0) {
-      targets.forEach((t) => {
-        if (t) t.style.opacity = "0";
-      });
-      animate(
-        targets.filter((t) => t),
-        {
-          opacity: [0, 1],
-          translateY: [30, 0],
-          scale: [0.97, 1],
-          duration: 500,
-          easing: "easeOutExpo",
-          delay: stagger(100, { from: "first" }),
-        }
-      );
-    }
-  }, []);
-
   useEffect(() => {
-    const fetchInitialProjects = async () => {
+    const fetchProjects = async () => {
       setIsLoadingInitial(true);
       try {
-        const projects = await getFeaturedProjects();
-        setFeaturedProjectsData(projects);
+        const response = await fetch("/projects-data.json");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let projects: Project[] = await response.json();
+
+        projects.sort((a, b) => {
+          const aFeaturedIndex = FEATURED_PROJECT_IDS.indexOf(a.id);
+          const bFeaturedIndex = FEATURED_PROJECT_IDS.indexOf(b.id);
+
+          if (aFeaturedIndex !== -1 && bFeaturedIndex !== -1) {
+            return aFeaturedIndex - bFeaturedIndex;
+          }
+          if (aFeaturedIndex !== -1) return -1;
+          if (bFeaturedIndex !== -1) return 1;
+
+          const aHasImage = !!a.imageUrl;
+          const bHasImage = !!b.imageUrl;
+          if (aHasImage && !bHasImage) return -1;
+          if (!aHasImage && bHasImage) return 1;
+
+          if ((b.stargazers_count || 0) !== (a.stargazers_count || 0)) {
+            return (b.stargazers_count || 0) - (a.stargazers_count || 0);
+          }
+          return a.name.localeCompare(b.name);
+        });
+
+        setAllProjectsData(projects);
       } catch (error) {
-        setFeaturedProjectsData([]);
+        console.error("Failed to fetch projects:", error);
+        setAllProjectsData([]);
       }
       setIsLoadingInitial(false);
     };
-    fetchInitialProjects();
+    fetchProjects();
   }, []);
 
+  const currentDisplayedProjects = useMemo(() => {
+    return allProjectsData.slice(0, displayedCount);
+  }, [allProjectsData, displayedCount]);
+
   useEffect(() => {
-    const currentHeadingRef = headingRef.current;
+    const currentHeading = headingRef.current;
     if (
-      currentHeadingRef &&
+      currentHeading &&
       !animatedCards.current.has("heading") &&
       !isLoadingInitial
     ) {
-      currentHeadingRef.style.opacity = "0";
+      currentHeading.style.opacity = "0";
+
       const headingObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (
               entry.isIntersecting &&
-              currentHeadingRef &&
+              currentHeading &&
               !animatedCards.current.has("heading")
             ) {
-              animate(currentHeadingRef, {
-                opacity: [0, 1],
-                translateY: [20, 0],
-                filter: ["blur(2px)", "blur(0px)"],
-                duration: 700,
-                easing: "easeOutExpo",
-              });
-              animatedCards.current.add("heading");
-              headingObserver.unobserve(currentHeadingRef);
+              gsap.fromTo(
+                currentHeading,
+                { opacity: 0, y: 30, filter: "blur(3px)" },
+                {
+                  opacity: 1,
+                  y: 0,
+                  filter: "blur(0px)",
+                  duration: 0.9,
+                  ease: "power3.out",
+                  onComplete: () => {
+                    animatedCards.current.add("heading");
+                  },
+                }
+              );
+              headingObserver.unobserve(currentHeading);
             }
           });
         },
-        { threshold: 0.1, rootMargin: "0px 0px -30px 0px" }
+        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
       );
-      headingObserver.observe(currentHeadingRef);
+      headingObserver.observe(currentHeading);
       return () => {
-        if (currentHeadingRef) headingObserver.unobserve(currentHeadingRef);
+        if (currentHeading) {
+          headingObserver.unobserve(currentHeading);
+        }
       };
     }
   }, [isLoadingInitial]);
 
-  useEffect(() => {
-    const cardElements = Array.from(
-      projectCardsContainerRef.current?.children || []
-    ) as HTMLElement[];
-    const newlyDisplayedCardElements = cardElements.filter((card) => {
-      const projectId = card.dataset.projectId;
-      const isActuallyDisplayed = currentDisplayedProjects.some(
-        (p) => String(p.id || p.name) === projectId
-      );
-      return (
-        projectId &&
-        isActuallyDisplayed &&
-        !animatedCards.current.has(projectId)
-      );
-    });
-    if (newlyDisplayedCardElements.length > 0) {
-      animateInCards(newlyDisplayedCardElements);
-      newlyDisplayedCardElements.forEach((card) => {
-        if (card.dataset.projectId)
-          animatedCards.current.add(card.dataset.projectId);
-      });
-    }
-  }, [animateInCards, currentDisplayedProjects]);
+  useGSAP(
+    () => {
+      if (
+        !projectCardsContainerRef.current ||
+        currentDisplayedProjects.length === 0
+      )
+        return;
 
-  const handleShowMore = async () => {
-    if (isLoadingMore) return;
-    if (displayedCount < allAvailableProjects.length) {
-      setDisplayedCount((prev) =>
-        Math.min(prev + PROJECTS_INCREMENT, allAvailableProjects.length)
-      );
-    } else if (!hasAttemptedFetchRemaining) {
-      setIsLoadingMore(true);
-      try {
-        const remainingProjectsFromApi = await getRemainingPublicProjects();
-        setHasAttemptedFetchRemaining(true);
-        const existingProjectIds = new Set(
-          allAvailableProjects.map((p) => p.id)
+      const cardElements = Array.from(
+        projectCardsContainerRef.current.children
+      ) as HTMLElement[];
+
+      const newlyDisplayedCardElements = cardElements.filter((card) => {
+        const projectId = card.dataset.projectId;
+        return (
+          projectId &&
+          !animatedCards.current.has(projectId) &&
+          currentDisplayedProjects.some(
+            (p) => String(p.id || p.name) === projectId
+          )
         );
-        const newUniqueProjects = remainingProjectsFromApi.filter(
-          (rp) => !existingProjectIds.has(rp.id)
+      });
+
+      if (newlyDisplayedCardElements.length > 0) {
+        newlyDisplayedCardElements.forEach(
+          (card) => (card.style.opacity = "0")
         );
-        if (newUniqueProjects.length > 0) {
-          setAdditionalProjectsData((prev) => [...prev, ...newUniqueProjects]);
-          setDisplayedCount((prev) =>
-            Math.min(
-              prev + PROJECTS_INCREMENT,
-              allAvailableProjects.length + newUniqueProjects.length
-            )
-          );
-        }
-      } catch (error) {
-        setHasAttemptedFetchRemaining(true);
+
+        gsap.fromTo(
+          newlyDisplayedCardElements,
+          { opacity: 0, y: 40, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.7,
+            ease: "power3.out",
+            stagger: 0.12,
+            onComplete: function () {
+              (this.targets() as HTMLElement[]).forEach((targetCard) => {
+                const pId = targetCard.dataset.projectId;
+                if (pId) {
+                  animatedCards.current.add(pId);
+                }
+              });
+            },
+          }
+        );
       }
-      setIsLoadingMore(false);
+    },
+    {
+      scope: projectCardsContainerRef,
+      dependencies: [currentDisplayedProjects],
     }
+  );
+
+  const handleShowMore = () => {
+    setDisplayedCount((prev) =>
+      Math.min(prev + PROJECTS_INCREMENT, allProjectsData.length)
+    );
   };
 
-  const canShowMore =
-    displayedCount < allAvailableProjects.length ||
-    (!hasAttemptedFetchRemaining && !isLoadingInitial);
+  const canShowMore = displayedCount < allProjectsData.length;
 
-  if (isLoadingInitial && featuredProjectsData.length === 0) {
+  if (isLoadingInitial && allProjectsData.length === 0) {
     return (
       <section
         id={id}
         ref={sectionRef}
-        className="py-16 md:py-24 min-h-[400px] flex items-center justify-center"
+        className={cn(
+          "py-20 md:py-28 min-h-[500px] flex items-center justify-center",
+          className
+        )}
       >
         <div className="container mx-auto px-4 text-center">
-          <Loader2 className="mx-auto size-12 animate-spin text-primary mb-4" />
-          <p className="text-muted-foreground">Loading Projects...</p>
+          <Loader2 className="mx-auto size-12 animate-spin text-primary mb-6" />
+          <p className="text-lg text-muted-foreground">Curating Projects...</p>
         </div>
       </section>
     );
   }
 
-  if (!isLoadingInitial && allAvailableProjects.length === 0) {
+  if (!isLoadingInitial && allProjectsData.length === 0) {
     return (
-      <section id={id} ref={sectionRef} className="py-16 md:py-24">
+      <section
+        id={id}
+        ref={sectionRef}
+        className={cn("py-20 md:py-28", className)}
+      >
         <div className="container mx-auto px-4">
           <h2
             ref={headingRef}
-            className="mb-16 text-center text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter"
+            className="mb-20 text-center text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter"
           >
-            Selected <span className="text-primary">Works</span>
+            Selected <span className="text-primary">Creations</span>
           </h2>
-          <p className="text-center text-muted-foreground">
-            No public projects found. Check back later!
+          <p className="text-center text-xl text-muted-foreground">
+            No projects to showcase at the moment. Please check back soon!
           </p>
         </div>
       </section>
     );
   }
 
-  const getCardClassName = (index: number): string => {
-    const patternIndex = index % 7;
-    switch (patternIndex) {
-      case 0:
-        return "md:col-span-2";
-      case 1:
-        return "md:col-span-1";
-      case 2:
-        return "md:col-span-1";
-      case 3:
-        return "md:col-span-1";
-      case 4:
-        return "md:col-span-1";
-      case 5:
-        return "md:col-span-2";
-      case 6:
-        return "md:col-span-1";
-      default:
-        return "md:col-span-1";
-    }
-  };
-
   return (
     <section
       id={id}
       ref={sectionRef}
-      className={cn(className, "py-16 md:py-24")}
+      className={cn("py-20 md:py-28", className)}
     >
       <div className="container mx-auto px-4">
         <h2
           ref={headingRef}
-          className="mb-16 text-center text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter"
+          className="mb-20 text-center text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter"
         >
-          Selected <span className="text-primary">Works</span>
+          Selected <span className="text-primary">Creations</span>
         </h2>
         <div
           ref={projectCardsContainerRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[minmax(280px,_auto)]"
+          className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 lg:gap-x-10 lg:gap-y-12 auto-rows-fr"
         >
-          {currentDisplayedProjects.map((project, index) => (
+          {currentDisplayedProjects.map((project) => (
             <ProjectCard
-              key={project.id || `project-${project.name}-${index}`}
+              key={project.id || `project-${project.name}`}
               project={project}
-              data-project-id={String(
-                project.id || `project-${project.name}-${index}`
-              )}
-              className={cn("min-h-[280px]", getCardClassName(index))}
+              data-project-id={String(project.id || project.name)}
+              className="h-full"
             />
           ))}
         </div>
         {canShowMore && (
-          <div className="mt-12 text-center">
+          <div className="mt-16 text-center">
             <Button
               size="lg"
               onClick={handleShowMore}
-              disabled={isLoadingMore}
-              className="min-w-[220px] px-8 py-3 text-base"
+              className="min-w-[240px] px-10 py-3.5 text-lg rounded-lg"
             >
-              {isLoadingMore ? (
-                <Loader2 className="mr-2 size-5 animate-spin" />
-              ) : (
-                "Show More Projects"
-              )}
+              Discover More
             </Button>
           </div>
         )}

@@ -1,4 +1,3 @@
-// src/lib/sceneConfig.ts
 import * as THREE from "three";
 
 export const defaultSceneConfig = {
@@ -9,34 +8,34 @@ export const defaultSceneConfig = {
     timeFactor: 0.1,
     darkThemeHillDarkColorHex: "#53609a",
     darkThemeHillLightColorHex: "#2A2D3A",
-    lightThemeHillDarkColorHex: "#D1D3D9",
-    lightThemeHillLightColorHex: "#E3E4E9",
+    lightThemeHillDarkColorHex: "#A0B3D4",
+    lightThemeHillLightColorHex: "#DDE6F0",
     noiseStrength: { hill1: 6.0, hill2: 6.0, hill3: 1.6, overall: 36.0 },
     opacityFactorDark: 0.9,
-    opacityFactorLight: 0.98,
+    opacityFactorLight: 1,
   },
   rain: {
-    charHeight: 0.9,
-    charAspect: 0.49,
+    charHeight: 1,
+    charAspect: 0.7,
     streamCountMobile: 40,
-    streamCountDesktop: 115,
+    streamCountDesktop: 110,
     streamLengthMobile: 6,
-    streamLengthDesktop: 10,
+    streamLengthDesktop: 13,
     yTop: 68,
     yBottom: -12,
-    speedBaseMin: 6,
-    speedBaseMax: 11,
+    speedBaseMin: 5,
+    speedBaseMax: 12,
     leadColorDarkHex: "#8DAAFF",
     trailColorBaseDarkHex: "#6C8CFF",
-    leadColorLightHex: "#171B29",
-    trailColorBaseLightHex: "#404659",
-    splashColorDarkThemeHex: "#E0E2EE",
-    splashColorLightThemeHex: "#6A6AFF",
-    splashDuration: 0.4,
+    leadColorLightHex: "#3B5998",
+    trailColorBaseLightHex: "#6B7A99",
+    splashColorDarkThemeHex: "#80bdff",
+    splashColorLightThemeHex: "#58A6FF",
+    splashDuration: 0.3,
     splashScaleFactor: 3,
   },
   camera: {
-    fov: 50,
+    fov: 45,
     near: 5,
     far: 1000,
     initialXPos: 0,
@@ -48,17 +47,64 @@ export const defaultSceneConfig = {
   },
   themeColors: {
     darkBgHex: "#050507",
-    lightBgHex: "#F8F8FC",
+    lightBgHex: "#F7F8FA",
   },
 };
 
 export type SceneConfig = typeof defaultSceneConfig;
 
+export interface ParsedPlaneConfig
+  extends Omit<
+    SceneConfig["plane"],
+    | "darkThemeHillDarkColorHex"
+    | "darkThemeHillLightColorHex"
+    | "lightThemeHillDarkColorHex"
+    | "lightThemeHillLightColorHex"
+  > {
+  hillDarkColor: THREE.Color;
+  hillLightColor: THREE.Color;
+}
+
+export interface ParsedRainConfig
+  extends Omit<
+    SceneConfig["rain"],
+    | "leadColorDarkHex"
+    | "trailColorBaseDarkHex"
+    | "leadColorLightHex"
+    | "trailColorBaseLightHex"
+    | "splashColorDarkThemeHex"
+    | "splashColorLightThemeHex"
+  > {
+  leadColorDark: THREE.Color;
+  trailColorBaseDark: THREE.Color;
+  leadColorLight: THREE.Color;
+  trailColorBaseLight: THREE.Color;
+  splashColor: THREE.Color;
+}
+
+export interface ParsedThemeColorsConfig
+  extends Omit<SceneConfig["themeColors"], "darkBgHex" | "lightBgHex"> {
+  darkBg: THREE.Color;
+  lightBg: THREE.Color;
+}
+
+export interface ParsedSceneConfig {
+  plane: ParsedPlaneConfig;
+  rain: ParsedRainConfig;
+  camera: SceneConfig["camera"];
+  themeColors: ParsedThemeColorsConfig;
+}
+
 export function parseConfigColors(
   config: Partial<SceneConfig>,
   currentTheme: "light" | "dark" = "dark"
-): any {
-  const newConfig: any = {};
+): ParsedSceneConfig {
+  const newConfig: any = {
+    plane: {},
+    rain: {},
+    themeColors: {},
+    camera: {},
+  };
 
   const basePlaneConfig = {
     ...defaultSceneConfig.plane,
@@ -108,6 +154,10 @@ export function parseConfigColors(
       baseRainConfig.splashColorLightThemeHex
     );
   }
+  delete newConfig.rain.leadColorDarkHex;
+  delete newConfig.rain.trailColorBaseDarkHex;
+  delete newConfig.rain.leadColorLightHex;
+  delete newConfig.rain.trailColorBaseLightHex;
   delete newConfig.rain.splashColorDarkThemeHex;
   delete newConfig.rain.splashColorLightThemeHex;
 
@@ -122,6 +172,8 @@ export function parseConfigColors(
   newConfig.themeColors.lightBg = new THREE.Color(
     baseThemeColorsConfig.lightBgHex
   );
+  delete newConfig.themeColors.darkBgHex;
+  delete newConfig.themeColors.lightBgHex;
 
   const baseCameraConfig = {
     ...defaultSceneConfig.camera,
@@ -129,5 +181,5 @@ export function parseConfigColors(
   };
   newConfig.camera = { ...baseCameraConfig };
 
-  return newConfig as SceneConfig;
+  return newConfig as ParsedSceneConfig;
 }
