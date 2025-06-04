@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 interface ExperienceSectionProps {
@@ -52,154 +51,122 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
   const timelineLineRef = useRef<HTMLDivElement>(null);
-  const experienceItemRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const animatedElements = useRef(new Set<HTMLElement>());
-  const timelineScrollTrigger = useRef<ScrollTrigger | null>(null);
 
   useGSAP(
     () => {
-      const currentHeadingRef = headingRef.current;
-      const currentTimelineLineRef = timelineLineRef.current;
-      const currentTimelineContainerRef = timelineContainerRef.current;
+      if (
+        !sectionRef.current ||
+        !timelineContainerRef.current ||
+        !timelineLineRef.current
+      )
+        return;
 
-      // Clean up any existing timeline ScrollTrigger
-      if (timelineScrollTrigger.current) {
-        timelineScrollTrigger.current.kill();
-        timelineScrollTrigger.current = null;
-      }
+      const heading = headingRef.current;
+      const line = timelineLineRef.current;
+      const items = gsap.utils.toArray<HTMLElement>(
+        ".experience-item",
+        timelineContainerRef.current
+      );
 
       // Heading animation
-      if (
-        currentHeadingRef &&
-        !animatedElements.current.has(currentHeadingRef)
-      ) {
-        gsap.set(currentHeadingRef, { opacity: 0, y: 30, filter: "blur(3px)" });
-        ScrollTrigger.create({
-          trigger: currentHeadingRef,
-          start: "top 80%",
-          once: true,
-          onEnter: () => {
-            gsap.to(currentHeadingRef, {
-              opacity: 1,
-              y: 0,
-              filter: "blur(0px)",
-              duration: 0.8,
-              ease: "power2.out",
-            });
-            animatedElements.current.add(currentHeadingRef);
-          },
-        });
+      if (heading) {
+        gsap.fromTo(
+          heading,
+          { opacity: 0, y: 30, filter: "blur(3px)" },
+          {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: heading,
+              start: "top 85%",
+              once: true,
+            },
+          }
+        );
       }
 
-      // Experience items animation
-      experienceItemRefs.current.forEach((itemEl, index) => {
-        if (itemEl && !animatedElements.current.has(itemEl)) {
-          const cssDotElement = itemEl.querySelector(
-            ".css-timeline-dot"
-          ) as HTMLElement | null;
-          const contentElement = itemEl.querySelector(
-            ".timeline-content-animated"
-          ) as HTMLElement | null;
+      // Timeline items animation
+      items.forEach((itemEl, index) => {
+        const dotElement = itemEl.querySelector(
+          ".css-timeline-dot"
+        ) as HTMLElement | null;
+        const contentElement = itemEl.querySelector(
+          ".timeline-content-animated"
+        ) as HTMLElement | null;
 
-          if (cssDotElement) gsap.set(cssDotElement, { opacity: 0, scale: 0 });
-          if (contentElement) gsap.set(contentElement, { opacity: 0, y: 30 });
-
-          ScrollTrigger.create({
+        const tl = gsap.timeline({
+          scrollTrigger: {
             trigger: itemEl,
             start: "top 85%",
             once: true,
-            onEnter: () => {
-              if (!animatedElements.current.has(itemEl!)) {
-                const tl = gsap.timeline({ delay: index * 0.1 });
-                if (contentElement) {
-                  tl.to(contentElement, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.6,
-                    ease: "power2.out",
-                  });
-                }
-                if (cssDotElement) {
-                  tl.to(
-                    cssDotElement,
-                    {
-                      opacity: 1,
-                      scale: 1,
-                      duration: 0.5,
-                      ease: "back.out(1.7)",
-                    },
-                    "-=0.3"
-                  );
-                }
-                animatedElements.current.add(itemEl!);
-              }
-            },
-          });
+          },
+        });
+
+        if (contentElement) {
+          tl.fromTo(
+            contentElement,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+          );
+        }
+        if (dotElement) {
+          tl.fromTo(
+            dotElement,
+            { opacity: 0, scale: 0 },
+            { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" },
+            contentElement ? "-=0.3" : 0
+          );
         }
       });
 
-      // Timeline line animation - Fixed version
-      if (currentTimelineLineRef && currentTimelineContainerRef) {
-        gsap.set(currentTimelineLineRef, {
-          scaleY: 0,
+      // Fixed timeline line animation
+      if (line && items.length > 0) {
+        // Set initial state
+        gsap.set(line, {
+          height: 0,
           transformOrigin: "top center",
         });
 
-        // Wait a bit to ensure DOM is ready
-        const timelineTimeout = setTimeout(() => {
-          timelineScrollTrigger.current = ScrollTrigger.create({
-            trigger: currentTimelineContainerRef,
-            start: "top 70%",
-            end: "bottom 30%",
-            scrub: 0.5,
-            invalidateOnRefresh: true,
-            refreshPriority: -1,
-            onUpdate: (self) => {
-              if (currentTimelineLineRef) {
-                const progress = Math.max(0, Math.min(1, self.progress));
-                gsap.set(currentTimelineLineRef, {
-                  scaleY: progress,
-                  force3D: true,
-                });
-              }
-            },
-            onRefresh: () => {
-              if (currentTimelineLineRef) {
-                gsap.set(currentTimelineLineRef, {
-                  scaleY: 0,
-                  transformOrigin: "top center",
-                });
-              }
-            },
-          });
-        }, 200);
+        // Get the total height of timeline container
+        const timelineContainer = timelineContainerRef.current;
+        const containerHeight = timelineContainer.scrollHeight;
 
-        return () => {
-          clearTimeout(timelineTimeout);
-          if (timelineScrollTrigger.current) {
-            timelineScrollTrigger.current.kill();
-            timelineScrollTrigger.current = null;
+        // Set the line to full height but hidden initially
+        gsap.set(line, { height: containerHeight });
+
+        // Create the scroll-triggered animation
+        gsap.fromTo(
+          line,
+          {
+            scaleY: 0,
+            transformOrigin: "top center",
+          },
+          {
+            scaleY: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: timelineContainer,
+              start: "top 80%",
+              end: "bottom 20%",
+              scrub: 1,
+              invalidateOnRefresh: true,
+              onRefresh: () => {
+                // Recalculate height on refresh
+                const newHeight = timelineContainer.scrollHeight;
+                gsap.set(line, { height: newHeight });
+              },
+            },
           }
-        };
+        );
       }
-
-      // Refresh ScrollTrigger after a delay to ensure all elements are properly positioned
-      const refreshTimeout = setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 300);
-
-      return () => {
-        clearTimeout(refreshTimeout);
-        if (timelineScrollTrigger.current) {
-          timelineScrollTrigger.current.kill();
-          timelineScrollTrigger.current = null;
-        }
-      };
     },
     {
       scope: sectionRef,
+      dependencies: [experiencesData.length],
       revertOnUpdate: true,
-      dependencies: [id], // Add id as dependency to ensure unique triggers
     }
   );
 
@@ -208,8 +175,8 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
       id={id}
       ref={sectionRef}
       className={cn(
-        className,
-        "content-section bg-secondary/20 dark:bg-secondary/5 py-20 md:py-28 lg:py-32"
+        "bg-secondary/20 dark:bg-secondary/5 py-20 md:py-28 lg:py-32 w-full",
+        className
       )}
     >
       <div className="container mx-auto px-4">
@@ -222,21 +189,17 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
         <div ref={timelineContainerRef} className="relative max-w-3xl mx-auto">
           <div
             ref={timelineLineRef}
-            className="absolute top-0 left-[calc(0.75rem-1px)] sm:left-[calc(0.875rem-1px)] md:left-[calc(1rem-2px)] w-0.5 md:w-1 bg-primary/80 origin-top will-change-transform"
-            style={{ height: "calc(100% - 1rem)" }}
+            className="absolute top-0 left-[calc(0.75rem-1px)] sm:left-[calc(0.875rem-1px)] md:left-[calc(1rem-1.5px)] w-[2px] md:w-[3px] bg-primary/50"
             aria-hidden="true"
           ></div>
           {experiencesData.map((exp, index) => {
             return (
               <div
-                key={`${exp.company}-${exp.duration}-${index}`}
-                ref={(el) => {
-                  experienceItemRefs.current[index] = el;
-                }}
-                className="relative pl-8 sm:pl-10 md:pl-12 mb-10 sm:mb-12 group/expitem"
+                key={`${exp.company}-${index}`}
+                className="experience-item relative pl-8 sm:pl-10 md:pl-12 mb-10 sm:mb-12 last:mb-0 group/expitem"
               >
                 <div
-                  className="css-timeline-dot absolute left-0 top-1 size-6 sm:size-7 md:size-8 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 md:border-4 border-background will-change-transform"
+                  className="css-timeline-dot absolute left-0 top-1 size-6 sm:size-7 md:size-8 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 md:border-4 border-background z-10"
                   style={{ transformOrigin: "center center" }}
                 >
                   <Briefcase className="size-3 sm:size-3.5 md:size-4 text-primary-foreground" />

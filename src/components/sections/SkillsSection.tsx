@@ -16,15 +16,12 @@ import {
   Scaling,
   ListChecks,
   ShieldCheck,
-  Package,
   Lightbulb,
   BotMessageSquare,
-  TerminalSquare,
   LayoutPanelLeft,
 } from "lucide-react";
 import { Icon } from "@iconify/react";
 import { cn } from "@/lib/utils";
-import { useGSAP } from "@gsap/react"; // For potential future GSAP animations
 
 interface SkillItemData {
   name: string;
@@ -442,7 +439,7 @@ const SkillCategoryCarousel: React.FC<{
       </div>
       <div
         ref={carouselWrapperRef}
-        className="relative overflow-x-hidden group py-2 -my-2"
+        className="relative overflow-x-hidden group py-2 -my-2 w-full"
         onMouseEnter={handleCarouselMouseEnter}
         onMouseLeave={handleCarouselMouseLeave}
       >
@@ -521,8 +518,8 @@ export function SkillsSection({
       id={id}
       ref={sectionRef}
       className={cn(
-        className,
-        "bg-background dark:bg-secondary/5 py-16 md:py-24"
+        "bg-background dark:bg-secondary/5 py-16 md:py-24 w-full",
+        className
       )}
     >
       <div className="container mx-auto px-4">

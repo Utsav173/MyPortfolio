@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, {
   useRef,
@@ -7,32 +7,32 @@ import React, {
   useState,
   useCallback,
   Suspense,
-} from 'react';
-import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
-import * as THREE from 'three';
-import { shaderMaterial, PerformanceMonitor } from '@react-three/drei';
+} from "react";
+import { Canvas, useFrame, useThree, extend } from "@react-three/fiber";
+import * as THREE from "three";
+import { shaderMaterial, PerformanceMonitor } from "@react-three/drei";
 import {
   SceneConfig,
   defaultSceneConfig as importedDefaultConfig,
   parseConfigColors,
   ParsedSceneConfig,
-} from '@/lib/sceneConfig';
-import { cn } from '@/lib/utils';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
-import { KernelSize } from 'postprocessing';
+} from "@/lib/sceneConfig";
+import { cn } from "@/lib/utils";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { KernelSize } from "postprocessing";
 
 const getKernelSize = (sizeStr?: string): KernelSize => {
   if (!sizeStr) return KernelSize.LARGE;
   switch (sizeStr.toUpperCase()) {
-    case 'VERY_SMALL':
+    case "VERY_SMALL":
       return KernelSize.VERY_SMALL;
-    case 'SMALL':
+    case "SMALL":
       return KernelSize.SMALL;
-    case 'MEDIUM':
+    case "MEDIUM":
       return KernelSize.MEDIUM;
-    case 'LARGE':
+    case "LARGE":
       return KernelSize.LARGE;
-    case 'HUGE':
+    case "HUGE":
       return KernelSize.HUGE;
     default:
       return KernelSize.LARGE;
@@ -43,15 +43,15 @@ const PlaneShaderMaterial = shaderMaterial(
   {
     time: 0,
     uThemeAdjust: 0,
-    uHillDarkColor: new THREE.Color(0x53609a),
-    uHillLightColor: new THREE.Color(0x2a2d3a),
-    uNoiseStrengthHill1: 6.0,
-    uNoiseStrengthHill2: 6.0,
-    uNoiseStrengthHill3: 1.6,
-    uNoiseStrengthOverall: 36.0,
+    uPlaneColorDarkTheme: new THREE.Color(0x19193b),
+    uPlaneColorLightTheme: new THREE.Color(0x205d75),
+    uNoiseStrengthHill1: 15.0,
+    uNoiseStrengthHill2: 11.3,
+    uNoiseStrengthHill3: 3.2,
+    uNoiseStrengthOverall: 46.5,
     uPlaneSize: 256.0,
-    uOpacityFactorDark: 0.9,
-    uOpacityFactorLight: 1.0,
+    uOpacityFactorDark: 0.87,
+    uOpacityFactorLight: 0.98,
   },
   ` varying vec3 vPosition; 
     uniform float time; 
@@ -61,7 +61,7 @@ const PlaneShaderMaterial = shaderMaterial(
     uniform float uNoiseStrengthOverall; 
     uniform float uPlaneSize;
     mat4 rotateMatrixX(float radian) { return mat4(1.,0.,0.,0.,0.,cos(radian),-sin(radian),0.,0.,sin(radian),cos(radian),0.,0.,0.,0.,1.);} vec3 mod289(vec3 x){return x-floor(x*(1./289.))*289.;} vec4 mod289(vec4 x){return x-floor(x*(1./289.))*289.;} vec4 permute(vec4 x){return mod289(((x*34.)+1.)*x);} vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-.85373472095314*r;} vec3 fade(vec3 t){return t*t*t*(t*(t*6.-15.)+10.);} float cnoise(vec3 P){vec3 Pi0=floor(P);vec3 Pi1=Pi0+vec3(1.);Pi0=mod289(Pi0);Pi1=mod289(Pi1);vec3 Pf0=fract(P);vec3 Pf1=Pf0-vec3(1.);vec4 ix=vec4(Pi0.x,Pi1.x,Pi0.x,Pi1.x);vec4 iy=vec4(Pi0.y,Pi0.y,Pi1.y,Pi1.y);vec4 iz0=vec4(Pi0.z,Pi0.z,Pi0.z,Pi0.z);vec4 iz1=vec4(Pi1.z,Pi1.z,Pi1.z,Pi1.z);vec4 ixy=permute(permute(ix)+iy);vec4 ixy0=permute(ixy+iz0);vec4 ixy1=permute(ixy+iz1);vec4 gx0=ixy0*(1./7.);vec4 gy0=fract(floor(gx0)*(1./7.))-.5;gx0=fract(gx0);vec4 gz0=vec4(.5)-abs(gx0)-abs(gy0);vec4 sz0=step(gz0,vec4(0.));gx0-=sz0*(step(0.,gx0)-.5);gy0-=sz0*(step(0.,gy0)-.5);vec4 gx1=ixy1*(1./7.);vec4 gy1=fract(floor(gx1)*(1./7.))-.5;gx1=fract(gx1);vec4 gz1=vec4(.5)-abs(gx1)-abs(gy1);vec4 sz1=step(gz1,vec4(0.));gx1-=sz1*(step(0.,gx1)-.5);gy1-=sz1*(step(0.,gy1)-.5);vec3 g000=vec3(gx0.x,gy0.x,gz0.x);vec3 g100=vec3(gx0.y,gy0.y,gz0.y);vec3 g010=vec3(gx0.z,gy0.z,gz0.z);vec3 g110=vec3(gx0.w,gy0.w,gz0.w);vec3 g001=vec3(gx1.x,gy1.x,gz1.x);vec3 g101=vec3(gx1.y,gy1.y,gz1.y);vec3 g011=vec3(gx1.z,gy1.z,gz1.z);vec3 g111=vec3(gx1.w,gy1.w,gz1.w);vec4 norm0=taylorInvSqrt(vec4(dot(g000,g000),dot(g010,g010),dot(g100,g100),dot(g110,g110)));g000*=norm0.x;g010*=norm0.y;g100*=norm0.z;g110*=norm0.w;vec4 norm1=taylorInvSqrt(vec4(dot(g001,g001),dot(g011,g011),dot(g101,g101),dot(g111,g111)));g001*=norm1.x;g011*=norm1.y;g101*=norm1.z;g111*=norm1.w;float n000=dot(g000,Pf0);float n100=dot(g100,vec3(Pf1.x,Pf0.y,Pf0.z));float n010=dot(g010,vec3(Pf0.x,Pf1.y,Pf0.z));float n110=dot(g110,vec3(Pf1.x,Pf1.y,Pf0.z));float n001=dot(g001,vec3(Pf0.x,Pf0.y,Pf1.z));float n101=dot(g101,vec3(Pf1.x,Pf0.y,Pf1.z));float n011=dot(g011,vec3(Pf0.x,Pf1.y,Pf1.z));float n111=dot(g111,Pf1);vec3 fade_xyz_val=fade(Pf0);vec4 n_z=mix(vec4(n000,n100,n010,n110),vec4(n001,n101,n011,n111),fade_xyz_val.z);vec2 n_yz=mix(n_z.xy,n_z.zw,fade_xyz_val.y);float n_xyz=mix(n_yz.x,n_yz.y,fade_xyz_val.x);return 2.2*n_xyz;} void main() { vec3 updatePosition = (rotateMatrixX(radians(90.0)) * vec4(position, 1.0)).xyz; float sin1 = sin(radians(updatePosition.x / (uPlaneSize/2.0) * 90.0)); vec3 noisePosition = updatePosition + vec3(0.0, 0.0, time * -18.0); float noise1 = cnoise(noisePosition * 0.065); float noise2 = cnoise(noisePosition * 0.045); float noise3 = cnoise(noisePosition * 0.28); vec3 lastPosition = updatePosition + vec3(0.0, noise1 * sin1 * uNoiseStrengthHill1 + noise2 * sin1 * uNoiseStrengthHill2 + noise3 * (abs(sin1) * 1.7 + 0.4) * uNoiseStrengthHill3 + pow(sin1, 2.0) * uNoiseStrengthOverall, 0.0); vPosition = lastPosition; gl_Position = projectionMatrix * modelViewMatrix * vec4(lastPosition, 1.0); }`,
-  ` varying vec3 vPosition; uniform float uThemeAdjust; uniform vec3 uHillDarkColor; uniform vec3 uHillLightColor; uniform float uPlaneSize; uniform float uOpacityFactorDark; uniform float uOpacityFactorLight; void main() { float opacityFactor = (110.0 - length(vPosition)) / uPlaneSize; float opacityDark = smoothstep(0.0, 0.9, opacityFactor) * uOpacityFactorDark; float opacityLight = smoothstep(0.0, 0.9, opacityFactor) * uOpacityFactorLight; float baseOpacity = mix(opacityDark, opacityLight, uThemeAdjust); vec3 color = mix(uHillDarkColor, uHillLightColor, uThemeAdjust); gl_FragColor = vec4(color, baseOpacity); }`
+  ` varying vec3 vPosition; uniform float uThemeAdjust; uniform vec3 uPlaneColorDarkTheme; uniform vec3 uPlaneColorLightTheme; uniform float uPlaneSize; uniform float uOpacityFactorDark; uniform float uOpacityFactorLight; void main() { float opacityFactor = (110.0 - length(vPosition)) / uPlaneSize; float currentOpacityFactor = mix(uOpacityFactorDark, uOpacityFactorLight, uThemeAdjust); float baseOpacity = smoothstep(0.0, 0.9, opacityFactor) * currentOpacityFactor; vec3 color = mix(uPlaneColorDarkTheme, uPlaneColorLightTheme, uThemeAdjust); gl_FragColor = vec4(color, baseOpacity); }`
 );
 
 const RainParticleShaderMaterial = shaderMaterial(
@@ -83,9 +83,9 @@ extend({
 });
 
 const PROGRAMMATIC_CHARS_STR =
-  '0123456789ABCDEF!@#$%^&*()_+-=[]{};\':"\\|,.<>/?~';
-const SANSKRIT_CHARS_STR = 'अआइईउऊऋएऐओऔकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह';
-const GLYPH_CHARS = (PROGRAMMATIC_CHARS_STR + SANSKRIT_CHARS_STR).split('');
+  "0123456789ABCDEF!@#$%^&*()_+-=[]{};':\"\\|,.<>/?~";
+const SANSKRIT_CHARS_STR = "अआइईउऊऋएऐओऔकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह";
+const GLYPH_CHARS = (PROGRAMMATIC_CHARS_STR + SANSKRIT_CHARS_STR).split("");
 
 const CHARS_PER_ROW = 10;
 const CHAR_TEXTURE_SIZE = 64;
@@ -99,16 +99,16 @@ interface AtlasData {
 
 const createCharacterAtlas = (): AtlasData => {
   const numRows = Math.ceil(GLYPH_CHARS.length / CHARS_PER_ROW);
-  const atlasCanvas = document.createElement('canvas');
+  const atlasCanvas = document.createElement("canvas");
   atlasCanvas.width = CHARS_PER_ROW * CHAR_TEXTURE_SIZE;
   atlasCanvas.height = numRows * CHAR_TEXTURE_SIZE;
-  const context = atlasCanvas.getContext('2d');
-  if (!context) throw new Error('Cannot get 2D context for atlas');
+  const context = atlasCanvas.getContext("2d");
+  if (!context) throw new Error("Cannot get 2D context for atlas");
 
-  context.fillStyle = 'white';
+  context.fillStyle = "white";
   context.font = `bold ${CHAR_TEXTURE_SIZE * 0.75}px monospace`;
-  context.textAlign = 'center';
-  context.textBaseline = 'middle';
+  context.textAlign = "center";
+  context.textBaseline = "middle";
 
   const charUVMap = new Map<
     string,
@@ -140,9 +140,9 @@ const createCharacterAtlas = (): AtlasData => {
   }
 
   const splashCharMap =
-    charUVMap.get('・') ||
-    charUVMap.get('.') ||
-    charUVMap.get('o') ||
+    charUVMap.get("・") ||
+    charUVMap.get(".") ||
+    charUVMap.get("o") ||
     defaultCharMap;
 
   const atlasTexture = new THREE.Texture(atlasCanvas);
@@ -308,12 +308,11 @@ interface RefactoredThreeSceneProps {
   currentTheme: string | undefined;
   cameraControls: CameraControls;
   dynamicConfig?: Partial<SceneConfig>;
-  className?: string;
 }
 
 const PlaneComponentR3F: React.FC<{
   themeAdjust: number;
-  planeConfig: ParsedSceneConfig['plane'];
+  planeConfig: ParsedSceneConfig["plane"];
   onCollisionMeshReady: (mesh: THREE.Mesh) => void;
 }> = React.memo(({ themeAdjust, planeConfig, onCollisionMeshReady }) => {
   const collisionMeshRef = useRef<THREE.Mesh>(null!);
@@ -352,8 +351,8 @@ const PlaneComponentR3F: React.FC<{
           n1 * sinWave * planeConfig.noiseStrength.hill1 +
           n2 * sinWave * planeConfig.noiseStrength.hill2 +
           n3 *
-          (Math.abs(sinWave) * 1.7 + 0.4) *
-          planeConfig.noiseStrength.hill3 +
+            (Math.abs(sinWave) * 1.7 + 0.4) *
+            planeConfig.noiseStrength.hill3 +
           Math.pow(sinWave, 2) * planeConfig.noiseStrength.overall;
         positions.setZ(i, d);
       }
@@ -370,8 +369,8 @@ const PlaneComponentR3F: React.FC<{
   const materialProps = useMemo(
     () => ({
       uThemeAdjust: themeAdjust,
-      uHillDarkColor: planeConfig.hillDarkColor,
-      uHillLightColor: planeConfig.hillLightColor,
+      uPlaneColorDarkTheme: planeConfig.planeColorForDarkTheme,
+      uPlaneColorLightTheme: planeConfig.planeColorForLightTheme,
       uNoiseStrengthHill1: planeConfig.noiseStrength.hill1,
       uNoiseStrengthHill2: planeConfig.noiseStrength.hill2,
       uNoiseStrengthHill3: planeConfig.noiseStrength.hill3,
@@ -416,7 +415,7 @@ const PlaneComponentR3F: React.FC<{
     </>
   );
 });
-PlaneComponentR3F.displayName = 'PlaneComponentR3F';
+PlaneComponentR3F.displayName = "PlaneComponentR3F";
 
 type RainParticleData = {
   id: number;
@@ -445,15 +444,21 @@ interface SplashParticleData {
 type TriggerSplashFn = (position: THREE.Vector3) => void;
 
 const SplashParticleSystemR3F: React.FC<{
-  config: ParsedSceneConfig['splashParticles'];
+  config: ParsedSceneConfig["splashParticles"];
+  rainBloomConfig: ParsedSceneConfig["rain"]["bloomIntensity"];
   atlasData: AtlasData;
-  splashBaseRenderColor: THREE.Color;
   triggerRef: React.MutableRefObject<TriggerSplashFn | null>;
-}> = React.memo(({ config, atlasData, splashBaseRenderColor, triggerRef }) => {
+}> = React.memo(({ config, rainBloomConfig, atlasData, triggerRef }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
   const particles = useRef<SplashParticleData[]>([]).current;
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const { splashCharMap } = atlasData;
+
+  const splashBaseRenderColor = useMemo(() => {
+    return config.splashColor
+      .clone()
+      .multiplyScalar(rainBloomConfig.splash ?? 1.0);
+  }, [config.splashColor, rainBloomConfig.splash]);
 
   useEffect(() => {
     if (!config.enabled) return;
@@ -607,16 +612,24 @@ const SplashParticleSystemR3F: React.FC<{
     </instancedMesh>
   );
 });
-SplashParticleSystemR3F.displayName = 'SplashParticleSystemR3F';
+SplashParticleSystemR3F.displayName = "SplashParticleSystemR3F";
 
 const RainEffectComponentR3F: React.FC<{
-  rainConfig: ParsedSceneConfig['rain'];
+  rainConfig: ParsedSceneConfig["rain"];
+  planeSize: number;
   atlasData: AtlasData;
   collisionPlane: THREE.Mesh | null;
   themeAdjust: number;
   onRainImpact: TriggerSplashFn | null;
 }> = React.memo(
-  ({ rainConfig, atlasData, collisionPlane, themeAdjust, onRainImpact }) => {
+  ({
+    rainConfig,
+    planeSize,
+    atlasData,
+    collisionPlane,
+    themeAdjust,
+    onRainImpact,
+  }) => {
     const instancedMeshRef = useRef<THREE.InstancedMesh>(null!);
     const particles = useRef<RainParticleData[]>([]).current;
     const nextStreamId = useRef(0);
@@ -643,11 +656,9 @@ const RainEffectComponentR3F: React.FC<{
     }, [themeAdjust, rainConfig]);
 
     const defaultCharMap = atlasData.defaultCharMap;
+    const { width: screenWidth } = useThree((state) => state.size);
+    const isMobile = useMemo(() => screenWidth < 768, [screenWidth]);
 
-    const isMobile = useMemo(
-      () => typeof window !== 'undefined' && window.innerWidth < 768,
-      []
-    );
     const streamCount = useMemo(
       () =>
         isMobile ? rainConfig.streamCountMobile : rainConfig.streamCountDesktop,
@@ -664,6 +675,9 @@ const RainEffectComponentR3F: React.FC<{
       () => streamCount * streamLength,
       [streamCount, streamLength]
     );
+
+    const xSpreadFactor = useMemo(() => (isMobile ? 0.35 : 0.45), [isMobile]); // Percentage of planeSize / 2
+    const zSpreadFactor = useMemo(() => (isMobile ? 0.25 : 0.35), [isMobile]); // Percentage of planeSize / 2
 
     const getTrailColor = useCallback(
       (idx: number, len: number, base: THREE.Color): THREE.Color => {
@@ -689,13 +703,13 @@ const RainEffectComponentR3F: React.FC<{
             p.streamIndex === 0
               ? currentLeadColor.clone()
               : getTrailColor(
-                p.streamIndex,
-                streamLength,
-                currentTrailColorBase
-              );
+                  p.streamIndex,
+                  streamLength,
+                  currentTrailColorBase
+                );
         });
         const attr = instancedMeshRef.current.geometry.getAttribute(
-          'instanceColorOpacity'
+          "instanceColorOpacity"
         ) as THREE.InstancedBufferAttribute | undefined;
         if (attr) {
           particles.forEach((p, i) =>
@@ -733,13 +747,14 @@ const RainEffectComponentR3F: React.FC<{
       if (!atlasData || maxParticles === 0 || particles.length === maxParticles)
         return;
       particles.length = 0;
+
+      const halfPlaneX = (planeSize / 2) * xSpreadFactor;
+      const halfPlaneZ = (planeSize / 2) * zSpreadFactor;
+
       for (let i = 0; i < streamCount; i++) {
-        const sX =
-          Math.random() * rainConfig.charHeight * 100 -
-          (rainConfig.charHeight * 100) / 2;
-        const sZ =
-          Math.random() * rainConfig.charHeight * 60 -
-          (rainConfig.charHeight * 60) / 2;
+        const sX = Math.random() * halfPlaneX * 2 - halfPlaneX;
+        const sZ = Math.random() * halfPlaneZ * 2 - halfPlaneZ;
+
         const bS =
           rainConfig.speedBaseMin +
           Math.random() * (rainConfig.speedBaseMax - rainConfig.speedBaseMin);
@@ -768,9 +783,9 @@ const RainEffectComponentR3F: React.FC<{
       }
       if (instancedMeshRef.current?.geometry) {
         const geom = instancedMeshRef.current.geometry;
-        geom.setAttribute('instanceOffset', instanceOffsetAttribute);
+        geom.setAttribute("instanceOffset", instanceOffsetAttribute);
         geom.setAttribute(
-          'instanceColorOpacity',
+          "instanceColorOpacity",
           instanceColorOpacityAttribute
         );
         particles.forEach((p, idx) => {
@@ -799,6 +814,9 @@ const RainEffectComponentR3F: React.FC<{
     }, [
       atlasData,
       rainConfig,
+      planeSize,
+      xSpreadFactor,
+      zSpreadFactor,
       streamCount,
       streamLength,
       maxParticles,
@@ -826,6 +844,9 @@ const RainEffectComponentR3F: React.FC<{
       let needsMatrixUpdate = false;
       let needsOffsetUpdate = false;
       let needsColorOpacityUpdate = false;
+
+      const halfPlaneX = (planeSize / 2) * xSpreadFactor;
+      const halfPlaneZ = (planeSize / 2) * zSpreadFactor;
 
       for (let i = 0; i < particles.length; i++) {
         let p = particles[i];
@@ -906,16 +927,13 @@ const RainEffectComponentR3F: React.FC<{
           p.color.b,
           p.opacity
         );
-        if (p.opacity > 0) needsColorOpacityUpdate = true; // ensure if opacity was >0 and changed it is updated
+        if (p.opacity > 0) needsColorOpacityUpdate = true;
       }
 
       streamsToReset.forEach((sId) => {
-        const nSX =
-          Math.random() * rainConfig.charHeight * 100 -
-          (rainConfig.charHeight * 100) / 2;
-        const nSZ =
-          Math.random() * rainConfig.charHeight * 60 -
-          (rainConfig.charHeight * 60) / 2;
+        const nSX = Math.random() * halfPlaneX * 2 - halfPlaneX;
+        const nSZ = Math.random() * halfPlaneZ * 2 - halfPlaneZ;
+
         const bS =
           rainConfig.speedBaseMin +
           Math.random() * (rainConfig.speedBaseMax - rainConfig.speedBaseMin);
@@ -935,10 +953,10 @@ const RainEffectComponentR3F: React.FC<{
             p.color = iL
               ? currentLeadColor.clone()
               : getTrailColor(
-                p.streamIndex,
-                streamLength,
-                currentTrailColorBase
-              );
+                  p.streamIndex,
+                  streamLength,
+                  currentTrailColorBase
+                );
             p.opacity = iL
               ? 0.99
               : Math.max(0.15, 0.9 - (p.streamIndex / streamLength) * 0.85);
@@ -1004,7 +1022,7 @@ const RainEffectComponentR3F: React.FC<{
     );
   }
 );
-RainEffectComponentR3F.displayName = 'RainEffectComponentR3F';
+RainEffectComponentR3F.displayName = "RainEffectComponentR3F";
 
 const SceneContent: React.FC<{
   currentTheme: string | undefined;
@@ -1026,7 +1044,7 @@ const SceneContent: React.FC<{
   }, [atlasData]);
 
   const themeCfg = useMemo(() => {
-    const isDark = currentTheme === 'dark';
+    const isDark = currentTheme === "dark";
     return {
       isDarkTheme: isDark,
       themeAdjust: isDark ? 0 : 1,
@@ -1065,15 +1083,6 @@ const SceneContent: React.FC<{
     : parsedActiveCfg.effects.fog?.densityLightTheme;
   const fogEnabled = parsedActiveCfg.effects.fog?.enabled ?? true;
 
-  const splashBaseRenderColor = useMemo(() => {
-    return parsedActiveCfg.splashParticles.splashColor
-      .clone()
-      .multiplyScalar(parsedActiveCfg.splashParticles.bloomIntensity ?? 1.0);
-  }, [
-    parsedActiveCfg.splashParticles.splashColor,
-    parsedActiveCfg.splashParticles.bloomIntensity,
-  ]);
-
   return (
     <>
       {fogEnabled && fogDensity !== undefined && (
@@ -1088,6 +1097,7 @@ const SceneContent: React.FC<{
       {collisionPlaneMesh && atlasData && (
         <RainEffectComponentR3F
           rainConfig={parsedActiveCfg.rain}
+          planeSize={parsedActiveCfg.plane.size}
           atlasData={atlasData}
           collisionPlane={collisionPlaneMesh}
           themeAdjust={themeCfg.themeAdjust}
@@ -1097,27 +1107,27 @@ const SceneContent: React.FC<{
       {atlasData && parsedActiveCfg.splashParticles.enabled && (
         <SplashParticleSystemR3F
           config={parsedActiveCfg.splashParticles}
+          rainBloomConfig={parsedActiveCfg.rain.bloomIntensity}
           atlasData={atlasData}
-          splashBaseRenderColor={splashBaseRenderColor}
           triggerRef={triggerSplashRef}
         />
       )}
     </>
   );
 });
-SceneContent.displayName = 'SceneContent';
+SceneContent.displayName = "SceneContent";
 
 const CanvasErrorFallback = () => (
   <div
     style={{
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      background: '#222',
-      color: 'white',
-      flexDirection: 'column',
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      background: "#222",
+      color: "white",
+      flexDirection: "column",
     }}
   >
     <h2>Oops! Something went wrong in the 3D scene.</h2>
@@ -1128,13 +1138,12 @@ const ThreeScene: React.FC<RefactoredThreeSceneProps> = ({
   currentTheme,
   cameraControls,
   dynamicConfig,
-  className = '',
 }) => {
   const parsedActiveCfg = useMemo(
     () =>
       parseConfigColors(
         dynamicConfig || importedDefaultConfig,
-        currentTheme === 'dark' ? 'dark' : 'light'
+        currentTheme === "dark" ? "dark" : "light"
       ),
     [dynamicConfig, currentTheme]
   );
@@ -1147,12 +1156,7 @@ const ThreeScene: React.FC<RefactoredThreeSceneProps> = ({
   );
 
   return (
-    <div
-      className={cn(
-        className,
-        'fixed top-0 left-0 w-full h-full -z-10 pointer-events-none'
-      )}
-    >
+    <div className={cn("absolute inset-0 w-full h-full pointer-events-none")}>
       <Suspense fallback={<CanvasErrorFallback />}>
         <Canvas
           key={canvasKey}
@@ -1168,28 +1172,27 @@ const ThreeScene: React.FC<RefactoredThreeSceneProps> = ({
           }}
           gl={{
             antialias: true,
-            powerPreference: 'high-performance',
+            powerPreference: "high-performance",
             alpha: true,
             logarithmicDepthBuffer: false,
           }}
           dpr={
-            typeof window !== 'undefined'
+            typeof window !== "undefined"
               ? Math.min(window.devicePixelRatio, 1.5)
               : 1
           }
-          style={{ background: 'transparent' }}
+          style={{ background: "transparent" }}
           frameloop="always"
           shadows={false}
           fallback={
             <div
               style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                background: '#111',
-                color: 'white',
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "transparent",
               }}
             >
               Loading 3D Scene... (WebGL may not be supported)
@@ -1199,7 +1202,7 @@ const ThreeScene: React.FC<RefactoredThreeSceneProps> = ({
           <PerformanceMonitor
             onDecline={() =>
               console.warn(
-                'Performance declined, consider simplifying the scene or adjusting quality settings.'
+                "Performance declined, consider simplifying the scene or adjusting quality settings."
               )
             }
           />

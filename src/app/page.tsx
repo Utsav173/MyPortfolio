@@ -119,7 +119,10 @@ export default function Home() {
   );
 
   return (
-    <div ref={scrollContainerRef} className="flex min-h-screen flex-col">
+    <div
+      ref={scrollContainerRef}
+      className="flex min-h-dvh flex-col w-full overflow-x-hidden"
+    >
       <div
         ref={matrixContainerRef}
         className="fixed top-0 left-0 w-full h-full pointer-events-none z-[-1]"
@@ -130,9 +133,9 @@ export default function Home() {
         />
       </div>
 
-      <Navbar className="relative z-10" />
+      <Navbar className="z-10" />
 
-      <main className="flex-grow relative z-0">
+      <main className="flex-grow relative z-0 w-full">
         <HeroSection id="hero" className="content-section" />
         <AboutSection id="about" className="content-section" />
         <SkillsSection id="skills" className="content-section" />

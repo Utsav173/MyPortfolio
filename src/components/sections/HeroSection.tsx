@@ -18,53 +18,90 @@ export function HeroSection({
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const nameContainerRef = useRef<HTMLHeadingElement | null>(null);
-  const p1Ref = useRef<HTMLParagraphElement | null>(null);
-  const p2Ref = useRef<HTMLParagraphElement | null>(null);
+  const introTextRef = useRef<HTMLParagraphElement | null>(null);
+  const subTextRef = useRef<HTMLParagraphElement | null>(null);
   const ctaContainerRef = useRef<HTMLDivElement | null>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement | null>(null);
 
   const { resolvedTheme } = useTheme();
-  const nameChars = "Utsav Khatri".split("");
 
-  const initialSetup = useCallback(() => {
-    gsap.set([p1Ref.current, p2Ref.current], { opacity: 0, y: 20 });
-    if (ctaContainerRef.current) {
-      gsap.set(ctaContainerRef.current.children, {
-        opacity: 0,
-        y: 20,
-        scale: 0.95,
-      });
-    }
-    if (nameContainerRef.current) {
-      gsap.set(nameContainerRef.current.querySelectorAll(".name-char"), {
-        opacity: 0,
-        y: 30,
-        filter: "blur(4px)",
-        scale: 0.9,
-      });
-      gsap.set(nameContainerRef.current, { textShadow: "0 0 0px transparent" });
-    }
-    gsap.set(scrollIndicatorRef.current, { opacity: 0, y: -10 });
-  }, []);
+  const nameParts = [
+    "U",
+    "t",
+    "s",
+    "a",
+    "v",
+    " ",
+    "K",
+    "h",
+    "a",
+    "t",
+    "r",
+    "i",
+  ];
 
   useGSAP(
     () => {
-      initialSetup();
+      if (!sectionRef.current) return;
+
+      gsap.set(introTextRef.current, { opacity: 0, y: 20 });
+      gsap.set(subTextRef.current, { opacity: 0, y: 20 });
+      gsap.set(scrollIndicatorRef.current, { opacity: 0, y: -10 });
+
+      if (ctaContainerRef.current) {
+        gsap.set(ctaContainerRef.current.children, {
+          opacity: 0,
+          y: 20,
+          scale: 0.95,
+        });
+      }
+
+      const nameChars =
+        nameContainerRef.current?.querySelectorAll(".name-char");
+      if (nameChars) {
+        gsap.set(nameChars, {
+          opacity: 0,
+          y: 25,
+          scale: 0.9,
+          rotationX: -30,
+          transformOrigin: "center bottom -20px",
+        });
+      }
+      if (nameContainerRef.current) {
+        gsap.set(nameContainerRef.current, { perspective: "800px" });
+      }
 
       const tl = gsap.timeline({
-        defaults: { ease: "power3.out", duration: 0.8 },
+        defaults: { ease: "power3.out" },
+        delay: 0.2,
       });
 
-      let primaryColor = "oklch(0.58 0.23 225)";
+      tl.to(introTextRef.current, { opacity: 1, y: 0, duration: 0.7 });
+
+      if (nameChars) {
+        tl.to(
+          nameChars,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotationX: 0,
+            duration: 0.7,
+            stagger: 0.06,
+            ease: "power2.out",
+          },
+          "-=0.5"
+        );
+      }
+
+      let primaryColorVal = "oklch(0.58 0.23 225)";
       if (typeof window !== "undefined") {
-        primaryColor =
-          resolvedTheme === "dark"
-            ? getComputedStyle(document.documentElement)
-                .getPropertyValue("--primary")
-                .trim() || "oklch(0.62 0.2 220)"
-            : getComputedStyle(document.documentElement)
-                .getPropertyValue("--primary")
-                .trim() || "oklch(0.58 0.23 225)";
+        const rootStyle = getComputedStyle(document.documentElement);
+        primaryColorVal =
+          rootStyle.getPropertyValue("--primary").trim() ||
+          (resolvedTheme === "dark"
+            ? "oklch(0.62 0.2 220)"
+            : "oklch(0.58 0.23 225)");
       }
 
       const oklchToOklcha = (colorStr: string, alpha: number) => {
@@ -75,56 +112,28 @@ export function HeroSection({
         }
         return colorStr;
       };
+      const subtleEndGlow = `0 0 5px ${oklchToOklcha(
+        primaryColorVal,
+        0.2
+      )}, 0 0 10px ${oklchToOklcha(primaryColorVal, 0.1)}`;
 
-      const initialGlow = `0 0 5px ${oklchToOklcha(
-        primaryColor,
-        0.3
-      )}, 0 0 10px ${oklchToOklcha(primaryColor, 0.2)}`;
-      const peakGlow = `0 0 12px ${oklchToOklcha(
-        primaryColor,
-        0.5
-      )}, 0 0 24px ${oklchToOklcha(primaryColor, 0.3)}`;
-      const subtleEndGlow = `0 0 3px ${oklchToOklcha(
-        primaryColor,
-        0.15
-      )}, 0 0 6px ${oklchToOklcha(primaryColor, 0.1)}`;
-
-      tl.to(p1Ref.current, { opacity: 1, y: 0 }, 0.2)
-        .to(
-          nameContainerRef.current?.querySelectorAll(".name-char") || [],
-          {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            scale: 1,
-            stagger: 0.06,
-            duration: 0.7,
-            ease: "power3.out",
-          },
-          "-=0.6"
-        )
-        .to(
+      if (nameContainerRef.current) {
+        tl.to(
           nameContainerRef.current,
           {
-            textShadow: initialGlow,
-            duration: 0.3,
-            ease: "power1.inOut",
+            textShadow: subtleEndGlow,
+            duration: 0.8,
+            ease: "power2.inOut",
           },
           "-=0.3"
-        )
-        .to(nameContainerRef.current, {
-          textShadow: peakGlow,
-          duration: 0.4,
-          ease: "power2.inOut",
-        })
-        .to(nameContainerRef.current, {
-          textShadow: subtleEndGlow,
-          duration: 0.6,
-          ease: "power2.out",
-        })
-        .to(p2Ref.current, { opacity: 1, y: 0, duration: 0.6 }, "-=1.0")
-        .to(
-          ctaContainerRef.current?.children || [],
+        );
+      }
+
+      tl.to(subTextRef.current, { opacity: 1, y: 0, duration: 0.6 }, "-=0.8");
+
+      if (ctaContainerRef.current?.children) {
+        tl.to(
+          ctaContainerRef.current.children,
           {
             opacity: 1,
             y: 0,
@@ -133,26 +142,27 @@ export function HeroSection({
             duration: 0.5,
             ease: "back.out(1.7)",
           },
-          "-=0.7"
-        )
-        .to(
-          scrollIndicatorRef.current,
-          { opacity: 0.6, y: 0, duration: 0.5, ease: "sine.inOut" },
-          "-=0.3"
-        )
-        .add(() => {
-          if (scrollIndicatorRef.current) {
-            gsap.to(scrollIndicatorRef.current, {
-              y: 10,
-              repeat: -1,
-              yoyo: true,
-              duration: 1.5,
-              ease: "sine.inOut",
-            });
-          }
-        });
+          "-=0.6"
+        );
+      }
+
+      tl.to(
+        scrollIndicatorRef.current,
+        { opacity: 0.6, y: 0, duration: 0.5, ease: "sine.inOut" },
+        "-=0.2"
+      ).add(() => {
+        if (scrollIndicatorRef.current) {
+          gsap.to(scrollIndicatorRef.current, {
+            y: 10,
+            repeat: -1,
+            yoyo: true,
+            duration: 1.5,
+            ease: "sine.inOut",
+          });
+        }
+      });
     },
-    { scope: sectionRef, dependencies: [resolvedTheme, initialSetup] }
+    { scope: sectionRef, dependencies: [resolvedTheme] }
   );
 
   const handleProjectScroll = useCallback(
@@ -160,7 +170,12 @@ export function HeroSection({
       e.preventDefault();
       const projectsSection = document.querySelector("#projects");
       if (projectsSection) {
-        projectsSection.scrollIntoView({ behavior: "smooth" });
+        const yOffset = -70;
+        const y =
+          projectsSection.getBoundingClientRect().top +
+          window.scrollY +
+          yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
       }
     },
     []
@@ -171,13 +186,13 @@ export function HeroSection({
       ref={sectionRef}
       id={id}
       className={cn(
-        className,
-        "min-h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden bg-transparent"
+        "min-h-dvh flex flex-col justify-center items-center text-center px-4 relative overflow-hidden bg-transparent",
+        className
       )}
     >
       <div className="container mx-auto relative z-10">
         <p
-          ref={p1Ref}
+          ref={introTextRef}
           className="mb-2 sm:mb-3 md:mb-4 text-primary font-semibold text-sm sm:text-base md:text-lg"
         >
           Hello, I'm
@@ -191,18 +206,18 @@ export function HeroSection({
             "leading-tight"
           )}
         >
-          {nameChars.map((char, index) => (
+          {nameParts.map((char, index) => (
             <span
               key={index}
               className="name-char inline-block"
-              style={char === " " ? { width: "0.2em" } : {}}
+              style={char === " " ? { width: "0.2em", display: "inline" } : {}}
             >
-              {char}
+              {char === " " ? "\u00A0" : char}
             </span>
           ))}
         </h1>
         <p
-          ref={p2Ref}
+          ref={subTextRef}
           className="mx-auto mt-2 sm:mt-3 md:mt-4 max-w-xl sm:max-w-2xl md:max-w-3xl text-base sm:text-lg md:text-xl text-muted-foreground px-2 sm:px-0"
         >
           A{" "}
@@ -219,11 +234,14 @@ export function HeroSection({
           )}
         >
           <Button
-            size="default"
+            size="lg"
             asChild
             className={cn(
-              "group shadow-md hover:shadow-primary/30 transition-all duration-300 hover:bg-primary/90 hover:-translate-y-0.5 text-sm h-auto",
-              "w-full max-w-xs sm:w-auto px-6 py-2.5 sm:px-8 sm:py-3 sm:text-base sm:hover:-translate-y-1"
+              "group relative overflow-hidden btn-primary-gradient-sweep",
+              "bg-primary hover:bg-primary/95 text-primary-foreground",
+              "shadow-lg hover:shadow-primary/40 dark:shadow-primary/30 dark:hover:shadow-primary/50",
+              "transition-all duration-300 ease-out hover:-translate-y-1 active:scale-[0.98]",
+              "px-7 py-3 sm:px-8 sm:py-3.5 text-sm sm:text-base rounded-full h-auto"
             )}
           >
             <Link
@@ -232,18 +250,19 @@ export function HeroSection({
               className="flex items-center justify-center"
             >
               Explore Projects
-              <ArrowRight className="ml-2 size-4 sm:ml-2.5 sm:size-5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="ml-2.5 size-4 sm:size-5 transition-transform duration-200 ease-out group-hover:translate-x-1 group-focus-visible:translate-x-1" />
             </Link>
           </Button>
           <Button
-            size="default"
+            size="lg"
             variant="outline"
             asChild
             className={cn(
-              "group shadow-sm hover:shadow-md transition-all duration-300 text-sm h-auto",
-              "w-full max-w-xs sm:w-auto px-6 py-2.5 sm:px-8 sm:py-3 sm:text-base",
-              "border-primary/40 hover:border-primary/70 text-primary hover:bg-primary/10 dark:border-primary/30 dark:hover:border-primary/60 dark:text-primary dark:hover:bg-primary/10",
-              "focus-visible:ring-primary/50"
+              "group",
+              "border-primary/70 hover:border-primary text-primary hover:bg-primary/10 dark:border-primary/60 dark:hover:border-primary/80 dark:text-primary dark:hover:bg-primary/15",
+              "shadow-sm hover:shadow-md dark:hover:shadow-primary/20",
+              "transition-all duration-300 ease-out hover:-translate-y-1 active:scale-[0.98]",
+              "px-7 py-3 sm:px-8 sm:py-3.5 text-sm sm:text-base rounded-full h-auto"
             )}
           >
             <a
@@ -253,7 +272,7 @@ export function HeroSection({
               download="resume_utsav_khatri.pdf"
               className="flex items-center justify-center"
             >
-              <DownloadCloud className="mr-2 size-4 sm:mr-2.5 sm:size-5 resume-button-icon" />
+              <DownloadCloud className="mr-2.5 size-4 sm:size-5 resume-button-icon group-hover:animate-[bounceOnce_0.6s_ease-in-out] group-focus-visible:animate-[bounceOnce_0.6s_ease-in-out]" />
               Download Resume
             </a>
           </Button>
