@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,9 +11,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useScrollToSection } from "@/hooks/use-scroll-to-section";
 import { cn } from "@/lib/utils";
 
-const navLinks = [
+const NAV_LINKS = [
   { href: "#about", label: "About" },
   { href: "#skills", label: "Skills" },
   { href: "#experience", label: "Experience" },
@@ -21,23 +22,19 @@ const navLinks = [
   { href: "#contact", label: "Contact" },
 ];
 
-const resumeUrl =
-  "https://raw.githubusercontent.com/Utsav173/MyPortfolio/refs/heads/master/public/resume_utsav_khatri.pdf";
+const RESUME_URL = "/resume_utsav_khatri.pdf";
 
-export function MobileMenu() {
+const MobileMenuComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { scrollTo } = useScrollToSection();
 
-  const handleLinkClick = (href: string) => {
-    setIsOpen(false);
-    const targetId = href.substring(1);
-    const targetElement = document.getElementById(targetId);
-    if (targetElement) {
-      const yOffset = -70;
-      const y =
-        targetElement.getBoundingClientRect().top + window.scrollY + yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  };
+  const handleLinkClick = useCallback(
+    (href: string) => {
+      setIsOpen(false);
+      scrollTo(href);
+    },
+    [scrollTo]
+  );
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -45,7 +42,7 @@ export function MobileMenu() {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden rounded-full p-1 shrink-0"
+          className="shrink-0 rounded-full md:hidden"
           aria-label="Toggle Menu"
         >
           <Menu className="h-[1.2rem] w-[1.2rem]" />
@@ -55,47 +52,52 @@ export function MobileMenu() {
         side="left"
         className={cn(
           "w-[300px] sm:w-[360px] p-0",
-          "bg-transparent border-none shadow-none",
-          "flex items-center justify-start"
+          "flex items-center justify-start border-none bg-transparent shadow-none"
         )}
       >
         <div
           className={cn(
             "m-4 h-[calc(100dvh-2rem)] max-h-[96dvh] w-full rounded-2xl",
-            "bg-background/85 dark:bg-neutral-900/85 backdrop-blur-lg",
-            "border border-border/30 shadow-xl",
+            "border border-border/30 bg-background/85 shadow-xl backdrop-blur-lg dark:bg-neutral-900/85",
             "flex flex-col overflow-hidden"
           )}
         >
-          <SheetHeader className="p-4 sm:p-6 border-b border-border/30 shrink-0">
-            <SheetTitle className="text-left text-md sm:text-lg font-semibold">
+          <SheetHeader className="shrink-0 border-b border-border/30 p-4 sm:p-6">
+            <SheetTitle className="text-left text-base font-semibold sm:text-lg">
               Navigation
             </SheetTitle>
           </SheetHeader>
-          <nav className="flex flex-col space-y-1 p-4 sm:p-6 overflow-y-auto flex-grow">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="block px-3 py-2.5 sm:py-3 text-base sm:text-lg font-medium rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
-                onClick={() => handleLinkClick(link.href)}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <a
-              href={resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              download="resume_utsav_khatri.pdf"
-              className="block px-3 py-2.5 sm:py-3 text-base sm:text-lg font-medium rounded-md hover:bg-accent hover:text-accent-foreground transition-colors mt-4 border-t border-border/30 pt-4 sm:pt-5"
-              onClick={() => setIsOpen(false)}
-            >
-              Download Resume
-            </a>
+          <nav className="flex-grow overflow-y-auto p-4 sm:p-6">
+            <ul className="flex flex-col space-y-1">
+              {NAV_LINKS.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="block rounded-md px-3 py-2.5 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground sm:py-3 sm:text-lg"
+                    onClick={() => handleLinkClick(link.href)}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <a
+                  href={RESUME_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download="resume_utsav_khatri.pdf"
+                  className="block rounded-md px-3 py-2.5 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground mt-4 border-t border-border/30 pt-4 sm:py-3 sm:pt-5 sm:text-lg"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Download Resume
+                </a>
+              </li>
+            </ul>
           </nav>
         </div>
       </SheetContent>
     </Sheet>
   );
-}
+};
+
+export const MobileMenu = memo(MobileMenuComponent);

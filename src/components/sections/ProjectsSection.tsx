@@ -200,7 +200,7 @@ export function ProjectsSection({
                 animate={shouldReduceMotion ? undefined : "visible"}
                 exit={shouldReduceMotion ? undefined : "exit"}
                 layout // Enables layout animation for when items are added/removed
-                className="h-full" // Ensure motion.div takes up card space
+                className="h-fit" // Ensure motion.div takes up card space
               >
                 <ProjectCard
                   project={project}

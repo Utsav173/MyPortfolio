@@ -1,18 +1,20 @@
 "use client";
 
-import React from "react";
+import { memo } from "react";
 
-const FooterSection = () => {
+const FooterSectionComponent = () => {
+  const currentYear = new Date().getFullYear();
   return (
-    <footer className="py-8 footer-gradient relative z-10">
-      <div className="container flex flex-col items-center justify-center gap-4 md:h-16 md:flex-row mx-auto">
-        <p className="text-balance text-center text-md max-sm:text-sm leading-loose text-white dark:text-black font-bold">
-          Designed & Built by Utsav Khatri. © {new Date().getFullYear()}. All
-          rights reserved.
+    <footer className="relative z-10 py-8 footer-gradient">
+      <div className="container mx-auto flex h-16 flex-col items-center justify-center gap-4 md:flex-row">
+        <p className="text-balance text-center text-sm font-bold text-white dark:text-black md:text-base">
+          Designed & Built by Utsav Khatri. © {currentYear}. All rights
+          reserved.
         </p>
       </div>
     </footer>
   );
 };
 
+const FooterSection = memo(FooterSectionComponent);
 export default FooterSection;
