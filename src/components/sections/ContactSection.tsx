@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useState, useRef, useCallback } from "react";
+import { Button as ShadcnButton } from "@/components/ui/button"; // Renamed to avoid conflict
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -14,12 +14,10 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { toast as sonnerToast } from "sonner";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import { z } from "zod";
 import { contactFormSchema } from "@/lib/validations";
 import { cn } from "@/lib/utils";
+import { motion, useReducedMotion, Variants } from "motion/react";
 
 type FormData = z.infer<typeof contactFormSchema>;
 type FormErrors = Partial<Record<keyof FormData, string[] | undefined>>;
@@ -29,6 +27,43 @@ const initialFormData: FormData = {
   email: "",
   message: "",
 };
+
+const sectionVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.2, delayChildren: 0.1 } },
+};
+
+const elementVariants: Variants = {
+  hidden: { opacity: 0, y: 40, filter: "blur(6px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.8, ease: [0.25, 1, 0.5, 1] },
+  },
+};
+
+const formElementVariants: Variants = {
+  hidden: { opacity: 0, x: 60, filter: "blur(6px)" },
+  visible: {
+    opacity: 1,
+    x: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.8, ease: [0.25, 1, 0.5, 1] },
+  },
+};
+
+const getInTouchVariants: Variants = {
+  hidden: { opacity: 0, x: -60, filter: "blur(6px)" },
+  visible: {
+    opacity: 1,
+    x: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.8, ease: [0.25, 1, 0.5, 1] },
+  },
+};
+
+const MotionButton = motion.create(ShadcnButton);
 
 export function ContactSection({
   className,
@@ -40,79 +75,8 @@ export function ContactSection({
   const [formData, setFormDataState] = useState<FormData>(initialFormData);
   const [errors, setErrorsState] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmittingState] = useState(false);
-
+  const shouldReduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const getInTouchRef = useRef<HTMLDivElement>(null);
-  const formElRef = useRef<HTMLFormElement>(null);
-  const submitButtonRef = useRef<HTMLButtonElement>(null);
-
-  useGSAP(
-    () => {
-      if (headingRef.current) {
-        gsap.set(headingRef.current, {
-          opacity: 0,
-          y: 40,
-          filter: "blur(6px)",
-        });
-      }
-      if (getInTouchRef.current) {
-        gsap.set(getInTouchRef.current, {
-          opacity: 0,
-          x: -60,
-          filter: "blur(6px)",
-        });
-      }
-      if (formElRef.current) {
-        gsap.set(formElRef.current, {
-          opacity: 0,
-          x: 60,
-          filter: "blur(6px)",
-        });
-      }
-
-      const tl = gsap.timeline({
-        paused: true,
-        defaults: {
-          ease: "power3.out",
-          duration: 1,
-        },
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          once: true,
-        },
-      });
-
-      tl.to(headingRef.current, {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 0.8,
-      })
-        .to(
-          getInTouchRef.current,
-          {
-            opacity: 1,
-            x: 0,
-            filter: "blur(0px)",
-            duration: 0.8,
-          },
-          "-=0.6"
-        )
-        .to(
-          formElRef.current,
-          {
-            opacity: 1,
-            x: 0,
-            filter: "blur(0px)",
-            duration: 0.8,
-          },
-          "-=0.6"
-        );
-    },
-    { scope: sectionRef }
-  );
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -139,19 +103,6 @@ export function ContactSection({
         return;
       }
       setIsSubmittingState(true);
-      if (submitButtonRef.current) {
-        gsap.to(submitButtonRef.current, {
-          opacity: 0.7,
-          scale: 0.98,
-          duration: 0.2,
-          ease: "power2.out",
-          onStart: () => {
-            if (submitButtonRef.current) {
-              submitButtonRef.current.style.pointerEvents = "none";
-            }
-          },
-        });
-      }
       try {
         const response = await fetch("/api/contact", {
           method: "POST",
@@ -167,15 +118,6 @@ export function ContactSection({
             duration: 5000,
           });
           setFormDataState(initialFormData);
-          if (submitButtonRef.current) {
-            gsap.to(submitButtonRef.current, {
-              scale: 1.05,
-              duration: 0.1,
-              yoyo: true,
-              repeat: 1,
-              ease: "power2.inOut",
-            });
-          }
         } else {
           sonnerToast.error("Submission Failed", {
             description:
@@ -194,19 +136,6 @@ export function ContactSection({
         });
       } finally {
         setIsSubmittingState(false);
-        if (submitButtonRef.current) {
-          gsap.to(submitButtonRef.current, {
-            opacity: 1,
-            scale: 1,
-            duration: 0.3,
-            ease: "power2.out",
-            onComplete: () => {
-              if (submitButtonRef.current) {
-                submitButtonRef.current.style.pointerEvents = "auto";
-              }
-            },
-          });
-        }
       }
     },
     [formData]
@@ -214,24 +143,33 @@ export function ContactSection({
 
   const { name, email, message } = formData;
 
+  const buttonAnimationStates = {
+    idle: { opacity: 1, scale: 1 },
+    submitting: { opacity: 0.7, scale: 0.98 },
+  };
+
   return (
-    <section
+    <motion.section
       id={id}
       ref={sectionRef}
+      initial={shouldReduceMotion ? false : "hidden"}
+      whileInView={shouldReduceMotion ? undefined : "visible"}
+      variants={shouldReduceMotion ? {} : sectionVariants}
+      viewport={{ once: true, amount: 0.15 }}
       className={cn(
         className,
         "bg-secondary/20 dark:bg-secondary/5 py-20 md:py-28 lg:py-32"
       )}
     >
       <div className="container mx-auto px-4">
-        <h2
-          ref={headingRef}
+        <motion.h2
+          variants={shouldReduceMotion ? {} : elementVariants}
           className="mb-16 text-center text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter"
         >
           Let's <span className="text-primary">Connect</span>
-        </h2>
+        </motion.h2>
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
-          <div ref={getInTouchRef}>
+          <motion.div variants={shouldReduceMotion ? {} : getInTouchVariants}>
             <h3 className="text-2xl lg:text-3xl font-semibold mb-6 text-foreground">
               Get in Touch
             </h3>
@@ -263,7 +201,7 @@ export function ContactSection({
                   text: "+91 6355321582",
                 },
               ].map((item) => (
-                <a
+                <motion.a
                   key={item.href}
                   href={item.href}
                   target={item.href.startsWith("http") ? "_blank" : undefined}
@@ -273,33 +211,26 @@ export function ContactSection({
                       : undefined
                   }
                   className="flex items-center gap-4 text-lg text-foreground/90 hover:text-primary transition-all duration-300 group"
-                  onMouseEnter={(e) => {
-                    gsap.to(e.currentTarget.querySelector(".icon"), {
-                      scale: 1.1,
-                      rotate: 5,
-                      duration: 0.3,
-                      ease: "power2.out",
-                    });
-                  }}
-                  onMouseLeave={(e) => {
-                    gsap.to(e.currentTarget.querySelector(".icon"), {
-                      scale: 1,
-                      rotate: 0,
-                      duration: 0.3,
-                      ease: "power2.out",
-                    });
-                  }}
+                  whileHover={shouldReduceMotion ? {} : { scale: 1.02, x: 2 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
                 >
-                  <item.icon className="icon size-6 text-primary/90 group-hover:text-primary transition-colors duration-300 shrink-0" />
+                  <motion.span
+                    // variants for icon hover can be complex if needed
+                    whileHover={
+                      shouldReduceMotion ? {} : { scale: 1.1, rotate: 5 }
+                    }
+                  >
+                    <item.icon className="icon size-6 text-primary/90 group-hover:text-primary transition-colors duration-300 shrink-0" />
+                  </motion.span>
                   <span className="truncate transition-colors duration-300">
                     {item.text}
                   </span>
-                </a>
+                </motion.a>
               ))}
             </div>
-          </div>
-          <form
-            ref={formElRef}
+          </motion.div>
+          <motion.form
+            variants={shouldReduceMotion ? {} : formElementVariants}
             onSubmit={handleSubmit}
             className="space-y-6"
             noValidate
@@ -324,20 +255,6 @@ export function ContactSection({
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? "name-error" : undefined}
                 className="bg-card/60 dark:bg-card/70 text-base p-3 focus:ring-primary focus:border-primary h-11 transition-all duration-300"
-                onFocus={(e) => {
-                  gsap.to(e.target, {
-                    scale: 1.02,
-                    duration: 0.2,
-                    ease: "power2.out",
-                  });
-                }}
-                onBlur={(e) => {
-                  gsap.to(e.target, {
-                    scale: 1,
-                    duration: 0.2,
-                    ease: "power2.out",
-                  });
-                }}
               />
               {errors.name && (
                 <p
@@ -366,20 +283,6 @@ export function ContactSection({
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? "email-error" : undefined}
                 className="bg-card/60 dark:bg-card/70 text-base p-3 focus:ring-primary focus:border-primary h-11 transition-all duration-300"
-                onFocus={(e) => {
-                  gsap.to(e.target, {
-                    scale: 1.02,
-                    duration: 0.2,
-                    ease: "power2.out",
-                  });
-                }}
-                onBlur={(e) => {
-                  gsap.to(e.target, {
-                    scale: 1,
-                    duration: 0.2,
-                    ease: "power2.out",
-                  });
-                }}
               />
               {errors.email && (
                 <p
@@ -408,20 +311,6 @@ export function ContactSection({
                 aria-invalid={!!errors.message}
                 aria-describedby={errors.message ? "message-error" : undefined}
                 className="bg-card/60 dark:bg-card/70 text-base p-3 focus:ring-primary focus:border-primary min-h-[120px] resize-none transition-all duration-300"
-                onFocus={(e) => {
-                  gsap.to(e.target, {
-                    scale: 1.02,
-                    duration: 0.2,
-                    ease: "power2.out",
-                  });
-                }}
-                onBlur={(e) => {
-                  gsap.to(e.target, {
-                    scale: 1,
-                    duration: 0.2,
-                    ease: "power2.out",
-                  });
-                }}
               />
               {errors.message && (
                 <p
@@ -433,41 +322,31 @@ export function ContactSection({
                 </p>
               )}
             </div>
-            <Button
-              ref={submitButtonRef}
-              type="submit"
-              size="lg"
-              className="w-full shadow-lg hover:shadow-primary/40 transition-all duration-300 group text-base py-3 h-12 hover:bg-primary/90"
-              disabled={isSubmitting}
-              onMouseEnter={(e) => {
-                if (!isSubmitting) {
-                  gsap.to(e.currentTarget, {
-                    y: -2,
-                    duration: 0.2,
-                    ease: "power2.out",
-                  });
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isSubmitting) {
-                  gsap.to(e.currentTarget, {
-                    y: 0,
-                    duration: 0.2,
-                    ease: "power2.out",
-                  });
-                }
-              }}
+            <motion.div
+              animate={isSubmitting ? "submitting" : "idle"}
+              variants={shouldReduceMotion ? {} : buttonAnimationStates}
             >
-              {isSubmitting ? (
-                <Loader2 className="mr-2 size-5 animate-spin" />
-              ) : (
-                <SendHorizonal className="mr-2 size-5 transition-transform group-hover:translate-x-1" />
-              )}
-              {isSubmitting ? "Sending..." : "Send Message"}
-            </Button>
-          </form>
+              <MotionButton
+                type="submit"
+                size="lg"
+                className="w-full shadow-lg hover:shadow-primary/40 transition-all duration-300 group text-base py-3 h-12 hover:bg-primary/90"
+                disabled={isSubmitting}
+                whileHover={shouldReduceMotion || isSubmitting ? {} : { y: -2 }}
+                whileTap={
+                  shouldReduceMotion || isSubmitting ? {} : { scale: 0.98 }
+                }
+              >
+                {isSubmitting ? (
+                  <Loader2 className="mr-2 size-5 animate-spin" />
+                ) : (
+                  <SendHorizonal className="mr-2 size-5 transition-transform group-hover:translate-x-1" />
+                )}
+                {isSubmitting ? "Sending..." : "Send Message"}
+              </MotionButton>
+            </motion.div>
+          </motion.form>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

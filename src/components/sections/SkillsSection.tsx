@@ -1,7 +1,18 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import { animate, JSAnimation } from "animejs";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
+import {
+  motion,
+  useReducedMotion,
+  Variants,
+  useAnimationControls,
+} from "motion/react";
 import {
   Code2,
   Server,
@@ -9,7 +20,6 @@ import {
   Cloud,
   Brain,
   Wrench,
-  type LucideIcon,
   Users,
   GitFork,
   Zap,
@@ -26,15 +36,16 @@ import { cn } from "@/lib/utils";
 interface SkillItemData {
   name: string;
   iconifyString: string;
-  fallbackIcon?: LucideIcon;
+  fallbackIcon?: React.ComponentType<{ className?: string }>;
 }
 
 interface SkillCategoryData {
   category: string;
-  categoryIcon: LucideIcon;
+  categoryIcon: React.ComponentType<{ className?: string }>;
   skills: SkillItemData[];
 }
 
+// Memoized skills data to prevent recreation on each render
 const skillsData: SkillCategoryData[] = [
   {
     category: "Frontend",
@@ -163,62 +174,71 @@ const skillsData: SkillCategoryData[] = [
   },
 ];
 
-const SkillItemDisplay: React.FC<{
+// Memoized animation variants to prevent recreation
+const skillItemHoverVariants: Variants = {
+  hover: {
+    y: -8,
+    scale: 1.05,
+    boxShadow:
+      "0px 10px 20px -5px rgba(0,0,0,0.2), 0px 4px 8px -3px rgba(0,0,0,0.15)",
+    transition: { duration: 0.3, ease: "easeOut" },
+  },
+  initial: {
+    y: 0,
+    scale: 1,
+    boxShadow:
+      "0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -2px rgba(0,0,0,0.07)",
+    transition: { duration: 0.25, ease: "easeOut" },
+  },
+};
+
+const iconHoverVariants: Variants = {
+  hover: {
+    rotate: [0, -8, 8, 0],
+    scale: [1, 1.1, 1],
+    transition: {
+      rotate: { duration: 0.36, ease: "easeInOut" },
+      scale: { duration: 0.36, ease: "easeInOut" },
+    },
+  },
+  initial: { rotate: 0, scale: 1 },
+};
+
+const categoryVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 1, 0.5, 1],
+      delay: i * 0.1,
+    },
+  }),
+};
+
+const headingSectionVariants: Variants = {
+  hidden: { opacity: 0, y: 25, filter: "blur(3px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.75, ease: [0.25, 1, 0.5, 1] },
+  },
+};
+
+const MIN_REPETITIONS_FOR_FILL = 5;
+
+// Memoized SkillItemDisplay component
+const SkillItemDisplay = React.memo<{
   skill: SkillItemData;
-  itemColor?: string;
-}> = ({ skill, itemColor }) => {
-  const effectiveColor = itemColor || "currentColor";
-  const itemRef = useRef<HTMLDivElement>(null);
-  const iconContainerRef = useRef<HTMLSpanElement>(null);
-
-  const handleMouseEnter = () => {
-    animate(itemRef.current as HTMLElement, {
-      translateY: -8,
-      scale: 1.05,
-      boxShadow:
-        "0px 10px 20px -5px rgba(0,0,0,0.2), 0px 4px 8px -3px rgba(0,0,0,0.15)",
-      duration: 300,
-      ease: "easeOutExpo",
-    });
-    if (iconContainerRef.current?.querySelector("svg")) {
-      animate(iconContainerRef.current.querySelector("svg") as SVGSVGElement, {
-        rotateZ: [
-          { value: -8, duration: 120, ease: "easeInOutSine" },
-          { value: 8, duration: 120, ease: "easeInOutSine" },
-          { value: 0, duration: 120, ease: "easeInOutSine" },
-        ],
-        scale: [
-          { value: 1.1, duration: 180, ease: "easeOutSine" },
-          { value: 1, duration: 180, ease: "easeInSine" },
-        ],
-        loop: false,
-        duration: 360,
-      });
-    }
-  };
-
-  const handleMouseLeave = () => {
-    animate(itemRef.current as HTMLElement, {
-      translateY: 0,
-      scale: 1,
-      boxShadow:
-        "0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -2px rgba(0,0,0,0.07)",
-      duration: 250,
-      ease: "easeOutQuad",
-    });
-    if (iconContainerRef.current?.querySelector("svg")) {
-      animate(iconContainerRef.current.querySelector("svg") as SVGSVGElement, {
-        rotateZ: 0,
-        scale: 1,
-        duration: 200,
-        ease: "easeOutQuad",
-      });
-    }
-  };
+  itemColor: string;
+  shouldReduceMotion: boolean | null;
+}>(({ skill, itemColor, shouldReduceMotion }) => {
+  const memoizedStyle = useMemo(() => ({ color: itemColor }), [itemColor]);
 
   return (
-    <div
-      ref={itemRef}
+    <motion.div
       className={cn(
         "flex-none snap-start bg-card border border-border/70 rounded-xl p-3 shadow-md",
         "flex flex-col items-center justify-center text-center",
@@ -226,211 +246,252 @@ const SkillItemDisplay: React.FC<{
         "cursor-default z-10"
       )}
       title={skill.name}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      initial={shouldReduceMotion ? false : "initial"}
+      whileHover={shouldReduceMotion ? undefined : "hover"}
+      variants={shouldReduceMotion ? {} : skillItemHoverVariants}
     >
-      <span
-        ref={iconContainerRef}
+      <motion.span
         className="flex items-center justify-center mb-2 h-10 w-10 md:h-11 md:w-11"
+        variants={shouldReduceMotion ? {} : iconHoverVariants}
       >
         <Icon
           icon={skill.iconifyString}
           className="size-9 md:size-10"
-          style={{ color: effectiveColor }}
+          style={memoizedStyle}
           aria-hidden="true"
         />
-      </span>
+      </motion.span>
       <span className="text-[11px] md:text-xs font-medium text-foreground/80 leading-tight max-w-[90px] break-words">
         {skill.name}
       </span>
-    </div>
+    </motion.div>
   );
-};
+});
 
-const MIN_REPETITIONS_FOR_FILL = 5;
+SkillItemDisplay.displayName = "SkillItemDisplay";
 
-const SkillCategoryCarousel: React.FC<{
-  categoryData: SkillCategoryData;
-  globalIndex: number;
-}> = ({ categoryData, globalIndex }) => {
-  const categoryRef = useRef<HTMLDivElement>(null);
+// Custom hook for carousel logic
+const useCarouselLogic = (
+  categoryData: SkillCategoryData,
+  globalIndex: number
+) => {
   const carouselWrapperRef = useRef<HTMLDivElement>(null);
   const carouselContentRef = useRef<HTMLDivElement>(null);
-  const animationInstanceRef = useRef<JSAnimation | null>(null);
-  const itemWidthRef = useRef(0);
-  const gapRef = useRef(0);
-  const singleOriginalSetWidthRef = useRef(0);
   const [itemsToRender, setItemsToRender] = useState<SkillItemData[]>([]);
-  const initialFadeInComplete = useRef(false);
-  const [isCarouselReady, setIsCarouselReady] = useState(false);
+  const [isReadyToAnimate, setIsReadyToAnimate] = useState(false);
   const isHoveringRef = useRef(false);
-  const categoryColor = `hsl(${(globalIndex * 50 + 200) % 360}, 70%, 65%)`;
+  const animationControls = useAnimationControls();
+  const shouldReduceMotion = useReducedMotion();
+
+  // Memoized values for performance
+  const itemWidth = useMemo(
+    () =>
+      typeof window === "undefined" ||
+      (typeof document === "undefined" &&
+        window?.matchMedia?.("(min-width: 768px)").matches)
+        ? 120
+        : 110,
+    []
+  );
+  const gap = useMemo(
+    () =>
+      typeof window === "undefined" ||
+      (typeof document === "undefined" &&
+        window?.matchMedia?.("(min-width: 768px)").matches)
+        ? 16
+        : 12,
+    []
+  );
+
+  const singleOriginalSetWidth = useMemo(() => {
+    return (itemWidth + gap) * categoryData.skills.length - gap;
+  }, [itemWidth, gap, categoryData.skills.length]);
 
   const setupCarouselLayout = useCallback(() => {
-    if (
-      !carouselWrapperRef.current ||
-      !carouselContentRef.current ||
-      categoryData.skills.length === 0
-    ) {
-      setIsCarouselReady(false);
+    if (!carouselWrapperRef.current || categoryData.skills.length === 0) {
+      setIsReadyToAnimate(false);
       setItemsToRender([]);
       return;
     }
-    const isMd = window.matchMedia("(min-width: 768px)").matches;
-    itemWidthRef.current = isMd ? 120 : 110;
-    gapRef.current = isMd ? 16 : 12;
-    singleOriginalSetWidthRef.current =
-      (itemWidthRef.current + gapRef.current) * categoryData.skills.length;
+
     const wrapperWidth = carouselWrapperRef.current.offsetWidth;
     const necessaryRepetitions = Math.max(
       MIN_REPETITIONS_FOR_FILL,
-      Math.ceil((wrapperWidth * 2.5) / (singleOriginalSetWidthRef.current || 1))
+      Math.ceil((wrapperWidth * 2.5) / (singleOriginalSetWidth + gap || 1))
     );
+
     const newItemsToRender: SkillItemData[] = [];
-    if (categoryData.skills.length > 0) {
-      for (let i = 0; i < necessaryRepetitions; i++) {
-        newItemsToRender.push(...categoryData.skills);
-      }
+    for (let i = 0; i < necessaryRepetitions; i++) {
+      newItemsToRender.push(...categoryData.skills);
     }
+
     setItemsToRender(newItemsToRender);
-    carouselContentRef.current.style.minWidth = "max-content";
-    if (initialFadeInComplete.current) {
-      setIsCarouselReady(true);
-    }
-  }, [categoryData.skills]);
+    setIsReadyToAnimate(true);
+  }, [categoryData.skills, singleOriginalSetWidth, gap]);
 
+  // Throttled resize handler
   useEffect(() => {
-    const currentCategoryEl = categoryRef.current;
-    if (currentCategoryEl) {
-      currentCategoryEl.style.opacity = "0";
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              animate(currentCategoryEl, {
-                opacity: [0, 1],
-                translateY: [30, 0],
-                duration: 600,
-                ease: "easeOutExpo",
-                delay: globalIndex * 100,
-                complete: () => {
-                  initialFadeInComplete.current = true;
-                  setupCarouselLayout();
-                },
-              });
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
-      );
-      observer.observe(currentCategoryEl);
-      return () => {
-        if (currentCategoryEl) observer.unobserve(currentCategoryEl);
-      };
-    }
-  }, [globalIndex, setupCarouselLayout]);
+    if (typeof window === "undefined" || typeof document === "undefined")
+      return;
 
-  useEffect(() => {
-    let debounceTimer: NodeJS.Timeout;
+    setupCarouselLayout();
+    let timeoutId: NodeJS.Timeout;
+
     const handleResize = () => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        if (initialFadeInComplete.current) {
-          setIsCarouselReady(false);
-          requestAnimationFrame(() => {
-            setupCarouselLayout();
-          });
-        }
-      }, 250);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(setupCarouselLayout, 150); // Reduced debounce time
     };
+
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    mediaQuery.addEventListener("change", handleResize);
     window.addEventListener("resize", handleResize);
+
     return () => {
-      clearTimeout(debounceTimer);
+      clearTimeout(timeoutId);
+      mediaQuery.removeEventListener("change", handleResize);
       window.removeEventListener("resize", handleResize);
     };
   }, [setupCarouselLayout]);
 
+  // Animation effect with cleanup
   useEffect(() => {
-    const contentEl = carouselContentRef.current;
-    if (
-      !isCarouselReady ||
-      !contentEl ||
-      itemsToRender.length === 0 ||
-      singleOriginalSetWidthRef.current === 0 ||
-      categoryData.skills.length === 0
-    ) {
-      if (animationInstanceRef.current) {
-        animationInstanceRef.current.pause();
-        animationInstanceRef.current = null;
-      }
-      if (contentEl) contentEl.style.transform = "translateX(0px)";
+    if (shouldReduceMotion || !isReadyToAnimate || itemsToRender.length === 0) {
+      animationControls.stop();
       return;
     }
-    if (animationInstanceRef.current) {
-      animationInstanceRef.current.pause();
-      animationInstanceRef.current = null;
-    }
-    const distanceToAnimateForLoop = singleOriginalSetWidthRef.current;
-    const animationDuration = categoryData.skills.length * 6000;
-    if (
-      distanceToAnimateForLoop <= 0 ||
-      animationDuration <= 0 ||
-      isNaN(distanceToAnimateForLoop) ||
-      isNaN(animationDuration)
-    ) {
-      if (contentEl) contentEl.style.transform = "translateX(0px)";
-      return;
-    }
+
+    const distanceToAnimateForLoop = singleOriginalSetWidth + gap;
+    const animationDuration = categoryData.skills.length * 7;
     const isForwardDirection = globalIndex % 2 === 0;
-    let translateXParams: [string, string];
-    if (isForwardDirection) {
-      contentEl.style.transform = "translateX(0px)";
-      translateXParams = ["0px", `-${distanceToAnimateForLoop}px`];
-    } else {
-      contentEl.style.transform = `translateX(-${distanceToAnimateForLoop}px)`;
-      translateXParams = [`-${distanceToAnimateForLoop}px`, "0px"];
-    }
-    animationInstanceRef.current = animate(contentEl, {
-      translateX: translateXParams,
-      duration: animationDuration,
-      easing: "linear",
-      loop: true,
-      autoplay: !isHoveringRef.current,
+
+    const fromX = isForwardDirection ? 0 : -distanceToAnimateForLoop;
+    const toX = isForwardDirection ? -distanceToAnimateForLoop : 0;
+
+    animationControls.start({
+      x: [fromX, toX],
+      transition: {
+        duration: animationDuration,
+        ease: "linear",
+        repeat: Infinity,
+      },
     });
-    return () => {
-      if (animationInstanceRef.current) {
-        animationInstanceRef.current.pause();
-        animationInstanceRef.current = null;
-      }
-    };
-  }, [isCarouselReady, itemsToRender, categoryData.skills.length, globalIndex]);
+
+    return () => animationControls.stop();
+  }, [
+    isReadyToAnimate,
+    itemsToRender.length,
+    categoryData.skills.length,
+    globalIndex,
+    animationControls,
+    shouldReduceMotion,
+    singleOriginalSetWidth,
+    gap,
+  ]);
 
   const handleCarouselMouseEnter = useCallback(() => {
+    if (shouldReduceMotion) return;
     isHoveringRef.current = true;
-    if (animationInstanceRef.current) {
-      animationInstanceRef.current.pause();
-    }
-  }, []);
+    animationControls.stop();
+  }, [animationControls, shouldReduceMotion]);
 
   const handleCarouselMouseLeave = useCallback(() => {
+    if (shouldReduceMotion || !isReadyToAnimate) return;
+
     isHoveringRef.current = false;
-    if (
-      animationInstanceRef.current &&
-      isCarouselReady &&
-      itemsToRender.length > 0
-    ) {
-      animationInstanceRef.current.play();
-    }
-  }, [isCarouselReady, itemsToRender.length]);
+    const distanceToAnimateForLoop = singleOriginalSetWidth + gap;
+    const animationDuration = categoryData.skills.length * 7;
+    const isForwardDirection = globalIndex % 2 === 0;
+
+    // Get current position more efficiently
+    const currentTransform = carouselContentRef.current?.style.transform || "";
+    const match = currentTransform.match(/translateX\(([^)]+)\)/);
+    const currentX = match ? parseFloat(match[1]) : 0;
+
+    const targetX = isForwardDirection ? -distanceToAnimateForLoop : 0;
+    const remainingDistance = Math.abs(currentX - targetX);
+    const remainingDurationFraction =
+      remainingDistance / distanceToAnimateForLoop;
+
+    animationControls.start({
+      x: targetX,
+      transition: {
+        duration: animationDuration * remainingDurationFraction,
+        ease: "linear",
+        onComplete: () => {
+          if (!isHoveringRef.current) {
+            const loopValues = isForwardDirection
+              ? [0, -distanceToAnimateForLoop]
+              : [-distanceToAnimateForLoop, 0];
+
+            animationControls.start({
+              x: loopValues,
+              transition: {
+                duration: animationDuration,
+                ease: "linear",
+                repeat: Infinity,
+              },
+            });
+          }
+        },
+      },
+    });
+  }, [
+    animationControls,
+    isReadyToAnimate,
+    globalIndex,
+    categoryData.skills.length,
+    shouldReduceMotion,
+    singleOriginalSetWidth,
+    gap,
+  ]);
+
+  return {
+    carouselWrapperRef,
+    carouselContentRef,
+    itemsToRender,
+    animationControls,
+    handleCarouselMouseEnter,
+    handleCarouselMouseLeave,
+    shouldReduceMotion,
+  };
+};
+
+// Memoized SkillCategoryCarousel component
+const SkillCategoryCarousel = React.memo<{
+  categoryData: SkillCategoryData;
+  globalIndex: number;
+}>(({ categoryData, globalIndex }) => {
+  const {
+    carouselWrapperRef,
+    carouselContentRef,
+    itemsToRender,
+    animationControls,
+    handleCarouselMouseEnter,
+    handleCarouselMouseLeave,
+    shouldReduceMotion,
+  } = useCarouselLogic(categoryData, globalIndex);
+
+  // Memoized category color
+  const categoryColor = useMemo(
+    () => `hsl(${(globalIndex * 50 + 200) % 360}, 70%, 65%)`,
+    [globalIndex]
+  );
 
   if (categoryData.skills.length === 0) {
     return null;
   }
+
   const CategoryIcon = categoryData.categoryIcon;
 
   return (
-    <div ref={categoryRef} className="mb-12 md:mb-16" style={{ opacity: 0 }}>
+    <motion.div
+      className="mb-12 md:mb-16"
+      custom={globalIndex}
+      initial={shouldReduceMotion ? false : "hidden"}
+      whileInView={shouldReduceMotion ? undefined : "visible"}
+      variants={shouldReduceMotion ? {} : categoryVariants}
+      viewport={{ once: true, amount: 0.1 }}
+    >
       <div className="flex items-center mb-6 md:mb-7">
         <CategoryIcon className="mr-3 md:mr-3.5 size-7 md:size-8 text-primary" />
         <h3 className="text-xl md:text-2xl font-semibold text-foreground">
@@ -443,35 +504,33 @@ const SkillCategoryCarousel: React.FC<{
         onMouseEnter={handleCarouselMouseEnter}
         onMouseLeave={handleCarouselMouseLeave}
       >
-        <div
+        <motion.div
           ref={carouselContentRef}
           className="flex gap-x-3 md:gap-x-4 py-2"
-          style={{ willChange: "transform" }}
+          style={{ minWidth: "max-content", willChange: "transform" }}
+          animate={animationControls}
         >
           {itemsToRender.map((skill, idx) => (
             <SkillItemDisplay
-              key={`${skill.iconifyString}-${
-                skill.name
-              }-${idx}-${globalIndex}-rep${
-                categoryData.skills.length > 0
-                  ? Math.floor(idx / categoryData.skills.length)
-                  : 0
-              }`}
+              key={`${skill.iconifyString}-${skill.name}-${idx}-${globalIndex}`}
               skill={skill}
               itemColor={categoryColor}
+              shouldReduceMotion={shouldReduceMotion}
             />
           ))}
-        </div>
-        {itemsToRender.length > 0 && (
+        </motion.div>
+        {!shouldReduceMotion && itemsToRender.length > 0 && (
           <>
-            <div className="absolute top-0 -left-5.5 h-full w-12 bg-gradient-to-r from-background via-background/80 to-transparent dark:from-secondary/5 dark:via-secondary/5/80 pointer-events-none opacity-100 group-hover:opacity-30 transition-opacity z-10"></div>
-            <div className="absolute top-0 -right-5.5 h-full w-12 bg-gradient-to-l from-background via-background/80 to-transparent dark:from-secondary/5 dark:via-secondary/5/80 pointer-events-none opacity-100 group-hover:opacity-30 transition-opacity z-10"></div>
+            <div className="absolute top-0 -left-5.5 h-full w-12 bg-gradient-to-r from-background via-background/80 to-transparent dark:from-secondary/5 dark:via-secondary/5/80 pointer-events-none opacity-100 group-hover:opacity-30 transition-opacity z-10" />
+            <div className="absolute top-0 -right-5.5 h-full w-12 bg-gradient-to-l from-background via-background/80 to-transparent dark:from-secondary/5 dark:via-secondary/5/80 pointer-events-none opacity-100 group-hover:opacity-30 transition-opacity z-10" />
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
-};
+});
+
+SkillCategoryCarousel.displayName = "SkillCategoryCarousel";
 
 export function SkillsSection({
   className,
@@ -480,60 +539,30 @@ export function SkillsSection({
   className?: string;
   id?: string;
 }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const animatedHeading = useRef(false);
-
-  useEffect(() => {
-    const currentHeadingRef = headingRef.current;
-    if (currentHeadingRef) {
-      currentHeadingRef.style.opacity = "0";
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && !animatedHeading.current) {
-              animate(currentHeadingRef, {
-                opacity: [0, 1],
-                translateY: [25, 0],
-                filter: ["blur(3px)", "blur(0px)"],
-                duration: 750,
-                ease: "easeOutExpo",
-              });
-              animatedHeading.current = true;
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.1, rootMargin: "0px 0px -60px 0px" }
-      );
-      observer.observe(currentHeadingRef);
-      return () => {
-        if (currentHeadingRef) observer.unobserve(currentHeadingRef);
-      };
-    }
-  }, []);
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <section
       id={id}
-      ref={sectionRef}
       className={cn(
         "bg-background dark:bg-secondary/5 py-16 md:py-24 w-full",
         className
       )}
     >
       <div className="container mx-auto px-4">
-        <h2
-          ref={headingRef}
+        <motion.h2
+          initial={shouldReduceMotion ? false : "hidden"}
+          whileInView={shouldReduceMotion ? undefined : "visible"}
+          variants={shouldReduceMotion ? {} : headingSectionVariants}
+          viewport={{ once: true, amount: 0.3 }}
           className="mb-16 md:mb-20 text-center text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter"
-          style={{ opacity: 0 }}
         >
           My <span className="text-primary">Technical Toolkit</span>
-        </h2>
+        </motion.h2>
         <div>
           {skillsData.map((category, idx) => (
             <SkillCategoryCarousel
-              key={category.category + idx}
+              key={`${category.category}-${idx}`}
               categoryData={category}
               globalIndex={idx}
             />

@@ -4,12 +4,11 @@ import Link from "next/link";
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Button } from "@/components/ui/button";
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/Logo";
 import { Download } from "lucide-react";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
+import { motion } from "motion/react";
 
 const navItems = [
   { href: "#about", label: "About" },
@@ -19,39 +18,22 @@ const navItems = [
   { href: "#contact", label: "Contact" },
 ];
 
-export function Navbar({ className }: { className?: string }) {
-  const headerRef = useRef<HTMLElement>(null);
+export function Navbar({
+  className,
+  activeSection,
+}: {
+  className?: string;
+  activeSection?: string | null;
+}) {
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
-  useGSAP(
-    () => {
-      navItems.forEach((item) => {
-        const element = document.querySelector(item.href) as HTMLElement | null;
-        if (element) {
-          sectionRefs.current[item.href.substring(1)] = element;
-        }
-      });
-    },
-    { revertOnUpdate: true }
-  );
-
-  useLayoutEffect(() => {
-    const element = headerRef.current;
-    if (!element) return;
-
-    gsap.fromTo(
-      element,
-      { opacity: 0, y: -20, scale: 0.9 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.6,
-        ease: "power2.out",
-        delay: 0.3,
-        clearProps: "transform,opacity",
+  React.useEffect(() => {
+    navItems.forEach((item) => {
+      const element = document.querySelector(item.href) as HTMLElement | null;
+      if (element) {
+        sectionRefs.current[item.href.substring(1)] = element;
       }
-    );
+    });
   }, []);
 
   const handleNavLinkClick = (
@@ -72,15 +54,18 @@ export function Navbar({ className }: { className?: string }) {
   };
 
   return (
-    <header
-      ref={headerRef}
+    <motion.header
+      initial={{ opacity: 0, y: -20, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1], delay: 0.3 }}
       className={cn(
         "fixed top-3 sm:top-4 left-1/2 -translate-x-1/2 z-50",
-        "w-[calc(100%-1.5rem)] xs:w-[calc(100%-2rem)] sm:w-max",
+        "w-[calc(100%-1.5rem)] xs:w-[calc(100%-2rem)] sm:w-auto",
         "bg-background/75 dark:bg-neutral-900/75 backdrop-blur-xl",
         "rounded-full border border-border/30 shadow-lg dark:shadow-primary/10",
         className
       )}
+      role="banner"
     >
       <div
         className={cn(
@@ -91,20 +76,26 @@ export function Navbar({ className }: { className?: string }) {
         )}
       >
         <Logo className="shrink-0 h-6 xs:h-7 sm:h-auto" />
-        <nav className="hidden md:flex items-center space-x-0.5 lg:space-x-1 relative mx-auto">
+        <nav
+          aria-label="Main navigation"
+          className="hidden md:flex items-center space-x-0.5 lg:space-x-1 relative mx-auto"
+        >
           {navItems.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              onClick={(e) => handleNavLinkClick(e, item.href)}
-              className={cn(
-                "px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-md text-xs lg:text-sm font-medium transition-colors duration-200 relative outline-none",
-                "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                "text-foreground/70 hover:text-primary"
-              )}
-            >
-              {item.label}
-            </Link>
+            <React.Fragment key={item.label}>
+              <Link
+                href={item.href}
+                onClick={(e) => handleNavLinkClick(e, item.href)}
+                className={cn(
+                  "px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-md text-xs lg:text-sm font-medium transition-colors duration-200 relative outline-none",
+                  "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  activeSection === item.href.substring(1)
+                    ? "text-primary font-semibold"
+                    : "text-foreground/70 hover:text-primary"
+                )}
+              >
+                {item.label}
+              </Link>
+            </React.Fragment>
           ))}
         </nav>
         <div className="flex items-center justify-end gap-1 xs:gap-1.5 sm:gap-2 shrink-0">
@@ -126,6 +117,7 @@ export function Navbar({ className }: { className?: string }) {
               rel="noopener noreferrer"
               download="resume_utsav_khatri.pdf"
               className="flex items-center justify-center"
+              aria-label="Download Utsav Khatri's Resume"
             >
               Resume
               <Download className="ml-1 xs:ml-1.5 size-2.5 xs:size-3" />
@@ -137,6 +129,6 @@ export function Navbar({ className }: { className?: string }) {
           </div>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }

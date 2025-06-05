@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { Navbar } from "@/components/layout/Navbar";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -15,8 +15,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
-
 export default function Home() {
   const { resolvedTheme } = useTheme();
   const cameraControlsRef = useRef({
@@ -29,6 +27,11 @@ export default function Home() {
   });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const matrixContainerRef = useRef<HTMLDivElement>(null);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+  }, []);
 
   useGSAP(
     () => {
@@ -46,8 +49,7 @@ export default function Home() {
         let endFadePosition = "bottom top";
 
         if (sections.length >= 2) {
-          const aboutSection = sections[1];
-          endFadeTriggerElement = aboutSection;
+          endFadeTriggerElement = sections[1];
         }
 
         gsap.to(matrixContainerRef.current, {
@@ -70,10 +72,14 @@ export default function Home() {
           scrollTrigger: {
             trigger: scrollContainerRef.current,
             start: "top top",
-            end: () =>
-              `+=${
-                scrollContainerRef.current!.scrollHeight - window.innerHeight
-              }`,
+            end: () => {
+              if (typeof window !== "undefined" && scrollContainerRef.current) {
+                return `+=${
+                  scrollContainerRef.current.scrollHeight - window.innerHeight
+                }`;
+              }
+              return "+=0";
+            },
             scrub: 1.2,
             invalidateOnRefresh: true,
           },
@@ -106,17 +112,67 @@ export default function Home() {
             durationSegment * 2
           );
       }
-
-      const refreshTimeout = setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 200);
-
-      return () => {
-        clearTimeout(refreshTimeout);
-      };
     },
     { scope: scrollContainerRef, dependencies: [resolvedTheme] }
   );
+
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof document === "undefined") {
+      return;
+    }
+
+    const sectionElements = Array.from(
+      document.querySelectorAll(".content-section")
+    ) as HTMLElement[];
+    if (!sectionElements.length) return;
+
+    const heroEl = document.getElementById("hero");
+    if (heroEl) {
+      const rect = heroEl.getBoundingClientRect();
+      if (rect.top >= 0 && rect.top < window.innerHeight * 0.5) {
+        setActiveSection("hero");
+      }
+    }
+
+    let observer: IntersectionObserver | null = null;
+    const setupObserver = () => {
+      if (observer) {
+        observer.disconnect();
+      }
+
+      const observerOptions = {
+        root: null,
+        rootMargin: `-80px 0px -55% 0px`,
+        threshold: 0.01,
+      };
+
+      observer = new IntersectionObserver((entries) => {
+        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
+        if (visibleEntries.length > 0) {
+          visibleEntries.sort(
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top
+          );
+          setActiveSection(visibleEntries[0].target.id);
+        }
+      }, observerOptions);
+
+      sectionElements.forEach((section) => {
+        if (observer) observer.observe(section);
+      });
+    };
+
+    setupObserver();
+    window.addEventListener("resize", setupObserver);
+
+    return () => {
+      if (observer) {
+        observer.disconnect();
+      }
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", setupObserver);
+      }
+    };
+  }, [resolvedTheme]);
 
   return (
     <div
@@ -127,13 +183,15 @@ export default function Home() {
         ref={matrixContainerRef}
         className="fixed top-0 left-0 w-full h-full pointer-events-none z-[-1]"
       >
-        <MatrixRain
-          cameraControls={cameraControlsRef.current}
-          currentTheme={resolvedTheme}
-        />
+        {typeof window !== "undefined" && (
+          <MatrixRain
+            cameraControls={cameraControlsRef.current}
+            currentTheme={resolvedTheme}
+          />
+        )}
       </div>
 
-      <Navbar className="z-10" />
+      <Navbar className="z-10" activeSection={activeSection} />
 
       <main className="flex-grow relative z-0 w-full">
         <HeroSection id="hero" className="content-section" />

@@ -4,8 +4,13 @@ import React, { useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+  Variants,
+} from "motion/react";
 
 interface ExperienceSectionProps {
   className?: string;
@@ -46,129 +51,55 @@ const experiencesData = [
   },
 ];
 
+const headingVariants: Variants = {
+  hidden: { opacity: 0, y: 30, filter: "blur(3px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.8, ease: [0.25, 1, 0.5, 1] },
+  },
+};
+
+const timelineItemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.25, 1, 0.5, 1] },
+  },
+};
+
+const timelineDotVariants: Variants = {
+  hidden: { opacity: 0, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 },
+  },
+};
+
+const timelineContainerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.3,
+      delayChildren: 0.2,
+    },
+  },
+};
+
 export function ExperienceSection({ className, id }: ExperienceSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
-  const timelineLineRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
 
-  useGSAP(
-    () => {
-      if (
-        !sectionRef.current ||
-        !timelineContainerRef.current ||
-        !timelineLineRef.current
-      )
-        return;
+  const { scrollYProgress } = useScroll({
+    target: timelineContainerRef,
+    offset: ["start end", "end start"],
+  });
 
-      const heading = headingRef.current;
-      const line = timelineLineRef.current;
-      const items = gsap.utils.toArray<HTMLElement>(
-        ".experience-item",
-        timelineContainerRef.current
-      );
-
-      // Heading animation
-      if (heading) {
-        gsap.fromTo(
-          heading,
-          { opacity: 0, y: 30, filter: "blur(3px)" },
-          {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: heading,
-              start: "top 85%",
-              once: true,
-            },
-          }
-        );
-      }
-
-      // Timeline items animation
-      items.forEach((itemEl, index) => {
-        const dotElement = itemEl.querySelector(
-          ".css-timeline-dot"
-        ) as HTMLElement | null;
-        const contentElement = itemEl.querySelector(
-          ".timeline-content-animated"
-        ) as HTMLElement | null;
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: itemEl,
-            start: "top 85%",
-            once: true,
-          },
-        });
-
-        if (contentElement) {
-          tl.fromTo(
-            contentElement,
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
-          );
-        }
-        if (dotElement) {
-          tl.fromTo(
-            dotElement,
-            { opacity: 0, scale: 0 },
-            { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" },
-            contentElement ? "-=0.3" : 0
-          );
-        }
-      });
-
-      // Fixed timeline line animation
-      if (line && items.length > 0) {
-        // Set initial state
-        gsap.set(line, {
-          height: 0,
-          transformOrigin: "top center",
-        });
-
-        // Get the total height of timeline container
-        const timelineContainer = timelineContainerRef.current;
-        const containerHeight = timelineContainer.scrollHeight;
-
-        // Set the line to full height but hidden initially
-        gsap.set(line, { height: containerHeight });
-
-        // Create the scroll-triggered animation
-        gsap.fromTo(
-          line,
-          {
-            scaleY: 0,
-            transformOrigin: "top center",
-          },
-          {
-            scaleY: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: timelineContainer,
-              start: "top 80%",
-              end: "bottom 20%",
-              scrub: 1,
-              invalidateOnRefresh: true,
-              onRefresh: () => {
-                // Recalculate height on refresh
-                const newHeight = timelineContainer.scrollHeight;
-                gsap.set(line, { height: newHeight });
-              },
-            },
-          }
-        );
-      }
-    },
-    {
-      scope: sectionRef,
-      dependencies: [experiencesData.length],
-      revertOnUpdate: true,
-    }
-  );
+  const lineScaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <section
@@ -180,31 +111,43 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
       )}
     >
       <div className="container mx-auto px-4">
-        <h2
-          ref={headingRef}
+        <motion.h2
+          initial={shouldReduceMotion ? false : "hidden"}
+          whileInView={shouldReduceMotion ? undefined : "visible"}
+          variants={shouldReduceMotion ? {} : headingVariants}
+          viewport={{ once: true, amount: 0.3 }}
           className="mb-16 sm:mb-20 text-center text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter"
         >
           Professional <span className="text-primary">Journey</span>
-        </h2>
-        <div ref={timelineContainerRef} className="relative max-w-3xl mx-auto">
-          <div
-            ref={timelineLineRef}
-            className="absolute top-0 left-[calc(0.75rem-1px)] sm:left-[calc(0.875rem-1px)] md:left-[calc(1rem-1.5px)] w-[2px] md:w-[3px] bg-primary/50"
+        </motion.h2>
+        <motion.div
+          ref={timelineContainerRef}
+          initial={shouldReduceMotion ? false : "hidden"}
+          whileInView={shouldReduceMotion ? undefined : "visible"}
+          variants={shouldReduceMotion ? {} : timelineContainerVariants}
+          viewport={{ once: true, amount: 0.1 }}
+          className="relative max-w-3xl mx-auto"
+        >
+          <motion.div
+            className="absolute top-0 left-[calc(0.75rem-1px)] sm:left-[calc(0.875rem-1px)] md:left-[calc(1rem-1.5px)] w-[2px] md:w-[3px] bg-primary/50 origin-top h-full"
+            style={shouldReduceMotion ? { scaleY: 1 } : { scaleY: lineScaleY }}
             aria-hidden="true"
-          ></div>
+          />
           {experiencesData.map((exp, index) => {
             return (
-              <div
+              <motion.div
                 key={`${exp.company}-${index}`}
-                className="experience-item relative pl-8 sm:pl-10 md:pl-12 mb-10 sm:mb-12 last:mb-0 group/expitem"
+                variants={shouldReduceMotion ? {} : timelineItemVariants}
+                className="relative pl-8 sm:pl-10 md:pl-12 mb-10 sm:mb-12 last:mb-0 group/expitem"
               >
-                <div
-                  className="css-timeline-dot absolute left-0 top-1 size-6 sm:size-7 md:size-8 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 md:border-4 border-background z-10"
+                <motion.div
+                  variants={shouldReduceMotion ? {} : timelineDotVariants}
+                  className="absolute left-0 top-1 size-6 sm:size-7 md:size-8 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 md:border-4 border-background z-10"
                   style={{ transformOrigin: "center center" }}
                 >
                   <Briefcase className="size-3 sm:size-3.5 md:size-4 text-primary-foreground" />
-                </div>
-                <div className="timeline-content-animated ml-1 sm:ml-2">
+                </motion.div>
+                <div className="ml-1 sm:ml-2">
                   <p className="text-xs text-muted-foreground mb-1 sm:mb-1.5 font-mono tracking-wide">
                     {exp.duration}
                   </p>
@@ -250,10 +193,10 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
                     </>
                   )}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

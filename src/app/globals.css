@@ -294,3 +294,12 @@
   position: relative;
   z-index: 1;
 }
+
+.footer-gradient {
+  background: linear-gradient(
+    0deg,
+    oklch(var(--primary-oklch-values) / 1) 0%,
+    oklch(var(--primary-oklch-values) / 0.5) 40%,
+    transparent 100%
+  );
+}
