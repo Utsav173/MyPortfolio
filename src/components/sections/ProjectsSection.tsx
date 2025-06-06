@@ -1,31 +1,45 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, {
+  useState,
+  useMemo,
+  useRef,
+  useEffect,
+  useCallback,
+} from "react";
 import { ProjectCard, type Project } from "./ProjectCard";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   motion,
   AnimatePresence,
   useReducedMotion,
   Variants,
+  useInView,
+  LayoutGroup,
 } from "motion/react";
 
 const PROJECTS_INITIAL_DISPLAY_COUNT = 6;
 const PROJECTS_INCREMENT = 4;
 
-const FEATURED_PROJECT_IDS: (number | string)[] = [
-  727342843, 657660151, 952619337, 922037774, 904861772, 583853098,
-];
-
 const headingVariants: Variants = {
-  hidden: { opacity: 0, y: 30, filter: "blur(3px)" },
+  hidden: {
+    opacity: 0,
+    y: 30,
+    filter: "blur(3px)",
+
+    willChange: "opacity, transform, filter",
+  },
   visible: {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.9, ease: [0.25, 1, 0.5, 1] },
+    willChange: "auto",
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.46, 0.45, 0.94],
+      filter: { duration: 0.6 },
+    },
   },
 };
 
@@ -34,122 +48,180 @@ const cardContainerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.2, // Delay after heading might be visible
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+      when: "beforeChildren",
     },
   },
 };
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 40, scale: 0.98 },
+  hidden: {
+    opacity: 0,
+    y: 30,
+    scale: 0.96,
+    willChange: "opacity, transform",
+  },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.7, ease: [0.25, 1, 0.5, 1] },
+    willChange: "auto",
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94],
+      scale: { duration: 0.5 },
+    },
   },
   exit: {
     opacity: 0,
-    y: -20,
     scale: 0.95,
-    transition: { duration: 0.3, ease: "easeIn" },
+    filter: "blur(1px)",
+    willChange: "opacity, transform, filter",
+    transition: {
+      duration: 0.25,
+      ease: [0.4, 0, 1, 1],
+    },
   },
 };
+
+const indicatorVariants: Variants = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.3,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const popularFilters = [
+  "Next.js",
+  "React",
+  "AI",
+  "Three.js",
+  "Hono.js",
+  "TypeScript",
+  "Fintech",
+];
+
+interface IndicatorStyle {
+  left: number;
+  width: number;
+  opacity: number;
+}
+
+interface ProjectsSectionProps {
+  className?: string;
+  id?: string;
+  initialProjects: Project[];
+}
 
 export function ProjectsSection({
   className,
   id,
-}: {
-  className?: string;
-  id?: string;
-}) {
-  const sectionRef = useRef<HTMLElement>(null);
+  initialProjects,
+}: ProjectsSectionProps) {
   const shouldReduceMotion = useReducedMotion();
-
-  const [allProjectsData, setAllProjectsData] = useState<Project[]>([]);
+  const [activeFilter, setActiveFilter] = useState<string>("All");
   const [displayedCount, setDisplayedCount] = useState<number>(
     PROJECTS_INITIAL_DISPLAY_COUNT
   );
-  const [isLoadingInitial, setIsLoadingInitial] = useState(true);
+
+  const filterButtonsRef = useRef<Map<string, HTMLButtonElement | null>>(
+    new Map()
+  );
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+
+  const [indicatorStyle, setIndicatorStyle] = useState<IndicatorStyle>({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  });
+
+  const availableFilters = useMemo(() => {
+    const allTechs = new Set<string>();
+    initialProjects.forEach((p) => {
+      p.techStack?.forEach((tech) => allTechs.add(tech));
+      p.topics?.forEach((topic) => allTechs.add(topic));
+    });
+
+    return [
+      "All",
+      ...popularFilters.filter((filter) =>
+        Array.from(allTechs).some(
+          (tech) => tech.toLowerCase() === filter.toLowerCase()
+        )
+      ),
+    ];
+  }, [initialProjects]);
+
+  const updateIndicator = useCallback(() => {
+    const activeButton = filterButtonsRef.current.get(activeFilter);
+
+    if (activeButton) {
+      requestAnimationFrame(() => {
+        setIndicatorStyle({
+          left: activeButton.offsetLeft,
+          width: activeButton.offsetWidth,
+          opacity: 1,
+        });
+      });
+    }
+  }, [activeFilter]);
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      setIsLoadingInitial(true);
-      try {
-        const response = await fetch("/projects-data.json");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        let projects: Project[] = await response.json();
+    updateIndicator();
 
-        projects.sort((a, b) => {
-          const aFeaturedIndex = FEATURED_PROJECT_IDS.indexOf(a.id);
-          const bFeaturedIndex = FEATURED_PROJECT_IDS.indexOf(b.id);
+    const handleResize = () => updateIndicator();
+    window.addEventListener("resize", handleResize);
 
-          if (aFeaturedIndex !== -1 && bFeaturedIndex !== -1) {
-            return aFeaturedIndex - bFeaturedIndex;
-          }
-          if (aFeaturedIndex !== -1) return -1;
-          if (bFeaturedIndex !== -1) return 1;
+    return () => window.removeEventListener("resize", handleResize);
+  }, [updateIndicator]);
 
-          const aHasImage = !!a.imageUrl;
-          const bHasImage = !!b.imageUrl;
-          if (aHasImage && !bHasImage) return -1;
-          if (!aHasImage && bHasImage) return 1;
-
-          if ((b.stargazers_count || 0) !== (a.stargazers_count || 0)) {
-            return (b.stargazers_count || 0) - (a.stargazers_count || 0);
-          }
-          return a.name.localeCompare(b.name);
-        });
-
-        setAllProjectsData(projects);
-      } catch (error) {
-        console.error("Failed to fetch projects:", error);
-        setAllProjectsData([]);
-      }
-      setIsLoadingInitial(false);
-    };
-    fetchProjects();
-  }, []);
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === "All") {
+      return initialProjects;
+    }
+    return initialProjects.filter(
+      (p) =>
+        p.techStack?.some(
+          (tech) => tech.toLowerCase() === activeFilter.toLowerCase()
+        ) ||
+        p.topics?.some(
+          (topic) => topic.toLowerCase() === activeFilter.toLowerCase()
+        )
+    );
+  }, [initialProjects, activeFilter]);
 
   const currentDisplayedProjects = useMemo(() => {
-    return allProjectsData.slice(0, displayedCount);
-  }, [allProjectsData, displayedCount]);
+    return filteredProjects.slice(0, displayedCount);
+  }, [filteredProjects, displayedCount]);
 
-  const handleShowMore = () => {
+  const handleSetFilter = useCallback(
+    (filter: string) => {
+      if (filter === activeFilter) return;
+
+      setActiveFilter(filter);
+      setDisplayedCount(PROJECTS_INITIAL_DISPLAY_COUNT);
+    },
+    [activeFilter]
+  );
+
+  const handleShowMore = useCallback(() => {
     setDisplayedCount((prev) =>
-      Math.min(prev + PROJECTS_INCREMENT, allProjectsData.length)
+      Math.min(prev + PROJECTS_INCREMENT, filteredProjects.length)
     );
-  };
+  }, [filteredProjects.length]);
 
-  const canShowMore = displayedCount < allProjectsData.length;
+  const canShowMore = displayedCount < filteredProjects.length;
 
-  if (isLoadingInitial && allProjectsData.length === 0) {
+  if (initialProjects.length === 0) {
     return (
-      <section
-        id={id}
-        ref={sectionRef}
-        className={cn(
-          "py-20 md:py-28 min-h-[500px] flex items-center justify-center",
-          className
-        )}
-      >
-        <div className="container mx-auto px-4 text-center">
-          <Loader2 className="mx-auto size-12 animate-spin text-primary mb-6" />
-          <p className="text-lg text-muted-foreground">Curating Projects...</p>
-        </div>
-      </section>
-    );
-  }
-
-  if (!isLoadingInitial && allProjectsData.length === 0) {
-    return (
-      <section
-        id={id}
-        ref={sectionRef}
-        className={cn("py-20 md:py-28", className)}
-      >
+      <section id={id} className={cn("py-20 md:py-28", className)}>
         <div className="container mx-auto px-4">
           <motion.h2
             initial={shouldReduceMotion ? false : "hidden"}
@@ -171,56 +243,135 @@ export function ProjectsSection({
   return (
     <section
       id={id}
-      ref={sectionRef}
       className={cn("py-20 md:py-28", className)}
+      ref={containerRef}
     >
       <div className="container mx-auto px-4">
         <motion.h2
           initial={shouldReduceMotion ? false : "hidden"}
-          whileInView={shouldReduceMotion ? undefined : "visible"}
+          animate={
+            shouldReduceMotion ? undefined : isInView ? "visible" : "hidden"
+          }
           variants={shouldReduceMotion ? {} : headingVariants}
-          viewport={{ once: true, amount: 0.2 }}
-          className="mb-20 text-center text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter"
+          className="mb-12 text-center text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter"
         >
           Selected <span className="text-primary">Creations</span>
         </motion.h2>
-        <motion.div
-          initial={shouldReduceMotion ? false : "hidden"}
-          whileInView={shouldReduceMotion ? undefined : "visible"}
-          variants={shouldReduceMotion ? {} : cardContainerVariants}
-          viewport={{ once: true, amount: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 lg:gap-x-10 lg:gap-y-12 auto-rows-fr"
+
+        <div
+          role="group"
+          aria-label="Project technology filters"
+          className="relative mb-16 flex flex-wrap items-center justify-center gap-2 md:gap-3 p-1"
         >
-          <AnimatePresence initial={false}>
-            {currentDisplayedProjects.map((project) => (
-              <motion.div
-                key={project.id || `project-${project.name}`}
-                variants={shouldReduceMotion ? {} : cardVariants}
-                initial={shouldReduceMotion ? false : "hidden"}
-                animate={shouldReduceMotion ? undefined : "visible"}
-                exit={shouldReduceMotion ? undefined : "exit"}
-                layout // Enables layout animation for when items are added/removed
-                className="h-fit" // Ensure motion.div takes up card space
-              >
-                <ProjectCard
-                  project={project}
-                  data-project-id={String(project.id || project.name)}
+          {!shouldReduceMotion && (
+            <motion.div
+              className="absolute h-full bg-primary/10 dark:bg-primary/20 rounded-full"
+              initial="initial"
+              animate="animate"
+              variants={indicatorVariants}
+              style={{
+                left: indicatorStyle.left,
+                width: indicatorStyle.width,
+                opacity: indicatorStyle.opacity,
+              }}
+              transition={{
+                duration: 0.3,
+                ease: [0.25, 0.46, 0.45, 0.94],
+                layout: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] },
+              }}
+            />
+          )}
+          {availableFilters.map((filter) => (
+            <Button
+              key={filter}
+              ref={(el) => {
+                filterButtonsRef.current.set(filter, el);
+                return undefined;
+              }}
+              variant="ghost"
+              size="sm"
+              onClick={() => handleSetFilter(filter)}
+              aria-pressed={activeFilter === filter}
+              className={cn(
+                "relative rounded-full px-4 text-sm transition-colors duration-200 py-0.5",
+                activeFilter === filter
+                  ? "text-primary-foreground dark:text-primary z-10"
+                  : "text-muted-foreground hover:text-primary"
+              )}
+              style={{
+                willChange: activeFilter === filter ? "auto" : "color",
+              }}
+            >
+              {filter}
+            </Button>
+          ))}
+        </div>
+
+        <LayoutGroup>
+          <motion.div
+            key={`${activeFilter}-${displayedCount}`}
+            initial={shouldReduceMotion ? false : "hidden"}
+            animate={shouldReduceMotion ? undefined : "visible"}
+            variants={shouldReduceMotion ? {} : cardContainerVariants}
+            className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 lg:gap-x-10 lg:gap-y-12"
+            style={{
+              transform: "translateZ(0)",
+              willChange: "contents",
+            }}
+          >
+            <AnimatePresence mode="popLayout" initial={false}>
+              {currentDisplayedProjects.map((project, index) => (
+                <motion.div
+                  key={project.id || `project-${project.name}-${activeFilter}`}
+                  variants={shouldReduceMotion ? {} : cardVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  layout
+                  layoutId={`project-${project.id || project.name}`}
                   className="h-full"
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+                  style={{
+                    backfaceVisibility: "hidden",
+                    perspective: 1000,
+                  }}
+                >
+                  <ProjectCard
+                    project={project}
+                    data-project-id={String(project.id || project.name)}
+                    className="h-full"
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </LayoutGroup>
+
+        {currentDisplayedProjects.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="mt-12 text-center text-muted-foreground"
+          >
+            No projects found for the "{activeFilter}" filter.
+          </motion.div>
+        )}
+
         {canShowMore && (
-          <div className="mt-16 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="mt-16 text-center"
+          >
             <Button
               size="lg"
               onClick={handleShowMore}
-              className="min-w-[240px] px-10 py-3.5 text-lg rounded-lg"
+              className="min-w-[240px] px-10 py-3.5 text-lg rounded-lg transition-transform duration-200 hover:scale-105 active:scale-95"
             >
               Discover More
             </Button>
-          </div>
+          </motion.div>
         )}
       </div>
     </section>

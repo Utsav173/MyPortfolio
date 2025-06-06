@@ -12,17 +12,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useScrollToSection } from "@/hooks/use-scroll-to-section";
+import { NAV_ITEMS, RESUME_URL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-
-const NAV_LINKS = [
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#experience", label: "Experience" },
-  { href: "#projects", label: "Projects" },
-  { href: "#contact", label: "Contact" },
-];
-
-const RESUME_URL = "/resume_utsav_khatri.pdf";
 
 const MobileMenuComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,7 +60,7 @@ const MobileMenuComponent = () => {
           </SheetHeader>
           <nav className="flex-grow overflow-y-auto p-4 sm:p-6">
             <ul className="flex flex-col space-y-1">
-              {NAV_LINKS.map((link) => (
+              {NAV_ITEMS.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}

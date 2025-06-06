@@ -4,21 +4,12 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { Download } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NAV_ITEMS, RESUME_URL } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { useScrollToSection } from "@/hooks/use-scroll-to-section";
-
-const NAV_ITEMS = [
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#experience", label: "Experience" },
-  { href: "#projects", label: "Projects" },
-  { href: "#contact", label: "Contact" },
-];
-
-const RESUME_URL = "/resume_utsav_khatri.pdf";
 
 interface NavbarProps {
   className?: string;
@@ -69,6 +60,11 @@ export function Navbar({ className, activeSection }: NavbarProps) {
               {item.label}
             </Link>
           ))}
+          <div className="ml-2 hidden lg:block">
+            <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-50">
+              <span className="text-xs">⌘</span>K
+            </kbd>
+          </div>
         </nav>
 
         <div className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-2">

@@ -117,8 +117,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#E6EFFF" },
-    { media: "(prefers-color-scheme: dark)", color: "#05050c" },
+    { media: "(prefers-color-scheme: light)", color: "#f0f5ff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0f1c" },
   ],
 };
 
@@ -159,6 +159,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <a href="#main-content" className="skip-to-content-link">
+            Skip to main content
+          </a>
           {children}
           <Toaster richColors position="top-right" closeButton />
           <script

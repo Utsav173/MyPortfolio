@@ -1,3 +1,5 @@
+// components/sections/HeroSection.tsx
+
 "use client";
 
 import { useCallback } from "react";
@@ -6,6 +8,7 @@ import { motion, useReducedMotion, Variants } from "motion/react";
 import { ArrowRight, DownloadCloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useScrollToSection } from "@/hooks/use-scroll-to-section";
 
 const heroVariants: Variants = {
   hidden: { opacity: 0 },
@@ -49,12 +52,12 @@ const scrollIndicatorVariants: Variants = {
     opacity: 0.6,
     y: 10,
     transition: {
-      opacity: { duration: 0.5, ease: "easeOut", delay: 1.5 },
+      opacity: { duration: 0.5, ease: "easeOut", delay: 2 },
       y: {
         from: 0,
         duration: 0.75,
         ease: "circInOut",
-        delay: 2,
+        delay: 2.5,
         repeat: Infinity,
         repeatType: "reverse",
       },
@@ -72,20 +75,14 @@ export function HeroSection({
   const shouldReduceMotion = useReducedMotion();
   const nameParts = "Utsav Khatri".split("");
 
+  const { scrollTo } = useScrollToSection();
+
   const handleProjectScroll = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault();
-      const projectsSection = document.querySelector("#projects");
-      if (projectsSection) {
-        const yOffset = -80;
-        const y =
-          projectsSection.getBoundingClientRect().top +
-          window.scrollY +
-          yOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }
+      scrollTo("#projects");
     },
-    []
+    [scrollTo]
   );
 
   return (
@@ -130,7 +127,7 @@ export function HeroSection({
         </motion.h1>
         <motion.p
           variants={shouldReduceMotion ? {} : itemVariants}
-          className="mx-auto mt-3 max-w-2xl text-base text-muted-foreground md:mt-4 md:text-xl"
+          className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground md:mt-8 md:text-xl"
         >
           A{" "}
           <span className="font-semibold text-primary">
@@ -138,11 +135,14 @@ export function HeroSection({
           </span>{" "}
           based in Gujarat, India, crafting high-performance web experiences.
         </motion.p>
+
         <motion.div
           variants={shouldReduceMotion ? {} : itemVariants}
           className={cn(
             "mt-8 flex select-none flex-col items-center justify-center gap-4 sm:flex-row md:mt-10"
           )}
+          role="group"
+          aria-label="Primary actions"
         >
           <Button
             size="lg"
@@ -184,6 +184,7 @@ export function HeroSection({
           </Button>
         </motion.div>
       </div>
+
       <motion.div
         variants={shouldReduceMotion ? {} : scrollIndicatorVariants}
         className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2"

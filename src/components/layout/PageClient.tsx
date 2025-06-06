@@ -1,24 +1,14 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  memo,
-  type ReactNode,
-  useCallback,
-} from "react";
-import dynamic from "next/dynamic";
+import { useRef, useState, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Navbar } from "@/components/layout/Navbar";
-
-const MatrixRain = dynamic(() => import("@/components/threed/matrix-rain"), {
-  ssr: false,
-  loading: () => <div className="fixed inset-0 -z-10 h-full w-full" />,
-});
+import { useActiveSectionObserver } from "@/hooks/useActiveSectionObserver";
+import { CommandPalette } from "../CommandPalette";
+import MatrixRain from "../threed/matrix-rain";
 
 interface CameraControlsRef {
   xPos: number;
@@ -29,104 +19,89 @@ interface CameraControlsRef {
   lookAtZ: number;
 }
 
-const MemoizedNavbar = memo(Navbar);
-
 export default function PageClient({ children }: { children: ReactNode }) {
   const { resolvedTheme } = useTheme();
+  const [isCommandPaletteOpen, setCommandPaletteOpen] = useState(false);
+
   const cameraControlsRef = useRef<CameraControlsRef>({
     xPos: 0,
-    yPos: 35,
-    zPos: 130,
+    yPos: 100,
+    zPos: 200,
     lookAtX: 0,
-    lookAtY: 10,
+    lookAtY: 0,
     lookAtZ: 0,
   });
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const matrixContainerRef = useRef<HTMLDivElement>(null);
-  const [activeSection, setActiveSection] = useState<string>("hero");
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-  }, []);
+  const mainContainerRef = useRef<HTMLDivElement>(null);
+  const matrixContainerRef = useRef<HTMLDivElement>(null);
+  const activeSection = useActiveSectionObserver(".content-section");
 
   useGSAP(
     () => {
-      if (!scrollContainerRef.current || !matrixContainerRef.current) return;
+      gsap.registerPlugin(ScrollTrigger);
+
+      if (!mainContainerRef.current || !matrixContainerRef.current) return;
 
       const sections = gsap.utils.toArray<HTMLElement>(".content-section");
+      if (sections.length < 2) return;
+
       gsap.set(matrixContainerRef.current, { opacity: 1 });
 
-      if (sections.length > 1) {
+      const cameraTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: mainContainerRef.current,
+          start: "top top",
+          endTrigger: sections[2],
+          end: "bottom bottom",
+          scrub: 1.5,
+        },
+      });
+
+      cameraTimeline.to(
+        cameraControlsRef.current,
+        {
+          xPos: -25,
+          yPos: 30,
+          zPos: 140,
+          lookAtY: 10,
+          lookAtZ: -40,
+          ease: "power2.inOut",
+        },
+        "start"
+      );
+
+      cameraTimeline.to(
+        cameraControlsRef.current,
+        {
+          xPos: 15,
+          yPos: 0,
+          zPos: 150,
+          lookAtY: 20,
+          lookAtZ: -70,
+          ease: "power2.inOut",
+        },
+        ">"
+      );
+
+      if (sections.length > 2) {
         gsap.to(matrixContainerRef.current, {
           opacity: 0,
-          ease: "none",
+          ease: "power2.inOut",
           scrollTrigger: {
-            trigger: sections[1],
+            trigger: sections[2],
             start: "top bottom",
-            end: "center center",
-            scrub: 0.5,
+            end: "top center",
+            scrub: 1.5,
           },
         });
       }
-
-      if (sections.length >= 3) {
-        const mainTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: scrollContainerRef.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1.2,
-          },
-        });
-
-        mainTimeline
-          .to(cameraControlsRef.current, {
-            yPos: 40,
-            lookAtY: 12,
-            zPos: 125,
-            ease: "power1.inOut",
-          })
-          .to(cameraControlsRef.current, {
-            yPos: 25,
-            lookAtY: 30,
-            zPos: 115,
-            ease: "power1.inOut",
-          });
-      }
     },
-    { scope: scrollContainerRef, dependencies: [resolvedTheme] }
+    { scope: mainContainerRef }
   );
-
-  const handleActiveSectionChange = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    },
-    []
-  );
-
-  useEffect(() => {
-    const sectionElements = document.querySelectorAll(".content-section");
-    if (sectionElements.length === 0) return;
-
-    const observer = new IntersectionObserver(handleActiveSectionChange, {
-      root: null,
-      rootMargin: "-15% 0px -85% 0px",
-      threshold: 0,
-    });
-
-    sectionElements.forEach((section) => observer.observe(section));
-
-    return () =>
-      sectionElements.forEach((section) => observer.unobserve(section));
-  }, [handleActiveSectionChange]);
 
   return (
     <div
-      ref={scrollContainerRef}
+      ref={mainContainerRef}
       className="flex min-h-dvh w-full flex-col overflow-x-hidden"
     >
       <div
@@ -139,8 +114,14 @@ export default function PageClient({ children }: { children: ReactNode }) {
         />
       </div>
 
-      <MemoizedNavbar className="z-10" activeSection={activeSection} />
-      {children}
+      <Navbar className="z-50" activeSection={activeSection} />
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        setIsOpen={setCommandPaletteOpen}
+      />
+      <main id="main-content" className="relative z-0 flex-grow w-full">
+        {children}
+      </main>
     </div>
   );
 }
