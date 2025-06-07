@@ -24,19 +24,19 @@ const experiencesData = [
     duration: "January 2023 - Present",
     responsibilities: [
       "Spearheaded development of critical project components, demonstrating advanced technical leadership.",
-      "Engineered and deployed robust, high-availability RESTful APIs using Node.js and Express.js, achieving significant improvements in API response times via query optimization (PostgreSQL) and caching (Redis).",
-      "Developed highly scalable backend services and microservices, efficiently processing substantial daily data transaction volumes.",
-      "Led end-to-end design and implementation of complex, intuitive UIs with React.js, Redux, and Material-UI.",
-      "Integrated comprehensive security modules, including JWT-based authentication and RBAC.",
+      "Engineered robust RESTful APIs using Node.js, Express.js, and PostgreSQL, improving response times via strategic query optimization and Redis caching.",
+      "Developed highly scalable backend services and microservices, ensuring efficient processing of substantial daily data transactions.",
+      "Led end-to-end design of complex, intuitive UIs with React.js, Redux, and Material-UI, enhancing user engagement and conversion.",
+      "Integrated comprehensive security modules, including JWT-based authentication and Role-Based Access Control (RBAC).",
       "Mentored junior developers and championed CI/CD pipeline improvements (GitHub Actions, Jenkins).",
     ],
     keyProjects: [
       {
         name: "Restaurant Inventory Management System",
-        tech: ["Node.js", "Strapi v4", "PostgreSQL", "JWT", "RBAC"],
+        tech: ["Node.js", "Strapi v4", "PostgreSQL", "JWT"],
       },
       {
-        name: "Comprehensive Education Management Platform",
+        name: "Education Management Platform",
         tech: ["Node.js", "Sails.js", "PostgreSQL", "AWS SQS"],
       },
       {

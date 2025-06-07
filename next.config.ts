@@ -1,17 +1,10 @@
-import type { NextConfig } from 'next';
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     remotePatterns: [
-      // Add your image CDN hostnames here if you use external images for projects
-      // Example:
-      // {
-      //   protocol: 'https',
-      //   hostname: 'cdn.example.com',
-      // },
       {
-        protocol: 'https',
-        hostname: 'via.placeholder.com', // For the placeholder images in ProjectCard
+        protocol: "https",
+        hostname: "via.placeholder.com",
       },
     ],
   },

@@ -1,116 +1,58 @@
 "use client";
 
-import React, { useRef } from "react";
+import { memo } from "react";
 import Image from "next/image";
+import { motion, useReducedMotion, Variants } from "motion/react";
 import { cn } from "@/lib/utils";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useReducedMotion,
-  Variants,
-} from "motion/react";
 
 const sectionVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.1,
-    },
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
   },
 };
 
-const imageContainerVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 25, filter: "blur(4px)" },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.25, 1, 0.5, 1] },
+    filter: "blur(0px)",
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
-const imageVariantsInner: Variants = {
-  // Renamed to avoid conflict if used elsewhere
-  hidden: { scale: 1.1 },
-  visible: {
-    scale: 1,
-    transition: { duration: 1.2, ease: [0.25, 1, 0.5, 1] },
-  },
-};
-
-const textElementVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.25, 1, 0.5, 1] },
-  },
-};
-
-export function AboutSection({
+const AboutSectionComponent = ({
   className,
   id,
 }: {
   className?: string;
   id?: string;
-}) {
-  const sectionRef = useRef<HTMLElement>(null);
+}) => {
   const shouldReduceMotion = useReducedMotion();
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const imageY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion ? ["0px", "0px"] : ["-5px", "5px"]
-  );
-  const p1Y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion ? ["0px", "0px"] : ["0px", "-15px"]
-  );
-  const p2Y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion ? ["0px", "0px"] : ["0px", "-30px"]
-  );
-  const p3Y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion ? ["0px", "0px"] : ["0px", "-45px"]
-  );
 
   return (
     <motion.section
       id={id}
-      ref={sectionRef}
-      className={cn(
-        className,
-        "bg-transparent dark:bg-transparent content-section py-20 md:py-28 lg:py-32"
-      )}
+      className={cn("bg-transparent py-20 md:py-28 lg:py-32", className)}
+      variants={shouldReduceMotion ? undefined : sectionVariants}
       initial={shouldReduceMotion ? undefined : "hidden"}
       whileInView={shouldReduceMotion ? undefined : "visible"}
-      variants={shouldReduceMotion ? {} : sectionVariants}
       viewport={{ once: true, amount: 0.2 }}
       aria-labelledby="about-heading"
     >
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 items-center">
+        <div className="grid items-center gap-12 md:grid-cols-2 lg:gap-24">
           <motion.div
-            variants={shouldReduceMotion ? {} : imageContainerVariants}
-            style={shouldReduceMotion ? {} : { y: imageY }}
-            className="flex justify-center md:justify-start"
+            variants={shouldReduceMotion ? undefined : itemVariants}
+            className="flex justify-center"
           >
             <motion.div
-              className="w-full max-w-[360px] sm:max-w-[400px] md:max-w-full aspect-square bg-muted/30 dark:bg-card/30 backdrop-blur-sm rounded-2xl shadow-2xl flex items-center justify-center overflow-hidden border-4 border-primary/10 hover:border-primary/50 transition-all duration-300 ease-out hover:shadow-primary/20 group cursor-pointer"
+              className="group w-full max-w-[380px] cursor-pointer overflow-hidden rounded-2xl border-4 border-primary/10 shadow-2xl transition-all duration-300 ease-out hover:border-primary/50 hover:shadow-primary/20 md:max-w-full"
               whileHover={
                 shouldReduceMotion
-                  ? {}
+                  ? undefined
                   : {
                       scale: 1.02,
                       transition: {
@@ -121,68 +63,54 @@ export function AboutSection({
                     }
               }
             >
-              <motion.div
-                className="w-full h-full"
-                variants={shouldReduceMotion ? {} : imageVariantsInner}
-              >
-                <Image
-                  src="/images/utsav-khatri.webp"
-                  alt="Utsav Khatri, Full Stack Developer" // Enhanced alt text
-                  width={450}
-                  height={450}
-                  className="object-cover w-full h-full"
-                  sizes="(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 450px"
-                />
-              </motion.div>
+              <Image
+                src="/images/utsav-khatri.webp"
+                alt="Professional headshot of Utsav Khatri, Full Stack Developer"
+                width={450}
+                height={450}
+                className="aspect-square w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                sizes="(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 450px"
+                priority
+              />
             </motion.div>
           </motion.div>
-          <div className="md:col-span-1">
+          <div>
             <motion.h2
               id="about-heading"
-              variants={shouldReduceMotion ? {} : textElementVariants}
-              className="mb-8 sm:mb-10 text-3xl sm:text-4xl md:text-[2.8rem] lg:text-[3.2rem] font-bold tracking-tighter text-left"
+              variants={shouldReduceMotion ? undefined : itemVariants}
+              className="mb-8 text-3xl font-bold tracking-tighter sm:text-4xl md:text-[2.8rem] lg:text-[3.2rem]"
             >
               A Little More <span className="text-primary">About Me</span>
             </motion.h2>
-            <div className="text-lg text-muted-foreground space-y-6 sm:space-y-7">
-              <motion.p
-                variants={shouldReduceMotion ? {} : textElementVariants}
-                style={shouldReduceMotion ? {} : { y: p1Y }}
-                className="max-w-prose"
-              >
+            <motion.div
+              variants={shouldReduceMotion ? undefined : itemVariants}
+              className="space-y-6 text-base text-muted-foreground md:text-lg"
+            >
+              <p>
                 I'm a dynamic and results-oriented Full Stack Developer with
                 comprehensive experience in designing, developing, and deploying
                 scalable, cloud-native web applications and robust APIs. My
                 journey in tech is driven by a passion for solving complex
                 problems and building impactful solutions.
-              </motion.p>
-              <motion.p
-                variants={shouldReduceMotion ? {} : textElementVariants}
-                style={shouldReduceMotion ? {} : { y: p2Y }}
-                className="max-w-prose"
-              >
-                With proven expertise in React.js, Next.js, Node.js, TypeScript,
-                and various cloud services (AWS, Cloudflare), I consistently aim
-                to deliver high-impact digital products. I'm particularly
-                excited about the intersection of web development and Artificial
-                Intelligence, exploring ways to create more intelligent and
-                intuitive user experiences.
-              </motion.p>
-              <motion.p
-                variants={shouldReduceMotion ? {} : textElementVariants}
-                style={shouldReduceMotion ? {} : { y: p3Y }}
-                className="max-w-prose"
-              >
+              </p>
+              <p>
+                With proven expertise in React.js, Next.js, Node.js, and
+                TypeScript, I consistently aim to deliver high-impact digital
+                products. I'm particularly excited about the intersection of web
+                development and Artificial Intelligence, exploring ways to
+                create more intelligent and intuitive user experiences.
+              </p>
+              <p>
                 Beyond coding, I believe in collaborative growth and enjoy
                 mentoring, sharing knowledge, and continuously learning in the
-                ever-evolving tech landscape. My technical interests span
-                advanced microservices, serverless architectures, and the
-                practical application of AI/ML models.
-              </motion.p>
-            </div>
+                ever-evolving tech landscape.
+              </p>
+            </motion.div>
           </div>
         </div>
       </div>
     </motion.section>
   );
-}
+};
+
+export const AboutSection = memo(AboutSectionComponent);

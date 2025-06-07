@@ -676,8 +676,8 @@ const RainEffectComponentR3F: React.FC<{
       [streamCount, streamLength]
     );
 
-    const xSpreadFactor = useMemo(() => (isMobile ? 0.35 : 0.45), [isMobile]); // Percentage of planeSize / 2
-    const zSpreadFactor = useMemo(() => (isMobile ? 0.25 : 0.35), [isMobile]); // Percentage of planeSize / 2
+    const xSpreadFactor = useMemo(() => (isMobile ? 0.35 : 0.45), [isMobile]);
+    const zSpreadFactor = useMemo(() => (isMobile ? 0.25 : 0.35), [isMobile]);
 
     const getTrailColor = useCallback(
       (idx: number, len: number, base: THREE.Color): THREE.Color => {
@@ -1175,6 +1175,7 @@ const ThreeScene: React.FC<RefactoredThreeSceneProps> = ({
             powerPreference: "high-performance",
             alpha: true,
             logarithmicDepthBuffer: false,
+            toneMapping: THREE.NoToneMapping,
           }}
           dpr={
             typeof window !== "undefined"
