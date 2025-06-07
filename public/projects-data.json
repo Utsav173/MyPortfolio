@@ -1,1096 +1,1096 @@
 [
-  {
-    "id": 525828811,
-    "name": "MyPortfolio",
-    "description": "My personal portfolio website showcasing my skills, projects, and professional journey, built with TypeScript and modern web technologies.",
-    "html_url": "https://github.com/Utsav173/MyPortfolio",
-    "homepage": "https://utsav-khatri.vercel.app",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "portfolio",
-      "personal-website",
-      "nextjs",
-      "react",
-      "typescript",
-      "frontend",
-      "responsive-design",
-      "vercel"
-    ],
-    "techStack": [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "JavaScript",
-      "CSS",
-      "Vercel"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/MyPortfolio"
-  },
-  {
-    "id": 992105629,
-    "name": "3js-hills",
-    "description": "An interactive 3D landscape animation featuring procedurally generated rolling hills, created using Three.js and TypeScript.",
-    "html_url": "https://github.com/Utsav173/2js-hills",
-    "homepage": "https://3js-hills.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "3d-graphics",
-      "webgl",
-      "threejs",
-      "interactive-art",
-      "procedural-generation",
-      "typescript",
-      "animation"
-    ],
-    "techStack": [
-      "Three.js",
-      "TypeScript",
-      "JavaScript",
-      "HTML5",
-      "CSS3",
-      "WebGL",
-      "Vite"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/2js-hills"
-  },
-  {
-    "id": 991451039,
-    "name": "matrix-rain-3js",
-    "description": "A captivating visualizer emulating the iconic 'Matrix' digital rain effect, built with Three.js and TypeScript for a dynamic 3D experience.",
-    "html_url": "https://github.com/Utsav173/matrix-rain-3js",
-    "homepage": "https://matrix-rain-3js.vercel.app/",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "3d-graphics",
-      "webgl",
-      "threejs",
-      "matrix-effect",
-      "visualizer",
-      "typescript",
-      "animation"
-    ],
-    "techStack": [
-      "Three.js",
-      "TypeScript",
-      "JavaScript",
-      "HTML5",
-      "CSS3",
-      "WebGL",
-      "Vite"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/matrix-rain-3js"
-  },
-  {
-    "id": 991450187,
-    "name": "ticker-ai",
-    "description": "An AI-powered financial ticker application providing real-time stock market insights and data visualization using Next.js.",
-    "html_url": "https://github.com/Utsav173/ticker-ai",
-    "homepage": "https://ticker-ai-tau.vercel.app/",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "ai",
-      "fintech",
-      "stock-market",
-      "data-visualization",
-      "nextjs",
-      "typescript",
-      "real-time"
-    ],
-    "techStack": [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "AI",
-      "Chart.js"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/ticker-ai"
-  },
-  {
-    "id": 727342843,
-    "name": "Expense Tracker Pro",
-    "description": "AI-enhanced finance management with intelligent expense categorization, secure JWT auth, and Recharts data visualization.",
-    "html_url": "https://github.com/Utsav173/expense-tracker",
-    "homepage": "http://pro-expense.vercel.app/",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "fintech",
-      "ai",
-      "expense-management",
-      "full-stack",
-      "nextjs",
-      "postgresql",
-      "drizzle-orm",
-      "honojs",
-      "jwt-auth",
-      "data-visualization"
-    ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "Hono.js",
-      "Drizzle ORM",
-      "PostgreSQL",
-      "NeonDB",
-      "Gemini AI",
-      "Recharts",
-      "JWT",
-      "Tailwind CSS"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/expense-tracker",
-    "imageUrl": "/images/projects/expense-pro.webp"
-  },
-  {
-    "id": 932880305,
-    "name": "AI Recipe Maker (Mobile)",
-    "description": "A mobile application built with Expo (React Native) that leverages Gemini AI to dynamically generate culinary recipes based on user inputs.",
-    "html_url": "https://github.com/Utsav173/recipe-maker",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "mobile-app",
-      "react-native",
-      "expo",
-      "ai",
-      "recipe-app",
-      "cross-platform",
-      "gemini-ai"
-    ],
-    "techStack": [
-      "React Native",
-      "Expo",
-      "TypeScript",
-      "JavaScript",
-      "Gemini AI",
-      "Mobile Development"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/recipe-maker"
-  },
-  {
-    "id": 657660151,
-    "name": "MDX Blog & IPO Tracker",
-    "description": "Performance-centric Next.js blog with MDX & SSG. Features a dynamic dashboard for IPO Grey Market Premiums.",
-    "html_url": "https://github.com/Utsav173/blog-sync",
-    "homepage": "https://blog-sync.vercel.app",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "language": "MDX",
-    "topics": [
-      "blogging-platform",
-      "nextjs",
-      "mdx",
-      "ssg",
-      "ipo-tracker",
-      "data-scraping",
-      "typescript",
-      "performance"
-    ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "MDX",
-      "Tailwind CSS",
-      "Data Scraping",
-      "React"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/blog-sync",
-    "imageUrl": "/images/projects/blog-sync.webp"
-  },
-  {
-    "id": 952619337,
-    "name": "AI Business Card Generator",
-    "description": "Generate professional business card designs using AI. Features various templates and customization options.",
-    "html_url": "https://github.com/Utsav173/ai-card-gen",
-    "homepage": "https://ai-card-maker.vercel.app/",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "ai",
-      "design-tool",
-      "business-card-generator",
-      "nextjs",
-      "typescript",
-      "saas-tools"
-    ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "AI",
-      "Vercel",
-      "Tailwind CSS",
-      "React"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/ai-card-gen",
-    "imageUrl": "/images/projects/ai-card-maker.webp"
-  },
-  {
-    "id": 922037774,
-    "name": "AI Image Generator (Flux)",
-    "description": "On-demand AI image generation using Next.js, TypeScript, and the Fal.ai API (Flux Model) for efficient backend processing.",
-    "html_url": "https://github.com/Utsav173/fal-flux-generation",
-    "homepage": "https://fal-flux-generation.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "ai",
-      "image-generation",
-      "nextjs",
-      "fal-ai",
-      "typescript",
-      "creative-tools",
-      "generative-ai"
-    ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "Fal.ai API",
-      "Tailwind CSS",
-      "React",
-      "AI"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/fal-flux-generation",
-    "imageUrl": "/images/projects/flux-image.webp"
-  },
-  {
-    "id": 922044978,
-    "name": "Cloudflare PDF Parser",
-    "description": "A serverless Cloudflare Worker designed for parsing PDF statements and extracting structured JSON data efficiently.",
-    "html_url": "https://github.com/Utsav173/pdf-parser",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "serverless",
-      "cloudflare-workers",
-      "pdf-processing",
-      "data-extraction",
-      "api",
-      "automation"
-    ],
-    "techStack": ["Cloudflare Workers", "JavaScript", "PDF.js"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/pdf-parser"
-  },
-  {
-    "id": 583853098,
-    "name": "GTU IMP Study Portal",
-    "description": "A comprehensive portal for GTU students providing important questions, study materials, and exam resources.",
-    "html_url": "https://github.com/Utsav173/gtu-imp",
-    "homepage": "https://gtu-imp.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "edtech",
-      "education-portal",
-      "nextjs",
-      "gtu",
-      "student-resources",
-      "typescript"
-    ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "Vercel",
-      "Educational",
-      "React",
-      "Tailwind CSS"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/gtu-imp",
-    "imageUrl": "/images/projects/gtu-imp.webp"
-  },
-  {
-    "id": 908677971,
-    "name": "X-Splash Image Platform (Next.js)",
-    "description": "A Next.js based platform for AI image generation, publishing, and exploration, offering a modern user experience.",
-    "html_url": "https://github.com/Utsav173/x-splash-gen-next",
-    "homepage": "https://x-splash-gen-next.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "ai",
-      "image-generation",
-      "nextjs",
-      "community-platform",
-      "content-creation",
-      "typescript"
-    ],
-    "techStack": [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "JavaScript",
-      "CSS",
-      "AI",
-      "Vercel"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/x-splash-gen-next"
-  },
-  {
-    "id": 907457207,
-    "name": "X-Splash Image Platform (MERN)",
-    "description": "A full-stack image exploration and sharing platform built with the MERN stack (MongoDB, Express, React, Node.js).",
-    "html_url": "https://github.com/Utsav173/x-splash-gen",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "mern-stack",
-      "image-sharing",
-      "full-stack",
-      "social-platform",
-      "mongodb",
-      "expressjs",
-      "react",
-      "nodejs"
-    ],
-    "techStack": [
-      "React",
-      "Node.js",
-      "Express.js",
-      "MongoDB",
-      "JavaScript",
-      "HTML",
-      "CSS",
-      "Mongoose"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/x-splash-gen"
-  },
-  {
-    "id": 900219754,
-    "name": "Flux Ultra Image Generator",
-    "description": "An advanced AI image generation tool leveraging the Flux model, built with TypeScript for high-quality visual content creation.",
-    "html_url": "https://github.com/Utsav173/flux-ultra-gen",
-    "homepage": null,
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "ai",
-      "image-generation",
-      "flux-model",
-      "typescript",
-      "generative-art",
-      "machine-learning"
-    ],
-    "techStack": [
-      "TypeScript",
-      "Next.js",
-      "React",
-      "Tailwind CSS",
-      "AI",
-      "Fal.ai"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/flux-ultra-gen"
-  },
-  {
-    "id": 900217037,
-    "name": "Stable Diffusion 3.5 Web App",
-    "description": "A web application enabling users to generate images using the Stable Diffusion 3.5 AI model with their own API keys.",
-    "html_url": "https://github.com/Utsav173/stable-diff-3.5",
-    "homepage": null,
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "ai",
-      "image-generation",
-      "stable-diffusion",
-      "typescript",
-      "machine-learning",
-      "api-integration"
-    ],
-    "techStack": [
-      "TypeScript",
-      "Next.js",
-      "React",
-      "Tailwind CSS",
-      "Stable Diffusion API",
-      "AI"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/stable-diff-3.5"
-  },
-  {
-    "id": 905732199,
-    "name": "IPO Insights Pro",
-    "description": "A web application for tracking the latest IPO insights, Grey Market Premiums (GMP), and related financial data.",
-    "html_url": "https://github.com/Utsav173/pro-ipo",
-    "homepage": "https://pro-ipo.vercel.app",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "ipo-tracker",
-      "finance",
-      "data-visualization",
-      "nextjs",
-      "typescript",
-      "fintech-tools"
-    ],
-    "techStack": [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "Chart.js",
-      "Data Scraping"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/pro-ipo"
-  },
-  {
-    "id": 904861772,
-    "name": "IPO GMP Pro Dashboard",
-    "description": "Advanced dashboard for tracking IPO Grey Market Premiums, allotment status, and subscription data, deployed on Cloudflare Pages.",
-    "html_url": "https://github.com/Utsav173/ipo-gmp-pro",
-    "homepage": "https://ipo-gmp-pro.pages.dev",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "ipo-dashboard",
-      "finance",
-      "cloudflare-pages",
-      "data-analysis",
-      "typescript",
-      "serverless-deployment"
-    ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "Cloudflare Pages",
-      "Data Scraping",
-      "Tailwind CSS",
-      "React",
-      "Chart.js"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/ipo-gmp-pro",
-    "imageUrl": "/images/projects/ipo-gmp.webp"
-  },
-  {
-    "id": 586172831,
-    "name": "GTU Sample Paper Archive",
-    "description": "A web resource providing access to a collection of GTU (Gujarat Technological University) sample papers for students.",
-    "html_url": "https://github.com/Utsav173/gtu-sample-paper",
-    "homepage": "https://samplepaper.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": null,
-    "topics": [
-      "education",
-      "gtu",
-      "archive",
-      "student-resources",
-      "static-site"
-    ],
-    "techStack": ["HTML", "CSS", "JavaScript", "Vercel"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/gtu-sample-paper"
-  },
-  {
-    "id": 592869786,
-    "name": "Simple Budget Calculator",
-    "description": "A client-side budget calculation tool built with vanilla JavaScript for straightforward financial planning.",
-    "html_url": "https://github.com/Utsav173/budget-calc",
-    "homepage": "https://budget-calc-one.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "javascript-utility",
-      "finance-tool",
-      "budgeting",
-      "vanilla-js",
-      "frontend-tool"
-    ],
-    "techStack": ["JavaScript", "HTML", "CSS"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/budget-calc"
-  },
-  {
-    "id": 628273765,
-    "name": "Contact Form Backend API",
-    "description": "A Node.js and Express.js backend service for handling contact form submissions from web applications.",
-    "html_url": "https://github.com/Utsav173/contact-form-backend",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "nodejs",
-      "expressjs",
-      "api-development",
-      "backend-service",
-      "form-handling"
-    ],
-    "techStack": ["Node.js", "Express.js", "JavaScript"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/contact-form-backend"
-  },
-  {
-    "id": 640485531,
-    "name": "Appointment Booking Backend",
-    "description": "A backend system developed with Node.js and Express.js to manage appointment bookings, including API endpoints.",
-    "html_url": "https://github.com/Utsav173/Appoinment-booking-backend",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "nodejs",
-      "expressjs",
-      "api",
-      "booking-system",
-      "backend-development",
-      "restful-apis"
-    ],
-    "techStack": ["Node.js", "Express.js", "JavaScript", "MongoDB"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/Appoinment-booking-backend"
-  },
-  {
-    "id": 643121312,
-    "name": "Auth API Implementation",
-    "description": "A demonstration of authentication and authorization API implementation using JavaScript, likely with Node.js/Express and JWT.",
-    "html_url": "https://github.com/Utsav173/Auth-api-implementation",
-    "homepage": "https://auth-test-nu.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "authentication",
-      "authorization",
-      "api-security",
-      "nodejs",
-      "jwt",
-      "expressjs"
-    ],
-    "techStack": ["Node.js", "Express.js", "JavaScript", "JWT", "HTML"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/Auth-api-implementation"
-  },
-  {
-    "id": 774796958,
-    "name": "Infinity Split",
-    "description": "A project exploring infinite splitting or division concepts, potentially a visual or algorithmic experiment in JavaScript.",
-    "html_url": "https://github.com/Utsav173/infinity-split",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": null,
-    "topics": [
-      "experimental-programming",
-      "algorithmic-art",
-      "javascript",
-      "visual-experiment"
-    ],
-    "techStack": ["JavaScript", "HTML", "CSS"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/infinity-split"
-  },
-  {
-    "id": 706814171,
-    "name": "Starter Express API",
-    "description": "A boilerplate/starter template for quickly setting up RESTful APIs using Express.js and JavaScript.",
-    "html_url": "https://github.com/Utsav173/starter-express-api",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": null,
-    "topics": [
-      "nodejs",
-      "expressjs",
-      "api-template",
-      "boilerplate-code",
-      "backend-starter"
-    ],
-    "techStack": ["Node.js", "Express.js", "JavaScript"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/starter-express-api"
-  },
-  {
-    "id": 701981157,
-    "name": "Data Generator API",
-    "description": "An API service for generating various types of mock or sample data, useful for testing and development.",
-    "html_url": "https://github.com/Utsav173/data-generator-api",
-    "homepage": "https://data-x-generator.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "api-utility",
-      "data-generation",
-      "developer-tools",
-      "mock-data",
-      "nodejs"
-    ],
-    "techStack": ["Node.js", "Express.js", "JavaScript", "HTML"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/data-generator-api"
-  },
-  {
-    "id": 663477229,
-    "name": "VectorDB Exploration",
-    "description": "An exploratory project focused on understanding and implementing vector database concepts for AI applications.",
-    "html_url": "https://github.com/Utsav173/vectorDB",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": null,
-    "topics": [
-      "database-research",
-      "vector-database",
-      "ai-infrastructure",
-      "data-science",
-      "embeddings"
-    ],
-    "techStack": [
-      "Python",
-      "Jupyter Notebook",
-      "Vector Databases (e.g., Pinecone, Weaviate - conceptual)"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/vectorDB"
-  },
-  {
-    "id": 629585331,
-    "name": "Full-Stack Social Media App",
-    "description": "A feature-rich social media application built with JavaScript, HTML, and CSS, demonstrating full-stack development capabilities with React and Node.js/Express.",
-    "html_url": "https://github.com/Utsav173/full-stack-social-media",
-    "homepage": "https://full-stack-social-media-x1c9.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "social-media-app",
-      "full-stack-development",
-      "react",
-      "nodejs",
-      "expressjs",
-      "mongodb",
-      "javascript"
-    ],
-    "techStack": [
-      "React",
-      "Node.js",
-      "Express.js",
-      "MongoDB",
-      "JavaScript",
-      "HTML",
-      "CSS",
-      "Mongoose",
-      "JWT"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/full-stack-social-media"
-  },
-  {
-    "id": 658353961,
-    "name": "Twitter Clone (T3 Stack)",
-    "description": "A Twitter-like application built using the T3 Stack (Next.js, TypeScript, Tailwind CSS, tRPC, Prisma), showcasing modern full-stack development.",
-    "html_url": "https://github.com/Utsav173/twitter-t3",
-    "homepage": "https://twitter-t3-theta.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "TypeScript",
-    "topics": [
-      "t3-stack",
-      "nextjs",
-      "typescript",
-      "social-media-clone",
-      "trpc",
-      "prisma",
-      "full-stack-typescript"
-    ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "tRPC",
-      "Prisma",
-      "Tailwind CSS",
-      "NextAuth.js",
-      "React"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/twitter-t3"
-  },
-  {
-    "id": 631162440,
-    "name": "Auth API Service",
-    "description": "A dedicated backend API for handling user authentication and authorization, built with JavaScript, Node.js, and Express.",
-    "html_url": "https://github.com/Utsav173/auth-api",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "api-security",
-      "authentication-service",
-      "nodejs",
-      "expressjs",
-      "backend-api",
-      "jwt"
-    ],
-    "techStack": ["Node.js", "Express.js", "JavaScript", "JWT", "MongoDB"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/auth-api"
-  },
-  {
-    "id": 582538018,
-    "name": "Codex - ChatGPT Clone",
-    "description": "A web application mimicking the conversational AI capabilities of ChatGPT, named Codex, using an AI API.",
-    "html_url": "https://github.com/Utsav173/codex_chatgptclone",
-    "homepage": "codex-chatgptclone.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "ai-chatbot",
-      "chatgpt-clone",
-      "javascript",
-      "frontend-ai",
-      "openai-api"
-    ],
-    "techStack": ["JavaScript", "HTML", "CSS", "OpenAI API (or similar)"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/codex_chatgptclone"
-  },
-  {
-    "id": 591554044,
-    "name": "7-IT GTU Paper Resource",
-    "description": "A simple web page providing access to 7th semester IT engineering exam papers for GTU students.",
-    "html_url": "https://github.com/Utsav173/7-it-paper",
-    "homepage": "https://7-it-paper.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "HTML",
-    "topics": [
-      "education-portal",
-      "gtu-resources",
-      "static-html",
-      "student-archive"
-    ],
-    "techStack": ["HTML", "CSS", "JavaScript"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/7-it-paper"
-  },
-  {
-    "id": 584115147,
-    "name": "Frontend Chat Application",
-    "description": "The client-side interface for a real-time chat application, built with JavaScript, HTML, and CSS, using WebSockets.",
-    "html_url": "https://github.com/Utsav173/frontendchatapp",
-    "homepage": "frontendchatapp-ten.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "real-time-chat",
-      "frontend-development",
-      "javascript",
-      "websockets",
-      "ui-design"
-    ],
-    "techStack": ["JavaScript", "HTML", "CSS", "WebSocket API"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/frontendchatapp"
-  },
-  {
-    "id": 584113374,
-    "name": "Backend Chat Application",
-    "description": "The server-side logic for a real-time chat application, using Node.js, Express, and WebSockets for communication.",
-    "html_url": "https://github.com/Utsav173/backendchatapp",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "real-time-chat-backend",
-      "nodejs",
-      "expressjs",
-      "websockets",
-      "api-development"
-    ],
-    "techStack": [
-      "Node.js",
-      "Express.js",
-      "JavaScript",
-      "Socket.IO (or ws)",
-      "Shell"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/backendchatapp"
-  },
-  {
-    "id": 581981356,
-    "name": "Chat App Backend (Alternative)",
-    "description": "An alternative backend implementation for a chat application, focusing on server-side functionalities with Node.js and Express.",
-    "html_url": "https://github.com/Utsav173/chatapp-backend",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "chat-server",
-      "backend-api",
-      "nodejs",
-      "expressjs",
-      "real-time-communication"
-    ],
-    "techStack": [
-      "Node.js",
-      "Express.js",
-      "JavaScript",
-      "Socket.IO (or ws)",
-      "HTML (for testing)"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/chatapp-backend"
-  },
-  {
-    "id": 562880692,
-    "name": "DALL-E 2 API Example",
-    "description": "A demonstration project showcasing integration with the DALL-E 2 API for AI image generation using JavaScript.",
-    "html_url": "https://github.com/Utsav173/Dalle-2-example",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "ai-image-generation",
-      "dalle2-api",
-      "api-integration",
-      "javascript-example",
-      "openai"
-    ],
-    "techStack": [
-      "JavaScript",
-      "Node.js (for backend API call)",
-      "OpenAI API",
-      "HTML (for frontend)"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/Dalle-2-example"
-  },
-  {
-    "id": 555366160,
-    "name": "Chat App (Vercel Deployment)",
-    "description": "A chat application specifically configured for deployment on the Vercel platform, using Node.js and WebSockets.",
-    "html_url": "https://github.com/Utsav173/cahtapp-vercel",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "chat-application",
-      "vercel-deployment",
-      "nodejs",
-      "websockets",
-      "full-stack-js"
-    ],
-    "techStack": [
-      "Node.js",
-      "Express.js",
-      "Socket.IO (or ws)",
-      "JavaScript",
-      "HTML",
-      "CSS",
-      "Vercel"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/cahtapp-vercel"
-  },
-  {
-    "id": 555343370,
-    "name": "Social Media Clone",
-    "description": "A clone of a popular social media platform, implemented with JavaScript, HTML, and CSS for the frontend.",
-    "html_url": "https://github.com/Utsav173/social-media-clone",
-    "homepage": "social-media-clone-nine.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "social-media-frontend",
-      "javascript-clone",
-      "ui-development",
-      "frontend-project"
-    ],
-    "techStack": ["JavaScript", "HTML", "CSS", "Shell"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/social-media-clone"
-  },
-  {
-    "id": 526685656,
-    "name": "Mutual Fund Information Page",
-    "description": "A static HTML page providing information or resources related to mutual funds, styled with CSS.",
-    "html_url": "https://github.com/Utsav173/mutual-fund",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "HTML",
-    "topics": [
-      "finance-info",
-      "static-webpage",
-      "html-css",
-      "informational-site"
-    ],
-    "techStack": ["HTML", "CSS"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/mutual-fund"
-  },
-  {
-    "id": 368490976,
-    "name": "GitHub Profile Configuration",
-    "description": "Configuration files and markdown for my GitHub profile, defining its appearance and featured content.",
-    "html_url": "https://github.com/Utsav173/Utsav173",
-    "homepage": "https://github.com/Utsav173",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": null,
-    "topics": [
-      "github-profile",
-      "markdown-readme",
-      "profile-customization",
-      "git-configuration"
-    ],
-    "techStack": ["Markdown"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/Utsav173"
-  },
-  {
-    "id": 553744327,
-    "name": "React Native Auth Example",
-    "description": "An example application demonstrating authentication flows in a React Native mobile environment using JavaScript.",
-    "html_url": "https://github.com/Utsav173/react-native-auth",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "react-native-auth",
-      "mobile-authentication",
-      "javascript-mobile",
-      "expo-example"
-    ],
-    "techStack": ["React Native", "JavaScript", "Expo"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/react-native-auth"
-  },
-  {
-    "id": 553533014,
-    "name": "Simple Landing Page",
-    "description": "A responsive and clean landing page template built with JavaScript, HTML, and CSS, deployed on Vercel.",
-    "html_url": "https://github.com/Utsav173/landingpage",
-    "homepage": "landingpage-utsav173.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "landing-page-template",
-      "frontend-design",
-      "vanilla-javascript",
-      "responsive-web-design"
-    ],
-    "techStack": ["JavaScript", "HTML", "CSS", "Vercel"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/landingpage"
-  },
-  {
-    "id": 526686436,
-    "name": "COVID-19 Data Fetcher",
-    "description": "A simple HTML and JavaScript application to fetch and display COVID-19 related data from an API.",
-    "html_url": "https://github.com/Utsav173/covid-fetch",
-    "homepage": null,
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "HTML",
-    "topics": [
-      "api-client",
-      "data-fetching",
-      "health-data",
-      "javascript-utility",
-      "html-app"
-    ],
-    "techStack": ["HTML", "JavaScript", "CSS", "Fetch API"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/covid-fetch"
-  },
-  {
-    "id": 525724181,
-    "name": "Crypto Information App",
-    "description": "A web application providing information and tracking for various cryptocurrencies, built with JavaScript and deployed on Vercel.",
-    "html_url": "https://github.com/Utsav173/crypto-app",
-    "homepage": "crypto-app-utsav173.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "JavaScript",
-    "topics": [
-      "cryptocurrency-tracker",
-      "api-integration-frontend",
-      "javascript-app",
-      "financial-data"
-    ],
-    "techStack": [
-      "JavaScript",
-      "HTML",
-      "CSS",
-      "CoinGecko API (or similar)",
-      "Vercel"
-    ],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/crypto-app"
-  },
-  {
-    "id": 504712312,
-    "name": "IPDC Quiz (GTU)",
-    "description": "An HTML-based quiz application for the IPDC subject, relevant for GTU engineering students, with JavaScript interactivity.",
-    "html_url": "https://github.com/Utsav173/ipdcquiz.quiz",
-    "homepage": "ipdcquiz-quiz.vercel.app",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "language": "HTML",
-    "topics": [
-      "online-quiz",
-      "educational-tool",
-      "gtu-engineering",
-      "html-javascript",
-      "static-quiz-app"
-    ],
-    "techStack": ["HTML", "CSS", "JavaScript"],
-    "owner": "Utsav173",
-    "full_name": "Utsav173/ipdcquiz.quiz"
-  }
+	{
+		"id": 525828811,
+		"name": "MyPortfolio",
+		"description": "My personal portfolio website showcasing my skills, projects, and professional journey, built with TypeScript and modern web technologies.",
+		"html_url": "https://github.com/Utsav173/MyPortfolio",
+		"homepage": "https://utsav-khatri.vercel.app",
+		"stargazers_count": 1,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"portfolio",
+			"personal-website",
+			"nextjs",
+			"react",
+			"typescript",
+			"frontend",
+			"responsive-design",
+			"vercel"
+		],
+		"techStack": [
+			"Next.js",
+			"React",
+			"TypeScript",
+			"Tailwind CSS",
+			"JavaScript",
+			"CSS",
+			"Vercel"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/MyPortfolio",
+		"imageUrl": "/images/projects/my-portfolio.webp"
+	},
+	{
+		"id": 992105629,
+		"name": "3js-hills",
+		"description": "An interactive 3D landscape animation featuring procedurally generated rolling hills, created using Three.js and TypeScript.",
+		"html_url": "https://github.com/Utsav173/2js-hills",
+		"homepage": "https://3js-hills.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"3d-graphics",
+			"webgl",
+			"threejs",
+			"interactive-art",
+			"procedural-generation",
+			"typescript",
+			"animation"
+		],
+		"techStack": [
+			"Three.js",
+			"TypeScript",
+			"JavaScript",
+			"HTML5",
+			"CSS3",
+			"WebGL",
+			"Vite"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/2js-hills"
+	},
+	{
+		"id": 991451039,
+		"name": "matrix-rain-3js",
+		"description": "A captivating visualizer emulating the iconic 'Matrix' digital rain effect, built with Three.js and TypeScript for a dynamic 3D experience.",
+		"html_url": "https://github.com/Utsav173/matrix-rain-3js",
+		"homepage": "https://matrix-rain-3js.vercel.app/",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"3d-graphics",
+			"webgl",
+			"threejs",
+			"matrix-effect",
+			"visualizer",
+			"typescript",
+			"animation"
+		],
+		"techStack": [
+			"Three.js",
+			"TypeScript",
+			"JavaScript",
+			"HTML5",
+			"CSS3",
+			"WebGL",
+			"Vite"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/matrix-rain-3js"
+	},
+	{
+		"id": 991450187,
+		"name": "ticker-ai",
+		"description": "An AI-powered financial ticker application providing real-time stock market insights and data visualization using Next.js.",
+		"html_url": "https://github.com/Utsav173/ticker-ai",
+		"homepage": "https://ticker-ai-tau.vercel.app/",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"ai",
+			"fintech",
+			"stock-market",
+			"data-visualization",
+			"nextjs",
+			"typescript",
+			"real-time"
+		],
+		"techStack": [
+			"Next.js",
+			"React",
+			"TypeScript",
+			"Tailwind CSS",
+			"AI",
+			"Chart.js"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/ticker-ai"
+	},
+	{
+		"id": 727342843,
+		"name": "Expense Tracker Pro",
+		"description": "AI-enhanced finance management with intelligent expense categorization, secure JWT auth, and Recharts data visualization.",
+		"html_url": "https://github.com/Utsav173/expense-tracker",
+		"homepage": "http://pro-expense.vercel.app/",
+		"stargazers_count": 1,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"fintech",
+			"ai",
+			"expense-management",
+			"full-stack",
+			"nextjs",
+			"postgresql",
+			"drizzle-orm",
+			"honojs",
+			"jwt-auth",
+			"data-visualization"
+		],
+		"techStack": [
+			"Next.js",
+			"TypeScript",
+			"Hono.js",
+			"Drizzle ORM",
+			"PostgreSQL",
+			"NeonDB",
+			"Gemini AI",
+			"Recharts",
+			"JWT",
+			"Tailwind CSS"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/expense-tracker",
+		"imageUrl": "/images/projects/expense-pro.webp"
+	},
+	{
+		"id": 932880305,
+		"name": "AI Recipe Maker (Mobile)",
+		"description": "A mobile application built with Expo (React Native) that leverages Gemini AI to dynamically generate culinary recipes based on user inputs.",
+		"html_url": "https://github.com/Utsav173/recipe-maker",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"mobile-app",
+			"react-native",
+			"expo",
+			"ai",
+			"recipe-app",
+			"cross-platform",
+			"gemini-ai"
+		],
+		"techStack": [
+			"React Native",
+			"Expo",
+			"TypeScript",
+			"JavaScript",
+			"Gemini AI",
+			"Mobile Development"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/recipe-maker"
+	},
+	{
+		"id": 657660151,
+		"name": "MDX Blog & IPO Tracker",
+		"description": "Performance-centric Next.js blog with MDX & SSG. Features a dynamic dashboard for IPO Grey Market Premiums.",
+		"html_url": "https://github.com/Utsav173/blog-sync",
+		"homepage": "https://blog-sync.vercel.app",
+		"stargazers_count": 1,
+		"forks_count": 0,
+		"language": "MDX",
+		"topics": [
+			"blogging-platform",
+			"nextjs",
+			"mdx",
+			"ssg",
+			"ipo-tracker",
+			"data-scraping",
+			"typescript",
+			"performance"
+		],
+		"techStack": [
+			"Next.js",
+			"TypeScript",
+			"MDX",
+			"Tailwind CSS",
+			"Data Scraping",
+			"React"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/blog-sync",
+		"imageUrl": "/images/projects/blog-sync.webp"
+	},
+	{
+		"id": 952619337,
+		"name": "AI Business Card Generator",
+		"description": "Generate professional business card designs using AI. Features various templates and customization options.",
+		"html_url": "https://github.com/Utsav173/ai-card-gen",
+		"homepage": "https://ai-card-maker.vercel.app/",
+		"stargazers_count": 1,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"ai",
+			"design-tool",
+			"business-card-generator",
+			"nextjs",
+			"typescript",
+			"saas-tools"
+		],
+		"techStack": [
+			"Next.js",
+			"TypeScript",
+			"AI",
+			"Vercel",
+			"Tailwind CSS",
+			"React"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/ai-card-gen",
+		"imageUrl": "/images/projects/ai-card-maker.webp"
+	},
+	{
+		"id": 922037774,
+		"name": "AI Image Generator (Flux)",
+		"description": "On-demand AI image generation using Next.js, TypeScript, and the Fal.ai API (Flux Model) for efficient backend processing.",
+		"html_url": "https://github.com/Utsav173/fal-flux-generation",
+		"homepage": "https://fal-flux-generation.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"ai",
+			"image-generation",
+			"nextjs",
+			"fal-ai",
+			"typescript",
+			"creative-tools",
+			"generative-ai"
+		],
+		"techStack": [
+			"Next.js",
+			"TypeScript",
+			"Fal.ai API",
+			"Tailwind CSS",
+			"React",
+			"AI"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/fal-flux-generation",
+		"imageUrl": "/images/projects/flux-image.webp"
+	},
+	{
+		"id": 922044978,
+		"name": "Cloudflare PDF Parser",
+		"description": "A serverless Cloudflare Worker designed for parsing PDF statements and extracting structured JSON data efficiently.",
+		"html_url": "https://github.com/Utsav173/pdf-parser",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"serverless",
+			"cloudflare-workers",
+			"pdf-processing",
+			"data-extraction",
+			"api",
+			"automation"
+		],
+		"techStack": ["Cloudflare Workers", "JavaScript", "PDF.js"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/pdf-parser"
+	},
+	{
+		"id": 583853098,
+		"name": "GTU IMP Study Portal",
+		"description": "A comprehensive portal for GTU students providing important questions, study materials, and exam resources.",
+		"html_url": "https://github.com/Utsav173/gtu-imp",
+		"homepage": "https://gtu-imp.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"edtech",
+			"education-portal",
+			"nextjs",
+			"gtu",
+			"student-resources",
+			"typescript"
+		],
+		"techStack": [
+			"Next.js",
+			"TypeScript",
+			"Vercel",
+			"Educational",
+			"React",
+			"Tailwind CSS"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/gtu-imp",
+		"imageUrl": "/images/projects/gtu-imp.webp"
+	},
+	{
+		"id": 908677971,
+		"name": "X-Splash Image Platform (Next.js)",
+		"description": "A Next.js based platform for AI image generation, publishing, and exploration, offering a modern user experience.",
+		"html_url": "https://github.com/Utsav173/x-splash-gen-next",
+		"homepage": "https://x-splash-gen-next.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"ai",
+			"image-generation",
+			"nextjs",
+			"community-platform",
+			"content-creation",
+			"typescript"
+		],
+		"techStack": [
+			"Next.js",
+			"React",
+			"TypeScript",
+			"Tailwind CSS",
+			"JavaScript",
+			"CSS",
+			"AI",
+			"Vercel"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/x-splash-gen-next"
+	},
+	{
+		"id": 907457207,
+		"name": "X-Splash Image Platform (MERN)",
+		"description": "A full-stack image exploration and sharing platform built with the MERN stack (MongoDB, Express, React, Node.js).",
+		"html_url": "https://github.com/Utsav173/x-splash-gen",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"mern-stack",
+			"image-sharing",
+			"full-stack",
+			"social-platform",
+			"mongodb",
+			"expressjs",
+			"react",
+			"nodejs"
+		],
+		"techStack": [
+			"React",
+			"Node.js",
+			"Express.js",
+			"MongoDB",
+			"JavaScript",
+			"HTML",
+			"CSS",
+			"Mongoose"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/x-splash-gen"
+	},
+	{
+		"id": 900219754,
+		"name": "Flux Ultra Image Generator",
+		"description": "An advanced AI image generation tool leveraging the Flux model, built with TypeScript for high-quality visual content creation.",
+		"html_url": "https://github.com/Utsav173/flux-ultra-gen",
+		"homepage": null,
+		"stargazers_count": 1,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"ai",
+			"image-generation",
+			"flux-model",
+			"typescript",
+			"generative-art",
+			"machine-learning"
+		],
+		"techStack": [
+			"TypeScript",
+			"Next.js",
+			"React",
+			"Tailwind CSS",
+			"AI",
+			"Fal.ai"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/flux-ultra-gen"
+	},
+	{
+		"id": 900217037,
+		"name": "Stable Diffusion 3.5 Web App",
+		"description": "A web application enabling users to generate images using the Stable Diffusion 3.5 AI model with their own API keys.",
+		"html_url": "https://github.com/Utsav173/stable-diff-3.5",
+		"homepage": null,
+		"stargazers_count": 1,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"ai",
+			"image-generation",
+			"stable-diffusion",
+			"typescript",
+			"machine-learning",
+			"api-integration"
+		],
+		"techStack": [
+			"TypeScript",
+			"Next.js",
+			"React",
+			"Tailwind CSS",
+			"Stable Diffusion API",
+			"AI"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/stable-diff-3.5"
+	},
+	{
+		"id": 905732199,
+		"name": "IPO Insights Pro",
+		"description": "A web application for tracking the latest IPO insights, Grey Market Premiums (GMP), and related financial data.",
+		"html_url": "https://github.com/Utsav173/pro-ipo",
+		"homepage": "https://pro-ipo.vercel.app",
+		"stargazers_count": 1,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"ipo-tracker",
+			"finance",
+			"data-visualization",
+			"nextjs",
+			"typescript",
+			"fintech-tools"
+		],
+		"techStack": [
+			"Next.js",
+			"React",
+			"TypeScript",
+			"Tailwind CSS",
+			"Chart.js",
+			"Data Scraping"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/pro-ipo"
+	},
+	{
+		"id": 904861772,
+		"name": "IPO GMP Pro Dashboard",
+		"description": "Advanced dashboard for tracking IPO Grey Market Premiums, allotment status, and subscription data, deployed on Cloudflare Pages.",
+		"html_url": "https://github.com/Utsav173/ipo-gmp-pro",
+		"homepage": "https://ipo-gmp-pro.pages.dev",
+		"stargazers_count": 1,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"ipo-dashboard",
+			"finance",
+			"cloudflare-pages",
+			"data-analysis",
+			"typescript",
+			"serverless-deployment"
+		],
+		"techStack": [
+			"Next.js",
+			"TypeScript",
+			"Cloudflare Pages",
+			"Data Scraping",
+			"Tailwind CSS",
+			"React",
+			"Chart.js"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/ipo-gmp-pro"
+	},
+	{
+		"id": 586172831,
+		"name": "GTU Sample Paper Archive",
+		"description": "A web resource providing access to a collection of GTU (Gujarat Technological University) sample papers for students.",
+		"html_url": "https://github.com/Utsav173/gtu-sample-paper",
+		"homepage": "https://samplepaper.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": null,
+		"topics": [
+			"education",
+			"gtu",
+			"archive",
+			"student-resources",
+			"static-site"
+		],
+		"techStack": ["HTML", "CSS", "JavaScript", "Vercel"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/gtu-sample-paper"
+	},
+	{
+		"id": 592869786,
+		"name": "Simple Budget Calculator",
+		"description": "A client-side budget calculation tool built with vanilla JavaScript for straightforward financial planning.",
+		"html_url": "https://github.com/Utsav173/budget-calc",
+		"homepage": "https://budget-calc-one.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"javascript-utility",
+			"finance-tool",
+			"budgeting",
+			"vanilla-js",
+			"frontend-tool"
+		],
+		"techStack": ["JavaScript", "HTML", "CSS"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/budget-calc"
+	},
+	{
+		"id": 628273765,
+		"name": "Contact Form Backend API",
+		"description": "A Node.js and Express.js backend service for handling contact form submissions from web applications.",
+		"html_url": "https://github.com/Utsav173/contact-form-backend",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"nodejs",
+			"expressjs",
+			"api-development",
+			"backend-service",
+			"form-handling"
+		],
+		"techStack": ["Node.js", "Express.js", "JavaScript"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/contact-form-backend"
+	},
+	{
+		"id": 640485531,
+		"name": "Appointment Booking Backend",
+		"description": "A backend system developed with Node.js and Express.js to manage appointment bookings, including API endpoints.",
+		"html_url": "https://github.com/Utsav173/Appoinment-booking-backend",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"nodejs",
+			"expressjs",
+			"api",
+			"booking-system",
+			"backend-development",
+			"restful-apis"
+		],
+		"techStack": ["Node.js", "Express.js", "JavaScript", "MongoDB"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/Appoinment-booking-backend"
+	},
+	{
+		"id": 643121312,
+		"name": "Auth API Implementation",
+		"description": "A demonstration of authentication and authorization API implementation using JavaScript, likely with Node.js/Express and JWT.",
+		"html_url": "https://github.com/Utsav173/Auth-api-implementation",
+		"homepage": "https://auth-test-nu.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"authentication",
+			"authorization",
+			"api-security",
+			"nodejs",
+			"jwt",
+			"expressjs"
+		],
+		"techStack": ["Node.js", "Express.js", "JavaScript", "JWT", "HTML"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/Auth-api-implementation"
+	},
+	{
+		"id": 774796958,
+		"name": "Infinity Split",
+		"description": "A project exploring infinite splitting or division concepts, potentially a visual or algorithmic experiment in JavaScript.",
+		"html_url": "https://github.com/Utsav173/infinity-split",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": null,
+		"topics": [
+			"experimental-programming",
+			"algorithmic-art",
+			"javascript",
+			"visual-experiment"
+		],
+		"techStack": ["JavaScript", "HTML", "CSS"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/infinity-split"
+	},
+	{
+		"id": 706814171,
+		"name": "Starter Express API",
+		"description": "A boilerplate/starter template for quickly setting up RESTful APIs using Express.js and JavaScript.",
+		"html_url": "https://github.com/Utsav173/starter-express-api",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": null,
+		"topics": [
+			"nodejs",
+			"expressjs",
+			"api-template",
+			"boilerplate-code",
+			"backend-starter"
+		],
+		"techStack": ["Node.js", "Express.js", "JavaScript"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/starter-express-api"
+	},
+	{
+		"id": 701981157,
+		"name": "Data Generator API",
+		"description": "An API service for generating various types of mock or sample data, useful for testing and development.",
+		"html_url": "https://github.com/Utsav173/data-generator-api",
+		"homepage": "https://data-x-generator.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"api-utility",
+			"data-generation",
+			"developer-tools",
+			"mock-data",
+			"nodejs"
+		],
+		"techStack": ["Node.js", "Express.js", "JavaScript", "HTML"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/data-generator-api"
+	},
+	{
+		"id": 663477229,
+		"name": "VectorDB Exploration",
+		"description": "An exploratory project focused on understanding and implementing vector database concepts for AI applications.",
+		"html_url": "https://github.com/Utsav173/vectorDB",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": null,
+		"topics": [
+			"database-research",
+			"vector-database",
+			"ai-infrastructure",
+			"data-science",
+			"embeddings"
+		],
+		"techStack": [
+			"Python",
+			"Jupyter Notebook",
+			"Vector Databases (e.g., Pinecone, Weaviate - conceptual)"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/vectorDB"
+	},
+	{
+		"id": 629585331,
+		"name": "Full-Stack Social Media App",
+		"description": "A feature-rich social media application built with JavaScript, HTML, and CSS, demonstrating full-stack development capabilities with React and Node.js/Express.",
+		"html_url": "https://github.com/Utsav173/full-stack-social-media",
+		"homepage": "https://full-stack-social-media-x1c9.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"social-media-app",
+			"full-stack-development",
+			"react",
+			"nodejs",
+			"expressjs",
+			"mongodb",
+			"javascript"
+		],
+		"techStack": [
+			"React",
+			"Node.js",
+			"Express.js",
+			"MongoDB",
+			"JavaScript",
+			"HTML",
+			"CSS",
+			"Mongoose",
+			"JWT"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/full-stack-social-media"
+	},
+	{
+		"id": 658353961,
+		"name": "Twitter Clone (T3 Stack)",
+		"description": "A Twitter-like application built using the T3 Stack (Next.js, TypeScript, Tailwind CSS, tRPC, Prisma), showcasing modern full-stack development.",
+		"html_url": "https://github.com/Utsav173/twitter-t3",
+		"homepage": "https://twitter-t3-theta.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "TypeScript",
+		"topics": [
+			"t3-stack",
+			"nextjs",
+			"typescript",
+			"social-media-clone",
+			"trpc",
+			"prisma",
+			"full-stack-typescript"
+		],
+		"techStack": [
+			"Next.js",
+			"TypeScript",
+			"tRPC",
+			"Prisma",
+			"Tailwind CSS",
+			"NextAuth.js",
+			"React"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/twitter-t3"
+	},
+	{
+		"id": 631162440,
+		"name": "Auth API Service",
+		"description": "A dedicated backend API for handling user authentication and authorization, built with JavaScript, Node.js, and Express.",
+		"html_url": "https://github.com/Utsav173/auth-api",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"api-security",
+			"authentication-service",
+			"nodejs",
+			"expressjs",
+			"backend-api",
+			"jwt"
+		],
+		"techStack": ["Node.js", "Express.js", "JavaScript", "JWT", "MongoDB"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/auth-api"
+	},
+	{
+		"id": 582538018,
+		"name": "Codex - ChatGPT Clone",
+		"description": "A web application mimicking the conversational AI capabilities of ChatGPT, named Codex, using an AI API.",
+		"html_url": "https://github.com/Utsav173/codex_chatgptclone",
+		"homepage": "codex-chatgptclone.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"ai-chatbot",
+			"chatgpt-clone",
+			"javascript",
+			"frontend-ai",
+			"openai-api"
+		],
+		"techStack": ["JavaScript", "HTML", "CSS", "OpenAI API (or similar)"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/codex_chatgptclone"
+	},
+	{
+		"id": 591554044,
+		"name": "7-IT GTU Paper Resource",
+		"description": "A simple web page providing access to 7th semester IT engineering exam papers for GTU students.",
+		"html_url": "https://github.com/Utsav173/7-it-paper",
+		"homepage": "https://7-it-paper.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "HTML",
+		"topics": [
+			"education-portal",
+			"gtu-resources",
+			"static-html",
+			"student-archive"
+		],
+		"techStack": ["HTML", "CSS", "JavaScript"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/7-it-paper"
+	},
+	{
+		"id": 584115147,
+		"name": "Frontend Chat Application",
+		"description": "The client-side interface for a real-time chat application, built with JavaScript, HTML, and CSS, using WebSockets.",
+		"html_url": "https://github.com/Utsav173/frontendchatapp",
+		"homepage": "frontendchatapp-ten.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"real-time-chat",
+			"frontend-development",
+			"javascript",
+			"websockets",
+			"ui-design"
+		],
+		"techStack": ["JavaScript", "HTML", "CSS", "WebSocket API"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/frontendchatapp"
+	},
+	{
+		"id": 584113374,
+		"name": "Backend Chat Application",
+		"description": "The server-side logic for a real-time chat application, using Node.js, Express, and WebSockets for communication.",
+		"html_url": "https://github.com/Utsav173/backendchatapp",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"real-time-chat-backend",
+			"nodejs",
+			"expressjs",
+			"websockets",
+			"api-development"
+		],
+		"techStack": [
+			"Node.js",
+			"Express.js",
+			"JavaScript",
+			"Socket.IO (or ws)",
+			"Shell"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/backendchatapp"
+	},
+	{
+		"id": 581981356,
+		"name": "Chat App Backend (Alternative)",
+		"description": "An alternative backend implementation for a chat application, focusing on server-side functionalities with Node.js and Express.",
+		"html_url": "https://github.com/Utsav173/chatapp-backend",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"chat-server",
+			"backend-api",
+			"nodejs",
+			"expressjs",
+			"real-time-communication"
+		],
+		"techStack": [
+			"Node.js",
+			"Express.js",
+			"JavaScript",
+			"Socket.IO (or ws)",
+			"HTML (for testing)"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/chatapp-backend"
+	},
+	{
+		"id": 562880692,
+		"name": "DALL-E 2 API Example",
+		"description": "A demonstration project showcasing integration with the DALL-E 2 API for AI image generation using JavaScript.",
+		"html_url": "https://github.com/Utsav173/Dalle-2-example",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"ai-image-generation",
+			"dalle2-api",
+			"api-integration",
+			"javascript-example",
+			"openai"
+		],
+		"techStack": [
+			"JavaScript",
+			"Node.js (for backend API call)",
+			"OpenAI API",
+			"HTML (for frontend)"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/Dalle-2-example"
+	},
+	{
+		"id": 555366160,
+		"name": "Chat App (Vercel Deployment)",
+		"description": "A chat application specifically configured for deployment on the Vercel platform, using Node.js and WebSockets.",
+		"html_url": "https://github.com/Utsav173/cahtapp-vercel",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"chat-application",
+			"vercel-deployment",
+			"nodejs",
+			"websockets",
+			"full-stack-js"
+		],
+		"techStack": [
+			"Node.js",
+			"Express.js",
+			"Socket.IO (or ws)",
+			"JavaScript",
+			"HTML",
+			"CSS",
+			"Vercel"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/cahtapp-vercel"
+	},
+	{
+		"id": 555343370,
+		"name": "Social Media Clone",
+		"description": "A clone of a popular social media platform, implemented with JavaScript, HTML, and CSS for the frontend.",
+		"html_url": "https://github.com/Utsav173/social-media-clone",
+		"homepage": "social-media-clone-nine.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"social-media-frontend",
+			"javascript-clone",
+			"ui-development",
+			"frontend-project"
+		],
+		"techStack": ["JavaScript", "HTML", "CSS", "Shell"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/social-media-clone"
+	},
+	{
+		"id": 526685656,
+		"name": "Mutual Fund Information Page",
+		"description": "A static HTML page providing information or resources related to mutual funds, styled with CSS.",
+		"html_url": "https://github.com/Utsav173/mutual-fund",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "HTML",
+		"topics": [
+			"finance-info",
+			"static-webpage",
+			"html-css",
+			"informational-site"
+		],
+		"techStack": ["HTML", "CSS"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/mutual-fund"
+	},
+	{
+		"id": 368490976,
+		"name": "GitHub Profile Configuration",
+		"description": "Configuration files and markdown for my GitHub profile, defining its appearance and featured content.",
+		"html_url": "https://github.com/Utsav173/Utsav173",
+		"homepage": "https://github.com/Utsav173",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": null,
+		"topics": [
+			"github-profile",
+			"markdown-readme",
+			"profile-customization",
+			"git-configuration"
+		],
+		"techStack": ["Markdown"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/Utsav173"
+	},
+	{
+		"id": 553744327,
+		"name": "React Native Auth Example",
+		"description": "An example application demonstrating authentication flows in a React Native mobile environment using JavaScript.",
+		"html_url": "https://github.com/Utsav173/react-native-auth",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"react-native-auth",
+			"mobile-authentication",
+			"javascript-mobile",
+			"expo-example"
+		],
+		"techStack": ["React Native", "JavaScript", "Expo"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/react-native-auth"
+	},
+	{
+		"id": 553533014,
+		"name": "Simple Landing Page",
+		"description": "A responsive and clean landing page template built with JavaScript, HTML, and CSS, deployed on Vercel.",
+		"html_url": "https://github.com/Utsav173/landingpage",
+		"homepage": "landingpage-utsav173.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"landing-page-template",
+			"frontend-design",
+			"vanilla-javascript",
+			"responsive-web-design"
+		],
+		"techStack": ["JavaScript", "HTML", "CSS", "Vercel"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/landingpage"
+	},
+	{
+		"id": 526686436,
+		"name": "COVID-19 Data Fetcher",
+		"description": "A simple HTML and JavaScript application to fetch and display COVID-19 related data from an API.",
+		"html_url": "https://github.com/Utsav173/covid-fetch",
+		"homepage": null,
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "HTML",
+		"topics": [
+			"api-client",
+			"data-fetching",
+			"health-data",
+			"javascript-utility",
+			"html-app"
+		],
+		"techStack": ["HTML", "JavaScript", "CSS", "Fetch API"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/covid-fetch"
+	},
+	{
+		"id": 525724181,
+		"name": "Crypto Information App",
+		"description": "A web application providing information and tracking for various cryptocurrencies, built with JavaScript and deployed on Vercel.",
+		"html_url": "https://github.com/Utsav173/crypto-app",
+		"homepage": "crypto-app-utsav173.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "JavaScript",
+		"topics": [
+			"cryptocurrency-tracker",
+			"api-integration-frontend",
+			"javascript-app",
+			"financial-data"
+		],
+		"techStack": [
+			"JavaScript",
+			"HTML",
+			"CSS",
+			"CoinGecko API (or similar)",
+			"Vercel"
+		],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/crypto-app"
+	},
+	{
+		"id": 504712312,
+		"name": "IPDC Quiz (GTU)",
+		"description": "An HTML-based quiz application for the IPDC subject, relevant for GTU engineering students, with JavaScript interactivity.",
+		"html_url": "https://github.com/Utsav173/ipdcquiz.quiz",
+		"homepage": "ipdcquiz-quiz.vercel.app",
+		"stargazers_count": 0,
+		"forks_count": 0,
+		"language": "HTML",
+		"topics": [
+			"online-quiz",
+			"educational-tool",
+			"gtu-engineering",
+			"html-javascript",
+			"static-quiz-app"
+		],
+		"techStack": ["HTML", "CSS", "JavaScript"],
+		"owner": "Utsav173",
+		"full_name": "Utsav173/ipdcquiz.quiz"
+	}
 ]
