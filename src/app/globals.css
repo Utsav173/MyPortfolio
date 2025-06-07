@@ -434,3 +434,14 @@
   animation: pulseGlow 2s ease-in-out infinite;
   z-index: -1;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}

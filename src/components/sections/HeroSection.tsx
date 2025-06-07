@@ -101,7 +101,7 @@ export function HeroSection({
 		<motion.section
 			id={id}
 			className={cn(
-				'relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-transparent px-4 text-center',
+				'relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-transparent px-4 text-center ',
 				className
 			)}
 			variants={shouldReduceMotion ? {} : heroVariants}
@@ -109,7 +109,7 @@ export function HeroSection({
 			animate={shouldReduceMotion ? undefined : 'visible'}
 			aria-labelledby="hero-heading"
 		>
-			<div className="container relative z-10 mx-auto">
+			<div className="container relative z-10 mx-auto max-sm:mt-10">
 				<motion.p
 					variants={shouldReduceMotion ? {} : itemVariants}
 					className="mb-3 text-base font-semibold text-primary md:text-lg"
@@ -164,48 +164,76 @@ export function HeroSection({
 					role="group"
 					aria-label="Primary actions"
 				>
-					{/* Primary CTA Button */}
+					{/* Primary CTA Button with Colorful Effect */}
 					<motion.div
 						variants={shouldReduceMotion ? {} : buttonHoverVariants}
 						whileHover={shouldReduceMotion ? undefined : 'hover'}
 						whileTap={shouldReduceMotion ? undefined : 'tap'}
 					>
 						<Button
-							size="lg"
 							asChild
 							className={cn(
-								'group relative h-auto overflow-hidden rounded-full border-0 bg-gradient-to-r from-primary via-primary to-primary/80 px-8 py-4 text-base font-semibold text-primary-foreground shadow-2xl shadow-primary/25 transition-all duration-300 ease-out hover:shadow-2xl hover:shadow-primary/40 sm:px-10 sm:py-4',
-								'before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-r before:from-white/20 before:via-transparent before:to-transparent before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100',
-								'after:absolute after:inset-0 after:rounded-full after:bg-gradient-to-r after:from-transparent after:via-white/10 after:to-white/20 after:translate-x-[-100%] after:transition-transform after:duration-700 hover:after:translate-x-[100%]'
+								'group relative h-auto overflow-hidden rounded-full border px-8 py-4 text-base font-semibold transition-all duration-500 ease-out sm:px-10 sm:py-4',
+								'bg-zinc-200 dark:bg-transparent',
+								'hover:shadow-2xl hover:shadow-purple-500/40',
+								'max-sm:px-4 max-sm:py-2.5 max-sm:text-sm'
 							)}
 						>
 							<Link
 								href="#projects"
 								onClick={handleProjectScroll}
-								className="relative z-10 flex items-center justify-center"
+								className="relative z-20 flex items-center justify-center"
 								aria-label="Explore my projects"
 							>
-								<Sparkles className="mr-2 size-5 transition-all duration-300 group-hover:rotate-12 group-hover:scale-110" />
-								Explore Projects
-								<ArrowRight className="ml-2.5 size-5 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:scale-110" />
+								{/* Animated Gradient Background */}
+								<div
+									className={cn(
+										'absolute inset-0 rounded-full',
+										'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500',
+										'opacity-60 group-hover:opacity-100',
+										'blur-sm transition-all duration-500 ease-out',
+										'group-hover:blur-none group-hover:scale-105'
+									)}
+								/>
+
+								{/* Secondary Gradient Layer */}
+								<div
+									className={cn(
+										'absolute inset-0 rounded-full',
+										'bg-gradient-to-r from-cyan-400 via-violet-500 to-fuchsia-500',
+										'opacity-0 group-hover:opacity-40',
+										'blur transition-all duration-700 ease-out',
+										'group-hover:animate-pulse'
+									)}
+								/>
+
+								{/* Content Container */}
+								<div className="relative z-10 flex items-center justify-center text-white dark:text-zinc-300">
+									<Sparkles className="mr-2 size-5 transition-all duration-300 group-hover:rotate-12 group-hover:scale-110" />
+									Explore Projects
+									<ArrowRight className="ml-2.5 size-5 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:scale-110" />
+								</div>
 							</Link>
 						</Button>
 					</motion.div>
 
-					{/* Secondary CTA Button */}
+					{/* Secondary CTA Button with Glass Morphism Effect */}
 					<motion.div
 						variants={shouldReduceMotion ? {} : buttonHoverVariants}
 						whileHover={shouldReduceMotion ? undefined : 'hover'}
 						whileTap={shouldReduceMotion ? undefined : 'tap'}
 					>
 						<Button
-							size="lg"
 							variant="outline"
 							asChild
 							className={cn(
-								'group relative h-auto overflow-hidden rounded-full border-2 border-primary/30 bg-background/50 px-8 py-4 text-base font-semibold backdrop-blur-sm transition-all duration-300 ease-out hover:border-primary hover:bg-primary/5 hover:shadow-lg hover:shadow-primary/20 sm:px-10 sm:py-4',
-								'before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-r before:from-primary/5 before:via-primary/10 before:to-primary/5 before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100',
-								'text-primary dark:border-primary/40 dark:bg-background/80 dark:hover:border-primary/80 dark:hover:bg-primary/10'
+								'group relative h-auto overflow-hidden rounded-full border px-8 py-4 text-base font-semibold transition-all duration-500 ease-out sm:px-10 sm:py-4',
+								'border-white/20 bg-white/5 backdrop-blur-xl',
+								'hover:border-white/30 hover:bg-white/10',
+								'max-sm:px-4 max-sm:py-2.5 max-sm:text-sm',
+								'dark:border-white/10 dark:bg-white/5 dark:hover:border-white/20 dark:hover:bg-white/10',
+								'shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10',
+								'before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-r before:from-emerald-400/10 before:via-teal-400/10 before:to-cyan-400/10 before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100'
 							)}
 						>
 							<a
@@ -213,21 +241,43 @@ export function HeroSection({
 								target="_blank"
 								rel="noopener noreferrer"
 								download="resume_utsav_khatri.pdf"
-								className="relative z-10 flex items-center justify-center"
+								className="relative z-20 flex items-center justify-center"
 								aria-label="Download Utsav Khatri's Resume"
 							>
-								<DownloadCloud className="mr-2.5 size-5 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:scale-110" />
-								Download Resume
-								<div className="ml-2 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1">
-									<svg
-										width="4"
-										height="4"
-										viewBox="0 0 4 4"
-										fill="none"
-										className="fill-current"
-									>
-										<circle cx="2" cy="2" r="2" />
-									</svg>
+								{/* Animated Border Gradient */}
+								<div
+									className={cn(
+										'absolute inset-0 rounded-full p-[1px]',
+										'bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400',
+										'opacity-0 group-hover:opacity-100',
+										'transition-all duration-500 ease-out',
+										'before:absolute before:inset-[1px] before:rounded-full before:bg-background/90 before:backdrop-blur-xl'
+									)}
+								/>
+
+								{/* Shimmer Effect */}
+								<div
+									className={cn(
+										'absolute inset-0 rounded-full',
+										'bg-gradient-to-r from-transparent via-white/20 to-transparent',
+										'opacity-0 group-hover:opacity-100',
+										'-translate-x-full group-hover:translate-x-full',
+										'transition-all duration-1000 ease-out',
+										'transform-gpu'
+									)}
+								/>
+
+								{/* Content */}
+								<div className="relative z-10 flex items-center justify-center text-foreground group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-300">
+									<DownloadCloud className="mr-2.5 size-5 transition-all duration-500 ease-out group-hover:-translate-y-1 group-hover:scale-110 group-hover:rotate-6" />
+									<span className="relative">
+										Download Resume
+										{/* Underline Effect */}
+										<div className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-emerald-400 to-cyan-400 transition-all duration-500 ease-out group-hover:w-full" />
+									</span>
+									<div className="ml-2 opacity-0 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-1">
+										<div className="size-1.5 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 animate-pulse" />
+									</div>
 								</div>
 							</a>
 						</Button>

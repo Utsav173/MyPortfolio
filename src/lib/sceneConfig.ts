@@ -2,26 +2,27 @@ import * as THREE from 'three';
 
 export const defaultSceneConfig = {
 	plane: {
-		size: 300,
-		visualSegments: 160,
+		size: 256,
+		visualSegments: 128,
 		collisionSegments: 32,
-		timeFactor: 0.15,
-		hillDarkColorHex: '#001a4d',
-		hillLightColorHex: '#4da6ff',
+		timeFactor: 0.2,
+		hillDarkColorHex: '#273161',
+		hillLightColorHex: '#5568ab',
 		noiseStrength: {
 			hill1: 15,
 			hill2: 11.3,
 			hill3: 3.2,
-			overall: 55,
+			overall: 46.5,
 		},
-		opacityFactorDark: 0.9,
-		opacityFactorLight: 0.95,
+		opacityFactorDark: 0.87,
+
+		opacityFactorLight: 0.92,
 	},
 	rain: {
-		charHeight: 1.8,
+		charHeight: 1.35,
 		charAspect: 0.56,
-		streamCountMobile: 35,
-		streamCountDesktop: 60,
+		streamCountMobile: 40,
+		streamCountDesktop: 110,
 		streamLengthMobile: 6,
 		streamLengthDesktop: 10,
 		yTop: 89,
@@ -30,12 +31,13 @@ export const defaultSceneConfig = {
 		speedBaseMax: 29,
 		leadColorDarkHex: '#a2d9ff',
 		trailColorBaseDarkHex: '#0089de',
-		leadColorLightHex: '#4A70B0',
-		trailColorBaseLightHex: '#7996C7',
+
+		leadColorLightHex: '#293241',
+		trailColorBaseLightHex: '#5a7d9e',
 		splashColorHex: '#82acff',
-		splashColorLightHex: '#b3d7ff', // Added light mode splash color
+		splashColorLightHex: '#98c1d9',
 		bloomIntensity: {
-			lead: 3.5,
+			lead: 2.9,
 			trail: 3.7,
 			splash: 4.7,
 		},
@@ -52,34 +54,35 @@ export const defaultSceneConfig = {
 		lifespan: 0.8,
 	},
 	camera: {
-		fov: 35, // Wide IMAX-style FOV
-		near: 2,
-		far: 2000,
+		fov: 30,
+		near: 5,
+		far: 1000,
 		initialXPos: 0,
-		initialYPos: 100, // Calculated for 30° angle (150 * tan(30°))
-		initialZPos: 200, // Base distance
+		initialYPos: 20,
+		initialZPos: 130,
 		initialLookAtX: 0,
-		initialLookAtY: 0, // Looking at ground level
-		initialLookAtZ: 0, // Target point at ground
+		initialLookAtY: 10,
+		initialLookAtZ: 0,
+	},
+	themeColors: {
+		darkBgHex: '#05050c',
+		lightBgHex: '#E6EFFF',
 	},
 	effects: {
 		bloom: {
 			enabled: true,
-			luminanceThreshold: 0.2,
-			luminanceSmoothing: 0.9,
-			intensity: 2.0,
+			luminanceThreshold: 0.32,
+			luminanceSmoothing: 1,
+
+			intensity: 1.2,
 			kernelSize: 'LARGE',
 			mipmapBlur: true,
 		},
 		fog: {
 			enabled: true,
-			densityDarkTheme: 0.008,
-			densityLightTheme: 0.006,
+			densityDarkTheme: 0.01,
+			densityLightTheme: 0.012,
 		},
-	},
-	themeColors: {
-		darkBgHex: '#03050F',
-		lightBgHex: '#f0f5ff',
 	},
 };
 
@@ -99,6 +102,7 @@ export interface ParsedRainConfig
 		| 'leadColorLightHex'
 		| 'trailColorBaseLightHex'
 		| 'splashColorHex'
+		| 'splashColorLightHex'
 	> {
 	leadColorDark: THREE.Color;
 	trailColorBaseDark: THREE.Color;
@@ -166,9 +170,6 @@ export function parseConfigColors(
 	delete parsedPlane.hillDarkColorHex;
 	delete parsedPlane.hillLightColorHex;
 
-	delete parsedPlane.darkColorHex;
-	delete parsedPlane.lightColorHex;
-
 	const parsedRain: any = { ...config.rain };
 	parsedRain.leadColorDark = new THREE.Color(config.rain.leadColorDarkHex);
 	parsedRain.trailColorBaseDark = new THREE.Color(
@@ -182,6 +183,8 @@ export function parseConfigColors(
 	delete parsedRain.trailColorBaseDarkHex;
 	delete parsedRain.leadColorLightHex;
 	delete parsedRain.trailColorBaseLightHex;
+	delete parsedRain.splashColorHex;
+	delete parsedRain.splashColorLightHex;
 
 	const parsedThemeColors: any = { ...config.themeColors };
 	parsedThemeColors.darkBg = new THREE.Color(config.themeColors.darkBgHex);
@@ -190,10 +193,10 @@ export function parseConfigColors(
 	delete parsedThemeColors.lightBgHex;
 
 	const parsedSplashParticles: any = { ...config.splashParticles };
-	// Use splash color based on currentTheme
+
 	parsedSplashParticles.splashColor = new THREE.Color(
 		currentTheme === 'light'
-			? config.rain.splashColorLightHex || config.rain.splashColorHex
+			? config.rain.splashColorLightHex
 			: config.rain.splashColorHex
 	);
 
