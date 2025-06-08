@@ -52,8 +52,6 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, className, ...props
         : project.topics
   ).slice(0, 6);
 
-  console.log(techToDisplay, 'techToDisplay');
-
   const displayDescription =
     project.description || 'A project exploring modern web development concepts.';
   const projectLink = project.homepage || project.html_url;
