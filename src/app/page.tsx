@@ -11,7 +11,7 @@ import { ContactSection } from '@/components/sections/ContactSection';
 import FooterSection from '@/components/sections/FooterSection';
 
 const FEATURED_PROJECT_IDS: (number | string)[] = [
-  727342843, 657660151, 952619337, 922037774, 525828811, 583853098,
+  727342843, 657660151, 952619337, 525828811, 922037774, 583853098,
 ];
 
 async function getProjects(): Promise<Project[]> {
@@ -20,24 +20,32 @@ async function getProjects(): Promise<Project[]> {
     const fileContents = await fs.readFile(filePath, 'utf8');
     let projects: Project[] = JSON.parse(fileContents);
 
+    // Sort projects based on featured status, image, and stars
     projects.sort((a, b) => {
       const aFeaturedIndex = FEATURED_PROJECT_IDS.indexOf(a.id);
       const bFeaturedIndex = FEATURED_PROJECT_IDS.indexOf(b.id);
 
+      // Prioritize featured projects
       if (aFeaturedIndex !== -1 && bFeaturedIndex !== -1) {
         return aFeaturedIndex - bFeaturedIndex;
       }
       if (aFeaturedIndex !== -1) return -1;
       if (bFeaturedIndex !== -1) return 1;
 
+      // Prioritize projects with an image
       const aHasImage = !!a.imageUrl;
       const bHasImage = !!b.imageUrl;
       if (aHasImage && !bHasImage) return -1;
       if (!aHasImage && bHasImage) return 1;
 
-      if ((b.stargazers_count || 0) !== (a.stargazers_count || 0)) {
-        return (b.stargazers_count || 0) - (a.stargazers_count || 0);
+      // Sort by star count (using new structure)
+      const aStars = a.githubStats?.stars || 0;
+      const bStars = b.githubStats?.stars || 0;
+      if (bStars !== aStars) {
+        return bStars - aStars;
       }
+
+      // Fallback to alphabetical order
       return a.name.localeCompare(b.name);
     });
 

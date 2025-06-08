@@ -7,7 +7,7 @@ export const defaultSceneConfig = {
     collisionSegments: 32,
     timeFactor: 0.2,
     hillDarkColorHex: '#273161',
-    hillLightColorHex: '#5568ab',
+    hillLightColorHex: '#6b98c7',
     noiseStrength: {
       hill1: 15,
       hill2: 11.3,
@@ -32,10 +32,10 @@ export const defaultSceneConfig = {
     leadColorDarkHex: '#a2d9ff',
     trailColorBaseDarkHex: '#0089de',
 
-    leadColorLightHex: '#293241',
-    trailColorBaseLightHex: '#5a7d9e',
+    leadColorLightHex: '#0e2245',
+    trailColorBaseLightHex: '#3294f0',
     splashColorHex: '#82acff',
-    splashColorLightHex: '#98c1d9',
+    splashColorLightHex: '#83c9f2',
     bloomIntensity: {
       lead: 2.9,
       trail: 3.7,

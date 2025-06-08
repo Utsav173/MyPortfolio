@@ -58,7 +58,7 @@ const MobileMenuComponent = () => {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="block rounded-md px-3 py-2.5 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground sm:py-3 sm:text-lg"
+                    className="block rounded-md px-3 py-2.5 text-base font-medium transition-all hover:bg-accent hover:rounded-full hover:text-accent-foreground sm:py-3 sm:text-lg"
                     onClick={() => handleLinkClick(link.href)}
                   >
                     {link.label}
@@ -71,7 +71,7 @@ const MobileMenuComponent = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   download="resume_utsav_khatri.pdf"
-                  className="block rounded-md px-3 py-2.5 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground mt-4 border-t border-border/30 pt-4 sm:py-3 sm:pt-5 sm:text-lg"
+                  className="block rounded-md px-3 py-2 text-base font-medium transition-all hover:rounded-full  hover:bg-accent hover:text-accent-foreground mt-4 border-t border-border/30 pt-4 sm:py-3 sm:text-lg"
                   onClick={() => setIsOpen(false)}
                 >
                   Download Resume

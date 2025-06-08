@@ -75,6 +75,45 @@ const buttonHoverVariants: Variants = {
   },
 };
 
+// Optimized button variants with better performance
+const buttonVariants = {
+  initial: {
+    scale: 1,
+    rotateX: 0,
+  },
+  hover: {
+    scale: 1.02,
+    rotateX: -2,
+    transition: {
+      type: 'tween',
+      duration: 0.2,
+      ease: 'easeOut',
+    },
+  },
+  tap: {
+    scale: 0.98,
+    transition: {
+      type: 'tween',
+      duration: 0.1,
+    },
+  },
+};
+
+// Shimmer animation variants
+const shimmerVariants = {
+  initial: { x: '-100%', opacity: 0 },
+  animate: {
+    x: '100%',
+    opacity: [0, 1, 0],
+    transition: {
+      duration: 1.2,
+      ease: 'easeInOut',
+      repeat: Infinity,
+      repeatDelay: 2,
+    },
+  },
+};
+
 export function HeroSection({ className, id }: { className?: string; id?: string }) {
   const shouldReduceMotion = useReducedMotion();
   const nameParts = 'Utsav Khatri'.split('');
@@ -115,7 +154,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
           style={{ perspective: '800px' }}
           className={cn(
             'my-2 select-none font-bold tracking-tighter relative',
-            'text-[2.75rem] leading-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl'
+            'text-[3rem] leading-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl'
           )}
         >
           <div
@@ -208,21 +247,36 @@ export function HeroSection({ className, id }: { className?: string; id?: string
 
           {/* Secondary CTA Button with Glass Morphism Effect */}
           <motion.div
-            variants={shouldReduceMotion ? {} : buttonHoverVariants}
+            variants={shouldReduceMotion ? {} : buttonVariants}
+            initial="initial"
             whileHover={shouldReduceMotion ? undefined : 'hover'}
             whileTap={shouldReduceMotion ? undefined : 'tap'}
+            style={{ perspective: 1000 }} // Add perspective for 3D effect
           >
             <Button
               variant="outline"
               asChild
               className={cn(
-                'group relative h-auto overflow-hidden rounded-full border px-8 py-4 text-base font-semibold transition-all duration-500 ease-out sm:px-10 sm:py-4',
-                'border-white/20 bg-white/5 backdrop-blur-xl',
-                'hover:border-white/30 hover:bg-white/10',
-                'max-sm:px-4 max-sm:py-2.5 max-sm:text-sm',
+                // Base styles - consolidated for better performance
+                'group relative h-auto overflow-hidden rounded-full px-8 py-4 text-base font-semibold',
+                'transition-all duration-300 ease-out will-change-transform',
+
+                // Glass morphism effect
+                'border border-white/20 bg-white/5 backdrop-blur-xl shadow-lg shadow-black/5',
+
+                // Hover states
+                'hover:border-white/30 hover:bg-white/10 hover:shadow-xl hover:shadow-black/10',
+
+                // Dark mode support
                 'dark:border-white/10 dark:bg-white/5 dark:hover:border-white/20 dark:hover:bg-white/10',
-                'shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10',
-                'before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-r before:from-emerald-400/10 before:via-teal-400/10 before:to-cyan-400/10 before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100'
+
+                // Responsive sizing
+                'max-sm:px-4 max-sm:py-2.5 max-sm:text-sm sm:px-10 sm:py-4',
+
+                // Optimized pseudo-element for gradient background
+                'before:absolute before:inset-0 before:rounded-full before:opacity-0',
+                'before:bg-gradient-to-r before:from-emerald-400/10 before:via-teal-400/10 before:to-cyan-400/10',
+                'before:transition-opacity before:duration-300 hover:before:opacity-100'
               )}
             >
               <a
@@ -230,42 +284,79 @@ export function HeroSection({ className, id }: { className?: string; id?: string
                 target="_blank"
                 rel="noopener noreferrer"
                 download="resume_utsav_khatri.pdf"
-                className="relative z-20 flex items-center justify-center"
+                className="relative z-10 flex items-center justify-center"
                 aria-label="Download Utsav Khatri's Resume"
               >
-                {/* Animated Border Gradient */}
+                {/* Optimized animated border - only renders on hover */}
                 <div
                   className={cn(
-                    'absolute inset-0 rounded-full p-[1px]',
-                    'bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400',
-                    'opacity-0 group-hover:opacity-100',
-                    'transition-all duration-500 ease-out',
-                    'before:absolute before:inset-[1px] before:rounded-full before:bg-background/90 before:backdrop-blur-xl'
+                    'absolute inset-0 rounded-full opacity-0 transition-opacity duration-300',
+                    'group-hover:opacity-100',
+                    'bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 p-[1px]',
+                    'before:absolute before:inset-[1px] before:rounded-full before:bg-background/90'
                   )}
                 />
 
-                {/* Shimmer Effect */}
-                <div
-                  className={cn(
-                    'absolute inset-0 rounded-full',
-                    'bg-gradient-to-r from-transparent via-white/20 to-transparent',
-                    'opacity-0 group-hover:opacity-100',
-                    '-translate-x-full group-hover:translate-x-full',
-                    'transition-all duration-1000 ease-out',
-                    'transform-gpu'
-                  )}
-                />
+                {/* Shimmer effect - using transform3d for better performance */}
+                {!shouldReduceMotion && (
+                  <motion.div
+                    className={cn(
+                      'absolute inset-0 rounded-full pointer-events-none',
+                      'bg-gradient-to-r from-transparent via-white/30 to-transparent',
+                      'opacity-0 group-hover:opacity-100'
+                    )}
+                    variants={shimmerVariants}
+                    initial="initial"
+                    animate="animate"
+                    style={{
+                      transform: 'translate3d(-100%, 0, 0)',
+                      willChange: 'transform, opacity',
+                    }}
+                  />
+                )}
 
-                {/* Content */}
-                <div className="relative z-10 flex items-center justify-center text-foreground group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-300">
-                  <DownloadCloud className="mr-2.5 size-5 transition-all duration-500 ease-out group-hover:-translate-y-1 group-hover:scale-110 group-hover:rotate-6" />
-                  <span className="relative">
+                {/* Content container */}
+                <div className="relative z-20 flex items-center justify-center">
+                  {/* Icon with optimized animations */}
+                  <DownloadCloud
+                    className={cn(
+                      'mr-2.5 size-5 transition-all duration-300 ease-out',
+                      'group-hover:-translate-y-0.5 group-hover:scale-105 group-hover:rotate-3',
+                      'text-foreground group-hover:text-emerald-600 dark:group-hover:text-emerald-400'
+                    )}
+                  />
+
+                  {/* Text with underline effect */}
+                  <span
+                    className={cn(
+                      'relative transition-colors duration-300',
+                      'text-foreground group-hover:text-emerald-600 dark:group-hover:text-emerald-400'
+                    )}
+                  >
                     Download Resume
-                    {/* Underline Effect */}
-                    <div className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-emerald-400 to-cyan-400 transition-all duration-500 ease-out group-hover:w-full" />
+                    {/* Optimized underline animation */}
+                    <span
+                      className={cn(
+                        'absolute -bottom-1 left-0 h-0.5 w-0 rounded-full',
+                        'bg-gradient-to-r from-emerald-400 to-cyan-400',
+                        'transition-all duration-300 ease-out group-hover:w-full'
+                      )}
+                    />
                   </span>
-                  <div className="ml-2 opacity-0 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-1">
-                    <div className="size-1.5 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 animate-pulse" />
+
+                  {/* Animated dot indicator */}
+                  <div
+                    className={cn(
+                      'ml-2 opacity-0 transition-all duration-300 ease-out',
+                      'group-hover:opacity-100 group-hover:translate-x-1'
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        'size-1.5 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400',
+                        !shouldReduceMotion && 'animate-pulse'
+                      )}
+                    />
                   </div>
                 </div>
               </a>
