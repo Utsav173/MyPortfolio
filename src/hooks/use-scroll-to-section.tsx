@@ -20,7 +20,7 @@ export function useScrollToSection() {
         scrollTo(href);
       }
     },
-    [scrollTo]
+    [scrollTo],
   );
 
   return { scrollTo, handleNavClick };

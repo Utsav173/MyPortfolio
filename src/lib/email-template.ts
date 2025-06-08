@@ -5,7 +5,7 @@ function sanitizeHtml(text: string): string {
 export function createHtmlEmail(
   name: string,
   email: string,
-  message: string
+  message: string,
 ): string {
   const cleanName = sanitizeHtml(name);
   const cleanEmail = sanitizeHtml(email);

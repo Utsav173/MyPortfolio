@@ -8,7 +8,7 @@ const DEFAULT_OPTIONS: IntersectionObserverInit = {
 
 export function useActiveSectionObserver(
   sectionSelector: string,
-  options: IntersectionObserverInit = DEFAULT_OPTIONS
+  options: IntersectionObserverInit = DEFAULT_OPTIONS,
 ) {
   const [activeSection, setActiveSection] = useState<string>("hero");
 
@@ -20,7 +20,7 @@ export function useActiveSectionObserver(
         }
       });
     },
-    []
+    [],
   );
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export function useActiveSectionObserver(
 
     const observer = new IntersectionObserver(
       handleActiveSectionChange,
-      options
+      options,
     );
 
     sectionElements.forEach((section) => observer.observe(section));

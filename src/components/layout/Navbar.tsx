@@ -27,13 +27,13 @@ export function Navbar({ className, activeSection }: NavbarProps) {
       className={cn(
         "fixed top-3 left-1/2 z-50 w-[calc(100%-1.5rem)] -translate-x-1/2 sm:top-4 sm:w-auto",
         "rounded-full border border-border/30 bg-background/75 shadow-lg backdrop-blur-xl dark:bg-neutral-900/75 dark:shadow-primary/10",
-        className
+        className,
       )}
       role="banner"
     >
       <div
         className={cn(
-          "flex h-12 items-center justify-between gap-2 px-2.5 sm:h-[52px] sm:gap-4 sm:px-4"
+          "flex h-12 items-center justify-between gap-2 px-2.5 sm:h-[52px] sm:gap-4 sm:px-4",
         )}
       >
         <Logo className="h-6 shrink-0 sm:h-auto" />
@@ -51,7 +51,7 @@ export function Navbar({ className, activeSection }: NavbarProps) {
                 "relative rounded-md px-2.5 py-1.5 text-xs font-medium outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:px-3 lg:py-2 lg:text-sm",
                 activeSection === item.href.substring(1)
                   ? "font-semibold text-primary"
-                  : "text-foreground/70 hover:text-primary"
+                  : "text-foreground/70 hover:text-primary",
               )}
               aria-current={
                 activeSection === item.href.substring(1) ? "page" : undefined
@@ -75,7 +75,7 @@ export function Navbar({ className, activeSection }: NavbarProps) {
             className={cn(
               "hidden h-auto rounded-full px-2 py-1 text-[0.65rem] transition-all duration-300 sm:flex lg:px-3 lg:py-1.5 lg:text-xs",
               "border-primary/40 text-primary/90 hover:border-primary hover:bg-primary/10 dark:border-primary/30 dark:text-primary/80 dark:hover:border-primary/70 dark:hover:bg-primary/10 dark:hover:text-primary",
-              "focus-visible:ring-primary/50"
+              "focus-visible:ring-primary/50",
             )}
           >
             <a

@@ -150,7 +150,7 @@ export default function RootLayout({
           geistSans.variable,
           geistMono.variable,
           notoSansGujarati.variable,
-          notoSansDevanagari.variable
+          notoSansDevanagari.variable,
         )}
       >
         <ThemeProvider

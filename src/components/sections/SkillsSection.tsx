@@ -203,7 +203,7 @@ const SkillItemDisplay = memo<{
         "bg-card border border-border transition-all duration-300 ease-out",
         "hover:-translate-y-1.5",
         "hover:border-[var(--brand-color)]/80",
-        "hover:shadow-lg hover:shadow-[var(--brand-color)]/10"
+        "hover:shadow-lg hover:shadow-[var(--brand-color)]/10",
       )}
       style={{ "--brand-color": brandColor } as React.CSSProperties}
       title={skill.name}
@@ -242,7 +242,7 @@ const SkillCategoryCarousel = memo<{
 
   const duration = useMemo(
     () => categoryData.skills.length * 5,
-    [categoryData.skills.length]
+    [categoryData.skills.length],
   );
   const animationDirection = globalIndex % 2 === 0 ? "normal" : "reverse";
 
@@ -278,20 +278,30 @@ const SkillCategoryCarousel = memo<{
             } as React.CSSProperties
           }
         >
-          {[...categoryData.skills, ...categoryData.skills].map(
-            (skill, idx) => (
-              <div className="shrink-0 px-2 py-2" key={`${skill.name}-${idx}`}>
-                <SkillItemDisplay skill={skill} resolvedTheme={resolvedTheme} />
-              </div>
-            )
-          )}
+          {/* Render the first set of items */}
+          {categoryData.skills.map((skill, idx) => (
+            <div className="shrink-0 px-2 py-2" key={`${skill.name}-${idx}-a`}>
+              <SkillItemDisplay skill={skill} resolvedTheme={resolvedTheme} />
+            </div>
+          ))}
+
+          {/* Render the second, identical set for the seamless loop.
+              aria-hidden="true" prevents screen readers from announcing duplicates. */}
+          {categoryData.skills.map((skill, idx) => (
+            <div
+              className="shrink-0 px-2 py-2"
+              key={`${skill.name}-${idx}-b`}
+              aria-hidden="true"
+            >
+              <SkillItemDisplay skill={skill} resolvedTheme={resolvedTheme} />
+            </div>
+          ))}
         </div>
       </div>
     </motion.div>
   );
 });
 SkillCategoryCarousel.displayName = "SkillCategoryCarousel";
-
 export function SkillsSection({
   className,
   id,
@@ -305,7 +315,7 @@ export function SkillsSection({
       id={id}
       className={cn(
         "bg-background dark:bg-secondary/5 py-16 md:py-24 w-full",
-        className
+        className,
       )}
       aria-labelledby="skills-heading"
     >

@@ -13,7 +13,7 @@ const LogoComponent = ({ className }: LogoProps) => {
       aria-label="Utsav Khatri - Homepage"
       className={cn(
         "group flex items-center rounded-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-        className
+        className,
       )}
     >
       <span className="text-xl font-bold text-primary transition-colors duration-200 group-hover:text-primary/80">

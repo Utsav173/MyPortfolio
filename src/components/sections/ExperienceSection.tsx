@@ -107,7 +107,7 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
       ref={sectionRef}
       className={cn(
         "bg-secondary/20 dark:bg-secondary/5 py-20 md:py-28 lg:py-32 w-full",
-        className
+        className,
       )}
     >
       <div className="container mx-auto px-4">

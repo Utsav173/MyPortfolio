@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     console.error("Email service environment variables are not configured.");
     return NextResponse.json(
       { message: "Server error: Email configuration is incomplete." },
-      { status: 503 }
+      { status: 503 },
     );
   }
 
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
           message: "Invalid input.",
           errors: validationResult.error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
     await transporter.sendMail(mailOptions);
     return NextResponse.json(
       { message: "Message sent successfully! I'll get back to you soon." },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error: unknown) {
     console.error("Contact form API error:", error);
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     if (error instanceof SyntaxError) {
       return NextResponse.json(
         { message: "Invalid request body. Please provide valid JSON." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
           {
             message: "Server authentication error. Could not send the email.",
           },
-          { status: 500 }
+          { status: 500 },
         );
       }
     }
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
         : "An unknown internal error occurred.";
     return NextResponse.json(
       { message: "Failed to send message.", error: errorMessage },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
