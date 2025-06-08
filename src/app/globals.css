@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -98,8 +98,8 @@
     @apply bg-background text-foreground;
     min-height: 100dvh;
     font-feature-settings:
-      "liga" 1,
-      "calt" 1;
+      'liga' 1,
+      'calt' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-image:
@@ -166,6 +166,17 @@
 
   to {
     transform: translateX(-50%);
+  }
+}
+
+/* --- Add this new animation --- */
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
   }
 }
 
@@ -308,7 +319,7 @@
 }
 
 .btn-primary-enhanced::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
@@ -353,7 +364,7 @@
 }
 
 .btn-secondary-enhanced::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
@@ -415,13 +426,7 @@
 
 /* Gradient Fade Container */
 .gradient-fade-container {
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 10%,
-    black 90%,
-    transparent 100%
-  );
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
@@ -447,14 +452,10 @@
 }
 
 .scroll-indicator::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: -4px;
-  background: radial-gradient(
-    circle,
-    oklch(var(--primary-oklch-values) / 0.3) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle, oklch(var(--primary-oklch-values) / 0.3) 0%, transparent 70%);
   border-radius: 50%;
   animation: pulseGlow 2s ease-in-out infinite;
   z-index: -1;

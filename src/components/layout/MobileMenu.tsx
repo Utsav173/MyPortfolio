@@ -1,19 +1,13 @@
-"use client";
+'use client';
 
-import { useState, useCallback, memo } from "react";
-import Link from "next/link";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { useScrollToSection } from "@/hooks/use-scroll-to-section";
-import { NAV_ITEMS, RESUME_URL } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { useState, useCallback, memo } from 'react';
+import Link from 'next/link';
+import { Menu } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { useScrollToSection } from '@/hooks/use-scroll-to-section';
+import { NAV_ITEMS, RESUME_URL } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 
 const MobileMenuComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +18,7 @@ const MobileMenuComponent = () => {
       setIsOpen(false);
       scrollTo(href);
     },
-    [scrollTo],
+    [scrollTo]
   );
 
   return (
@@ -42,15 +36,15 @@ const MobileMenuComponent = () => {
       <SheetContent
         side="left"
         className={cn(
-          "w-[300px] sm:w-[360px] p-0",
-          "flex items-center justify-start border-none bg-transparent shadow-none",
+          'w-[300px] sm:w-[360px] p-0',
+          'flex items-center justify-start border-none bg-transparent shadow-none'
         )}
       >
         <div
           className={cn(
-            "m-4 h-[calc(100dvh-2rem)] max-h-[96dvh] w-full rounded-2xl",
-            "border border-border/30 bg-background/85 shadow-xl backdrop-blur-lg dark:bg-neutral-900/85",
-            "flex flex-col overflow-hidden",
+            'm-4 h-[calc(100dvh-2rem)] max-h-[96dvh] w-full rounded-2xl',
+            'border border-border/30 bg-background/85 shadow-xl backdrop-blur-lg dark:bg-neutral-900/85',
+            'flex flex-col overflow-hidden'
           )}
         >
           <SheetHeader className="shrink-0 border-b border-border/30 p-4 sm:p-6">

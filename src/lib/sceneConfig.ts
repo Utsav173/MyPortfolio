@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import * as THREE from 'three';
 
 export const defaultSceneConfig = {
   plane: {
@@ -6,8 +6,8 @@ export const defaultSceneConfig = {
     visualSegments: 128,
     collisionSegments: 32,
     timeFactor: 0.2,
-    hillDarkColorHex: "#273161",
-    hillLightColorHex: "#5568ab",
+    hillDarkColorHex: '#273161',
+    hillLightColorHex: '#5568ab',
     noiseStrength: {
       hill1: 15,
       hill2: 11.3,
@@ -29,13 +29,13 @@ export const defaultSceneConfig = {
     yBottom: -30,
     speedBaseMin: 6,
     speedBaseMax: 29,
-    leadColorDarkHex: "#a2d9ff",
-    trailColorBaseDarkHex: "#0089de",
+    leadColorDarkHex: '#a2d9ff',
+    trailColorBaseDarkHex: '#0089de',
 
-    leadColorLightHex: "#293241",
-    trailColorBaseLightHex: "#5a7d9e",
-    splashColorHex: "#82acff",
-    splashColorLightHex: "#98c1d9",
+    leadColorLightHex: '#293241',
+    trailColorBaseLightHex: '#5a7d9e',
+    splashColorHex: '#82acff',
+    splashColorLightHex: '#98c1d9',
     bloomIntensity: {
       lead: 2.9,
       trail: 3.7,
@@ -65,8 +65,8 @@ export const defaultSceneConfig = {
     initialLookAtZ: 0,
   },
   themeColors: {
-    darkBgHex: "#05050c",
-    lightBgHex: "#E6EFFF",
+    darkBgHex: '#05050c',
+    lightBgHex: '#E6EFFF',
   },
   effects: {
     bloom: {
@@ -75,7 +75,7 @@ export const defaultSceneConfig = {
       luminanceSmoothing: 1,
 
       intensity: 1.2,
-      kernelSize: "LARGE",
+      kernelSize: 'LARGE',
       mipmapBlur: true,
     },
     fog: {
@@ -89,20 +89,20 @@ export const defaultSceneConfig = {
 export type SceneConfig = typeof defaultSceneConfig;
 
 export interface ParsedPlaneConfig
-  extends Omit<SceneConfig["plane"], "hillDarkColorHex" | "hillLightColorHex"> {
+  extends Omit<SceneConfig['plane'], 'hillDarkColorHex' | 'hillLightColorHex'> {
   planeColorForDarkTheme: THREE.Color;
   planeColorForLightTheme: THREE.Color;
 }
 
 export interface ParsedRainConfig
   extends Omit<
-    SceneConfig["rain"],
-    | "leadColorDarkHex"
-    | "trailColorBaseDarkHex"
-    | "leadColorLightHex"
-    | "trailColorBaseLightHex"
-    | "splashColorHex"
-    | "splashColorLightHex"
+    SceneConfig['rain'],
+    | 'leadColorDarkHex'
+    | 'trailColorBaseDarkHex'
+    | 'leadColorLightHex'
+    | 'trailColorBaseLightHex'
+    | 'splashColorHex'
+    | 'splashColorLightHex'
   > {
   leadColorDark: THREE.Color;
   trailColorBaseDark: THREE.Color;
@@ -111,7 +111,7 @@ export interface ParsedRainConfig
 }
 
 export interface ParsedThemeColorsConfig
-  extends Omit<SceneConfig["themeColors"], "darkBgHex" | "lightBgHex"> {
+  extends Omit<SceneConfig['themeColors'], 'darkBgHex' | 'lightBgHex'> {
   darkBg: THREE.Color;
   lightBg: THREE.Color;
 }
@@ -135,15 +135,15 @@ export interface ParsedSplashParticlesConfig extends SplashParticlesConfig {
 export interface ParsedSceneConfig {
   plane: ParsedPlaneConfig;
   rain: ParsedRainConfig;
-  camera: SceneConfig["camera"];
+  camera: SceneConfig['camera'];
   themeColors: ParsedThemeColorsConfig;
-  effects: SceneConfig["effects"];
+  effects: SceneConfig['effects'];
   splashParticles: ParsedSplashParticlesConfig;
 }
 
 export function parseConfigColors(
   configParam?: Partial<SceneConfig>,
-  currentTheme: "light" | "dark" = "dark",
+  currentTheme: 'light' | 'dark' = 'dark'
 ): ParsedSceneConfig {
   const config = {
     plane: { ...defaultSceneConfig.plane, ...(configParam?.plane || {}) },
@@ -161,24 +161,16 @@ export function parseConfigColors(
   };
 
   const parsedPlane: any = { ...config.plane };
-  parsedPlane.planeColorForDarkTheme = new THREE.Color(
-    config.plane.hillDarkColorHex,
-  );
-  parsedPlane.planeColorForLightTheme = new THREE.Color(
-    config.plane.hillLightColorHex,
-  );
+  parsedPlane.planeColorForDarkTheme = new THREE.Color(config.plane.hillDarkColorHex);
+  parsedPlane.planeColorForLightTheme = new THREE.Color(config.plane.hillLightColorHex);
   delete parsedPlane.hillDarkColorHex;
   delete parsedPlane.hillLightColorHex;
 
   const parsedRain: any = { ...config.rain };
   parsedRain.leadColorDark = new THREE.Color(config.rain.leadColorDarkHex);
-  parsedRain.trailColorBaseDark = new THREE.Color(
-    config.rain.trailColorBaseDarkHex,
-  );
+  parsedRain.trailColorBaseDark = new THREE.Color(config.rain.trailColorBaseDarkHex);
   parsedRain.leadColorLight = new THREE.Color(config.rain.leadColorLightHex);
-  parsedRain.trailColorBaseLight = new THREE.Color(
-    config.rain.trailColorBaseLightHex,
-  );
+  parsedRain.trailColorBaseLight = new THREE.Color(config.rain.trailColorBaseLightHex);
   delete parsedRain.leadColorDarkHex;
   delete parsedRain.trailColorBaseDarkHex;
   delete parsedRain.leadColorLightHex;
@@ -195,9 +187,7 @@ export function parseConfigColors(
   const parsedSplashParticles: any = { ...config.splashParticles };
 
   parsedSplashParticles.splashColor = new THREE.Color(
-    currentTheme === "light"
-      ? config.rain.splashColorLightHex
-      : config.rain.splashColorHex,
+    currentTheme === 'light' ? config.rain.splashColorLightHex : config.rain.splashColorHex
   );
 
   return {

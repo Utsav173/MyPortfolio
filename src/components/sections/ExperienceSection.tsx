@@ -1,16 +1,10 @@
-"use client";
+'use client';
 
-import React, { useRef } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Briefcase } from "lucide-react";
-import { cn } from "@/lib/utils";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useReducedMotion,
-  Variants,
-} from "motion/react";
+import React, { useRef } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Briefcase } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { motion, useScroll, useTransform, useReducedMotion, Variants } from 'motion/react';
 
 interface ExperienceSectionProps {
   className?: string;
@@ -19,44 +13,44 @@ interface ExperienceSectionProps {
 
 const experiencesData = [
   {
-    role: "Web Developer",
-    company: "Zignuts Technolab, Gujarat, India",
-    duration: "January 2023 - Present",
+    role: 'Web Developer',
+    company: 'Zignuts Technolab, Gujarat, India',
+    duration: 'January 2023 - Present',
     responsibilities: [
-      "Spearheaded development of critical project components, demonstrating advanced technical leadership.",
-      "Engineered robust RESTful APIs using Node.js, Express.js, and PostgreSQL, improving response times via strategic query optimization and Redis caching.",
-      "Developed highly scalable backend services and microservices, ensuring efficient processing of substantial daily data transactions.",
-      "Led end-to-end design of complex, intuitive UIs with React.js, Redux, and Material-UI, enhancing user engagement and conversion.",
-      "Integrated comprehensive security modules, including JWT-based authentication and Role-Based Access Control (RBAC).",
-      "Mentored junior developers and championed CI/CD pipeline improvements (GitHub Actions, Jenkins).",
+      'Spearheaded development of critical project components, demonstrating advanced technical leadership.',
+      'Engineered robust RESTful APIs using Node.js, Express.js, and PostgreSQL, improving response times via strategic query optimization and Redis caching.',
+      'Developed highly scalable backend services and microservices, ensuring efficient processing of substantial daily data transactions.',
+      'Led end-to-end design of complex, intuitive UIs with React.js, Redux, and Material-UI, enhancing user engagement and conversion.',
+      'Integrated comprehensive security modules, including JWT-based authentication and Role-Based Access Control (RBAC).',
+      'Mentored junior developers and championed CI/CD pipeline improvements (GitHub Actions, Jenkins).',
     ],
     keyProjects: [
       {
-        name: "Restaurant Inventory Management System",
-        tech: ["Node.js", "Strapi v4", "PostgreSQL", "JWT"],
+        name: 'Restaurant Inventory Management System',
+        tech: ['Node.js', 'Strapi v4', 'PostgreSQL', 'JWT'],
       },
       {
-        name: "Education Management Platform",
-        tech: ["Node.js", "Sails.js", "PostgreSQL", "AWS SQS"],
+        name: 'Education Management Platform',
+        tech: ['Node.js', 'Sails.js', 'PostgreSQL', 'AWS SQS'],
       },
       {
-        name: "Financial Transaction Management System",
-        tech: ["Node.js", "Sails.js", "SQL", "Recharts"],
+        name: 'Financial Transaction Management System',
+        tech: ['Node.js', 'Sails.js', 'SQL', 'Recharts'],
       },
       {
-        name: "Cloud Procurement & Bidding Platform",
-        tech: ["Node.js", "Express.js", "Socket.io", "AWS"],
+        name: 'Cloud Procurement & Bidding Platform',
+        tech: ['Node.js', 'Express.js', 'Socket.io', 'AWS'],
       },
     ],
   },
 ];
 
 const headingVariants: Variants = {
-  hidden: { opacity: 0, y: 30, filter: "blur(3px)" },
+  hidden: { opacity: 0, y: 30, filter: 'blur(3px)' },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
+    filter: 'blur(0px)',
     transition: { duration: 0.8, ease: [0.25, 1, 0.5, 1] },
   },
 };
@@ -96,7 +90,7 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
 
   const { scrollYProgress } = useScroll({
     target: timelineContainerRef,
-    offset: ["start end", "end start"],
+    offset: ['start end', 'end start'],
   });
 
   const lineScaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
@@ -106,14 +100,14 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
       id={id}
       ref={sectionRef}
       className={cn(
-        "bg-secondary/20 dark:bg-secondary/5 py-20 md:py-28 lg:py-32 w-full",
-        className,
+        'bg-secondary/20 dark:bg-secondary/5 py-20 md:py-28 lg:py-32 w-full',
+        className
       )}
     >
       <div className="container mx-auto px-4">
         <motion.h2
-          initial={shouldReduceMotion ? false : "hidden"}
-          whileInView={shouldReduceMotion ? undefined : "visible"}
+          initial={shouldReduceMotion ? false : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'visible'}
           variants={shouldReduceMotion ? {} : headingVariants}
           viewport={{ once: true, amount: 0.3 }}
           className="mb-16 sm:mb-20 text-center text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter"
@@ -122,8 +116,8 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
         </motion.h2>
         <motion.div
           ref={timelineContainerRef}
-          initial={shouldReduceMotion ? false : "hidden"}
-          whileInView={shouldReduceMotion ? undefined : "visible"}
+          initial={shouldReduceMotion ? false : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'visible'}
           variants={shouldReduceMotion ? {} : timelineContainerVariants}
           viewport={{ once: true, amount: 0.1 }}
           className="relative max-w-3xl mx-auto"
@@ -143,7 +137,7 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
                 <motion.div
                   variants={shouldReduceMotion ? {} : timelineDotVariants}
                   className="absolute left-0 top-1 size-6 sm:size-7 md:size-8 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 md:border-4 border-background z-10"
-                  style={{ transformOrigin: "center center" }}
+                  style={{ transformOrigin: 'center center' }}
                 >
                   <Briefcase className="size-3 sm:size-3.5 md:size-4 text-primary-foreground" />
                 </motion.div>

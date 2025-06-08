@@ -1,15 +1,11 @@
 function sanitizeHtml(text: string): string {
-  return text.replace(/</g, "<").replace(/>/g, ">");
+  return text.replace(/</g, '<').replace(/>/g, '>');
 }
 
-export function createHtmlEmail(
-  name: string,
-  email: string,
-  message: string,
-): string {
+export function createHtmlEmail(name: string, email: string, message: string): string {
   const cleanName = sanitizeHtml(name);
   const cleanEmail = sanitizeHtml(email);
-  const cleanMessage = sanitizeHtml(message).replace(/\n/g, "<br>");
+  const cleanMessage = sanitizeHtml(message).replace(/\n/g, '<br>');
 
   return `
     <!DOCTYPE html>

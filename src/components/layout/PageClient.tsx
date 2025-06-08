@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useRef, useState, type ReactNode } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-import { Navbar } from "@/components/layout/Navbar";
-import { useActiveSectionObserver } from "@/hooks/useActiveSectionObserver";
-import { CommandPalette } from "../CommandPalette";
-import MatrixRain from "../threed/matrix-rain";
-import { useTheme } from "next-themes";
+import { useRef, useState, type ReactNode } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { Navbar } from '@/components/layout/Navbar';
+import { useActiveSectionObserver } from '@/hooks/useActiveSectionObserver';
+import { CommandPalette } from '../CommandPalette';
+import MatrixRain from '../threed/matrix-rain';
+import { useTheme } from 'next-themes';
 
 interface CameraControlsRef {
   xPos: number;
@@ -34,22 +34,22 @@ export default function PageClient({ children }: { children: ReactNode }) {
 
   const mainContainerRef = useRef<HTMLDivElement>(null);
   const matrixContainerRef = useRef<HTMLDivElement>(null);
-  const activeSection = useActiveSectionObserver(".content-section");
+  const activeSection = useActiveSectionObserver('.content-section');
 
   useGSAP(
     () => {
       gsap.registerPlugin(ScrollTrigger);
 
       if (!mainContainerRef.current) return;
-      const sections = gsap.utils.toArray<HTMLElement>(".content-section");
+      const sections = gsap.utils.toArray<HTMLElement>('.content-section');
       if (sections.length < 2) return;
 
       const cameraTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: mainContainerRef.current,
-          start: "top top",
+          start: 'top top',
           endTrigger: sections[2],
-          end: "bottom bottom",
+          end: 'bottom bottom',
           scrub: 1.5,
         },
       });
@@ -61,7 +61,7 @@ export default function PageClient({ children }: { children: ReactNode }) {
           zPos: 140,
           lookAtY: 10,
           lookAtZ: -40,
-          ease: "power2.inOut",
+          ease: 'power2.inOut',
         })
         .to(cameraControlsRef.current, {
           xPos: 15,
@@ -69,13 +69,13 @@ export default function PageClient({ children }: { children: ReactNode }) {
           zPos: 150,
           lookAtY: 20,
           lookAtZ: -70,
-          ease: "power2.inOut",
+          ease: 'power2.inOut',
         });
 
       const opacityTrigger = ScrollTrigger.create({
         trigger: sections[2],
-        start: "top bottom",
-        end: "top center",
+        start: 'top bottom',
+        end: 'top center',
         scrub: true,
         onUpdate: (self) => {
           if (matrixContainerRef.current) {
@@ -94,31 +94,22 @@ export default function PageClient({ children }: { children: ReactNode }) {
         opacityTrigger.kill();
       };
     },
-    { scope: mainContainerRef },
+    { scope: mainContainerRef }
   );
 
   return (
-    <div
-      ref={mainContainerRef}
-      className="flex min-h-dvh w-full flex-col overflow-x-hidden"
-    >
+    <div ref={mainContainerRef} className="flex min-h-dvh w-full flex-col overflow-x-hidden">
       <div
         ref={matrixContainerRef}
         className="pointer-events-none fixed inset-0 -z-10 h-full w-full"
       >
         {isMatrixMounted && (
-          <MatrixRain
-            cameraControls={cameraControlsRef.current}
-            currentTheme={resolvedTheme}
-          />
+          <MatrixRain cameraControls={cameraControlsRef.current} currentTheme={resolvedTheme} />
         )}
       </div>
 
       <Navbar className="z-50" activeSection={activeSection} />
-      <CommandPalette
-        isOpen={isCommandPaletteOpen}
-        setIsOpen={setCommandPaletteOpen}
-      />
+      <CommandPalette isOpen={isCommandPaletteOpen} setIsOpen={setCommandPaletteOpen} />
       <main id="main-content" className="relative z-0 flex-grow w-full">
         {children}
       </main>

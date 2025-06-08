@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { memo } from "react";
-import Image from "next/image";
-import { motion, useReducedMotion, Variants } from "motion/react";
-import { cn } from "@/lib/utils";
+import { memo } from 'react';
+import Image from 'next/image';
+import { motion, useReducedMotion, Variants } from 'motion/react';
+import { cn } from '@/lib/utils';
 
 const sectionVariants: Variants = {
   hidden: { opacity: 0 },
@@ -14,31 +14,25 @@ const sectionVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 25, filter: "blur(4px)" },
+  hidden: { opacity: 0, y: 25, filter: 'blur(4px)' },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
+    filter: 'blur(0px)',
     transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
-const AboutSectionComponent = ({
-  className,
-  id,
-}: {
-  className?: string;
-  id?: string;
-}) => {
+const AboutSectionComponent = ({ className, id }: { className?: string; id?: string }) => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <motion.section
       id={id}
-      className={cn("bg-transparent py-20 md:py-28 lg:py-32", className)}
+      className={cn('bg-transparent py-20 md:py-28 lg:py-32', className)}
       variants={shouldReduceMotion ? undefined : sectionVariants}
-      initial={shouldReduceMotion ? undefined : "hidden"}
-      whileInView={shouldReduceMotion ? undefined : "visible"}
+      initial={shouldReduceMotion ? undefined : 'hidden'}
+      whileInView={shouldReduceMotion ? undefined : 'visible'}
       viewport={{ once: true, amount: 0.2 }}
       aria-labelledby="about-heading"
     >
@@ -56,7 +50,7 @@ const AboutSectionComponent = ({
                   : {
                       scale: 1.02,
                       transition: {
-                        type: "spring",
+                        type: 'spring',
                         stiffness: 300,
                         damping: 15,
                       },
@@ -87,23 +81,20 @@ const AboutSectionComponent = ({
               className="space-y-6 text-base text-muted-foreground md:text-lg"
             >
               <p>
-                I'm a dynamic and results-oriented Full Stack Developer with
-                comprehensive experience in designing, developing, and deploying
-                scalable, cloud-native web applications and robust APIs. My
-                journey in tech is driven by a passion for solving complex
-                problems and building impactful solutions.
+                I'm a dynamic and results-oriented Full Stack Developer with comprehensive
+                experience in designing, developing, and deploying scalable, cloud-native web
+                applications and robust APIs. My journey in tech is driven by a passion for solving
+                complex problems and building impactful solutions.
               </p>
               <p>
-                With proven expertise in React.js, Next.js, Node.js, and
-                TypeScript, I consistently aim to deliver high-impact digital
-                products. I'm particularly excited about the intersection of web
-                development and Artificial Intelligence, exploring ways to
+                With proven expertise in React.js, Next.js, Node.js, and TypeScript, I consistently
+                aim to deliver high-impact digital products. I'm particularly excited about the
+                intersection of web development and Artificial Intelligence, exploring ways to
                 create more intelligent and intuitive user experiences.
               </p>
               <p>
-                Beyond coding, I believe in collaborative growth and enjoy
-                mentoring, sharing knowledge, and continuously learning in the
-                ever-evolving tech landscape.
+                Beyond coding, I believe in collaborative growth and enjoy mentoring, sharing
+                knowledge, and continuously learning in the ever-evolving tech landscape.
               </p>
             </motion.div>
           </div>

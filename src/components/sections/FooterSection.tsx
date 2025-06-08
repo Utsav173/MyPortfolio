@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { memo } from "react";
+import { memo } from 'react';
 
 const FooterSectionComponent = () => {
   const currentYear = new Date().getFullYear();
@@ -11,7 +11,7 @@ const FooterSectionComponent = () => {
           <span className="inline-block h-1 w-16 rounded-full bg-gradient-to-r from-primary/70 via-primary/40 to-transparent dark:from-primary/80 dark:via-primary/50 dark:to-transparent" />
         </div>
         <p className="text-balance text-center text-[1.05rem] font-medium text-muted-foreground md:text-base">
-          Designed & Built by{" "}
+          Designed & Built by{' '}
           <a
             href="https://github.com/Utsav173"
             target="_blank"
@@ -19,7 +19,7 @@ const FooterSectionComponent = () => {
             className="font-bold text-primary underline-offset-4 hover:underline transition-colors duration-200"
           >
             Utsav Khatri
-          </a>{" "}
+          </a>{' '}
           · © {currentYear} · All rights reserved.
         </p>
       </div>

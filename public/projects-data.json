@@ -18,15 +18,7 @@
       "responsive-design",
       "vercel"
     ],
-    "techStack": [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "JavaScript",
-      "CSS",
-      "Vercel"
-    ],
+    "techStack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "JavaScript", "CSS", "Vercel"],
     "owner": "Utsav173",
     "full_name": "Utsav173/MyPortfolio",
     "imageUrl": "/images/projects/my-portfolio.webp"
@@ -49,15 +41,7 @@
       "typescript",
       "animation"
     ],
-    "techStack": [
-      "Three.js",
-      "TypeScript",
-      "JavaScript",
-      "HTML5",
-      "CSS3",
-      "WebGL",
-      "Vite"
-    ],
+    "techStack": ["Three.js", "TypeScript", "JavaScript", "HTML5", "CSS3", "WebGL", "Vite"],
     "owner": "Utsav173",
     "full_name": "Utsav173/2js-hills"
   },
@@ -79,15 +63,7 @@
       "typescript",
       "animation"
     ],
-    "techStack": [
-      "Three.js",
-      "TypeScript",
-      "JavaScript",
-      "HTML5",
-      "CSS3",
-      "WebGL",
-      "Vite"
-    ],
+    "techStack": ["Three.js", "TypeScript", "JavaScript", "HTML5", "CSS3", "WebGL", "Vite"],
     "owner": "Utsav173",
     "full_name": "Utsav173/matrix-rain-3js"
   },
@@ -109,14 +85,7 @@
       "typescript",
       "real-time"
     ],
-    "techStack": [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "AI",
-      "Chart.js"
-    ],
+    "techStack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "AI", "Chart.js"],
     "owner": "Utsav173",
     "full_name": "Utsav173/ticker-ai"
   },
@@ -205,14 +174,7 @@
       "typescript",
       "performance"
     ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "MDX",
-      "Tailwind CSS",
-      "Data Scraping",
-      "React"
-    ],
+    "techStack": ["Next.js", "TypeScript", "MDX", "Tailwind CSS", "Data Scraping", "React"],
     "owner": "Utsav173",
     "full_name": "Utsav173/blog-sync",
     "imageUrl": "/images/projects/blog-sync.webp"
@@ -234,14 +196,7 @@
       "typescript",
       "saas-tools"
     ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "AI",
-      "Vercel",
-      "Tailwind CSS",
-      "React"
-    ],
+    "techStack": ["Next.js", "TypeScript", "AI", "Vercel", "Tailwind CSS", "React"],
     "owner": "Utsav173",
     "full_name": "Utsav173/ai-card-gen",
     "imageUrl": "/images/projects/ai-card-maker.webp"
@@ -264,14 +219,7 @@
       "creative-tools",
       "generative-ai"
     ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "Fal.ai API",
-      "Tailwind CSS",
-      "React",
-      "AI"
-    ],
+    "techStack": ["Next.js", "TypeScript", "Fal.ai API", "Tailwind CSS", "React", "AI"],
     "owner": "Utsav173",
     "full_name": "Utsav173/fal-flux-generation",
     "imageUrl": "/images/projects/flux-image.webp"
@@ -306,22 +254,8 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "TypeScript",
-    "topics": [
-      "edtech",
-      "education-portal",
-      "nextjs",
-      "gtu",
-      "student-resources",
-      "typescript"
-    ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "Vercel",
-      "Educational",
-      "React",
-      "Tailwind CSS"
-    ],
+    "topics": ["edtech", "education-portal", "nextjs", "gtu", "student-resources", "typescript"],
+    "techStack": ["Next.js", "TypeScript", "Vercel", "Educational", "React", "Tailwind CSS"],
     "owner": "Utsav173",
     "full_name": "Utsav173/gtu-imp",
     "imageUrl": "/images/projects/gtu-imp.webp"
@@ -405,14 +339,7 @@
       "generative-art",
       "machine-learning"
     ],
-    "techStack": [
-      "TypeScript",
-      "Next.js",
-      "React",
-      "Tailwind CSS",
-      "AI",
-      "Fal.ai"
-    ],
+    "techStack": ["TypeScript", "Next.js", "React", "Tailwind CSS", "AI", "Fal.ai"],
     "owner": "Utsav173",
     "full_name": "Utsav173/flux-ultra-gen"
   },
@@ -433,14 +360,7 @@
       "machine-learning",
       "api-integration"
     ],
-    "techStack": [
-      "TypeScript",
-      "Next.js",
-      "React",
-      "Tailwind CSS",
-      "Stable Diffusion API",
-      "AI"
-    ],
+    "techStack": ["TypeScript", "Next.js", "React", "Tailwind CSS", "Stable Diffusion API", "AI"],
     "owner": "Utsav173",
     "full_name": "Utsav173/stable-diff-3.5"
   },
@@ -461,14 +381,7 @@
       "typescript",
       "fintech-tools"
     ],
-    "techStack": [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "Chart.js",
-      "Data Scraping"
-    ],
+    "techStack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Chart.js", "Data Scraping"],
     "owner": "Utsav173",
     "full_name": "Utsav173/pro-ipo"
   },
@@ -510,13 +423,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": null,
-    "topics": [
-      "education",
-      "gtu",
-      "archive",
-      "student-resources",
-      "static-site"
-    ],
+    "topics": ["education", "gtu", "archive", "student-resources", "static-site"],
     "techStack": ["HTML", "CSS", "JavaScript", "Vercel"],
     "owner": "Utsav173",
     "full_name": "Utsav173/gtu-sample-paper"
@@ -530,13 +437,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "JavaScript",
-    "topics": [
-      "javascript-utility",
-      "finance-tool",
-      "budgeting",
-      "vanilla-js",
-      "frontend-tool"
-    ],
+    "topics": ["javascript-utility", "finance-tool", "budgeting", "vanilla-js", "frontend-tool"],
     "techStack": ["JavaScript", "HTML", "CSS"],
     "owner": "Utsav173",
     "full_name": "Utsav173/budget-calc"
@@ -550,13 +451,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "JavaScript",
-    "topics": [
-      "nodejs",
-      "expressjs",
-      "api-development",
-      "backend-service",
-      "form-handling"
-    ],
+    "topics": ["nodejs", "expressjs", "api-development", "backend-service", "form-handling"],
     "techStack": ["Node.js", "Express.js", "JavaScript"],
     "owner": "Utsav173",
     "full_name": "Utsav173/contact-form-backend"
@@ -591,14 +486,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "JavaScript",
-    "topics": [
-      "authentication",
-      "authorization",
-      "api-security",
-      "nodejs",
-      "jwt",
-      "expressjs"
-    ],
+    "topics": ["authentication", "authorization", "api-security", "nodejs", "jwt", "expressjs"],
     "techStack": ["Node.js", "Express.js", "JavaScript", "JWT", "HTML"],
     "owner": "Utsav173",
     "full_name": "Utsav173/Auth-api-implementation"
@@ -612,12 +500,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": null,
-    "topics": [
-      "experimental-programming",
-      "algorithmic-art",
-      "javascript",
-      "visual-experiment"
-    ],
+    "topics": ["experimental-programming", "algorithmic-art", "javascript", "visual-experiment"],
     "techStack": ["JavaScript", "HTML", "CSS"],
     "owner": "Utsav173",
     "full_name": "Utsav173/infinity-split"
@@ -631,13 +514,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": null,
-    "topics": [
-      "nodejs",
-      "expressjs",
-      "api-template",
-      "boilerplate-code",
-      "backend-starter"
-    ],
+    "topics": ["nodejs", "expressjs", "api-template", "boilerplate-code", "backend-starter"],
     "techStack": ["Node.js", "Express.js", "JavaScript"],
     "owner": "Utsav173",
     "full_name": "Utsav173/starter-express-api"
@@ -651,13 +528,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "JavaScript",
-    "topics": [
-      "api-utility",
-      "data-generation",
-      "developer-tools",
-      "mock-data",
-      "nodejs"
-    ],
+    "topics": ["api-utility", "data-generation", "developer-tools", "mock-data", "nodejs"],
     "techStack": ["Node.js", "Express.js", "JavaScript", "HTML"],
     "owner": "Utsav173",
     "full_name": "Utsav173/data-generator-api"
@@ -778,13 +649,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "JavaScript",
-    "topics": [
-      "ai-chatbot",
-      "chatgpt-clone",
-      "javascript",
-      "frontend-ai",
-      "openai-api"
-    ],
+    "topics": ["ai-chatbot", "chatgpt-clone", "javascript", "frontend-ai", "openai-api"],
     "techStack": ["JavaScript", "HTML", "CSS", "OpenAI API (or similar)"],
     "owner": "Utsav173",
     "full_name": "Utsav173/codex_chatgptclone"
@@ -798,12 +663,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "HTML",
-    "topics": [
-      "education-portal",
-      "gtu-resources",
-      "static-html",
-      "student-archive"
-    ],
+    "topics": ["education-portal", "gtu-resources", "static-html", "student-archive"],
     "techStack": ["HTML", "CSS", "JavaScript"],
     "owner": "Utsav173",
     "full_name": "Utsav173/7-it-paper"
@@ -817,13 +677,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "JavaScript",
-    "topics": [
-      "real-time-chat",
-      "frontend-development",
-      "javascript",
-      "websockets",
-      "ui-design"
-    ],
+    "topics": ["real-time-chat", "frontend-development", "javascript", "websockets", "ui-design"],
     "techStack": ["JavaScript", "HTML", "CSS", "WebSocket API"],
     "owner": "Utsav173",
     "full_name": "Utsav173/frontendchatapp"
@@ -837,20 +691,8 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "JavaScript",
-    "topics": [
-      "real-time-chat-backend",
-      "nodejs",
-      "expressjs",
-      "websockets",
-      "api-development"
-    ],
-    "techStack": [
-      "Node.js",
-      "Express.js",
-      "JavaScript",
-      "Socket.IO (or ws)",
-      "Shell"
-    ],
+    "topics": ["real-time-chat-backend", "nodejs", "expressjs", "websockets", "api-development"],
+    "techStack": ["Node.js", "Express.js", "JavaScript", "Socket.IO (or ws)", "Shell"],
     "owner": "Utsav173",
     "full_name": "Utsav173/backendchatapp"
   },
@@ -863,20 +705,8 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "JavaScript",
-    "topics": [
-      "chat-server",
-      "backend-api",
-      "nodejs",
-      "expressjs",
-      "real-time-communication"
-    ],
-    "techStack": [
-      "Node.js",
-      "Express.js",
-      "JavaScript",
-      "Socket.IO (or ws)",
-      "HTML (for testing)"
-    ],
+    "topics": ["chat-server", "backend-api", "nodejs", "expressjs", "real-time-communication"],
+    "techStack": ["Node.js", "Express.js", "JavaScript", "Socket.IO (or ws)", "HTML (for testing)"],
     "owner": "Utsav173",
     "full_name": "Utsav173/chatapp-backend"
   },
@@ -914,13 +744,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "JavaScript",
-    "topics": [
-      "chat-application",
-      "vercel-deployment",
-      "nodejs",
-      "websockets",
-      "full-stack-js"
-    ],
+    "topics": ["chat-application", "vercel-deployment", "nodejs", "websockets", "full-stack-js"],
     "techStack": [
       "Node.js",
       "Express.js",
@@ -942,12 +766,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "JavaScript",
-    "topics": [
-      "social-media-frontend",
-      "javascript-clone",
-      "ui-development",
-      "frontend-project"
-    ],
+    "topics": ["social-media-frontend", "javascript-clone", "ui-development", "frontend-project"],
     "techStack": ["JavaScript", "HTML", "CSS", "Shell"],
     "owner": "Utsav173",
     "full_name": "Utsav173/social-media-clone"
@@ -961,12 +780,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "HTML",
-    "topics": [
-      "finance-info",
-      "static-webpage",
-      "html-css",
-      "informational-site"
-    ],
+    "topics": ["finance-info", "static-webpage", "html-css", "informational-site"],
     "techStack": ["HTML", "CSS"],
     "owner": "Utsav173",
     "full_name": "Utsav173/mutual-fund"
@@ -980,12 +794,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": null,
-    "topics": [
-      "github-profile",
-      "markdown-readme",
-      "profile-customization",
-      "git-configuration"
-    ],
+    "topics": ["github-profile", "markdown-readme", "profile-customization", "git-configuration"],
     "techStack": ["Markdown"],
     "owner": "Utsav173",
     "full_name": "Utsav173/Utsav173"
@@ -999,12 +808,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "JavaScript",
-    "topics": [
-      "react-native-auth",
-      "mobile-authentication",
-      "javascript-mobile",
-      "expo-example"
-    ],
+    "topics": ["react-native-auth", "mobile-authentication", "javascript-mobile", "expo-example"],
     "techStack": ["React Native", "JavaScript", "Expo"],
     "owner": "Utsav173",
     "full_name": "Utsav173/react-native-auth"
@@ -1037,13 +841,7 @@
     "stargazers_count": 0,
     "forks_count": 0,
     "language": "HTML",
-    "topics": [
-      "api-client",
-      "data-fetching",
-      "health-data",
-      "javascript-utility",
-      "html-app"
-    ],
+    "topics": ["api-client", "data-fetching", "health-data", "javascript-utility", "html-app"],
     "techStack": ["HTML", "JavaScript", "CSS", "Fetch API"],
     "owner": "Utsav173",
     "full_name": "Utsav173/covid-fetch"
@@ -1063,13 +861,7 @@
       "javascript-app",
       "financial-data"
     ],
-    "techStack": [
-      "JavaScript",
-      "HTML",
-      "CSS",
-      "CoinGecko API (or similar)",
-      "Vercel"
-    ],
+    "techStack": ["JavaScript", "HTML", "CSS", "CoinGecko API (or similar)", "Vercel"],
     "owner": "Utsav173",
     "full_name": "Utsav173/crypto-app"
   },

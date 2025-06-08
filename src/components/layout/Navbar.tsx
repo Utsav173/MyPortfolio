@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { motion } from "motion/react";
-import { Download } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { NAV_ITEMS, RESUME_URL } from "@/lib/constants";
-import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/Logo";
-import { ModeToggle } from "@/components/layout/ModeToggle";
-import { MobileMenu } from "@/components/layout/MobileMenu";
-import { useScrollToSection } from "@/hooks/use-scroll-to-section";
+import Link from 'next/link';
+import { motion } from 'motion/react';
+import { Download } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { NAV_ITEMS, RESUME_URL } from '@/lib/constants';
+import { Button } from '@/components/ui/button';
+import { Logo } from '@/components/Logo';
+import { ModeToggle } from '@/components/layout/ModeToggle';
+import { MobileMenu } from '@/components/layout/MobileMenu';
+import { useScrollToSection } from '@/hooks/use-scroll-to-section';
 
 interface NavbarProps {
   className?: string;
@@ -25,15 +25,15 @@ export function Navbar({ className, activeSection }: NavbarProps) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1], delay: 0.3 }}
       className={cn(
-        "fixed top-3 left-1/2 z-50 w-[calc(100%-1.5rem)] -translate-x-1/2 sm:top-4 sm:w-auto",
-        "rounded-full border border-border/30 bg-background/75 shadow-lg backdrop-blur-xl dark:bg-neutral-900/75 dark:shadow-primary/10",
-        className,
+        'fixed top-3 left-1/2 z-50 w-[calc(100%-1.5rem)] -translate-x-1/2 sm:top-4 sm:w-auto',
+        'rounded-full border border-border/30 bg-background/75 shadow-lg backdrop-blur-xl dark:bg-neutral-900/75 dark:shadow-primary/30',
+        className
       )}
       role="banner"
     >
       <div
         className={cn(
-          "flex h-12 items-center justify-between gap-2 px-2.5 sm:h-[52px] sm:gap-4 sm:px-4",
+          'flex h-12 items-center justify-between gap-2 px-2.5 sm:h-[52px] sm:gap-4 sm:px-4'
         )}
       >
         <Logo className="h-6 shrink-0 sm:h-auto" />
@@ -48,14 +48,12 @@ export function Navbar({ className, activeSection }: NavbarProps) {
               href={item.href}
               onClick={handleNavClick}
               className={cn(
-                "relative rounded-md px-2.5 py-1.5 text-xs font-medium outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:px-3 lg:py-2 lg:text-sm",
+                'relative rounded-md px-2.5 py-1.5 text-xs font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:px-3 lg:py-2 lg:text-sm transition-all duration-300 ease-in-out',
                 activeSection === item.href.substring(1)
-                  ? "font-semibold text-primary"
-                  : "text-foreground/70 hover:text-primary",
+                  ? 'font-semibold text-primary bg-accent rounded-3xl'
+                  : 'text-foreground/70 hover:text-primary'
               )}
-              aria-current={
-                activeSection === item.href.substring(1) ? "page" : undefined
-              }
+              aria-current={activeSection === item.href.substring(1) ? 'page' : undefined}
             >
               {item.label}
             </Link>
@@ -73,9 +71,9 @@ export function Navbar({ className, activeSection }: NavbarProps) {
             size="sm"
             asChild
             className={cn(
-              "hidden h-auto rounded-full px-2 py-1 text-[0.65rem] transition-all duration-300 sm:flex lg:px-3 lg:py-1.5 lg:text-xs",
-              "border-primary/40 text-primary/90 hover:border-primary hover:bg-primary/10 dark:border-primary/30 dark:text-primary/80 dark:hover:border-primary/70 dark:hover:bg-primary/10 dark:hover:text-primary",
-              "focus-visible:ring-primary/50",
+              'hidden h-auto rounded-full px-2 py-1 text-[0.65rem] transition-all duration-300 sm:flex lg:px-3 lg:py-1.5 lg:text-xs',
+              'border-primary/40 text-primary/90 hover:border-primary hover:bg-primary/10 dark:border-primary/30 dark:text-primary/80 dark:hover:border-primary/70 dark:hover:bg-primary/10 dark:hover:text-primary',
+              'focus-visible:ring-primary/50'
             )}
           >
             <a

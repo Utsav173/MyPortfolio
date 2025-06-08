@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React, { useCallback, useState, useRef, memo } from "react";
-import { motion, useReducedMotion, Variants } from "motion/react";
-import { z } from "zod";
-import { toast as sonnerToast } from "sonner";
-import { Mail, Phone, SendHorizonal, Loader2, AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { contactFormSchema } from "@/lib/validations";
-import { cn } from "@/lib/utils";
+import React, { useCallback, useState, useRef, memo } from 'react';
+import { motion, useReducedMotion, Variants } from 'motion/react';
+import { z } from 'zod';
+import { toast as sonnerToast } from 'sonner';
+import { Mail, Phone, SendHorizonal, Loader2, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { contactFormSchema } from '@/lib/validations';
+import { cn } from '@/lib/utils';
 
 type FormData = z.infer<typeof contactFormSchema>;
 type FormErrors = Partial<Record<keyof FormData, string[] | undefined>>;
@@ -46,49 +46,41 @@ const sectionVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30, filter: "blur(4px)" },
+  hidden: { opacity: 0, y: 30, filter: 'blur(4px)' },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
+    filter: 'blur(0px)',
     transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
-// Add type for SOCIAL_LINKS items
 interface SocialLink {
   href: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   text: string;
 }
 
-// Update SOCIAL_LINKS with type annotation
 const SOCIAL_LINKS: SocialLink[] = [
   {
-    href: "mailto:khatriutsav40@gmail.com",
+    href: 'mailto:khatriutsav40@gmail.com',
     icon: Mail,
-    text: "khatriutsav40@gmail.com",
+    text: 'khatriutsav40@gmail.com',
   },
   {
-    href: "https://linkedin.com/in/utsav-khatri-in",
+    href: 'https://linkedin.com/in/utsav-khatri-in',
     icon: LinkedinIcon,
-    text: "Utsav Khatri",
+    text: 'Utsav Khatri',
   },
-  { href: "https://github.com/Utsav173", icon: GithubIcon, text: "Utsav173" },
-  { href: "tel:+916355321582", icon: Phone, text: "+91 6355321582" },
+  { href: 'https://github.com/Utsav173', icon: GithubIcon, text: 'Utsav173' },
+  { href: 'tel:+916355321582', icon: Phone, text: '+91 6355321582' },
 ];
 
-const ContactSectionComponent = ({
-  className,
-  id,
-}: {
-  className?: string;
-  id?: string;
-}) => {
+const ContactSectionComponent = ({ className, id }: { className?: string; id?: string }) => {
   const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    message: "",
+    name: '',
+    email: '',
+    message: '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -102,7 +94,7 @@ const ContactSectionComponent = ({
         setErrors((prev) => ({ ...prev, [name]: undefined }));
       }
     },
-    [errors],
+    [errors]
   );
 
   const handleSubmit = useCallback(
@@ -113,55 +105,48 @@ const ContactSectionComponent = ({
       if (!validationResult.success) {
         const fieldErrors = validationResult.error.flatten().fieldErrors;
         setErrors(fieldErrors);
-        sonnerToast.error("Validation Failed", {
-          description: "Please check the form for errors.",
+        sonnerToast.error('Validation Failed', {
+          description: 'Please check the form for errors.',
         });
         return;
       }
       setIsSubmitting(true);
       try {
-        const response = await fetch("/api/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(validationResult.data),
         });
         const result = await response.json();
         if (response.ok) {
-          sonnerToast.success("Message Sent!", {
-            description:
-              result.message ||
-              "Thanks for reaching out. I'll get back to you soon.",
+          sonnerToast.success('Message Sent!', {
+            description: result.message || "Thanks for reaching out. I'll get back to you soon.",
           });
-          setFormData({ name: "", email: "", message: "" });
+          setFormData({ name: '', email: '', message: '' });
         } else {
-          sonnerToast.error("Submission Failed", {
-            description:
-              result.message ||
-              "Could not send your message. Please try again.",
+          sonnerToast.error('Submission Failed', {
+            description: result.message || 'Could not send your message. Please try again.',
           });
           if (result.errors) setErrors(result.errors);
         }
       } catch (error) {
-        sonnerToast.error("Submission Error", {
-          description: "An unexpected error occurred. Please try again later.",
+        sonnerToast.error('Submission Error', {
+          description: 'An unexpected error occurred. Please try again later.',
         });
       } finally {
         setIsSubmitting(false);
       }
     },
-    [formData],
+    [formData]
   );
 
   return (
     <motion.section
       id={id}
-      className={cn(
-        "bg-secondary/20 py-20 dark:bg-secondary/5 md:py-28 lg:py-32",
-        className,
-      )}
+      className={cn('bg-secondary/20 py-20 dark:bg-secondary/5 md:py-28 lg:py-32', className)}
       variants={shouldReduceMotion ? undefined : sectionVariants}
-      initial={shouldReduceMotion ? undefined : "hidden"}
-      whileInView={shouldReduceMotion ? undefined : "visible"}
+      initial={shouldReduceMotion ? undefined : 'hidden'}
+      whileInView={shouldReduceMotion ? undefined : 'visible'}
       viewport={{ once: true, amount: 0.15 }}
       aria-labelledby="contact-heading"
     >
@@ -179,9 +164,8 @@ const ContactSectionComponent = ({
               Get in Touch
             </h3>
             <p className="mb-10 text-base leading-relaxed text-muted-foreground md:text-lg">
-              I'm always open to discussing new projects, creative ideas, or
-              opportunities. Feel free to reach out through the form or any of
-              the channels below!
+              I'm always open to discussing new projects, creative ideas, or opportunities. Feel
+              free to reach out through the form or any of the channels below!
             </p>
             <div className="space-y-6">
               {SOCIAL_LINKS.map(({ href, icon: Icon, text }) => (
@@ -193,9 +177,7 @@ const ContactSectionComponent = ({
                   className="group flex items-center gap-4 text-base text-foreground/90 transition-all duration-300 hover:text-primary md:text-lg"
                 >
                   <Icon className="size-6 shrink-0 text-primary/90 transition-colors duration-300 group-hover:text-primary" />
-                  <span className="truncate transition-colors duration-300">
-                    {text}
-                  </span>
+                  <span className="truncate transition-colors duration-300">{text}</span>
                 </a>
               ))}
             </div>
@@ -224,7 +206,7 @@ const ContactSectionComponent = ({
                 value={formData.name}
                 onChange={handleChange}
                 aria-invalid={!!errors.name}
-                aria-describedby={errors.name ? "name-error" : undefined}
+                aria-describedby={errors.name ? 'name-error' : undefined}
               />
               {errors.name && (
                 <p
@@ -251,7 +233,7 @@ const ContactSectionComponent = ({
                 value={formData.email}
                 onChange={handleChange}
                 aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? "email-error" : undefined}
+                aria-describedby={errors.email ? 'email-error' : undefined}
               />
               {errors.email && (
                 <p
@@ -278,7 +260,7 @@ const ContactSectionComponent = ({
                 value={formData.message}
                 onChange={handleChange}
                 aria-invalid={!!errors.message}
-                aria-describedby={errors.message ? "message-error" : undefined}
+                aria-describedby={errors.message ? 'message-error' : undefined}
                 className="min-h-[120px]"
               />
               {errors.message && (
@@ -302,7 +284,7 @@ const ContactSectionComponent = ({
               ) : (
                 <SendHorizonal className="mr-2 size-5 transition-transform group-hover:translate-x-1" />
               )}
-              {isSubmitting ? "Sending..." : "Send Message"}
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </Button>
           </motion.form>
         </div>

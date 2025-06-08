@@ -1,23 +1,23 @@
-import { promises as fs } from "fs";
-import path from "path";
-import type { Project } from "@/components/sections/ProjectCard";
-import PageClient from "@/components/layout/PageClient";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { AboutSection } from "@/components/sections/AboutSection";
-import { SkillsSection } from "@/components/sections/SkillsSection";
-import { ExperienceSection } from "@/components/sections/ExperienceSection";
-import { ProjectsSection } from "@/components/sections/ProjectsSection";
-import { ContactSection } from "@/components/sections/ContactSection";
-import FooterSection from "@/components/sections/FooterSection";
+import { promises as fs } from 'fs';
+import path from 'path';
+import type { Project } from '@/components/sections/ProjectCard';
+import PageClient from '@/components/layout/PageClient';
+import { HeroSection } from '@/components/sections/HeroSection';
+import { AboutSection } from '@/components/sections/AboutSection';
+import { SkillsSection } from '@/components/sections/SkillsSection';
+import { ExperienceSection } from '@/components/sections/ExperienceSection';
+import { ProjectsSection } from '@/components/sections/ProjectsSection';
+import { ContactSection } from '@/components/sections/ContactSection';
+import FooterSection from '@/components/sections/FooterSection';
 
 const FEATURED_PROJECT_IDS: (number | string)[] = [
   727342843, 657660151, 952619337, 922037774, 525828811, 583853098,
 ];
 
 async function getProjects(): Promise<Project[]> {
-  const filePath = path.join(process.cwd(), "public/projects-data.json");
+  const filePath = path.join(process.cwd(), 'public/projects-data.json');
   try {
-    const fileContents = await fs.readFile(filePath, "utf8");
+    const fileContents = await fs.readFile(filePath, 'utf8');
     let projects: Project[] = JSON.parse(fileContents);
 
     projects.sort((a, b) => {
@@ -43,7 +43,7 @@ async function getProjects(): Promise<Project[]> {
 
     return projects;
   } catch (error) {
-    console.error("Failed to read or parse projects data:", error);
+    console.error('Failed to read or parse projects data:', error);
     return [];
   }
 }

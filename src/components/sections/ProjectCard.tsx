@@ -1,21 +1,15 @@
-import Link from "next/link";
-import Image from "next/image";
-import type { FC } from "react";
-import { motion, useReducedMotion } from "motion/react";
-import type { HTMLMotionProps } from "motion/react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ExternalLink, Star } from "lucide-react";
-import { Icon } from "@iconify/react";
-import { cn } from "@/lib/utils";
-import { TECH_STACK_DETAILS } from "@/lib/tech-stack-data";
+import Link from 'next/link';
+import Image from 'next/image';
+import type { FC } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
+import type { HTMLMotionProps } from 'motion/react';
+import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ExternalLink, Star } from 'lucide-react';
+import { Icon } from '@iconify/react';
+import { cn } from '@/lib/utils';
+import { TECH_STACK_DETAILS } from '@/lib/tech-stack-data';
 
 export interface Project {
   id: number | string;
@@ -33,25 +27,21 @@ export interface Project {
   full_name?: string;
 }
 
-interface ProjectCardProps extends Omit<HTMLMotionProps<"div">, "children"> {
+interface ProjectCardProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
   project: Project;
 }
 
 const getTechDetails = (techName: string) => {
   return (
     TECH_STACK_DETAILS[techName.toLowerCase()] || {
-      icon: "lucide:code",
-      color: "var(--color-muted-foreground)",
+      icon: 'lucide:code',
+      color: 'var(--color-muted-foreground)',
       name: techName,
     }
   );
 };
 
-export const ProjectCard: FC<ProjectCardProps> = ({
-  project,
-  className,
-  ...props
-}) => {
+export const ProjectCard: FC<ProjectCardProps> = ({ project, className, ...props }) => {
   const shouldReduceMotion = useReducedMotion();
 
   const techToDisplay = (
@@ -62,33 +52,34 @@ export const ProjectCard: FC<ProjectCardProps> = ({
         : project.topics
   ).slice(0, 6);
 
+  console.log(techToDisplay, 'techToDisplay');
+
   const displayDescription =
-    project.description ||
-    "A project exploring modern web development concepts.";
+    project.description || 'A project exploring modern web development concepts.';
   const projectLink = project.homepage || project.html_url;
 
   return (
     <motion.div
-      className={cn("h-full", className)}
+      className={cn('h-full', className)}
       initial={shouldReduceMotion ? false : { y: 0 }}
       whileHover={
         shouldReduceMotion
           ? {}
           : {
               y: -6,
-              transition: { type: "spring", stiffness: 350, damping: 20 },
+              transition: { type: 'spring', stiffness: 350, damping: 20 },
             }
       }
       {...props}
     >
       <Card
         className={cn(
-          "group/card relative flex h-full flex-col overflow-hidden rounded-xl",
-          "border border-border/50 bg-card/90 shadow-md dark:border-border/60 dark:bg-card/95 dark:shadow-md",
-          "transition-all duration-300 ease-in-out",
-          "hover:border-primary/50 hover:shadow-xl hover:shadow-primary/20 dark:hover:border-primary/50 dark:hover:shadow-xl dark:hover:shadow-primary/20",
-          "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
-          !project.imageUrl && "h-fit",
+          'group/card relative flex h-full flex-col overflow-hidden rounded-xl',
+          'border border-border/50 bg-card/90 shadow-md dark:border-border/60 dark:bg-card/95 dark:shadow-md',
+          'transition-all duration-300 ease-in-out',
+          'hover:border-primary/50 hover:shadow-xl hover:shadow-primary/20 dark:hover:border-primary/50 dark:hover:shadow-xl dark:hover:shadow-primary/20',
+          'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background',
+          !project.imageUrl && 'h-fit'
         )}
       >
         {project.imageUrl && (
@@ -113,10 +104,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
                 rel="noopener noreferrer"
                 className="focus:outline-none"
               >
-                <span
-                  className="absolute inset-0 top-0 left-0 rounded-lg"
-                  aria-hidden="true"
-                />
+                <span className="absolute inset-0 top-0 left-0 rounded-lg" aria-hidden="true" />
                 {project.name}
               </Link>
             </CardTitle>
@@ -142,13 +130,13 @@ export const ProjectCard: FC<ProjectCardProps> = ({
                       key={tech.name}
                       variant="outline"
                       className={cn(
-                        "flex cursor-default items-center gap-1.5 rounded-md border-border/60 bg-secondary/70 px-2 py-1 text-xs font-medium text-muted-foreground",
+                        'flex cursor-default items-center gap-1.5 rounded-md border-border/60 bg-secondary/70 px-2 py-1 text-xs font-medium text-muted-foreground'
                       )}
                     >
                       <Icon
                         icon={tech.icon}
-                        className={cn("size-3.5", {
-                          "dark:invert": tech.name === "Vercel",
+                        className={cn('size-3.5', {
+                          'dark:invert': tech.name === 'Vercel',
                         })}
                         style={{ color: tech.color }}
                       />
@@ -163,8 +151,8 @@ export const ProjectCard: FC<ProjectCardProps> = ({
 
         <CardFooter
           className={cn(
-            "relative z-10 flex items-center justify-end gap-2 border-t p-4",
-            "border-border/50",
+            'relative z-10 flex items-center justify-end gap-2 border-t p-4',
+            'border-border/50'
           )}
         >
           <Button
@@ -173,11 +161,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
             asChild
             className="group/button h-9 rounded-md px-3 text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-primary"
           >
-            <Link
-              href={project.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Link href={project.html_url} target="_blank" rel="noopener noreferrer">
               <Icon
                 icon="simple-icons:github"
                 className="mr-1.5 size-4 transition-transform duration-200 group-hover/button:scale-110"
@@ -191,11 +175,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
               asChild
               className="group/button h-9 rounded-md px-3 shadow-sm transition-all duration-200 hover:shadow-md"
             >
-              <Link
-                href={project.homepage}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link href={project.homepage} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="mr-1.5 size-4 transition-transform duration-200 group-hover/button:translate-x-0.5" />
                 Demo
               </Link>

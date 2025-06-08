@@ -1,15 +1,9 @@
-"use client";
+'use client';
 
-import React, {
-  useState,
-  useMemo,
-  useRef,
-  useEffect,
-  useCallback,
-} from "react";
-import { ProjectCard, type Project } from "./ProjectCard";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { ProjectCard, type Project } from './ProjectCard';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import {
   motion,
   AnimatePresence,
@@ -17,7 +11,7 @@ import {
   Variants,
   useInView,
   LayoutGroup,
-} from "motion/react";
+} from 'motion/react';
 
 const PROJECTS_INITIAL_DISPLAY_COUNT = 6;
 const PROJECTS_INCREMENT = 4;
@@ -26,14 +20,14 @@ const headingVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 30,
-    filter: "blur(3px)",
-    willChange: "opacity, transform, filter",
+    filter: 'blur(3px)',
+    willChange: 'opacity, transform, filter',
   },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    willChange: "auto",
+    filter: 'blur(0px)',
+    willChange: 'auto',
     transition: {
       duration: 0.8,
       ease: [0.25, 0.46, 0.45, 0.94],
@@ -49,7 +43,7 @@ const cardContainerVariants: Variants = {
     transition: {
       staggerChildren: 0.08,
       delayChildren: 0.1,
-      when: "beforeChildren",
+      when: 'beforeChildren',
     },
   },
 };
@@ -59,13 +53,13 @@ const cardVariants: Variants = {
     opacity: 0,
     y: 30,
     scale: 0.96,
-    willChange: "opacity, transform",
+    willChange: 'opacity, transform',
   },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    willChange: "auto",
+    willChange: 'auto',
     transition: {
       duration: 0.6,
       ease: [0.25, 0.46, 0.45, 0.94],
@@ -75,8 +69,8 @@ const cardVariants: Variants = {
   exit: {
     opacity: 0,
     scale: 0.95,
-    filter: "blur(1px)",
-    willChange: "opacity, transform, filter",
+    filter: 'blur(1px)',
+    willChange: 'opacity, transform, filter',
     transition: {
       duration: 0.25,
       ease: [0.4, 0, 1, 1],
@@ -109,15 +103,7 @@ const filterButtonVariants: Variants = {
   },
 };
 
-const popularFilters = [
-  "Next.js",
-  "React",
-  "AI",
-  "Three.js",
-  "Hono.js",
-  "TypeScript",
-  "Fintech",
-];
+const popularFilters = ['Next.js', 'React', 'AI', 'Three.js', 'Hono.js', 'TypeScript', 'Fintech'];
 
 interface ProjectsSectionProps {
   className?: string;
@@ -125,16 +111,10 @@ interface ProjectsSectionProps {
   initialProjects: Project[];
 }
 
-export function ProjectsSection({
-  className,
-  id,
-  initialProjects,
-}: ProjectsSectionProps) {
+export function ProjectsSection({ className, id, initialProjects }: ProjectsSectionProps) {
   const shouldReduceMotion = useReducedMotion();
-  const [activeFilter, setActiveFilter] = useState<string>("All");
-  const [displayedCount, setDisplayedCount] = useState<number>(
-    PROJECTS_INITIAL_DISPLAY_COUNT,
-  );
+  const [activeFilter, setActiveFilter] = useState<string>('All');
+  const [displayedCount, setDisplayedCount] = useState<number>(PROJECTS_INITIAL_DISPLAY_COUNT);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.1 });
@@ -147,27 +127,21 @@ export function ProjectsSection({
     });
 
     return [
-      "All",
+      'All',
       ...popularFilters.filter((filter) =>
-        Array.from(allTechs).some(
-          (tech) => tech.toLowerCase() === filter.toLowerCase(),
-        ),
+        Array.from(allTechs).some((tech) => tech.toLowerCase() === filter.toLowerCase())
       ),
     ];
   }, [initialProjects]);
 
   const filteredProjects = useMemo(() => {
-    if (activeFilter === "All") {
+    if (activeFilter === 'All') {
       return initialProjects;
     }
     return initialProjects.filter(
       (p) =>
-        p.techStack?.some(
-          (tech) => tech.toLowerCase() === activeFilter.toLowerCase(),
-        ) ||
-        p.topics?.some(
-          (topic) => topic.toLowerCase() === activeFilter.toLowerCase(),
-        ),
+        p.techStack?.some((tech) => tech.toLowerCase() === activeFilter.toLowerCase()) ||
+        p.topics?.some((topic) => topic.toLowerCase() === activeFilter.toLowerCase())
     );
   }, [initialProjects, activeFilter]);
 
@@ -181,24 +155,22 @@ export function ProjectsSection({
       setActiveFilter(filter);
       setDisplayedCount(PROJECTS_INITIAL_DISPLAY_COUNT);
     },
-    [activeFilter],
+    [activeFilter]
   );
 
   const handleShowMore = useCallback(() => {
-    setDisplayedCount((prev) =>
-      Math.min(prev + PROJECTS_INCREMENT, filteredProjects.length),
-    );
+    setDisplayedCount((prev) => Math.min(prev + PROJECTS_INCREMENT, filteredProjects.length));
   }, [filteredProjects.length]);
 
   const canShowMore = displayedCount < filteredProjects.length;
 
   if (initialProjects.length === 0) {
     return (
-      <section id={id} className={cn("py-20 md:py-28", className)}>
+      <section id={id} className={cn('py-20 md:py-28', className)}>
         <div className="container mx-auto px-4">
           <motion.h2
-            initial={shouldReduceMotion ? false : "hidden"}
-            whileInView={shouldReduceMotion ? undefined : "visible"}
+            initial={shouldReduceMotion ? false : 'hidden'}
+            whileInView={shouldReduceMotion ? undefined : 'visible'}
             variants={shouldReduceMotion ? {} : headingVariants}
             viewport={{ once: true, amount: 0.3 }}
             className="mb-20 text-center text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter"
@@ -214,17 +186,11 @@ export function ProjectsSection({
   }
 
   return (
-    <section
-      id={id}
-      className={cn("py-20 md:py-28", className)}
-      ref={containerRef}
-    >
+    <section id={id} className={cn('py-20 md:py-28', className)} ref={containerRef}>
       <div className="container mx-auto px-4">
         <motion.h2
-          initial={shouldReduceMotion ? false : "hidden"}
-          animate={
-            shouldReduceMotion ? undefined : isInView ? "visible" : "hidden"
-          }
+          initial={shouldReduceMotion ? false : 'hidden'}
+          animate={shouldReduceMotion ? undefined : isInView ? 'visible' : 'hidden'}
           variants={shouldReduceMotion ? {} : headingVariants}
           className="mb-12 text-center text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter"
         >
@@ -233,17 +199,13 @@ export function ProjectsSection({
 
         {/* Improved Filter Container */}
         <motion.div
-          initial={shouldReduceMotion ? false : "hidden"}
-          animate={
-            shouldReduceMotion ? undefined : isInView ? "visible" : "hidden"
-          }
+          initial={shouldReduceMotion ? false : 'hidden'}
+          animate={shouldReduceMotion ? undefined : isInView ? 'visible' : 'hidden'}
           variants={shouldReduceMotion ? {} : filterContainerVariants}
           className="mb-16"
         >
           <div className="flex flex-col items-center space-y-4">
-            <p className="text-sm text-muted-foreground font-medium">
-              Filter by Technology
-            </p>
+            <p className="text-sm text-muted-foreground font-medium">Filter by Technology</p>
 
             {/* Desktop Filter Layout */}
             <div className="hidden md:flex flex-wrap items-center justify-center gap-2 lg:gap-3 max-w-4xl mx-auto">
@@ -255,14 +217,14 @@ export function ProjectsSection({
                   whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
                 >
                   <Button
-                    variant={activeFilter === filter ? "default" : "outline"}
+                    variant={activeFilter === filter ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => handleSetFilter(filter)}
                     className={cn(
-                      "relative rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 hover:shadow-md",
+                      'relative rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 hover:shadow-md',
                       activeFilter === filter
-                        ? "bg-primary text-primary-foreground shadow-lg hover:bg-primary/90"
-                        : "bg-background/50 border-border/50 text-muted-foreground hover:bg-background hover:text-foreground hover:border-border backdrop-blur-sm",
+                        ? 'bg-primary text-primary-foreground shadow-lg hover:bg-primary/90'
+                        : 'bg-background/50 border-border/50 text-muted-foreground hover:bg-background hover:text-foreground hover:border-border backdrop-blur-sm'
                     )}
                   >
                     {filter}
@@ -271,7 +233,7 @@ export function ProjectsSection({
                         layoutId="activeFilterIndicator"
                         className="absolute inset-0 rounded-full bg-primary/10 -z-10"
                         transition={{
-                          type: "spring",
+                          type: 'spring',
                           stiffness: 500,
                           damping: 30,
                         }}
@@ -293,16 +255,14 @@ export function ProjectsSection({
                       whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
                     >
                       <Button
-                        variant={
-                          activeFilter === filter ? "default" : "outline"
-                        }
+                        variant={activeFilter === filter ? 'default' : 'outline'}
                         size="sm"
                         onClick={() => handleSetFilter(filter)}
                         className={cn(
-                          "relative rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap",
+                          'relative rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap',
                           activeFilter === filter
-                            ? "bg-primary text-primary-foreground shadow-md"
-                            : "bg-background/80 border-border/60 text-muted-foreground hover:bg-background hover:text-foreground backdrop-blur-sm",
+                            ? 'bg-primary text-primary-foreground shadow-md'
+                            : 'bg-background/80 border-border/60 text-muted-foreground hover:bg-background hover:text-foreground backdrop-blur-sm'
                         )}
                       >
                         {filter}
@@ -327,13 +287,13 @@ export function ProjectsSection({
         <LayoutGroup>
           <motion.div
             key={`${activeFilter}-${displayedCount}`}
-            initial={shouldReduceMotion ? false : "hidden"}
-            animate={shouldReduceMotion ? undefined : "visible"}
+            initial={shouldReduceMotion ? false : 'hidden'}
+            animate={shouldReduceMotion ? undefined : 'visible'}
             variants={shouldReduceMotion ? {} : cardContainerVariants}
             className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 lg:gap-x-10 lg:gap-y-12"
             style={{
-              transform: "translateZ(0)",
-              willChange: "contents",
+              transform: 'translateZ(0)',
+              willChange: 'contents',
             }}
           >
             <AnimatePresence mode="popLayout" initial={false}>
@@ -348,7 +308,7 @@ export function ProjectsSection({
                   layoutId={`project-${project.id || project.name}`}
                   className="h-full"
                   style={{
-                    backfaceVisibility: "hidden",
+                    backfaceVisibility: 'hidden',
                     perspective: 1000,
                   }}
                 >
@@ -385,9 +345,7 @@ export function ProjectsSection({
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">
-              No projects found
-            </h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">No projects found</h3>
             <p className="text-muted-foreground">
               Try selecting a different filter to see more projects.
             </p>
@@ -407,12 +365,7 @@ export function ProjectsSection({
               className="min-w-[240px] px-10 py-3.5 text-lg rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary"
             >
               <span>Discover More</span>
-              <svg
-                className="ml-2 w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+              <svg className="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

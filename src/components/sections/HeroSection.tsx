@@ -1,14 +1,12 @@
-// components/sections/HeroSection.tsx
+'use client';
 
-"use client";
-
-import { useCallback } from "react";
-import Link from "next/link";
-import { motion, useReducedMotion, Variants } from "motion/react";
-import { ArrowRight, DownloadCloud, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { useScrollToSection } from "@/hooks/use-scroll-to-section";
+import { useCallback } from 'react';
+import Link from 'next/link';
+import { motion, useReducedMotion, Variants } from 'motion/react';
+import { ArrowRight, DownloadCloud, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { useScrollToSection } from '@/hooks/use-scroll-to-section';
 
 const heroVariants: Variants = {
   hidden: { opacity: 0 },
@@ -19,11 +17,11 @@ const heroVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
+  hidden: { opacity: 0, y: 20, filter: 'blur(4px)' },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
+    filter: 'blur(0px)',
     transition: { duration: 0.7, ease: [0.33, 1, 0.68, 1] },
   },
 };
@@ -52,14 +50,14 @@ const scrollIndicatorVariants: Variants = {
     opacity: 0.6,
     y: 10,
     transition: {
-      opacity: { duration: 0.5, ease: "easeOut", delay: 2 },
+      opacity: { duration: 0.5, ease: 'easeOut', delay: 2 },
       y: {
         from: 0,
         duration: 0.75,
-        ease: "circInOut",
+        ease: 'circInOut',
         delay: 2.5,
         repeat: Infinity,
-        repeatType: "reverse",
+        repeatType: 'reverse',
       },
     },
   },
@@ -69,7 +67,7 @@ const buttonHoverVariants: Variants = {
   hover: {
     scale: 1.02,
     y: -2,
-    transition: { duration: 0.2, ease: "easeOut" },
+    transition: { duration: 0.2, ease: 'easeOut' },
   },
   tap: {
     scale: 0.98,
@@ -77,36 +75,30 @@ const buttonHoverVariants: Variants = {
   },
 };
 
-export function HeroSection({
-  className,
-  id,
-}: {
-  className?: string;
-  id?: string;
-}) {
+export function HeroSection({ className, id }: { className?: string; id?: string }) {
   const shouldReduceMotion = useReducedMotion();
-  const nameParts = "Utsav Khatri".split("");
+  const nameParts = 'Utsav Khatri'.split('');
 
   const { scrollTo } = useScrollToSection();
 
   const handleProjectScroll = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault();
-      scrollTo("#projects");
+      scrollTo('#projects');
     },
-    [scrollTo],
+    [scrollTo]
   );
 
   return (
     <motion.section
       id={id}
       className={cn(
-        "relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-transparent px-4 text-center ",
-        className,
+        'relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-transparent px-4 text-center ',
+        className
       )}
       variants={shouldReduceMotion ? {} : heroVariants}
-      initial={shouldReduceMotion ? undefined : "hidden"}
-      animate={shouldReduceMotion ? undefined : "visible"}
+      initial={shouldReduceMotion ? undefined : 'hidden'}
+      animate={shouldReduceMotion ? undefined : 'visible'}
       aria-labelledby="hero-heading"
     >
       <div className="container relative z-10 mx-auto max-sm:mt-10">
@@ -120,10 +112,10 @@ export function HeroSection({
           id="hero-heading"
           aria-label="Utsav Khatri"
           variants={shouldReduceMotion ? {} : nameContainerVariants}
-          style={{ perspective: "800px" }}
+          style={{ perspective: '800px' }}
           className={cn(
-            "my-2 select-none font-bold tracking-tighter relative",
-            "text-[2.75rem] leading-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl",
+            'my-2 select-none font-bold tracking-tighter relative',
+            'text-[2.75rem] leading-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl'
           )}
         >
           <div
@@ -138,9 +130,9 @@ export function HeroSection({
                 key={index}
                 variants={shouldReduceMotion ? {} : nameCharVariants}
                 className="inline-block"
-                style={char === " " ? { width: "0.25em" } : {}}
+                style={char === ' ' ? { width: '0.25em' } : {}}
               >
-                {char === " " ? "\u00A0" : char}
+                {char === ' ' ? '\u00A0' : char}
               </motion.span>
             ))}
           </div>
@@ -149,17 +141,14 @@ export function HeroSection({
           variants={shouldReduceMotion ? {} : itemVariants}
           className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground md:mt-8 md:text-xl"
         >
-          A{" "}
-          <span className="font-semibold text-primary">
-            Full Stack Developer
-          </span>{" "}
-          based in Gujarat, India, crafting high-performance web experiences.
+          A <span className="font-semibold text-primary">Full Stack Developer</span> based in
+          Gujarat, India, crafting high-performance web experiences.
         </motion.p>
 
         <motion.div
           variants={shouldReduceMotion ? {} : itemVariants}
           className={cn(
-            "mt-8 flex select-none flex-col items-center justify-center gap-4 sm:flex-row md:mt-10",
+            'mt-8 flex select-none flex-col items-center justify-center gap-4 sm:flex-row md:mt-10'
           )}
           role="group"
           aria-label="Primary actions"
@@ -167,16 +156,16 @@ export function HeroSection({
           {/* Primary CTA Button with Colorful Effect */}
           <motion.div
             variants={shouldReduceMotion ? {} : buttonHoverVariants}
-            whileHover={shouldReduceMotion ? undefined : "hover"}
-            whileTap={shouldReduceMotion ? undefined : "tap"}
+            whileHover={shouldReduceMotion ? undefined : 'hover'}
+            whileTap={shouldReduceMotion ? undefined : 'tap'}
           >
             <Button
               asChild
               className={cn(
-                "group relative h-auto overflow-hidden rounded-full border px-8 py-4 text-base font-semibold transition-all duration-500 ease-out sm:px-10 sm:py-4",
-                "bg-zinc-200 dark:bg-transparent",
-                "hover:shadow-2xl hover:shadow-purple-500/40",
-                "max-sm:px-4 max-sm:py-2.5 max-sm:text-sm",
+                'group relative h-auto overflow-hidden rounded-full border px-8 py-4 text-base font-semibold transition-all duration-500 ease-out sm:px-10 sm:py-4',
+                'bg-zinc-200 dark:bg-transparent',
+                'hover:shadow-2xl hover:shadow-purple-500/40',
+                'max-sm:px-4 max-sm:py-2.5 max-sm:text-sm'
               )}
             >
               <Link
@@ -188,22 +177,22 @@ export function HeroSection({
                 {/* Animated Gradient Background */}
                 <div
                   className={cn(
-                    "absolute inset-0 rounded-full",
-                    "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500",
-                    "opacity-60 group-hover:opacity-100",
-                    "blur-sm transition-all duration-500 ease-out",
-                    "group-hover:blur-none group-hover:scale-105",
+                    'absolute inset-0 rounded-full',
+                    'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500',
+                    'opacity-60 group-hover:opacity-100',
+                    'blur-sm transition-all duration-500 ease-out',
+                    'group-hover:blur-none group-hover:scale-105'
                   )}
                 />
 
                 {/* Secondary Gradient Layer */}
                 <div
                   className={cn(
-                    "absolute inset-0 rounded-full",
-                    "bg-gradient-to-r from-cyan-400 via-violet-500 to-fuchsia-500",
-                    "opacity-0 group-hover:opacity-40",
-                    "blur transition-all duration-700 ease-out",
-                    "group-hover:animate-pulse",
+                    'absolute inset-0 rounded-full',
+                    'bg-gradient-to-r from-cyan-400 via-violet-500 to-fuchsia-500',
+                    'opacity-0 group-hover:opacity-40',
+                    'blur transition-all duration-700 ease-out',
+                    'group-hover:animate-pulse'
                   )}
                 />
 
@@ -220,20 +209,20 @@ export function HeroSection({
           {/* Secondary CTA Button with Glass Morphism Effect */}
           <motion.div
             variants={shouldReduceMotion ? {} : buttonHoverVariants}
-            whileHover={shouldReduceMotion ? undefined : "hover"}
-            whileTap={shouldReduceMotion ? undefined : "tap"}
+            whileHover={shouldReduceMotion ? undefined : 'hover'}
+            whileTap={shouldReduceMotion ? undefined : 'tap'}
           >
             <Button
               variant="outline"
               asChild
               className={cn(
-                "group relative h-auto overflow-hidden rounded-full border px-8 py-4 text-base font-semibold transition-all duration-500 ease-out sm:px-10 sm:py-4",
-                "border-white/20 bg-white/5 backdrop-blur-xl",
-                "hover:border-white/30 hover:bg-white/10",
-                "max-sm:px-4 max-sm:py-2.5 max-sm:text-sm",
-                "dark:border-white/10 dark:bg-white/5 dark:hover:border-white/20 dark:hover:bg-white/10",
-                "shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10",
-                "before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-r before:from-emerald-400/10 before:via-teal-400/10 before:to-cyan-400/10 before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100",
+                'group relative h-auto overflow-hidden rounded-full border px-8 py-4 text-base font-semibold transition-all duration-500 ease-out sm:px-10 sm:py-4',
+                'border-white/20 bg-white/5 backdrop-blur-xl',
+                'hover:border-white/30 hover:bg-white/10',
+                'max-sm:px-4 max-sm:py-2.5 max-sm:text-sm',
+                'dark:border-white/10 dark:bg-white/5 dark:hover:border-white/20 dark:hover:bg-white/10',
+                'shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10',
+                'before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-r before:from-emerald-400/10 before:via-teal-400/10 before:to-cyan-400/10 before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100'
               )}
             >
               <a
@@ -247,23 +236,23 @@ export function HeroSection({
                 {/* Animated Border Gradient */}
                 <div
                   className={cn(
-                    "absolute inset-0 rounded-full p-[1px]",
-                    "bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400",
-                    "opacity-0 group-hover:opacity-100",
-                    "transition-all duration-500 ease-out",
-                    "before:absolute before:inset-[1px] before:rounded-full before:bg-background/90 before:backdrop-blur-xl",
+                    'absolute inset-0 rounded-full p-[1px]',
+                    'bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400',
+                    'opacity-0 group-hover:opacity-100',
+                    'transition-all duration-500 ease-out',
+                    'before:absolute before:inset-[1px] before:rounded-full before:bg-background/90 before:backdrop-blur-xl'
                   )}
                 />
 
                 {/* Shimmer Effect */}
                 <div
                   className={cn(
-                    "absolute inset-0 rounded-full",
-                    "bg-gradient-to-r from-transparent via-white/20 to-transparent",
-                    "opacity-0 group-hover:opacity-100",
-                    "-translate-x-full group-hover:translate-x-full",
-                    "transition-all duration-1000 ease-out",
-                    "transform-gpu",
+                    'absolute inset-0 rounded-full',
+                    'bg-gradient-to-r from-transparent via-white/20 to-transparent',
+                    'opacity-0 group-hover:opacity-100',
+                    '-translate-x-full group-hover:translate-x-full',
+                    'transition-all duration-1000 ease-out',
+                    'transform-gpu'
                   )}
                 />
 
