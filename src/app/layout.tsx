@@ -31,7 +31,7 @@ const notoSansDevanagari = Noto_Sans_Devanagari({
   display: 'swap',
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://utsav-khatri.vercel.app';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -42,31 +42,15 @@ export const metadata: Metadata = {
   description:
     'Portfolio of Utsav Khatri, a results-oriented Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies with a keen interest in AI.',
   keywords: [
-    'Utsav Khatri',
-    'Full Stack Developer',
-    'Software Engineer',
-    'React Developer',
-    'Node.js Developer',
-    'Next.js Developer',
-    'TypeScript',
-    'JavaScript',
-    'Tailwind CSS',
-    'Three.js',
-    'PostgreSQL',
-    'AWS',
-    'Cloudflare',
-    'Vercel',
-    'Generative AI',
-    'API Development',
-    'Portfolio',
-    'Web Developer Gujarat',
+    'Utsav Khatri', 'Full Stack Developer', 'Software Engineer', 'React Developer', 'Node.js Developer',
+    'Next.js Developer', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Three.js', 'PostgreSQL', 'AWS',
+    'Cloudflare', 'Vercel', 'Generative AI', 'API Development', 'Portfolio', 'Web Developer Gujarat',
   ],
   authors: [{ name: 'Utsav Khatri', url: siteUrl }],
   creator: 'Utsav Khatri',
   openGraph: {
     title: 'Utsav Khatri | Full Stack Developer',
-    description:
-      'Discover the portfolio of Utsav Khatri, showcasing expertise in modern web development.',
+    description: 'Discover the portfolio of Utsav Khatri, showcasing expertise in modern web development, AI, and cloud technologies.',
     url: siteUrl,
     siteName: 'Utsav Khatri Portfolio',
     images: [
@@ -74,7 +58,7 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Utsav Khatri - Full Stack Developer',
+        alt: 'Utsav Khatri - Full Stack Developer Portfolio',
       },
     ],
     locale: 'en_US',
@@ -83,8 +67,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Utsav Khatri | Full Stack Developer',
-    description:
-      'Explore projects and skills of Utsav Khatri, a Full Stack Developer focused on innovative web solutions.',
+    description: 'Explore projects and skills of Utsav Khatri, a Full Stack Developer focused on innovative web solutions.',
     images: ['/twitter-image.png'],
     creator: '@Utsav_Khatri_',
   },
@@ -103,11 +86,10 @@ export const metadata: Metadata = {
     google: '4b4H3hr3KG4V1J6eRzWhNZDf84yIPAcR1x32o0EpF8U',
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: '/favicon.svg',
     shortcut: '/favicon-16x16.png',
     apple: '/apple-touch-icon.png',
   },
-  manifest: '/site.webmanifest',
 };
 
 export const viewport: Viewport = {
@@ -127,6 +109,7 @@ const personSchema = {
   description:
     'Results-oriented Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies with a keen interest in AI.',
   sameAs: ['https://www.linkedin.com/in/utsav-khatri-in/', 'https://github.com/utsav173'],
+  knowsAbout: ["React", "Next.js", "Node.js", "TypeScript", "JavaScript", "AWS", "Cloudflare", "Generative AI", "Full-Stack Development"]
 };
 
 export default function RootLayout({
