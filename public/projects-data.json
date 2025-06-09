@@ -192,7 +192,7 @@
     "name": "X-Splash Image Platform (Next.js)",
     "description": "A Next.js based platform for AI image generation, publishing, and exploration, offering a modern user experience.",
     "repoUrl": "https://github.com/Utsav173/x-splash-gen-next",
-    "liveUrl": "https://x-splash-gen-next.vercel.app",
+    "liveUrl": "https://x-image-gen.vercel.app",
     "projectType": "Web App",
     "keyFeatures": [
       "AI image generation and publishing",
