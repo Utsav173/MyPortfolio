@@ -14,7 +14,7 @@ import { motion, useReducedMotion, Variants, useInView } from 'framer-motion';
 import { Search } from 'lucide-react';
 
 const PROJECTS_INITIAL_DISPLAY_COUNT = 6;
-const PROJECTS_INCREMENT = 4;
+const PROJECTS_INCREMENT = 3;
 
 const headingVariants: Variants = {
   hidden: { opacity: 0, y: 30, filter: 'blur(3px)' },

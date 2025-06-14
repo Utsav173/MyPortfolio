@@ -321,7 +321,6 @@ export function HeroSection({ className, id }: { className?: string; id?: string
                   <DownloadCloud
                     className={cn(
                       'mr-2.5 size-5 transition-all duration-300 ease-out',
-                      'group-hover:-translate-y-0.5 group-hover:scale-105 group-hover:rotate-3',
                       'text-foreground group-hover:text-emerald-600 dark:group-hover:text-emerald-400'
                     )}
                   />

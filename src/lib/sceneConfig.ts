@@ -2,12 +2,12 @@ import * as THREE from 'three';
 
 export const defaultSceneConfig = {
   plane: {
-    size: 256,
+    size: 312,
     visualSegments: 128,
     collisionSegments: 32,
     timeFactor: 0.2,
     hillDarkColorHex: '#273161',
-    hillLightColorHex: '#6b98c7',
+    hillLightColorHex: '#4975a3',
     noiseStrength: {
       hill1: 15,
       hill2: 11.3,
@@ -15,14 +15,13 @@ export const defaultSceneConfig = {
       overall: 46.5,
     },
     opacityFactorDark: 0.87,
-
-    opacityFactorLight: 0.92,
+    opacityFactorLight: 0.91,
   },
   rain: {
     charHeight: 1.35,
-    charAspect: 0.56,
+    charAspect: 0.7,
     streamCountMobile: 40,
-    streamCountDesktop: 110,
+    streamCountDesktop: 90,
     streamLengthMobile: 6,
     streamLengthDesktop: 10,
     yTop: 89,

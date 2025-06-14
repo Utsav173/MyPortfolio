@@ -26,14 +26,19 @@ export function Navbar({ className, activeSection }: NavbarProps) {
       transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1], delay: 0.3 }}
       className={cn(
         'fixed top-3 left-1/2 z-50 w-[calc(100%-1.5rem)] -translate-x-1/2 sm:top-4 sm:w-auto',
-        'rounded-full border border-border/30 bg-background/75 shadow-lg backdrop-blur-xl dark:bg-neutral-900/75 dark:shadow-primary/30',
+        'rounded-full p-px shadow-lg',
+        'bg-border',
+        'dark:shadow-none dark:bg-gradient-to-b dark:from-border dark:to-card',
         className
       )}
       role="banner"
     >
       <div
         className={cn(
-          'flex h-12 items-center justify-between gap-2 px-2.5 sm:h-[52px] sm:gap-4 sm:px-4'
+          'flex h-12 items-center justify-between gap-2 px-2.5 sm:h-[52px] sm:gap-4 sm:px-4',
+          'w-full h-full rounded-full',
+          'bg-background/80 backdrop-blur-xl',
+          'dark:bg-card/50'
         )}
       >
         <Logo className="h-6 shrink-0 sm:h-auto" />
@@ -48,7 +53,7 @@ export function Navbar({ className, activeSection }: NavbarProps) {
               href={item.href}
               onClick={handleNavClick}
               className={cn(
-                'relative rounded-md px-2.5 py-1.5 text-xs font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:px-3 lg:py-2 lg:text-sm transition-all duration-300 ease-in-out',
+                'relative rounded-md px-2.5 py-1.5 text-xs font-medium outline-none transition-all duration-300 ease-in-out focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:px-3 lg:py-2 lg:text-sm',
                 activeSection === item.href.substring(1)
                   ? 'font-semibold text-primary bg-accent rounded-3xl'
                   : 'text-foreground/70 hover:text-primary'

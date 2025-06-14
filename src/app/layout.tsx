@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono, Noto_Sans_Gujarati, Noto_Sans_Devanagari } from 'next/font/google';
-import './globals.css';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
+import { unstable_ViewTransition as ViewTransition } from 'react';
+import './globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -42,15 +43,31 @@ export const metadata: Metadata = {
   description:
     'Portfolio of Utsav Khatri, a results-oriented Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies with a keen interest in AI.',
   keywords: [
-    'Utsav Khatri', 'Full Stack Developer', 'Software Engineer', 'React Developer', 'Node.js Developer',
-    'Next.js Developer', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Three.js', 'PostgreSQL', 'AWS',
-    'Cloudflare', 'Vercel', 'Generative AI', 'API Development', 'Portfolio', 'Web Developer Gujarat',
+    'Utsav Khatri',
+    'Full Stack Developer',
+    'Software Engineer',
+    'React Developer',
+    'Node.js Developer',
+    'Next.js Developer',
+    'TypeScript',
+    'JavaScript',
+    'Tailwind CSS',
+    'Three.js',
+    'PostgreSQL',
+    'AWS',
+    'Cloudflare',
+    'Vercel',
+    'Generative AI',
+    'API Development',
+    'Portfolio',
+    'Web Developer Gujarat',
   ],
   authors: [{ name: 'Utsav Khatri', url: siteUrl }],
   creator: 'Utsav Khatri',
   openGraph: {
     title: 'Utsav Khatri | Full Stack Developer',
-    description: 'Discover the portfolio of Utsav Khatri, showcasing expertise in modern web development, AI, and cloud technologies.',
+    description:
+      'Discover the portfolio of Utsav Khatri, showcasing expertise in modern web development, AI, and cloud technologies.',
     url: siteUrl,
     siteName: 'Utsav Khatri Portfolio',
     images: [
@@ -67,7 +84,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Utsav Khatri | Full Stack Developer',
-    description: 'Explore projects and skills of Utsav Khatri, a Full Stack Developer focused on innovative web solutions.',
+    description:
+      'Explore projects and skills of Utsav Khatri, a Full Stack Developer focused on innovative web solutions.',
     images: ['/twitter-image.png'],
     creator: '@Utsav_Khatri_',
   },
@@ -109,7 +127,17 @@ const personSchema = {
   description:
     'Results-oriented Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies with a keen interest in AI.',
   sameAs: ['https://www.linkedin.com/in/utsav-khatri-in/', 'https://github.com/utsav173'],
-  knowsAbout: ["React", "Next.js", "Node.js", "TypeScript", "JavaScript", "AWS", "Cloudflare", "Generative AI", "Full-Stack Development"]
+  knowsAbout: [
+    'React',
+    'Next.js',
+    'Node.js',
+    'TypeScript',
+    'JavaScript',
+    'AWS',
+    'Cloudflare',
+    'Generative AI',
+    'Full-Stack Development',
+  ],
 };
 
 export default function RootLayout({
@@ -118,29 +146,36 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          'font-sans antialiased',
-          geistSans.variable,
-          geistMono.variable,
-          notoSansGujarati.variable,
-          notoSansDevanagari.variable
-        )}
-      >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <a href="#main-content" className="skip-to-content-link">
-            Skip to main content
-          </a>
-          {children}
-          <Toaster richColors position="top-right" closeButton />
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-            key="person-jsonld"
-          />
-        </ThemeProvider>
-      </body>
-    </html>
+    <ViewTransition>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={cn(
+            'font-sans antialiased',
+            geistSans.variable,
+            geistMono.variable,
+            notoSansGujarati.variable,
+            notoSansDevanagari.variable
+          )}
+        >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <a href="#main-content" className="skip-to-content-link">
+              Skip to main content
+            </a>
+            {children}
+            <Toaster richColors position="top-right" closeButton />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+              key="person-jsonld"
+            />
+          </ThemeProvider>
+        </body>
+      </html>
+    </ViewTransition>
   );
 }
