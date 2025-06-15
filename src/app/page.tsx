@@ -11,7 +11,7 @@ import { ContactSection } from '@/components/sections/ContactSection';
 import FooterSection from '@/components/sections/FooterSection';
 
 const FEATURED_PROJECT_IDS: (number | string)[] = [
-  727342843, 657660151, 952619337, 525828811, 922037774, 583853098,
+  727342843, 657660151, 952619337, 525828811, 998877665, 583853098,
 ];
 
 async function getProjects(): Promise<Project[]> {

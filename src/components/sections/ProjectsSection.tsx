@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { motion, useReducedMotion, Variants, useInView } from 'framer-motion';
 import { Search } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 const PROJECTS_INITIAL_DISPLAY_COUNT = 6;
 const PROJECTS_INCREMENT = 3;
@@ -36,6 +37,7 @@ interface ProjectsSectionProps {
 
 export function ProjectsSection({ className, id, initialProjects }: ProjectsSectionProps) {
   const shouldReduceMotion = useReducedMotion();
+  const { resolvedTheme } = useTheme();
   const [activeFilter, setActiveFilter] = useState<string>('All');
   const [displayedCount, setDisplayedCount] = useState<number>(PROJECTS_INITIAL_DISPLAY_COUNT);
 
@@ -107,7 +109,7 @@ export function ProjectsSection({ className, id, initialProjects }: ProjectsSect
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {currentDisplayedProjects.map((project) => (
               <ViewTransition key={project.id} name={`project-card-${project.id}`}>
-                <ProjectCard key={project.id} project={project} />
+                <ProjectCard key={project.id} project={project} theme={resolvedTheme} />
               </ViewTransition>
             ))}
           </div>

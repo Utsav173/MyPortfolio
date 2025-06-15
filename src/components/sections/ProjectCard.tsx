@@ -20,6 +20,7 @@ import { ExternalLink, Star, CheckCircle } from 'lucide-react';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
 import { TECH_STACK_DETAILS } from '@/lib/tech-stack-data';
+import { useTheme } from 'next-themes';
 
 export interface Project {
   id: number | string;
@@ -40,6 +41,7 @@ export interface Project {
 interface ProjectCardProps {
   project: Project;
   className?: string;
+  theme?: string | undefined;
 }
 
 const getTechDetails = (techName: string) => {
@@ -54,7 +56,7 @@ const getTechDetails = (techName: string) => {
 
 export const ProjectCard: FC<ProjectCardProps> = ({ project, className }) => {
   const shouldReduceMotion = useReducedMotion();
-
+  const { theme } = useTheme();
   const techToDisplay = project.techStack.slice(0, 5);
   const hasImage = !!project.imageUrl;
 
@@ -111,7 +113,16 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, className }) => {
                       variant="outline"
                       className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs "
                     >
-                      <Icon icon={tech.icon} className="size-3.5" style={{ color: tech.color }} />
+                      <Icon
+                        icon={tech.icon}
+                        className="size-3.5"
+                        style={{
+                          color:
+                            theme === 'dark' && tech.darkmodecolor
+                              ? tech.darkmodecolor
+                              : tech.color,
+                        }}
+                      />
                       <span>{tech.name}</span>
                     </Badge>
                   );
@@ -269,23 +280,41 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, className }) => {
             'dark:bg-background/90'
           )}
         >
-          <Button
-            asChild
-            className={cn(
-              'flex-1 min-h-9 sm:min-h-10',
-              'bg-primary text-white hover:bg-slate-900',
-              'shadow-sm bg-black group'
-            )}
-          >
-            <Link href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-              <Icon
-                icon={'simple-icons:github'}
-                color="white"
-                className="mr-2 size-3.5 sm:size-4"
-              />
-              <span className="text-xs sm:text-sm">Source Code</span>
-            </Link>
-          </Button>
+          {project.repoUrl ? (
+            <Button
+              asChild
+              className={cn(
+                'flex-1 min-h-9 sm:min-h-10',
+                'shadow-sm group',
+                'bg-black text-white hover:bg-black/90',
+                'dark:bg-white dark:text-black dark:hover:bg-white/90'
+              )}
+            >
+              <Link href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+                <Icon
+                  icon={'simple-icons:github'}
+                  color={theme === 'dark' ? 'black' : 'white'}
+                  className="mr-2 size-3.5 sm:size-4"
+                />
+                <span className="text-xs sm:text-sm">Source Code</span>
+              </Link>
+            </Button>
+          ) : (
+            <Badge
+              variant="outline"
+              className={cn(
+                'flex-1 min-h-9 sm:min-h-10 justify-center',
+                'text-xs sm:text-sm',
+                'bg-muted text-muted-foreground',
+                'border border-border/50 dark:border-border/30',
+                'shadow-sm',
+                'flex items-center gap-1.5'
+              )}
+            >
+              <Icon icon={'lucide:lock'} className="size-3.5 sm:size-4" />
+              <span>Private Project (Contact for source code)</span>
+            </Badge>
+          )}
           {project.liveUrl && (
             <Button
               asChild

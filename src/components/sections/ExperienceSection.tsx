@@ -3,13 +3,26 @@
 import React, { useRef } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Briefcase } from 'lucide-react';
+import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
 import { motion, useScroll, useTransform, useReducedMotion, Variants } from 'motion/react';
+import { TECH_STACK_DETAILS } from '@/lib/tech-stack-data';
+import { useTheme } from 'next-themes';
 
 interface ExperienceSectionProps {
   className?: string;
   id?: string;
 }
+
+const getTechDetails = (techName: string) => {
+  return (
+    TECH_STACK_DETAILS[techName.toLowerCase()] || {
+      icon: 'lucide:code',
+      color: 'hsl(var(--muted-foreground))',
+      name: techName,
+    }
+  );
+};
 
 const experiencesData = [
   {
@@ -26,20 +39,24 @@ const experiencesData = [
     ],
     keyProjects: [
       {
-        name: 'Restaurant Inventory Management System',
-        tech: ['Node.js', 'Strapi v4', 'PostgreSQL', 'JWT'],
-      },
-      {
         name: 'Education Management Platform',
         tech: ['Node.js', 'Sails.js', 'PostgreSQL', 'AWS SQS'],
+      },
+      {
+        name: 'Cloud Procurement & Bidding Platform',
+        tech: ['Node.js', 'Express.js', 'Socket.io', 'AWS'],
       },
       {
         name: 'Financial Transaction Management System',
         tech: ['Node.js', 'Sails.js', 'SQL', 'Recharts'],
       },
       {
-        name: 'Cloud Procurement & Bidding Platform',
-        tech: ['Node.js', 'Express.js', 'Socket.io', 'AWS'],
+        name: 'Large-Scale Organization Management SaaS',
+        tech: ['React.js', 'Redux', 'Styled Components', 'Webpack'],
+      },
+      {
+        name: 'Restaurant Inventory Management System',
+        tech: ['Node.js', 'Strapi v4', 'PostgreSQL', 'JWT'],
       },
     ],
   },
@@ -87,6 +104,7 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
+  const { theme } = useTheme();
 
   const { scrollYProgress } = useScroll({
     target: timelineContainerRef,
@@ -175,8 +193,18 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
                                 <Badge
                                   key={`${t}-${techIndex}`}
                                   variant="outline"
-                                  className="text-[0.65rem] sm:text-[0.7rem] md:text-xs px-1.5 sm:px-2 py-0.5 border-primary/40 text-primary/80 bg-primary/5 hover:bg-primary/10 transition-all duration-150 group-hover/projectcard:scale-[1.03] group-hover/projectcard:shadow-sm"
+                                  className="text-[0.65rem] border-none sm:text-[0.7rem] md:text-xs px-1.5 sm:px-2 py-0.5 border-primary/40 text-primary/80 bg-primary/5 hover:bg-primary/10 transition-all duration-150 group-hover/projectcard:shadow-sm flex items-center gap-1"
                                 >
+                                  <Icon
+                                    icon={getTechDetails(t).icon}
+                                    className="size-2.5 sm:size-3"
+                                    style={{
+                                      color:
+                                        theme === 'dark' && getTechDetails(t).darkmodecolor
+                                          ? getTechDetails(t).darkmodecolor
+                                          : getTechDetails(t).color,
+                                    }}
+                                  />
                                   {t}
                                 </Badge>
                               ))}

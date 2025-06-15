@@ -1,5 +1,34 @@
 [
   {
+    "id": 998877665,
+    "name": "Note Sync Pro",
+    "description": "An AI-powered, modern, and minimalist blog platform built with a cutting-edge, full-stack TypeScript environment.",
+    "repoUrl": null,
+    "liveUrl": "https://notes-sync-pro.vercel.app/",
+    "imageUrl": "/images/projects/note-sync-pro.webp",
+    "projectType": "Full-Stack Web App",
+    "keyFeatures": [
+      "AI-powered writing assistant with Google Gemini for content creation, summarization, and tone adjustment.",
+      "Full post management (CRUD) with a rich text editor (Plate.js) supporting image uploads via UploadThing.",
+      "Secure custom JWT-based user authentication system.",
+      "Modern, responsive UI with Tailwind CSS v4, ShadCN UI, and Light/Dark modes.",
+      "SEO optimized with SSR, dynamic sitemaps, and JSON-LD structured data for rich search results."
+    ],
+    "techStack": [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Convex",
+      "Tailwind CSS",
+      "Plate.js",
+      "UploadThing",
+      "Vercel AI SDK",
+      "Google Gemini",
+      "JWT"
+    ],
+    "githubStats": { "stars": 0, "forks": 0 }
+  },
+  {
     "id": 525828811,
     "name": "MyPortfolio",
     "description": "My personal portfolio website showcasing my skills, projects, and professional journey, built with TypeScript and modern web technologies.",
@@ -147,7 +176,6 @@
     "description": "On-demand AI image generation using Next.js, TypeScript, and the Fal.ai API (Flux Model) for efficient backend processing.",
     "repoUrl": "https://github.com/Utsav173/fal-flux-generation",
     "liveUrl": "https://fal-flux-generation.vercel.app",
-    "imageUrl": "/images/projects/flux-image.webp",
     "projectType": "AI Tool",
     "keyFeatures": [
       "On-demand AI image generation",
