@@ -140,15 +140,14 @@
   },
   {
     "id": 657660151,
-    "name": "MDX Blog & IPO Tracker",
-    "description": "Performance-centric Next.js blog with MDX & SSG. Features a dynamic dashboard for IPO Grey Market Premiums.",
+    "name": "MDX Personal Blog",
+    "description": "Performance-centric Next.js blog with MDX & SSG.",
     "repoUrl": "https://github.com/Utsav173/blog-sync",
     "liveUrl": "https://blog-sync.vercel.app",
     "imageUrl": "/images/projects/blog-sync.webp",
     "projectType": "Web App",
     "keyFeatures": [
       "Performance-centric blog using MDX and SSG",
-      "Dynamic IPO dashboard with data scraping",
       "Built with Next.js and TypeScript"
     ],
     "techStack": ["Next.js", "TypeScript", "MDX", "Tailwind CSS", "Data Scraping", "React"],
@@ -156,14 +155,14 @@
   },
   {
     "id": 952619337,
-    "name": "AI Business Card Generator",
-    "description": "Generate professional business card designs using AI. Features various templates and customization options.",
+    "name": "AI Card Generator",
+    "description": "Generate professional birthday and greeting card designs using AI. Features various templates and customization options.",
     "repoUrl": "https://github.com/Utsav173/ai-card-gen",
     "liveUrl": "https://ai-card-maker.vercel.app/",
     "imageUrl": "/images/projects/ai-card-maker.webp",
     "projectType": "AI Tool",
     "keyFeatures": [
-      "AI-powered business card generation",
+      "AI-powered card generation",
       "Multiple design templates and customizations",
       "Built as a SaaS tool with Next.js"
     ],
@@ -422,40 +421,6 @@
       "Tailwind CSS",
       "NextAuth.js",
       "React"
-    ],
-    "githubStats": { "stars": 0, "forks": 0 }
-  },
-  {
-    "id": 582538018,
-    "name": "Codex - ChatGPT Clone",
-    "description": "A web application mimicking the conversational AI capabilities of ChatGPT, named Codex, using an AI API.",
-    "repoUrl": "https://github.com/Utsav173/codex_chatgptclone",
-    "liveUrl": "codex-chatgptclone.vercel.app",
-    "projectType": "AI Tool",
-    "keyFeatures": [
-      "Conversational AI chat interface",
-      "Clone of ChatGPT functionality",
-      "Integrates with an AI API"
-    ],
-    "techStack": ["JavaScript", "HTML", "CSS", "OpenAI API (or similar)"],
-    "githubStats": { "stars": 0, "forks": 0 }
-  },
-  {
-    "id": 562880692,
-    "name": "DALL-E 2 API Example",
-    "description": "A demonstration project showcasing integration with the DALL-E 2 API for AI image generation using JavaScript.",
-    "repoUrl": "https://github.com/Utsav173/Dalle-2-example",
-    "projectType": "Code Example",
-    "keyFeatures": [
-      "Demonstrates DALL-E 2 API integration",
-      "AI image generation",
-      "Simple JavaScript implementation"
-    ],
-    "techStack": [
-      "JavaScript",
-      "Node.js (for backend API call)",
-      "OpenAI API",
-      "HTML (for frontend)"
     ],
     "githubStats": { "stars": 0, "forks": 0 }
   }

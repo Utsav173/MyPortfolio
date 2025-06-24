@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, memo, use } from 'react';
+import React, { useMemo, memo } from 'react';
 import { useTheme } from 'next-themes';
 import { motion, useReducedMotion, Variants } from 'motion/react';
 import {
@@ -56,6 +56,9 @@ const skillsData: SkillCategoryData[] = [
         fallbackIcon: LayoutPanelLeft,
       },
       { name: 'Material-UI', iconifyString: 'logos:material-ui' },
+      { name: 'Chkra UI', iconifyString: 'devicon:chakraui' },
+      { name: 'Radix UI', iconifyString: 'simple-icons:radixui' },
+      { name: 'SCSS', iconifyString: 'vscode-icons:file-type-scss' },
     ],
   },
   {
@@ -92,7 +95,9 @@ const skillsData: SkillCategoryData[] = [
       { name: 'PostgreSQL', iconifyString: 'logos:postgresql' },
       { name: 'MongoDB', iconifyString: 'logos:mongodb-icon' },
       { name: 'MySQL', iconifyString: 'logos:mysql' },
+      { name: 'Convex', iconifyString: 'solar:database-bold' },
       { name: 'Redis', iconifyString: 'logos:redis' },
+      { name: 'Firebase', iconifyString: 'vscode-icons:file-type-firebase' },
       {
         name: 'Drizzle ORM',
         iconifyString: 'simple-icons:drizzle',
@@ -105,10 +110,9 @@ const skillsData: SkillCategoryData[] = [
     category: 'Cloud & DevOps',
     categoryIcon: Cloud,
     skills: [
-      { name: 'AWS', iconifyString: 'logos:aws' },
-      { name: 'Google Cloud (GCP)', iconifyString: 'logos:google-cloud' },
       { name: 'Cloudflare', iconifyString: 'logos:cloudflare-icon' },
       { name: 'Vercel', iconifyString: 'ion:logo-vercel' },
+      { name: 'AWS', iconifyString: 'logos:aws' },
       { name: 'Netlify', iconifyString: 'logos:netlify-icon' },
       { name: 'CI/CD (GitHub Actions)', iconifyString: 'logos:github-actions' },
       { name: 'Docker', iconifyString: 'logos:docker-icon' },
@@ -161,6 +165,11 @@ const skillsData: SkillCategoryData[] = [
         fallbackIcon: Users,
       },
       { name: 'TDD', iconifyString: 'mdi:test-tube', fallbackIcon: ListChecks },
+      { name: 'Photoshop', iconifyString: 'logos:adobe-photoshop' },
+      { name: 'Canva', iconifyString: 'devicon:canva' },
+      { name: 'Illustrator', iconifyString: 'logos:adobe-illustrator' },
+      { name: 'Filmora', iconifyString: 'simple-icons:wondersharefilmora' },
+      { name: 'Notion', iconifyString: 'logos:notion-icon' },
     ],
   },
 ];

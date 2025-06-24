@@ -298,4 +298,10 @@ export const TECH_STACK_DETAILS: TechDetails = {
     darkmodecolor: '#FFFFFF',
     name: 'Webpack',
   },
+  'Radix UI': {
+    icon: 'simple-icons:radixui',
+    color: '#000000',
+    darkmodecolor: '#FFFFFF',
+    name: 'Radix UI',
+  },
 };
