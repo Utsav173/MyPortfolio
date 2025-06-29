@@ -94,7 +94,7 @@
     "name": "Expense Tracker Pro",
     "description": "AI-enhanced finance management with intelligent expense categorization, secure JWT auth, and Recharts data visualization.",
     "repoUrl": "https://github.com/Utsav173/expense-tracker",
-    "liveUrl": "http://pro-expense.vercel.app/",
+    "liveUrl": "https://expense-pro.vercel.app/",
     "imageUrl": "/images/projects/expense-pro.webp",
     "projectType": "Full-Stack Web App",
     "keyFeatures": [
