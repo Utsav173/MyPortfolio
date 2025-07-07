@@ -75,8 +75,8 @@ extend({
   SplashParticleShaderMaterial,
 });
 
-const PROGRAMMATIC_CHARS_STR = '0123456789ABCDEF!@#$%^&*()_+-=[]{};\':"\\|,.<>/?~';
-const SANSKRIT_CHARS_STR = 'अआइईउऊऋएऐओऔकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह';
+const PROGRAMMATIC_CHARS_STR = '0123456789ABCDEF!@#$%^&*()_+-=[]{};\':"\\|,.<>/?~ΣΠΔΩμλβ±≠≤≥∞∴¥€£';
+const SANSKRIT_CHARS_STR = 'अआइईउऊऋएऐओऔकखगघचछजझटठडढणतथदधनपफबभमयरलवशषसहઅઆઇકખગજઝટઠડદધનપફબમયરલવસહ';
 const GLYPH_CHARS = (PROGRAMMATIC_CHARS_STR + SANSKRIT_CHARS_STR).split('');
 const CHARS_PER_ROW = 10;
 const CHAR_TEXTURE_SIZE = 64;
@@ -376,19 +376,21 @@ interface SplashParticleData {
   color: THREE.Color;
 }
 type TriggerSplashFn = (position: THREE.Vector3) => void;
+
 const SplashParticleSystemR3F: React.FC<{
   config: ParsedSceneConfig['splashParticles'];
-  rainBloomConfig: ParsedSceneConfig['rain']['bloomIntensity'];
   atlasData: AtlasData;
   triggerRef: React.MutableRefObject<TriggerSplashFn | null>;
-}> = React.memo(({ config, rainBloomConfig, atlasData, triggerRef }) => {
+}> = React.memo(({ config, atlasData, triggerRef }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
   const particles = useRef<SplashParticleData[]>([]).current;
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const { splashCharMap } = atlasData;
+
   const splashBaseRenderColor = useMemo(() => {
-    return config.splashColor.clone().multiplyScalar(rainBloomConfig.splash ?? 1.0);
-  }, [config.splashColor, rainBloomConfig.splash]);
+    return config.splashColor.clone();
+  }, [config.splashColor]);
+
   useEffect(() => {
     if (!config.enabled) return;
     particles.length = 0;
@@ -414,6 +416,7 @@ const SplashParticleSystemR3F: React.FC<{
     config.enabled,
     particles,
   ]);
+
   triggerRef.current = useCallback(
     (impactPosition: THREE.Vector3) => {
       if (!config.enabled) return;
@@ -504,6 +507,7 @@ const SplashParticleSystemR3F: React.FC<{
   );
 });
 SplashParticleSystemR3F.displayName = 'SplashParticleSystemR3F';
+
 const RainEffectComponentR3F: React.FC<{
   rainConfig: ParsedSceneConfig['rain'];
   planeSize: number;
@@ -522,25 +526,26 @@ const RainEffectComponentR3F: React.FC<{
       r.far = (rainConfig.yTop - rainConfig.yBottom) * 1.5;
       return r;
     }, [rainConfig.yTop, rainConfig.yBottom]);
+
     const { currentLeadColor, currentTrailColorBase } = useMemo(() => {
-      const leadBloom = rainConfig.bloomIntensity?.lead ?? 1.0;
-      const trailBloom = rainConfig.bloomIntensity?.trail ?? 1.0;
       return {
-        currentLeadColor: (themeAdjust === 0
-          ? rainConfig.leadColorDark.clone()
-          : rainConfig.leadColorLight.clone()
-        ).multiplyScalar(leadBloom),
-        currentTrailColorBase: (themeAdjust === 0
-          ? rainConfig.trailColorBaseDark.clone()
-          : rainConfig.trailColorBaseLight.clone()
-        ).multiplyScalar(trailBloom),
+        currentLeadColor: themeAdjust === 0 ? rainConfig.leadColorDark : rainConfig.leadColorLight,
+        currentTrailColorBase:
+          themeAdjust === 0 ? rainConfig.trailColorBaseDark : rainConfig.trailColorBaseLight,
       };
     }, [themeAdjust, rainConfig]);
+
     const defaultCharMap = atlasData.defaultCharMap;
     const { width: screenWidth } = useThree((state) => state.size);
     const isMobile = useMemo(() => screenWidth < 768, [screenWidth]);
+    const isLightMode = themeAdjust === 1;
     const streamCount = useMemo(
-      () => (isMobile ? rainConfig.streamCountMobile : rainConfig.streamCountDesktop),
+      () =>
+        isMobile
+          ? rainConfig.streamCountMobile
+          : isLightMode && rainConfig.streamCountDesktopLight
+            ? rainConfig.streamCountDesktopLight
+            : rainConfig.streamCountDesktop,
       [isMobile, rainConfig]
     );
     const streamLength = useMemo(
@@ -552,8 +557,10 @@ const RainEffectComponentR3F: React.FC<{
     const zSpreadFactor = useMemo(() => (isMobile ? 0.25 : 0.35), [isMobile]);
     const getTrailColor = useCallback(
       (idx: number, len: number, base: THREE.Color): THREE.Color => {
-        const f = Math.max(0.35, 1 - (idx / len) * 0.6);
-        return base.clone().multiplyScalar(f);
+        const baseFade = 1 - idx / len;
+        const fade = Math.pow(baseFade, 1.5) * 0.85;
+        const randomJitter = 1.0 - Math.random() * 0.15;
+        return base.clone().multiplyScalar(fade * randomJitter);
       },
       []
     );
@@ -850,7 +857,6 @@ const SceneContent: React.FC<{
       {atlasData && parsedActiveCfg.splashParticles.enabled && (
         <SplashParticleSystemR3F
           config={parsedActiveCfg.splashParticles}
-          rainBloomConfig={parsedActiveCfg.rain.bloomIntensity}
           atlasData={atlasData}
           triggerRef={triggerSplashRef}
         />
@@ -890,6 +896,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ currentTheme, cameraControls, d
       currentTheme === 'dark' ? 'dark' : 'light'
     );
   }, [dynamicConfig, currentTheme]);
+
   const bloomConfig = parsedActiveCfg.effects.bloom;
 
   return (

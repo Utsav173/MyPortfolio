@@ -304,4 +304,16 @@ export const TECH_STACK_DETAILS: TechDetails = {
     darkmodecolor: '#FFFFFF',
     name: 'Radix UI',
   },
+  ffmpeg: {
+    icon: 'logos:ffmpeg-icon',
+    color: '#000000',
+    darkmodecolor: '#FFFFFF',
+    name: 'FFmpeg',
+  },
+  streaming: {
+    icon: 'fluent-mdl2:streaming',
+    color: '#000000',
+    darkmodecolor: '#FFFFFF',
+    name: 'Streaming',
+  },
 };

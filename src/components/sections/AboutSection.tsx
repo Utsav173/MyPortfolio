@@ -29,7 +29,7 @@ const AboutSectionComponent = ({ className, id }: { className?: string; id?: str
   return (
     <motion.section
       id={id}
-      className={cn('bg-transparent py-20 md:py-28 lg:py-32', className)}
+      className={cn('bg-transparent min-h-dvh py-20 md:py-28 lg:py-32', className)}
       variants={shouldReduceMotion ? undefined : sectionVariants}
       initial={shouldReduceMotion ? undefined : 'hidden'}
       whileInView={shouldReduceMotion ? undefined : 'visible'}
@@ -60,10 +60,10 @@ const AboutSectionComponent = ({ className, id }: { className?: string; id?: str
               <Image
                 src="/images/utsav-khatri.webp"
                 alt="Professional headshot of Utsav Khatri, Full Stack Developer"
-                width={450}
-                height={450}
+                width={375}
+                height={375}
                 className="aspect-square w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                sizes="(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 450px"
+                sizes="(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 375px"
                 priority
               />
             </motion.div>

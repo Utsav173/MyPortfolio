@@ -37,8 +37,8 @@ export function Navbar({ className, activeSection }: NavbarProps) {
         className={cn(
           'flex h-12 items-center justify-between gap-2 px-2.5 sm:h-[52px] sm:gap-4 sm:px-4',
           'w-full h-full rounded-full',
-          'bg-background/80 backdrop-blur-xl',
-          'dark:bg-card/50'
+          'bg-background/20 backdrop-blur-xl',
+          'dark:bg-card/10'
         )}
       >
         <Logo className="h-6 shrink-0 sm:h-auto" />

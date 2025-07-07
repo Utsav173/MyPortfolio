@@ -185,6 +185,32 @@
     "githubStats": { "stars": 0, "forks": 0 }
   },
   {
+    "id": 905732192,
+    "name": "Video Streaming Project",
+    "description": "A full-featured video streaming service built with modern web technologies, supporting on-demand video playback, user authentication, and scalable backend.",
+    "repoUrl": "https://github.com/Utsav173/video-streaming-project",
+    "liveUrl": null,
+    "imageUrl": null,
+    "projectType": "Full-Stack Web App",
+    "keyFeatures": [
+      "Live and on-demand video streaming",
+      "Scalable backend for video processing and delivery",
+      "Responsive UI for web and mobile devices"
+    ],
+    "techStack": [
+      "ffmpeg",
+      "streaming",
+      "Bun",
+      "Node.js",
+      "Hono.js",
+      "Next.js",
+      "TypeScript",
+      "React",
+      "Tailwind CSS"
+    ],
+    "githubStats": { "stars": 0, "forks": 0 }
+  },
+  {
     "id": 922044978,
     "name": "Cloudflare PDF Parser",
     "description": "A serverless Cloudflare Worker designed for parsing PDF statements and extracting structured JSON data efficiently.",
