@@ -25,10 +25,10 @@ export function Navbar({ className, activeSection }: NavbarProps) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1], delay: 0.3 }}
       className={cn(
-        'fixed top-3 left-1/2 z-50 w-[calc(100%-1.5rem)] -translate-x-1/2 sm:top-4 sm:w-auto',
-        'rounded-full p-px shadow-lg',
-        'bg-border',
-        'dark:shadow-none dark:bg-gradient-to-b dark:from-border dark:to-card',
+        'fixed top-3 left-1/2 z-50 w-[calc(100%-1.5rem)] -translate-x-1/2 sm:top-4 sm:w-auto flex items-center justify-between gap-2 ',
+        'rounded-full p-px shadow-lg backdrop-blur-sm',
+        'bg-gradient-to-b from-background/20 to-border/10',
+        'dark:shadow-none dark:bg-gradient-to-b dark:from-border/20 dark:to-card/20',
         className
       )}
       role="banner"
@@ -36,9 +36,7 @@ export function Navbar({ className, activeSection }: NavbarProps) {
       <div
         className={cn(
           'flex h-12 items-center justify-between gap-2 px-2.5 sm:h-[52px] sm:gap-4 sm:px-4',
-          'w-full h-full rounded-full',
-          'bg-background/20 backdrop-blur-xl',
-          'dark:bg-card/10'
+          'w-full h-full rounded-full'
         )}
       >
         <Logo className="h-6 shrink-0 sm:h-auto" />
