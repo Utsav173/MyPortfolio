@@ -26,16 +26,26 @@ const getTechDetails = (techName: string) => {
 
 const experiencesData = [
   {
-    role: 'Web Developer',
     company: 'Zignuts Technolab, Gujarat, India',
-    duration: 'January 2023 - Present',
+    roles: [
+      {
+        title: 'Software Development Engineer',
+        duration: 'August 2025 - Present',
+      },
+      {
+        title: 'Web Developer',
+        duration: 'January 2023 - July 2025',
+      },
+    ],
     responsibilities: [
       'Spearheaded development of critical project components, demonstrating advanced technical leadership.',
       'Engineered robust RESTful APIs using Node.js, Express.js, and PostgreSQL, improving response times via strategic query optimization and Redis caching.',
       'Developed highly scalable backend services and microservices, ensuring efficient processing of substantial daily data transactions.',
       'Led end-to-end design of complex, intuitive UIs with React.js, Redux, and Material-UI, enhancing user engagement and conversion.',
       'Integrated comprehensive security modules, including JWT-based authentication and Role-Based Access Control (RBAC).',
-      'Mentored junior developers and championed CI/CD pipeline improvements (GitHub Actions, Jenkins).',
+      'Mentoring and guiding junior engineers, fostering a culture of technical excellence.',
+      'Driving the adoption of new technologies and best practices to enhance product quality and development efficiency.',
+      'Collaborating with cross-functional teams to define, design, and ship new features.',
     ],
     keyProjects: [
       {
@@ -160,15 +170,19 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
                   <Briefcase className="size-3 sm:size-3.5 md:size-4 text-primary-foreground" />
                 </motion.div>
                 <div className="ml-1 sm:ml-2">
-                  <p className="text-xs text-muted-foreground mb-1 sm:mb-1.5 font-mono tracking-wide">
-                    {exp.duration}
-                  </p>
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground mb-0.5 sm:mb-1">
-                    {exp.role}
-                  </h3>
                   <p className="text-primary font-medium text-sm sm:text-base md:text-lg mb-3 sm:mb-4">
                     {exp.company}
                   </p>
+                  {exp.roles.map((role, roleIndex) => (
+                    <div key={roleIndex} className="mb-4">
+                      <p className="text-xs text-muted-foreground mb-1 sm:mb-1.5 font-mono tracking-wide">
+                        {role.duration}
+                      </p>
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground mb-0.5 sm:mb-1">
+                        {role.title}
+                      </h3>
+                    </div>
+                  ))}
                   <ul className="list-disc list-outside ml-4 sm:ml-5 space-y-1.5 sm:space-y-2 text-muted-foreground mb-4 sm:mb-6 text-[0.85rem] sm:text-[0.9rem] md:text-[0.95rem] leading-relaxed">
                     {exp.responsibilities.map((resp, i) => (
                       <li key={i}>{resp}</li>

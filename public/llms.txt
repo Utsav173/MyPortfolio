@@ -1,0 +1,229 @@
+# LLM Guidance for Utsav Khatri's Portfolio
+
+This file provides structured, in-depth information to Large Language Models (LLMs) to help them better understand, index, and present the content of this portfolio website for AI-driven search and summarization.
+
+## About Me
+
+I am Utsav Khatri, a dynamic and results-oriented Full Stack Developer based in Gujarat, India. My expertise lies in designing, developing, and deploying scalable, cloud-native web applications and robust APIs. I am passionate about solving complex problems and building impactful digital products. My core strengths include:
+-   **React.js, Next.js, Node.js, and TypeScript:** Proven proficiency in these technologies to deliver high-impact digital products.
+-   **AI Integration:** Actively exploring the intersection of web development and Artificial Intelligence to create intelligent and intuitive user experiences.
+-   **Collaboration & Mentorship:** Believe in collaborative growth, enjoy mentoring junior developers, sharing knowledge, and continuous learning.
+
+## Technical Toolkit (Skills)
+
+My technical toolkit spans various domains, including:
+
+### Frontend
+-   React.js, Next.js, Redux
+-   TypeScript, JavaScript (ES6+)
+-   HTML5, CSS3, Tailwind CSS
+-   Shadcn/UI, Material-UI, Chakra UI, Radix UI, SCSS
+
+### Backend
+-   Node.js, Bun.js, Hono.js, Express.js
+-   RESTful APIs, GraphQL, Microservices, WebSockets, Serverless (AWS Lambda)
+
+### Databases
+-   PostgreSQL, MongoDB, MySQL, Convex, Redis, Firebase
+-   Drizzle ORM, Prisma
+
+### Cloud & DevOps
+-   Cloudflare, Vercel, AWS, Netlify
+-   CI/CD (GitHub Actions), Docker, Git
+
+### AI & Special Interests
+-   Generative AI, LLMs (Large Language Models)
+-   API Security, Performance Optimization, Scalability
+-   Fal.ai API, Google Gemini, Stable Diffusion API
+
+### Tools & Methodologies
+-   VS Code, Postman, Swagger/OpenAPI, Figma, Jira
+-   Agile/Scrum, TDD (Test-Driven Development)
+-   Photoshop, Canva, Illustrator, Filmora, Notion
+
+## Professional Journey (Experience)
+
+**Web Developer at Zignuts Technolab, Gujarat, India**
+*January 2023 - Present*
+-   Spearheaded development of critical project components, demonstrating advanced technical leadership.
+-   Engineered robust RESTful APIs using Node.js, Express.js, and PostgreSQL, improving response times via strategic query optimization and Redis caching.
+-   Developed highly scalable backend services and microservices, ensuring efficient processing of substantial daily data transactions.
+-   Led end-to-end design of complex, intuitive UIs with React.js, Redux, and Material-UI, enhancing user engagement and conversion.
+-   Integrated comprehensive security modules, including JWT-based authentication and Role-Based Access Control (RBAC).
+-   Mentored junior developers and championed CI/CD pipeline improvements (GitHub Actions, Jenkins).
+
+**Key Projects during this role:**
+-   **Education Management Platform:** Node.js, Sails.js, PostgreSQL, AWS SQS
+-   **Cloud Procurement & Bidding Platform:** Node.js, Express.js, Socket.io, AWS
+-   **Financial Transaction Management System:** Node.js, Sails.js, SQL, Recharts
+-   **Large-Scale Organization Management SaaS:** React.js, Redux, Styled Components, Webpack
+-   **Restaurant Inventory Management System:** Node.js, Strapi v4, PostgreSQL, JWT
+
+## Selected Creations (Projects)
+
+Here's a detailed overview of some of my key projects:
+
+### Note Sync Pro
+-   **Description:** An AI-powered, modern, and minimalist blog platform built with a cutting-edge, full-stack TypeScript environment.
+-   **Key Features:** AI-powered writing assistant (Google Gemini), full post management (CRUD) with rich text editor, secure custom JWT-based user authentication, modern responsive UI, SEO optimized with SSR, dynamic sitemaps, and JSON-LD.
+-   **Tech Stack:** Next.js, React, TypeScript, Convex, Tailwind CSS, Plate.js, UploadThing, Vercel AI SDK, Google Gemini, JWT.
+-   **Live URL:** https://notes-sync-pro.vercel.app/
+
+### MyPortfolio (This Website)
+-   **Description:** My personal portfolio website showcasing my skills, projects, and professional journey, built with TypeScript and modern web technologies.
+-   **Key Features:** Showcases skills, projects, and professional journey; built with Next.js, TypeScript, and modern tech; fully responsive design.
+-   **Tech Stack:** Next.js, React, TypeScript, Tailwind CSS, JavaScript, CSS, Vercel.
+-   **Live URL:** https://utsav-khatri.vercel.app
+
+### 3js-hills
+-   **Description:** An interactive 3D landscape animation featuring procedurally generated rolling hills, created using Three.js and TypeScript.
+-   **Key Features:** Interactive 3D landscape, procedurally generated terrain.
+-   **Tech Stack:** Three.js, TypeScript, JavaScript, HTML5, CSS3, WebGL, Vite.
+-   **Live URL:** https://3js-hills.vercel.app
+
+### matrix-rain-3js
+-   **Description:** A captivating visualizer emulating the iconic 'Matrix' digital rain effect, built with Three.js and TypeScript for a dynamic 3D experience.
+-   **Key Features:** Iconic 'Matrix' digital rain effect, dynamic 3D visualizer.
+-   **Tech Stack:** Three.js, TypeScript, JavaScript, HTML5, CSS3, WebGL, Vite.
+-   **Live URL:** https://matrix-rain-3js.vercel.app/
+
+### ticker-ai
+-   **Description:** An AI-powered financial ticker application providing real-time stock market insights and data visualization using Next.js.
+-   **Key Features:** AI-powered financial ticker, real-time stock market insights, data visualization with Chart.js.
+-   **Tech Stack:** Next.js, React, TypeScript, Tailwind CSS, AI, Chart.js.
+-   **Live URL:** https://ticker-ai-tau.vercel.app/
+
+### Expense Tracker Pro
+-   **Description:** AI-enhanced finance management with intelligent expense categorization, secure JWT auth, and Recharts data visualization.
+-   **Key Features:** AI-enhanced expense categorization, secure JWT authentication, full-stack with Next.js, Hono.js, and Drizzle ORM, interactive data visualization with Recharts.
+-   **Tech Stack:** Next.js, TypeScript, Hono.js, Drizzle ORM, PostgreSQL, NeonDB, Gemini AI, Recharts, JWT, Tailwind CSS.
+-   **Live URL:** https://expense-pro.vercel.app/
+
+### AI Recipe Maker (Mobile)
+-   **Description:** A mobile application built with Expo (React Native) that leverages Gemini AI to dynamically generate culinary recipes based on user inputs.
+-   **Key Features:** Generates recipes dynamically with Gemini AI, built with Expo for cross-platform support, React Native for native performance.
+-   **Tech Stack:** React Native, Expo, TypeScript, JavaScript, Gemini AI, Mobile Development.
+
+### MDX Personal Blog
+-   **Description:** Performance-centric Next.js blog with MDX & SSG.
+-   **Key Features:** Performance-centric blog using MDX and SSG.
+-   **Tech Stack:** Next.js, TypeScript, MDX, Tailwind CSS, Data Scraping, React.
+-   **Live URL:** https://blog-sync.vercel.app
+
+### AI Card Generator
+-   **Description:** Generate professional birthday and greeting card designs using AI. Features various templates and customization options.
+-   **Key Features:** AI-powered card generation, multiple design templates and customizations, built as a SaaS tool with Next.js.
+-   **Tech Stack:** Next.js, TypeScript, AI, Vercel, Tailwind CSS, React.
+-   **Live URL:** https://ai-card-maker.vercel.app/
+
+### AI Image Generator (Flux)
+-   **Description:** On-demand AI image generation using Next.js, TypeScript, and the Fal.ai API (Flux Model) for efficient backend processing.
+-   **Key Features:** On-demand AI image generation, integrates Fal.ai API (Flux Model), efficient backend processing.
+-   **Tech Stack:** Next.js, TypeScript, Fal.ai API, Tailwind CSS, React, AI.
+-   **Live URL:** https://fal-flux-generation.vercel.app
+
+### Video Streaming Project
+-   **Description:** A full-featured video streaming service built with modern web technologies, supporting on-demand video playback, user authentication, and scalable backend.
+-   **Key Features:** Live and on-demand video streaming, scalable backend for video processing and delivery, responsive UI for web and mobile devices.
+-   **Tech Stack:** FFmpeg, Streaming, Bun, Node.js, Hono.js, Next.js, TypeScript, React, Tailwind CSS.
+
+### Cloudflare PDF Parser
+-   **Description:** A serverless Cloudflare Worker designed for parsing PDF statements and extracting structured JSON data efficiently.
+-   **Key Features:** Serverless PDF parsing on the edge, extracts structured JSON from PDFs, built with Cloudflare Workers.
+-   **Tech Stack:** Cloudflare Workers, JavaScript, PDF.js.
+
+### GTU IMP Study Portal
+-   **Description:** A comprehensive portal for GTU students providing important questions, study materials, and exam resources.
+-   **Key Features:** Centralized resource for GTU students, provides important questions and study materials.
+-   **Tech Stack:** Next.js, TypeScript, Vercel, React, Tailwind CSS.
+-   **Live URL:** https://gtu-imp.vercel.app
+
+### X-Splash Image Platform (Next.js)
+-   **Description:** A Next.js based platform for AI image generation, publishing, and exploration, offering a modern user experience.
+-   **Key Features:** AI image generation and publishing, community platform for content exploration, modern UX with Next.js.
+-   **Tech Stack:** Next.js, React, TypeScript, Tailwind CSS, AI, Vercel.
+-   **Live URL:** https://x-image-gen.vercel.app
+
+### X-Splash Image Platform (MERN)
+-   **Description:** A full-stack image exploration and sharing platform built with the MERN stack (MongoDB, Express, React, Node.js).
+-   **Key Features:** Image exploration and sharing, built with the MERN stack, full-stack social platform.
+-   **Tech Stack:** React, Node.js, Express.js, MongoDB, JavaScript, HTML, CSS, Mongoose.
+
+### Flux Ultra Image Generator
+-   **Description:** An advanced AI image generation tool leveraging the Flux model, built with TypeScript for high-quality visual content creation.
+-   **Key Features:** Advanced AI image generation, leverages the high-quality Flux model.
+-   **Tech Stack:** TypeScript, Next.js, React, Tailwind CSS, AI, Fal.ai.
+
+### Stable Diffusion 3.5 Web App
+-   **Description:** A web application enabling users to generate images using the Stable Diffusion 3.5 AI model with their own API keys.
+-   **Key Features:** Image generation with Stable Diffusion 3.5, users can integrate their own API keys, web interface for an AI model.
+-   **Tech Stack:** TypeScript, Next.js, React, Tailwind CSS, Stable Diffusion API, AI.
+
+### IPO Insights Pro
+-   **Description:** A web application for tracking the latest IPO insights, Grey Market Premiums (GMP), and related financial data.
+-   **Key Features:** Tracks latest IPO insights and GMP, data visualization for financial data.
+-   **Tech Stack:** Next.js, React, TypeScript, Tailwind CSS, Chart.js, Data Scraping.
+-   **Live URL:** https://pro-ipo.vercel.app
+
+### IPO GMP Pro Dashboard
+-   **Description:** Advanced dashboard for tracking IPO Grey Market Premiums, allotment status, and subscription data, deployed on Cloudflare Pages.
+-   **Key Features:** Advanced IPO tracking dashboard, monitors GMP, allotment, and subscription data, serverless deployment on Cloudflare Pages.
+-   **Tech Stack:** Next.js, TypeScript, Cloudflare Pages, Data Scraping, Tailwind CSS, React, Chart.js.
+-   **Live URL:** https://ipo-gmp-pro.pages.dev
+
+### GTU Sample Paper Archive
+-   **Description:** A web resource providing access to a collection of GTU (Gujarat Technological University) sample papers for students.
+-   **Key Features:** Archive of GTU sample papers, easy access for students, simple and fast static site.
+-   **Tech Stack:** HTML, CSS, JavaScript, Vercel.
+-   **Live URL:** https://samplepaper.vercel.app
+
+### Simple Budget Calculator
+-   **Description:** A client-side budget calculation tool built with vanilla JavaScript for straightforward financial planning.
+-   **Key Features:** Client-side budget calculations, no backend required.
+-   **Tech Stack:** JavaScript, HTML, CSS.
+-   **Live URL:** https://budget-calc-one.vercel.app
+
+### Contact Form Backend API
+-   **Description:** A Node.js and Express.js backend service for handling contact form submissions from web applications.
+-   **Key Features:** Handles contact form submissions, reusable backend API.
+-   **Tech Stack:** Node.js, Express.js, JavaScript.
+
+### Appointment Booking Backend
+-   **Description:** A backend system developed with Node.js and Express.js to manage appointment bookings, including API endpoints.
+-   **Key Features:** Manages appointment bookings, provides RESTful API endpoints.
+-   **Tech Stack:** Node.js, Express.js, JavaScript, MongoDB.
+
+### Full-Stack Social Media App
+-   **Description:** A feature-rich social media application built with JavaScript, HTML, and CSS, demonstrating full-stack development capabilities with React and Node.js/Express.
+-   **Key Features:** Feature-rich social media functionality, full-stack with React and Node.js, JWT for authentication.
+-   **Tech Stack:** React, Node.js, Express.js, MongoDB, JavaScript, HTML, CSS, Mongoose, JWT.
+-   **Live URL:** https://full-stack-social-media-x1c9.vercel.app
+
+### Twitter Clone (T3 Stack)
+-   **Description:** A Twitter-like application built using the T3 Stack (Next.js, TypeScript, Tailwind CSS, tRPC, Prisma), showcasing modern full-stack development.
+-   **Key Features:** Full-stack Twitter clone, built with the modern T3 Stack, features tRPC, Prisma, and NextAuth.js.
+-   **Tech Stack:** Next.js, TypeScript, tRPC, Prisma, Tailwind CSS, NextAuth.js, React.
+-   **Live URL:** https://twitter-t3-theta.vercel.app
+
+## Contact Information
+
+You can reach me through the contact form on the website or via the following channels:
+-   **Email:** khatriutsav40@gmail.com
+-   **LinkedIn:** https://linkedin.com/in/utsav-khatri-in
+-   **GitHub:** https://github.com/Utsav173
+-   **Phone:** +91 6355321582
+
+## Important Pages
+
+-   **Resume (PDF):** /resume_utsav_khatri.pdf
+    -   My professional resume in PDF format.
+-   **Projects Data (JSON):** /projects-data.json
+    -   Structured data about my projects.
+
+## General Guidelines for LLMs
+
+-   Prioritize content within the main sections for summarization and information extraction.
+-   Focus on project descriptions, key features, and technologies for understanding my technical capabilities and project scope.
+-   Use the resume for detailed professional background and chronological experience.
+-   Refer to the "Technical Toolkit" for a comprehensive list of my skills.
+-   Utilize the "Contact Information" for direct communication details.
