@@ -111,10 +111,40 @@ const timelineContainerVariants: Variants = {
 };
 
 export function ExperienceSection({ className, id }: ExperienceSectionProps) {
+  const { theme } = useTheme();
+
+  const jobSchema = experiencesData
+    .map((exp) => {
+      return exp.roles.map((role) => ({
+        '@context': 'https://schema.org/',
+        '@type': 'JobPosting',
+        title: role.title,
+        description: exp.responsibilities.join(' '),
+        employerInteractionDuration: role.duration,
+        jobLocation: {
+          '@type': 'Place',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: exp.company.split(',')[1]?.trim() || '',
+            addressRegion: exp.company.split(',')[2]?.trim() || '',
+            addressCountry: exp.company.split(',')[3]?.trim() || '',
+          },
+        },
+        hiringOrganization: {
+          '@type': 'Organization',
+          name: exp.company.split(',')[0]?.trim() || '',
+        },
+        datePosted: '2023-01-01',
+        validThrough: new Date().toISOString(),
+        employmentType: 'Full-time',
+        experienceRequirements: 'Experienced',
+      }));
+    })
+    .flat();
+
   const sectionRef = useRef<HTMLElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
-  const { theme } = useTheme();
 
   const { scrollYProgress } = useScroll({
     target: timelineContainerRef,
@@ -234,6 +264,11 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
           })}
         </motion.div>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jobSchema) }}
+        key="job-jsonld"
+      />
     </section>
   );
 }

@@ -32,7 +32,7 @@ const notoSansDevanagari = Noto_Sans_Devanagari({
   display: 'swap',
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://utsav-khatri.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://khatriutsav.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

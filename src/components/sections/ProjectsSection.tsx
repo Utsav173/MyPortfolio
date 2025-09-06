@@ -73,6 +73,28 @@ export function ProjectsSection({ className, id, initialProjects }: ProjectsSect
 
   const canShowMore = displayedCount < filteredProjects.length;
 
+  const projectSchema = initialProjects.map((project) => {
+    const url = project.liveUrl || project.repoUrl;
+    const schema: any = {
+      '@context': 'https://schema.org/',
+      '@type': 'CreativeWorkSeries',
+      name: project.name,
+      description: project.description,
+      image: project.imageUrl,
+      keywords: project.techStack?.join(', '),
+      creator: {
+        '@type': 'Person',
+        name: 'Utsav Khatri',
+      },
+    };
+
+    if (url) {
+      schema.url = url;
+    }
+
+    return schema;
+  });
+
   return (
     <section id={id} className={cn('py-20 md:py-28', className)} ref={containerRef}>
       <div className="container mx-auto px-4">
@@ -135,6 +157,11 @@ export function ProjectsSection({ className, id, initialProjects }: ProjectsSect
           </div>
         )}
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
+        key="project-jsonld"
+      />
     </section>
   );
 }
