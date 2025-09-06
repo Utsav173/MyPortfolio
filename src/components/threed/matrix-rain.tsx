@@ -546,7 +546,7 @@ const RainEffectComponentR3F: React.FC<{
           : isLightMode && rainConfig.streamCountDesktopLight
             ? rainConfig.streamCountDesktopLight
             : rainConfig.streamCountDesktop,
-      [isMobile, rainConfig]
+      [isMobile, rainConfig, isLightMode]
     );
     const streamLength = useMemo(
       () => (isMobile ? rainConfig.streamLengthMobile : rainConfig.streamLengthDesktop),

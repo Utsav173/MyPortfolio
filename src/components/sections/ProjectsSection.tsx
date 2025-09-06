@@ -144,7 +144,7 @@ export function ProjectsSection({ className, id, initialProjects }: ProjectsSect
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-2">No projects found</h3>
             <p className="text-muted-foreground">
-              Try selecting a different filter to see what I've built.
+              Try selecting a different filter to see what I&apos;ve built.
             </p>
           </div>
         )}

@@ -145,7 +145,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
           variants={shouldReduceMotion ? undefined : itemVariants}
           className="mb-3 text-base font-semibold text-primary md:text-lg"
         >
-          Hello, I'm
+          Hello, I&apos;m
         </motion.p>
         <motion.h1
           id="hero-heading"

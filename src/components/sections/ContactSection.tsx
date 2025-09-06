@@ -156,7 +156,7 @@ const ContactSectionComponent = ({ className, id }: { className?: string; id?: s
           variants={shouldReduceMotion ? undefined : itemVariants}
           className="mb-16 text-center text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
         >
-          Let's <span className="text-primary">Connect</span>
+          Let&apos;s <span className="text-primary">Connect</span>
         </motion.h2>
         <div className="grid items-start gap-12 md:grid-cols-2 lg:gap-20">
           <motion.div variants={shouldReduceMotion ? undefined : itemVariants}>
@@ -164,8 +164,8 @@ const ContactSectionComponent = ({ className, id }: { className?: string; id?: s
               Get in Touch
             </h3>
             <p className="mb-10 text-base leading-relaxed text-muted-foreground md:text-lg">
-              I'm always open to discussing new projects, creative ideas, or opportunities. Feel
-              free to reach out through the form or any of the channels below!
+              I&apos;m always open to discussing new projects, creative ideas, or opportunities.
+              Feel free to reach out through the form or any of the channels below!
             </p>
             <div className="space-y-6">
               {SOCIAL_LINKS.map(({ href, icon: Icon, text }) => (

@@ -81,14 +81,14 @@ const AboutSectionComponent = ({ className, id }: { className?: string; id?: str
               className="space-y-6 text-base text-muted-foreground md:text-lg"
             >
               <p>
-                I'm a dynamic and results-oriented Full Stack Developer with comprehensive
+                I&apos;m a dynamic and results-oriented Full Stack Developer with comprehensive
                 experience in designing, developing, and deploying scalable, cloud-native web
                 applications and robust APIs. My journey in tech is driven by a passion for solving
                 complex problems and building impactful solutions.
               </p>
               <p>
                 With proven expertise in React.js, Next.js, Node.js, and TypeScript, I consistently
-                aim to deliver high-impact digital products. I'm particularly excited about the
+                aim to deliver high-impact digital products. I&apos;m particularly excited about the
                 intersection of web development and Artificial Intelligence, exploring ways to
                 create more intelligent and intuitive user experiences.
               </p>
