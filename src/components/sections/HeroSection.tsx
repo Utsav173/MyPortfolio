@@ -97,7 +97,7 @@ const buttonVariants = {
       duration: 0.1,
     },
   },
-};
+} as unknown as Variants;
 
 // Shimmer animation variants
 const shimmerVariants = {
@@ -112,7 +112,7 @@ const shimmerVariants = {
       repeatDelay: 2,
     },
   },
-};
+} as unknown as Variants;
 
 export function HeroSection({ className, id }: { className?: string; id?: string }) {
   const shouldReduceMotion = useReducedMotion();
@@ -135,14 +135,14 @@ export function HeroSection({ className, id }: { className?: string; id?: string
         'relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-transparent px-4 text-center ',
         className
       )}
-      variants={shouldReduceMotion ? {} : heroVariants}
+      variants={shouldReduceMotion ? undefined : heroVariants}
       initial={shouldReduceMotion ? undefined : 'hidden'}
       animate={shouldReduceMotion ? undefined : 'visible'}
       aria-labelledby="hero-heading"
     >
       <div className="container relative z-10 mx-auto max-sm:mt-10">
         <motion.p
-          variants={shouldReduceMotion ? {} : itemVariants}
+          variants={shouldReduceMotion ? undefined : itemVariants}
           className="mb-3 text-base font-semibold text-primary md:text-lg"
         >
           Hello, I'm
@@ -150,7 +150,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
         <motion.h1
           id="hero-heading"
           aria-label="Utsav Khatri"
-          variants={shouldReduceMotion ? {} : nameContainerVariants}
+          variants={shouldReduceMotion ? undefined : nameContainerVariants}
           style={{ perspective: '800px' }}
           className={cn(
             'my-2 select-none font-bold tracking-tighter relative',
@@ -167,7 +167,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
             {nameParts.map((char, index) => (
               <motion.span
                 key={index}
-                variants={shouldReduceMotion ? {} : nameCharVariants}
+                variants={shouldReduceMotion ? undefined : nameCharVariants}
                 className="inline-block"
                 style={char === ' ' ? { width: '0.25em' } : {}}
               >
@@ -177,7 +177,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
           </div>
         </motion.h1>
         <motion.p
-          variants={shouldReduceMotion ? {} : itemVariants}
+          variants={shouldReduceMotion ? undefined : itemVariants}
           className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground md:mt-8 md:text-xl"
         >
           A <span className="font-semibold text-primary">Full Stack Developer</span> based in
@@ -185,7 +185,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
         </motion.p>
 
         <motion.div
-          variants={shouldReduceMotion ? {} : itemVariants}
+          variants={shouldReduceMotion ? undefined : itemVariants}
           className={cn(
             'mt-8 flex select-none flex-col items-center justify-center gap-4 sm:flex-row md:mt-10'
           )}
@@ -194,7 +194,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
         >
           {/* Primary CTA Button with Colorful Effect */}
           <motion.div
-            variants={shouldReduceMotion ? {} : buttonHoverVariants}
+            variants={shouldReduceMotion ? undefined : buttonHoverVariants}
             whileHover={shouldReduceMotion ? undefined : 'hover'}
             whileTap={shouldReduceMotion ? undefined : 'tap'}
           >
@@ -247,7 +247,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
 
           {/* Secondary CTA Button with Glass Morphism Effect */}
           <motion.div
-            variants={shouldReduceMotion ? {} : buttonVariants}
+            variants={shouldReduceMotion ? undefined : buttonVariants}
             initial="initial"
             whileHover={shouldReduceMotion ? undefined : 'hover'}
             whileTap={shouldReduceMotion ? undefined : 'tap'}
