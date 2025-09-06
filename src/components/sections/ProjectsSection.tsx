@@ -10,9 +10,9 @@ import React, {
 import { ProjectCard, type Project } from './ProjectCard';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { motion, useReducedMotion, Variants, useInView } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { motion, useInView, useReducedMotion, Variants } from 'motion/react';
 
 const PROJECTS_INITIAL_DISPLAY_COUNT = 6;
 const PROJECTS_INCREMENT = 3;

@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { type FC, unstable_ViewTransition as ViewTransition } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
 import { Card, CardTitle, CardDescription } from '@/components/ui/card';
 import {
   Dialog,
@@ -21,6 +20,7 @@ import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
 import { TECH_STACK_DETAILS } from '@/lib/tech-stack-data';
 import { useTheme } from 'next-themes';
+import { useReducedMotion, motion } from 'motion/react';
 
 export interface Project {
   id: number | string;
