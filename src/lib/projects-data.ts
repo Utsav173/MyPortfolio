@@ -1,4 +1,4 @@
-[
+const projectsData = [
   {
     "id": 998877665,
     "name": "Note Sync Pro",
@@ -450,4 +450,6 @@
     ],
     "githubStats": { "stars": 0, "forks": 0 }
   }
-]
+];
+
+export default projectsData;

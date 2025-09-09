@@ -6,12 +6,13 @@ import { type FC } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, CheckCircle } from 'lucide-react';
+import { ExternalLink, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
 import { TECH_STACK_DETAILS } from '@/lib/tech-stack-data';
 import { useTheme } from 'next-themes';
 import { Project } from '@/lib/types';
+import { useRouter } from 'next/navigation';
 
 interface ProjectDetailProps {
   project: Project;
@@ -30,6 +31,7 @@ const getTechDetails = (techName: string) => {
 export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
   const { theme } = useTheme();
   const hasImage = !!project.imageUrl;
+  const router = useRouter();
 
   return (
     <div
@@ -43,6 +45,14 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
         'overflow-hidden'
       )}
     >
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => router.back()}
+        className="absolute top-2 left-2 z-10"
+      >
+        <ArrowLeft className="h-4 w-4" />
+      </Button>
       <div
         className={cn('flex-grow flex flex-col w-full overflow-hidden max-h-fit', 'lg:flex-row')}
       >

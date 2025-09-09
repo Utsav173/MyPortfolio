@@ -1,23 +1,11 @@
 import { MetadataRoute } from 'next';
-import { promises as fs } from 'fs';
-import path from 'path';
 import { Project } from '@/lib/types';
-
-async function getProjects(): Promise<Project[]> {
-  const filePath = path.join(process.cwd(), 'public/projects-data.json');
-  try {
-    const fileContents = await fs.readFile(filePath, 'utf8');
-    return JSON.parse(fileContents);
-  } catch (error) {
-    console.error('Failed to read or parse projects data:', error);
-    return [];
-  }
-}
+import projectsData from '@/lib/projects-data';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const siteUrl = 'https://khatriutsav.com';
 
-  const projects = await getProjects();
+  const projects = projectsData;
   const projectUrls = projects.map((project) => ({
     url: `${siteUrl}/projects/${project.id}`,
     lastModified: new Date(),

@@ -181,6 +181,7 @@ export default function RootLayout({
               Skip to main content
             </a>
             {children}
+            {modal}
             <Toaster richColors position="top-right" closeButton />
             <script
               type="application/ld+json"

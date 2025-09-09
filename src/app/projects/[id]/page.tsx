@@ -1,19 +1,11 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import { Project } from '@/lib/types';
 import { notFound } from 'next/navigation';
 import { ProjectDetail } from '@/components/sections/ProjectDetail';
 import { Metadata } from 'next';
+import projectsData from '@/lib/projects-data';
 
 async function getProjects(): Promise<Project[]> {
-  const filePath = path.join(process.cwd(), 'public/projects-data.json');
-  try {
-    const fileContents = await fs.readFile(filePath, 'utf8');
-    return JSON.parse(fileContents);
-  } catch (error) {
-    console.error('Failed to read or parse projects data:', error);
-    return [];
-  }
+  return projectsData as Project[];
 }
 
 async function getProject(id: string): Promise<Project | undefined> {
@@ -65,8 +57,29 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
     notFound();
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://khatriutsav.com';
+  const projectSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: project.name,
+    description: project.description,
+    url: `${siteUrl}/projects/${project.id}`,
+    image: project.imageUrl ? `${siteUrl}${project.imageUrl}` : `${siteUrl}/og-image.png`,
+    author: {
+      '@type': 'Person',
+      name: 'Utsav Khatri',
+    },
+    datePublished: '2023-01-01', // You might want to replace this with actual project date
+    keywords: project.techStack.join(', '),
+  };
+
   return (
     <div className="bg-background min-h-screen flex items-center justify-center p-4">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
+        key="project-jsonld"
+      />
       <div className="max-w-5xl w-full">
         <ProjectDetail project={project} />
       </div>
