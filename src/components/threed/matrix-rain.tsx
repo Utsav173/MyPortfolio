@@ -76,7 +76,7 @@ extend({
 });
 
 const PROGRAMMATIC_CHARS_STR = '0123456789ABCDEF!@#$%^&*()_+-=[]{};\':"\\|,.<>/?~ΣΠΔΩμλβ±≠≤≥∞∴¥€£';
-const SANSKRIT_CHARS_STR = 'अआइईउऊऋएऐओऔकखगघचछजझटठडढणतथदधनपफबभमयरलवशषसहઅઆઇકખગજઝટઠડદધનપફબમયરલવસહ';
+const SANSKRIT_CHARS_STR = 'अआइईउऊऋएऐओऔकखगघचछजझटठडढणतथदधनपफबभमयरलवशषसહઅઆઇકખગજઝટઠડદધનપફબમયરલવસહ';
 const GLYPH_CHARS = (PROGRAMMATIC_CHARS_STR + SANSKRIT_CHARS_STR).split('');
 const CHARS_PER_ROW = 10;
 const CHAR_TEXTURE_SIZE = 64;
@@ -255,12 +255,30 @@ interface CameraControls {
   lookAtZ: number;
 }
 
+const getPlaneHeightAt = (
+  x: number,
+  z: number,
+  time: number,
+  planeConfig: ParsedSceneConfig['plane']
+): number => {
+  const sin1 = Math.sin(THREE.MathUtils.degToRad((x / (planeConfig.size / 2)) * 90.0));
+  const noiseArg = new THREE.Vector3(x, 0.0, -z + time * -18.0);
+  const n1 = jsCnoise(noiseArg.clone().multiplyScalar(0.065));
+  const n2 = jsCnoise(noiseArg.clone().multiplyScalar(0.045));
+  const n3 = jsCnoise(noiseArg.clone().multiplyScalar(0.28));
+  return (
+    n1 * sin1 * planeConfig.noiseStrength.hill1 +
+    n2 * sin1 * planeConfig.noiseStrength.hill2 +
+    n3 * (Math.abs(sin1) * 1.7 + 0.4) * planeConfig.noiseStrength.hill3 +
+    Math.pow(sin1, 2) * planeConfig.noiseStrength.overall
+  );
+};
+
 const PlaneComponentR3F: React.FC<{
   themeAdjust: number;
   planeConfig: ParsedSceneConfig['plane'];
-  onCollisionMeshReady: (mesh: THREE.Mesh) => void;
-}> = React.memo(({ themeAdjust, planeConfig, onCollisionMeshReady }) => {
-  const collisionMeshRef = useRef<THREE.Mesh>(null!);
+  timeRef: React.MutableRefObject<number>;
+}> = React.memo(({ themeAdjust, planeConfig, timeRef }) => {
   const materialRef = useRef<any>(null!);
   useEffect(() => {
     if (materialRef.current) {
@@ -268,40 +286,12 @@ const PlaneComponentR3F: React.FC<{
     }
   }, [themeAdjust]);
   useFrame((_state, delta) => {
-    if (materialRef.current?.time !== undefined)
-      materialRef.current.time += delta * planeConfig.timeFactor;
-    const clampedDelta = Math.min(delta, 0.05);
-    if (collisionMeshRef.current && clampedDelta > 0 && materialRef.current?.time !== undefined) {
-      const positions = collisionMeshRef.current.geometry.attributes
-        .position as THREE.BufferAttribute;
-      const timeVal = materialRef.current.time;
-      for (let i = 0; i < positions.count; i++) {
-        const pX = positions.getX(i);
-        const pY_shader = -positions.getY(i);
-        const noiseArgX = pX;
-        const noiseArgY = 0.0;
-        const noiseArgZ = pY_shader + timeVal * -18.0;
-        const sinWave = Math.sin(
-          THREE.MathUtils.degToRad((noiseArgX / (planeConfig.size / 2)) * 90.0)
-        );
-        const noiseVecInput = new THREE.Vector3(noiseArgX, noiseArgY, noiseArgZ);
-        const n1 = jsCnoise(noiseVecInput.clone().multiplyScalar(0.065));
-        const n2 = jsCnoise(noiseVecInput.clone().multiplyScalar(0.045));
-        const n3 = jsCnoise(noiseVecInput.clone().multiplyScalar(0.28));
-        let d =
-          n1 * sinWave * planeConfig.noiseStrength.hill1 +
-          n2 * sinWave * planeConfig.noiseStrength.hill2 +
-          n3 * (Math.abs(sinWave) * 1.7 + 0.4) * planeConfig.noiseStrength.hill3 +
-          Math.pow(sinWave, 2) * planeConfig.noiseStrength.overall;
-        positions.setZ(i, d);
-      }
-      positions.needsUpdate = true;
-      collisionMeshRef.current.geometry.computeBoundingSphere();
+    const clamped = Math.min(delta, 0.05);
+    if (materialRef.current?.time !== undefined) {
+      materialRef.current.time += clamped * planeConfig.timeFactor;
+      timeRef.current = materialRef.current.time;
     }
   });
-  useEffect(() => {
-    if (collisionMeshRef.current) onCollisionMeshReady(collisionMeshRef.current);
-  }, [onCollisionMeshReady]);
   const materialProps = useMemo(
     () => ({
       uPlaneColorDarkTheme: planeConfig.planeColorForDarkTheme,
@@ -317,40 +307,29 @@ const PlaneComponentR3F: React.FC<{
     [planeConfig]
   );
   return (
-    <>
-      <mesh>
-        <planeGeometry
-          args={[
-            planeConfig.size,
-            planeConfig.size,
-            planeConfig.visualSegments,
-            planeConfig.visualSegments,
-          ]}
-        />
-        {/* @ts-ignore */}
-        <planeShaderMaterial
-          ref={materialRef}
-          {...materialProps}
-          transparent
-          depthWrite={false}
-          uThemeAdjust={themeAdjust}
-        />
-      </mesh>
-      <mesh ref={collisionMeshRef} rotation-x={-Math.PI / 2} visible={false}>
-        <planeGeometry
-          args={[
-            planeConfig.size,
-            planeConfig.size,
-            planeConfig.collisionSegments,
-            planeConfig.collisionSegments,
-          ]}
-        />
-        <meshBasicMaterial visible={false} />
-      </mesh>
-    </>
+    <mesh>
+      <planeGeometry
+        args={[
+          planeConfig.size,
+          planeConfig.size,
+          planeConfig.visualSegments,
+          planeConfig.visualSegments,
+        ]}
+      />
+      {/* @ts-ignore */}
+      <planeShaderMaterial
+        ref={materialRef}
+        {...materialProps}
+        transparent
+        depthWrite={false}
+        side={THREE.FrontSide}
+        uThemeAdjust={themeAdjust}
+      />
+    </mesh>
   );
 });
 PlaneComponentR3F.displayName = 'PlaneComponentR3F';
+
 type RainParticleData = {
   id: number;
   x: number;
@@ -386,11 +365,9 @@ const SplashParticleSystemR3F: React.FC<{
   const particles = useRef<SplashParticleData[]>([]).current;
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const { splashCharMap } = atlasData;
-
   const splashBaseRenderColor = useMemo(() => {
     return config.splashColor.clone();
   }, [config.splashColor]);
-
   useEffect(() => {
     if (!config.enabled) return;
     particles.length = 0;
@@ -416,7 +393,6 @@ const SplashParticleSystemR3F: React.FC<{
     config.enabled,
     particles,
   ]);
-
   triggerRef.current = useCallback(
     (impactPosition: THREE.Vector3) => {
       if (!config.enabled) return;
@@ -501,7 +477,7 @@ const SplashParticleSystemR3F: React.FC<{
         uAtlasMap={atlasData.atlasTexture}
         transparent
         depthWrite={false}
-        side={THREE.DoubleSide}
+        side={THREE.FrontSide}
       />
     </instancedMesh>
   );
@@ -510,23 +486,18 @@ SplashParticleSystemR3F.displayName = 'SplashParticleSystemR3F';
 
 const RainEffectComponentR3F: React.FC<{
   rainConfig: ParsedSceneConfig['rain'];
+  planeConfig: ParsedSceneConfig['plane'];
   planeSize: number;
   atlasData: AtlasData;
-  collisionPlane: THREE.Mesh | null;
   themeAdjust: number;
   onRainImpact: TriggerSplashFn | null;
+  timeRef: React.MutableRefObject<number>;
 }> = React.memo(
-  ({ rainConfig, planeSize, atlasData, collisionPlane, themeAdjust, onRainImpact }) => {
+  ({ rainConfig, planeConfig, planeSize, atlasData, themeAdjust, onRainImpact, timeRef }) => {
     const instancedMeshRef = useRef<THREE.InstancedMesh>(null!);
     const particles = useRef<RainParticleData[]>([]).current;
     const nextStreamId = useRef(0);
     const dummyObject = useMemo(() => new THREE.Object3D(), []);
-    const raycaster = useMemo(() => {
-      const r = new THREE.Raycaster();
-      r.far = (rainConfig.yTop - rainConfig.yBottom) * 1.5;
-      return r;
-    }, [rainConfig.yTop, rainConfig.yBottom]);
-
     const { currentLeadColor, currentTrailColorBase } = useMemo(() => {
       return {
         currentLeadColor: themeAdjust === 0 ? rainConfig.leadColorDark : rainConfig.leadColorLight,
@@ -534,7 +505,6 @@ const RainEffectComponentR3F: React.FC<{
           themeAdjust === 0 ? rainConfig.trailColorBaseDark : rainConfig.trailColorBaseLight,
       };
     }, [themeAdjust, rainConfig]);
-
     const defaultCharMap = atlasData.defaultCharMap;
     const { width: screenWidth } = useThree((state) => state.size);
     const isMobile = useMemo(() => screenWidth < 768, [screenWidth]);
@@ -661,15 +631,8 @@ const RainEffectComponentR3F: React.FC<{
       instanceOffsetAttribute,
       instanceColorOpacityAttribute,
     ]);
-    const impactPositionVec = useMemo(() => new THREE.Vector3(), []);
     useFrame((_state, delta) => {
-      if (
-        !instancedMeshRef.current ||
-        !collisionPlane ||
-        particles.length === 0 ||
-        maxParticles === 0
-      )
-        return;
+      if (!instancedMeshRef.current || particles.length === 0 || maxParticles === 0) return;
       const cD = Math.min(delta, 0.05);
       const streamsToReset = new Set<number>();
       let needsMatrixUpdate = false;
@@ -677,6 +640,7 @@ const RainEffectComponentR3F: React.FC<{
       let needsColorOpacityUpdate = false;
       const halfPlaneX = (planeSize / 2) * xSpreadFactor;
       const halfPlaneZ = (planeSize / 2) * zSpreadFactor;
+      const timeNow = timeRef.current;
       for (let i = 0; i < particles.length; i++) {
         let p = particles[i];
         if (streamsToReset.has(p.currentStreamId)) {
@@ -693,27 +657,15 @@ const RainEffectComponentR3F: React.FC<{
           instanceOffsetAttribute.setXYZW(i, p.charMap.u, p.charMap.v, p.charMap.w, p.charMap.h);
           needsOffsetUpdate = true;
         }
-        if (
-          p.streamIndex === 0 &&
-          p.y < rainConfig.yTop &&
-          collisionPlane.geometry.boundingSphere &&
-          !streamsToReset.has(p.currentStreamId)
-        ) {
-          raycaster.set(
-            impactPositionVec.set(p.x, p.y + rainConfig.charHeight * 0.3, p.z),
-            new THREE.Vector3(0, -1, 0)
-          );
-          const ints = raycaster.intersectObject(collisionPlane, false);
-          if (ints.length > 0) {
-            const hitY = ints[0].point.y;
-            const collisionThreshold = hitY + rainConfig.charHeight * 0.05;
-            if (p.y <= collisionThreshold) {
-              if (onRainImpact) onRainImpact(impactPositionVec.set(p.x, hitY, p.z));
-              streamsToReset.add(p.currentStreamId);
-              p.opacity = 0;
-              instanceColorOpacityAttribute.setW(i, p.opacity);
-              needsColorOpacityUpdate = true;
-            }
+        if (p.streamIndex === 0) {
+          const groundY = getPlaneHeightAt(p.x, p.z, timeNow, planeConfig);
+          const collisionThreshold = groundY + rainConfig.charHeight * 0.05;
+          if (p.y <= collisionThreshold) {
+            if (onRainImpact) onRainImpact(new THREE.Vector3(p.x, groundY, p.z));
+            streamsToReset.add(p.currentStreamId);
+            p.opacity = 0;
+            instanceColorOpacityAttribute.setW(i, p.opacity);
+            needsColorOpacityUpdate = true;
           }
         }
         if (
@@ -736,26 +688,26 @@ const RainEffectComponentR3F: React.FC<{
         instanceColorOpacityAttribute.setXYZW(i, p.color.r, p.color.g, p.color.b, p.opacity);
         if (p.opacity > 0) needsColorOpacityUpdate = true;
       }
-      streamsToReset.forEach((sId) => {
-        const nSX = Math.random() * halfPlaneX * 2 - halfPlaneX;
-        const nSZ = Math.random() * halfPlaneZ * 2 - halfPlaneZ;
+      if (streamsToReset.size > 0) {
         const bS =
           rainConfig.speedBaseMin +
           Math.random() * (rainConfig.speedBaseMax - rainConfig.speedBaseMin);
         const nCSId = nextStreamId.current++;
+        const nSX = Math.random() * halfPlaneX * 2 - halfPlaneX;
+        const nSZ = Math.random() * halfPlaneZ * 2 - halfPlaneZ;
         for (let i = 0; i < particles.length; i++) {
           let p = particles[i];
-          if (p.currentStreamId === sId) {
-            const iL = p.streamIndex === 0;
+          if (streamsToReset.has(p.currentStreamId)) {
+            const isLead = p.streamIndex === 0;
             p.x = nSX;
             p.y = rainConfig.yTop - p.streamIndex * rainConfig.charHeight * 0.9 + Math.random() * 3;
             p.z = nSZ;
-            p.speedY = bS * (iL ? 1 : 0.82 + Math.random() * 0.13);
+            p.speedY = bS * (isLead ? 1 : 0.82 + Math.random() * 0.13);
             p.charMap = getRandomCharMap();
-            p.color = iL
+            p.color = isLead
               ? currentLeadColor.clone()
               : getTrailColor(p.streamIndex, streamLength, currentTrailColorBase);
-            p.opacity = iL ? 0.99 : Math.max(0.15, 0.9 - (p.streamIndex / streamLength) * 0.85);
+            p.opacity = isLead ? 0.99 : Math.max(0.15, 0.9 - (p.streamIndex / streamLength) * 0.85);
             p.currentStreamId = nCSId;
             instanceOffsetAttribute.setXYZW(i, p.charMap.u, p.charMap.v, p.charMap.w, p.charMap.h);
             instanceColorOpacityAttribute.setXYZW(i, p.color.r, p.color.g, p.color.b, p.opacity);
@@ -763,7 +715,7 @@ const RainEffectComponentR3F: React.FC<{
             needsColorOpacityUpdate = true;
           }
         }
-      });
+      }
       if (needsMatrixUpdate) instancedMeshRef.current.instanceMatrix.needsUpdate = true;
       if (needsOffsetUpdate) instanceOffsetAttribute.needsUpdate = true;
       if (needsColorOpacityUpdate) instanceColorOpacityAttribute.needsUpdate = true;
@@ -789,7 +741,7 @@ const RainEffectComponentR3F: React.FC<{
           uAtlasMap={atlasData.atlasTexture}
           transparent
           depthWrite={false}
-          side={THREE.DoubleSide}
+          side={THREE.FrontSide}
         />
       </instancedMesh>
     );
@@ -801,9 +753,9 @@ const SceneContent: React.FC<{
   currentTheme: string | undefined;
   cameraControls: CameraControls;
   parsedActiveCfg: ParsedSceneConfig;
-}> = React.memo(({ currentTheme, cameraControls, parsedActiveCfg }) => {
+  timeRef: React.MutableRefObject<number>;
+}> = React.memo(({ currentTheme, cameraControls, parsedActiveCfg, timeRef }) => {
   const { camera, gl, scene } = useThree();
-  const [collisionPlaneMesh, setCollisionPlaneMesh] = useState<THREE.Mesh | null>(null);
   const atlasData = useMemo(() => createCharacterAtlas(), []);
   const triggerSplashRef = useRef<any | null>(null);
   useEffect(() => {
@@ -842,16 +794,17 @@ const SceneContent: React.FC<{
       <PlaneComponentR3F
         themeAdjust={themeAdjust}
         planeConfig={parsedActiveCfg.plane}
-        onCollisionMeshReady={setCollisionPlaneMesh}
+        timeRef={timeRef}
       />
-      {collisionPlaneMesh && atlasData && (
+      {atlasData && (
         <RainEffectComponentR3F
           rainConfig={parsedActiveCfg.rain}
+          planeConfig={parsedActiveCfg.plane}
           planeSize={parsedActiveCfg.plane.size}
           atlasData={atlasData}
-          collisionPlane={collisionPlaneMesh}
           themeAdjust={themeAdjust}
           onRainImpact={triggerSplashRef.current}
+          timeRef={timeRef}
         />
       )}
       {atlasData && parsedActiveCfg.splashParticles.enabled && (
@@ -889,6 +842,33 @@ interface ThreeSceneProps {
   dynamicConfig?: Partial<SceneConfig>;
 }
 
+const detectInitialQuality = (): 'low' | 'medium' | 'high' => {
+  if (typeof navigator === 'undefined') return 'medium';
+  const ua = (navigator as any).userAgent || '';
+  const isMobile = (navigator as any).userAgentData?.mobile || /Mobi|Android/i.test(ua);
+  const dm = (navigator as any).deviceMemory || 4;
+  const cores = navigator.hardwareConcurrency || 4;
+  const saveData = (navigator as any).connection?.saveData === true;
+  if (saveData) return 'low';
+  if (isMobile && (dm <= 3 || cores <= 4)) return 'low';
+  if (isMobile || dm <= 4 || cores <= 6) return 'medium';
+  return 'high';
+};
+
+const capDpr = (quality: 'low' | 'medium' | 'high') =>
+  quality === 'high'
+    ? [1, typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 1.25) : 1]
+    : quality === 'medium'
+      ? [1, 1.0]
+      : [1, 1.0];
+
+const scaleInt = (v: number, quality: 'low' | 'medium' | 'high') =>
+  quality === 'high'
+    ? v
+    : quality === 'medium'
+      ? Math.max(1, Math.floor(v * 0.7))
+      : Math.max(1, Math.floor(v * 0.45));
+
 const ThreeScene: React.FC<ThreeSceneProps> = ({ currentTheme, cameraControls, dynamicConfig }) => {
   const parsedActiveCfg = useMemo(() => {
     return parseConfigColors(
@@ -896,8 +876,36 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ currentTheme, cameraControls, d
       currentTheme === 'dark' ? 'dark' : 'light'
     );
   }, [dynamicConfig, currentTheme]);
+  const [quality, setQuality] = useState<'low' | 'medium' | 'high'>(() => detectInitialQuality());
+  const [dpr, setDpr] = useState<[number, number]>(() => capDpr(quality) as [number, number]);
 
+  const timeRef = useRef(0);
+  const effectiveRain = useMemo(() => {
+    const base = parsedActiveCfg.rain;
+    return {
+      ...base,
+      streamCountDesktop: scaleInt(base.streamCountDesktop, quality),
+      streamCountDesktopLight:
+        base.streamCountDesktopLight !== undefined
+          ? scaleInt(base.streamCountDesktopLight, quality)
+          : scaleInt(base.streamCountDesktop, quality), // provide a default value
+      streamCountMobile: scaleInt(base.streamCountMobile, quality),
+      streamLengthDesktop: scaleInt(base.streamLengthDesktop, quality),
+      streamLengthMobile: scaleInt(base.streamLengthMobile, quality),
+      charHeight:
+        quality === 'high'
+          ? base.charHeight
+          : quality === 'medium'
+            ? base.charHeight * 1.05
+            : base.charHeight * 1.1,
+    };
+  }, [parsedActiveCfg.rain, quality]);
   const bloomConfig = parsedActiveCfg.effects.bloom;
+  const bloomEnabled = bloomConfig.enabled && quality !== 'low';
+
+  useEffect(() => {
+    setDpr(capDpr(quality) as [number, number]);
+  }, [quality]);
 
   return (
     <div className={cn('absolute inset-0 w-full h-full pointer-events-none')}>
@@ -913,44 +921,57 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ currentTheme, cameraControls, d
           far: parsedActiveCfg.camera.far,
         }}
         gl={{
-          antialias: true,
+          antialias: false,
           powerPreference: 'high-performance',
           alpha: true,
           logarithmicDepthBuffer: false,
           toneMapping: THREE.NoToneMapping,
         }}
-        dpr={typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 1.5) : 1}
+        dpr={dpr}
         style={{ background: 'transparent' }}
         frameloop="always"
         shadows={false}
       >
-        <Suspense fallback={<CanvasErrorFallback />}>
-          <PerformanceMonitor
-            onDecline={() => console.warn('Performance declined, consider simplifying the scene.')}
-          />
-          {bloomConfig.enabled ? (
+        <PerformanceMonitor
+          flipflops={2}
+          onDecline={() => setQuality((q) => (q === 'high' ? 'medium' : 'low'))}
+          onIncline={() => setQuality((q) => (q === 'low' ? 'medium' : 'high'))}
+        />
+        {typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches ? (
+          bloomEnabled ? (
             <EffectComposer>
               <Bloom
+                intensity={Math.min(bloomConfig.intensity, 0.25)}
                 luminanceThreshold={bloomConfig.luminanceThreshold}
                 luminanceSmoothing={bloomConfig.luminanceSmoothing}
-                intensity={bloomConfig.intensity}
-                kernelSize={getKernelSize(bloomConfig.kernelSize)}
-                mipmapBlur={bloomConfig.mipmapBlur}
+                kernelSize={KernelSize.SMALL}
+                mipmapBlur={false}
               />
               <SceneContent
                 currentTheme={currentTheme}
                 cameraControls={cameraControls}
-                parsedActiveCfg={parsedActiveCfg}
+                parsedActiveCfg={{ ...parsedActiveCfg, rain: effectiveRain }}
+                timeRef={timeRef}
               />
             </EffectComposer>
           ) : (
             <SceneContent
               currentTheme={currentTheme}
               cameraControls={cameraControls}
-              parsedActiveCfg={parsedActiveCfg}
+              parsedActiveCfg={{ ...parsedActiveCfg, rain: effectiveRain }}
+              timeRef={timeRef}
             />
-          )}
-        </Suspense>
+          )
+        ) : (
+          <Suspense fallback={<CanvasErrorFallback />}>
+            <SceneContent
+              currentTheme={currentTheme}
+              cameraControls={cameraControls}
+              parsedActiveCfg={{ ...parsedActiveCfg, rain: effectiveRain }}
+              timeRef={timeRef}
+            />
+          </Suspense>
+        )}
       </Canvas>
     </div>
   );

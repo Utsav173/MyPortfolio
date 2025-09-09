@@ -1,14 +1,16 @@
 'use client';
 
 import { useRef, useState, type ReactNode } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
 import { Navbar } from '@/components/layout/Navbar';
-import { useActiveSectionObserver } from '@/hooks/useActiveSectionObserver';
-import { CommandPalette } from '../CommandPalette';
+import dynamic from 'next/dynamic';
 import MatrixRain from '../threed/matrix-rain';
 import { useTheme } from 'next-themes';
+import { useActiveSectionObserver } from '@/hooks/useActiveSectionObserver';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+const CommandPalette = dynamic(() => import('../CommandPalette').then((mod) => mod.default));
 
 interface CameraControlsRef {
   xPos: number;

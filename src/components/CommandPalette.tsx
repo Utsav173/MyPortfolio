@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useCallback, memo } from 'react';
+import React, { useEffect, useCallback, memo, Dispatch, SetStateAction } from 'react';
 import { useTheme } from 'next-themes';
 import {
   FileText,
@@ -15,18 +15,23 @@ import {
   Lightbulb,
 } from 'lucide-react';
 
+import { useRouter } from 'next/navigation';
 import {
   CommandDialog,
+  CommandInput,
+  CommandList,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
-  CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
 import { NAV_ITEMS, RESUME_URL } from '@/lib/constants';
-import { useScrollToSection } from '@/hooks/use-scroll-to-section';
 import { Icon } from '@iconify/react';
+
+interface CommandPaletteProps {
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+}
 
 const ICONS_MAP: {
   [key: string]: React.ComponentType<{ className?: string }>;
@@ -39,14 +44,9 @@ const ICONS_MAP: {
   '#contact': Mail,
 };
 
-interface CommandPaletteProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 const CommandPaletteComponent = ({ isOpen, setIsOpen }: CommandPaletteProps) => {
   const { setTheme } = useTheme();
-  const { scrollTo } = useScrollToSection();
+  const router = useRouter();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -78,8 +78,8 @@ const CommandPaletteComponent = ({ isOpen, setIsOpen }: CommandPaletteProps) => 
             return (
               <CommandItem
                 key={`nav-${item.href}`}
-                value={`Go to ${item.label}`}
-                onSelect={() => runCommand(() => scrollTo(item.href))}
+                data-value={`Go to ${item.label}`}
+                onSelect={() => runCommand(() => router.push(item.href))}
                 className="cursor-pointer"
               >
                 <Icon className="mr-2 h-4 w-4" />
@@ -141,4 +141,4 @@ const CommandPaletteComponent = ({ isOpen, setIsOpen }: CommandPaletteProps) => 
   );
 };
 
-export const CommandPalette = memo(CommandPaletteComponent);
+export default CommandPaletteComponent;

@@ -7,7 +7,8 @@ import React, {
   useCallback,
   unstable_ViewTransition as ViewTransition,
 } from 'react';
-import { ProjectCard, type Project } from './ProjectCard';
+import { ProjectCard } from './ProjectCard';
+import { type Project } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Search } from 'lucide-react';

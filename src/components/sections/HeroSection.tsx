@@ -203,7 +203,6 @@ export function HeroSection({ className, id }: { className?: string; id?: string
               className={cn(
                 'group relative h-auto overflow-hidden rounded-full border px-8 py-4 text-base font-semibold transition-all duration-500 ease-out sm:px-10 sm:py-4',
                 'bg-zinc-200 dark:bg-transparent',
-                'hover:shadow-2xl hover:shadow-purple-500/40',
                 'max-sm:px-4 max-sm:py-2.5 max-sm:text-sm'
               )}
             >

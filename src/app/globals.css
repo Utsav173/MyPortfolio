@@ -103,12 +103,16 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-image:
-      linear-gradient(to right,
+      linear-gradient(
+        to right,
         oklch(var(--foreground-oklch-values) / 0.008) 0.5px,
-        transparent 0.5px),
-      linear-gradient(to bottom,
+        transparent 0.5px
+      ),
+      linear-gradient(
+        to bottom,
         oklch(var(--foreground-oklch-values) / 0.008) 0.5px,
-        transparent 0.5px);
+        transparent 0.5px
+      );
     background-size: 50px 50px;
     user-select: none;
   }
@@ -146,7 +150,6 @@
 }
 
 @keyframes bounceOnce {
-
   0%,
   100% {
     transform: translateY(0);
@@ -193,7 +196,6 @@
 }
 
 @keyframes pulseGlow {
-
   0%,
   100% {
     opacity: 0.2;
@@ -215,7 +217,6 @@
 }
 
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0px);
@@ -227,7 +228,6 @@
 }
 
 @keyframes buttonGlow {
-
   0%,
   100% {
     box-shadow: 0 0 20px oklch(var(--primary-oklch-values) / 0.3);
@@ -240,14 +240,16 @@
 
 /* Hero Name Gradient Animation */
 .hero-name-gradient {
-  background: linear-gradient(90deg,
-      oklch(var(--foreground-oklch-values)),
-      oklch(var(--primary-oklch-values)),
-      oklch(var(--foreground-oklch-values)),
-      oklch(var(--primary-oklch-values) / 0.8),
-      oklch(var(--foreground-oklch-values)),
-      oklch(var(--primary-oklch-values)),
-      oklch(var(--foreground-oklch-values)));
+  background: linear-gradient(
+    90deg,
+    oklch(var(--foreground-oklch-values)),
+    oklch(var(--primary-oklch-values)),
+    oklch(var(--foreground-oklch-values)),
+    oklch(var(--primary-oklch-values) / 0.8),
+    oklch(var(--foreground-oklch-values)),
+    oklch(var(--primary-oklch-values)),
+    oklch(var(--foreground-oklch-values))
+  );
   background-size: 300% 100%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -270,14 +272,16 @@
 }
 
 .dark .hero-name-gradient {
-  background: linear-gradient(90deg,
-      oklch(var(--foreground-oklch-values)),
-      oklch(var(--primary-oklch-values)),
-      oklch(var(--foreground-oklch-values)),
-      oklch(var(--primary-oklch-values) / 0.9),
-      oklch(var(--foreground-oklch-values)),
-      oklch(var(--primary-oklch-values)),
-      oklch(var(--foreground-oklch-values)));
+  background: linear-gradient(
+    90deg,
+    oklch(var(--foreground-oklch-values)),
+    oklch(var(--primary-oklch-values)),
+    oklch(var(--foreground-oklch-values)),
+    oklch(var(--primary-oklch-values) / 0.9),
+    oklch(var(--foreground-oklch-values)),
+    oklch(var(--primary-oklch-values)),
+    oklch(var(--foreground-oklch-values))
+  );
   background-size: 300% 100%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -301,10 +305,12 @@
 .btn-primary-enhanced {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg,
-      oklch(var(--primary-oklch-values)),
-      oklch(var(--primary-oklch-values) / 0.9),
-      oklch(var(--primary-oklch-values)));
+  background: linear-gradient(
+    135deg,
+    oklch(var(--primary-oklch-values)),
+    oklch(var(--primary-oklch-values) / 0.9),
+    oklch(var(--primary-oklch-values))
+  );
   background-size: 200% 200%;
   animation: gradientShift 4s ease-in-out infinite;
   box-shadow:
@@ -320,10 +326,12 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(120deg,
-      transparent 30%,
-      oklch(var(--primary-oklch-values) / 0.6) 50%,
-      transparent 70%);
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    oklch(var(--primary-oklch-values) / 0.6) 50%,
+    transparent 70%
+  );
   transition: left 0.6s ease-out;
   z-index: 1;
 }
@@ -345,9 +353,11 @@
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(10px);
-  background: linear-gradient(135deg,
-      oklch(var(--background-oklch-values) / 0.8),
-      oklch(var(--background-oklch-values) / 0.6));
+  background: linear-gradient(
+    135deg,
+    oklch(var(--background-oklch-values) / 0.8),
+    oklch(var(--background-oklch-values) / 0.6)
+  );
   border: 1px solid oklch(var(--primary-oklch-values) / 0.3);
   box-shadow:
     0 2px 10px oklch(var(--primary-oklch-values) / 0.1),
@@ -361,10 +371,12 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(120deg,
-      transparent 30%,
-      oklch(var(--primary-oklch-values) / 0.1) 50%,
-      transparent 70%);
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    oklch(var(--primary-oklch-values) / 0.1) 50%,
+    transparent 70%
+  );
   transition: left 0.6s ease-out;
   z-index: 1;
 }
@@ -376,9 +388,11 @@
 .btn-secondary-enhanced:hover {
   transform: translateY(-2px);
   border-color: oklch(var(--primary-oklch-values) / 0.6);
-  background: linear-gradient(135deg,
-      oklch(var(--primary-oklch-values) / 0.05),
-      oklch(var(--primary-oklch-values) / 0.02));
+  background: linear-gradient(
+    135deg,
+    oklch(var(--primary-oklch-values) / 0.05),
+    oklch(var(--primary-oklch-values) / 0.02)
+  );
   box-shadow:
     0 4px 20px oklch(var(--primary-oklch-values) / 0.2),
     inset 0 1px 0 oklch(var(--primary-oklch-values) / 0.1);
@@ -414,19 +428,23 @@
 /* Gradient Fade Container */
 .gradient-fade-container {
   mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right,
-      transparent 0%,
-      black 10%,
-      black 90%,
-      transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
 }
 
 /* Footer Gradient */
 .footer-gradient {
-  background: linear-gradient(0deg,
-      oklch(var(--primary-oklch-values) / 0.5) 0%,
-      oklch(var(--primary-oklch-values) / 0.25) 40%,
-      transparent 100%);
+  background: linear-gradient(
+    0deg,
+    oklch(var(--primary-oklch-values) / 0.5) 0%,
+    oklch(var(--primary-oklch-values) / 0.25) 40%,
+    transparent 100%
+  );
 }
 
 /* Enhanced Scroll Indicator */
