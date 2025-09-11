@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { ProjectDetail } from '@/components/sections/ProjectDetail';
 import { Metadata } from 'next';
 import projectsData from '@/lib/projects-data';
+import { PageWrapper } from '@/components/layout/PageWrapper';
 
 async function getProjects(): Promise<Project[]> {
   return projectsData as Project[];
@@ -28,6 +29,10 @@ export async function generateMetadata({ params }: PageProps<'/projects/[id]'>):
   return {
     title: project.name,
     description: project.description,
+    keywords: project.techStack,
+    alternates: {
+      canonical: `${siteUrl}/projects/${project.id}`,
+    },
     openGraph: {
       title: `${project.name} | Utsav Khatri`,
       description: project.description,
@@ -69,21 +74,23 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
       '@type': 'Person',
       name: 'Utsav Khatri',
     },
-    datePublished: '2023-01-01', // You might want to replace this with actual project date
+    datePublished: '2023-01-01',
     keywords: project.techStack.join(', '),
   };
 
   return (
-    <div className="bg-background min-h-screen flex items-center justify-center p-4">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
-        key="project-jsonld"
-      />
-      <div className="max-w-5xl w-full">
-        <ProjectDetail project={project} />
+    <PageWrapper>
+      <div className="flex items-center justify-center p-4">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
+          key="project-jsonld"
+        />
+        <div className="max-w-5xl w-full">
+          <ProjectDetail project={project} />
+        </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }
 

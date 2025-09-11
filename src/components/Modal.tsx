@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Project } from '@/lib/types';
 import { cn } from '@/lib/utils'; // Import cn
 import { Badge } from '@/components/ui/badge'; // Import Badge
@@ -25,15 +25,11 @@ interface ModalProps {
 }
 
 export function Modal({ project }: ModalProps) {
-  const { theme } = useTheme(); // Use useTheme here
-  const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      redirect('/#projects');
-    }
-  };
+  const { theme } = useTheme();
+  const router = useRouter();
 
   return (
-    <Dialog open onOpenChange={handleOpenChange}>
+    <Dialog open onOpenChange={() => router.back()}>
       <DialogContent
         className={cn(
           'p-0 w-[98vw] max-w-sm h-fit max-h-[95vh] flex flex-col',

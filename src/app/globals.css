@@ -447,21 +447,6 @@
   );
 }
 
-/* Enhanced Scroll Indicator */
-.scroll-indicator {
-  position: relative;
-}
-
-.scroll-indicator::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  background: radial-gradient(circle, oklch(var(--primary-oklch-values) / 0.3) 0%, transparent 70%);
-  border-radius: 50%;
-  animation: pulseGlow 2s ease-in-out infinite;
-  z-index: -1;
-}
-
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -471,4 +456,23 @@
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+}
+
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+html {
+  .has-scrollbar:not(
+      :has(
+        [role='dialog'],
+        [role='alert'],
+        [role='alertDialog'],
+        [data-state='open'],
+        [data-slot='command']
+      )
+    ) {
+    scrollbar-gutter: stable;
+  }
 }

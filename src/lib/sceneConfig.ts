@@ -59,7 +59,7 @@ export const defaultSceneConfig = {
     enabled: true,
     maxParticles: 2000,
     particlesPerSplash: 8,
-    size: 0.28,
+    size: 0.4,
     speedMin: 2,
     speedMax: 6,
     lift: 4.6,

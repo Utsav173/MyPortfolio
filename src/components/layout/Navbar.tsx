@@ -10,6 +10,7 @@ import { Logo } from '@/components/Logo';
 import { ModeToggle } from '@/components/layout/ModeToggle';
 import { MobileMenu } from '@/components/layout/MobileMenu';
 import { useScrollToSection } from '@/hooks/use-scroll-to-section';
+import { usePathname } from 'next/navigation';
 
 interface NavbarProps {
   className?: string;
@@ -18,6 +19,8 @@ interface NavbarProps {
 
 export function Navbar({ className, activeSection }: NavbarProps) {
   const { handleNavClick } = useScrollToSection();
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
 
   return (
     <motion.header
@@ -48,8 +51,8 @@ export function Navbar({ className, activeSection }: NavbarProps) {
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.label}
-              href={item.href}
-              onClick={handleNavClick}
+              href={isHomePage ? item.href : `/${item.href}`}
+              onClick={isHomePage ? handleNavClick : undefined}
               className={cn(
                 'relative rounded-md px-2.5 py-1.5 text-xs font-medium outline-none transition-all duration-300 ease-in-out focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:px-3 lg:py-2 lg:text-sm',
                 activeSection === item.href.substring(1)

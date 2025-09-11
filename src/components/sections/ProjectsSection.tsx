@@ -1,12 +1,6 @@
 'use client';
 
-import React, {
-  useState,
-  useMemo,
-  useRef,
-  useCallback,
-  unstable_ViewTransition as ViewTransition,
-} from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { ProjectCard } from './ProjectCard';
 import { type Project } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -128,15 +122,11 @@ export function ProjectsSection({ className, id, initialProjects }: ProjectsSect
             ))}
           </div>
         </div>
-        <ViewTransition name="project-cards">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {currentDisplayedProjects.map((project) => (
-              <ViewTransition key={project.id} name={`project-card-${project.id}`}>
-                <ProjectCard key={project.id} project={project} theme={resolvedTheme} />
-              </ViewTransition>
-            ))}
-          </div>
-        </ViewTransition>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {currentDisplayedProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} theme={resolvedTheme} />
+          ))}
+        </div>
 
         {!currentDisplayedProjects.length && (
           <div className="mt-16 text-center flex flex-col items-center">
