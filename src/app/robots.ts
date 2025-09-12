@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/api',
     },
-    sitemap: `https://khatriutsav.com/sitemap.xml`,
+    sitemap: `https://www.khatriutsav.com/sitemap.xml`,
   };
 }

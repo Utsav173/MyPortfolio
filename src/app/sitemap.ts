@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import projectsData from '@/lib/projects-data';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = 'https://khatriutsav.com';
+  const siteUrl = `https://www.khatriutsav.com`;
 
   const projects = projectsData;
   const projectUrls = projects.map((project) => ({
@@ -12,8 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const routes = ['', '/about', '/skills', '/experience', '/projects', '/contact'].map(
-    (route) => ({
+  const routes = ['', '/about', '/skills', '/experience', '/projects', '/contact'].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
