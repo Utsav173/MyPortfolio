@@ -16,14 +16,12 @@ export const metadata: Metadata = {
   ],
 };
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://khatriutsav.com';
-
 const contactPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
   name: 'Contact Utsav Khatri',
   description: 'Contact form and details to get in touch with Utsav Khatri.',
-  url: `${siteUrl}/contact`,
+  url: `https://khatriutsav.com/contact`,
   potentialAction: {
     '@type': 'CommunicateAction',
     target: {

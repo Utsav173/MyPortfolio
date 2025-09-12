@@ -1,5 +1,3 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://khatriutsav.com';
-
 import { Project } from '@/lib/types';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { Metadata } from 'next';
@@ -64,7 +62,7 @@ const projectsCollectionSchema = {
   name: "Utsav Khatri's Projects",
   description:
     'A comprehensive collection of web development, AI, and cloud projects by Utsav Khatri.',
-  url: `${siteUrl}/projects`,
+  url: `https://khatriutsav.com/projects`,
 };
 
 export default async function ProjectsPage() {

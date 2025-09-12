@@ -8,6 +8,7 @@ import { ContactSection } from '@/components/sections/ContactSection';
 import FooterSection from '@/components/sections/FooterSection';
 import { Project } from '@/lib/types';
 import projectsData from '@/lib/projects-data';
+import { SearchParams } from 'next/dist/server/request/search-params';
 
 const FEATURED_PROJECT_IDS: (number | string)[] = [
   727342843, 657660151, 952619337, 525828811, 998877665, 583853098,
@@ -48,8 +49,13 @@ async function getProjects(): Promise<Project[]> {
   return projects;
 }
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const allProjectsData = await getProjects();
+  const searchQuery = (await searchParams)?.q as string;
 
   return (
     <PageClient>
@@ -61,6 +67,7 @@ export default async function HomePage() {
         id="projects"
         className="content-section"
         initialProjects={allProjectsData}
+        searchQuery={searchQuery}
       />
       <ContactSection id="contact" className="content-section" />
       <FooterSection />

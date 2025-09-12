@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { Search } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { motion, useInView, useReducedMotion, Variants } from 'motion/react';
+import { Input } from '@/components/ui/input';
 
 const PROJECTS_INITIAL_DISPLAY_COUNT = 6;
 const PROJECTS_INCREMENT = 3;
@@ -28,13 +29,20 @@ interface ProjectsSectionProps {
   className?: string;
   id?: string;
   initialProjects: Project[];
+  searchQuery?: string;
 }
 
-export function ProjectsSection({ className, id, initialProjects }: ProjectsSectionProps) {
+export function ProjectsSection({
+  className,
+  id,
+  initialProjects,
+  searchQuery,
+}: ProjectsSectionProps) {
   const shouldReduceMotion = useReducedMotion();
   const { resolvedTheme } = useTheme();
   const [activeFilter, setActiveFilter] = useState<string>('All');
   const [displayedCount, setDisplayedCount] = useState<number>(PROJECTS_INITIAL_DISPLAY_COUNT);
+  const [searchTerm, setSearchTerm] = useState(searchQuery || '');
 
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.1 });
@@ -46,11 +54,22 @@ export function ProjectsSection({ className, id, initialProjects }: ProjectsSect
   }, [initialProjects]);
 
   const filteredProjects = useMemo(() => {
-    if (activeFilter === 'All') return initialProjects;
-    return initialProjects.filter((p) =>
+    let projects = initialProjects;
+
+    if (searchTerm) {
+      projects = projects.filter(
+        (p) =>
+          p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          p.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          p.techStack?.some((t) => t.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+    }
+
+    if (activeFilter === 'All') return projects;
+    return projects.filter((p) =>
       p.techStack?.some((tech) => tech.toLowerCase() === activeFilter.toLowerCase())
     );
-  }, [initialProjects, activeFilter]);
+  }, [initialProjects, activeFilter, searchTerm]);
 
   const currentDisplayedProjects = useMemo(
     () => filteredProjects.slice(0, displayedCount),
@@ -102,6 +121,19 @@ export function ProjectsSection({ className, id, initialProjects }: ProjectsSect
           Selected <span className="text-primary">Creations</span>
         </motion.h2>
 
+        <div className="mb-8 max-w-4xl mx-auto">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search projects by name, description, or technology..."
+              className="w-full pl-10 pr-4 py-2 h-12 text-base"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+
         <div className="mb-16">
           <div className="flex flex-wrap items-center justify-center gap-2 lg:gap-3 max-w-4xl mx-auto">
             {availableFilters.map((filter) => (
@@ -135,7 +167,7 @@ export function ProjectsSection({ className, id, initialProjects }: ProjectsSect
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-2">No projects found</h3>
             <p className="text-muted-foreground">
-              Try selecting a different filter to see what I&apos;ve built.
+              Try a different search term or select another filter.
             </p>
           </div>
         )}

@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps<'/projects/[id]'>):
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://khatriutsav.com';
+  const siteUrl = 'https://khatriutsav.com';
   const imageUrl = project.imageUrl ? `${siteUrl}${project.imageUrl}` : `${siteUrl}/og-image.png`;
 
   return {

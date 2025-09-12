@@ -3,7 +3,6 @@ import { Geist, Geist_Mono, Noto_Sans_Gujarati, Noto_Sans_Devanagari } from 'nex
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
-import { unstable_ViewTransition as ViewTransition } from 'react';
 import './globals.css';
 
 const geistSans = Geist({
@@ -32,10 +31,8 @@ const notoSansDevanagari = Noto_Sans_Devanagari({
   display: 'swap',
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://khatriutsav.com';
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL('https://khatriutsav.com'),
   title: {
     default: 'Utsav Khatri | Full Stack Developer',
     template: '%s | Utsav Khatri',
@@ -143,13 +140,13 @@ export const metadata: Metadata = {
     'FFmpeg',
     'Streaming',
   ],
-  authors: [{ name: 'Utsav Khatri', url: siteUrl }],
+  authors: [{ name: 'Utsav Khatri', url: 'https://khatriutsav.com' }],
   creator: 'Utsav Khatri',
   openGraph: {
     title: 'Utsav Khatri | Full Stack Developer',
     description:
       'Discover the portfolio of Utsav Khatri, showcasing expertise in modern web development, AI, and cloud technologies.',
-    url: siteUrl,
+    url: 'https://khatriutsav.com',
     siteName: 'Utsav Khatri Portfolio',
     images: [
       {
@@ -186,6 +183,9 @@ export const metadata: Metadata = {
     shortcut: '/favicon-16x16.png',
     apple: '/apple-touch-icon.png',
   },
+  verification: {
+    google: 'tNXFFpZE1VOHdcWpBlnAsX7avQThqRD6wjolUQaG4rU',
+  },
 };
 
 export const viewport: Viewport = {
@@ -199,8 +199,8 @@ const personSchema = {
   '@context': 'https://schema.org/',
   '@type': 'Person',
   name: 'Utsav Khatri',
-  url: siteUrl,
-  image: `${siteUrl}/images/utsav-khatri.webp`,
+  url: 'https://khatriutsav.com',
+  image: `https://khatriutsav.com/images/utsav-khatri.webp`,
   jobTitle: 'Full Stack Developer',
   description:
     'Results-oriented Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies with a keen interest in AI.',
@@ -222,10 +222,10 @@ const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'Utsav Khatri | Full Stack Developer',
-  url: siteUrl,
+  url: 'https://khatriutsav.com',
   potentialAction: {
     '@type': 'SearchAction',
-    target: `${siteUrl}/?q={search_term_string}`,
+    target: `https://khatriutsav.com/?q={search_term_string}`,
     'query-input': 'required name=search_term_string',
   },
 };
@@ -238,42 +238,35 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <ViewTransition>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={cn(
-            'font-sans antialiased',
-            geistSans.variable,
-            geistMono.variable,
-            notoSansGujarati.variable,
-            notoSansDevanagari.variable
-          )}
-        >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <a href="#main-content" className="skip-to-content-link">
-              Skip to main content
-            </a>
-            {children}
-            {modal}
-            <Toaster richColors position="top-right" closeButton />
-            <script
-              type="application/ld+json"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-              key="person-jsonld"
-            />
-            <script
-              type="application/ld+json"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-              key="website-jsonld"
-            />
-          </ThemeProvider>
-        </body>
-      </html>
-    </ViewTransition>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          'font-sans antialiased',
+          geistSans.variable,
+          geistMono.variable,
+          notoSansGujarati.variable,
+          notoSansDevanagari.variable
+        )}
+      >
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <a href="#main-content" className="skip-to-content-link">
+            Skip to main content
+          </a>
+          {children}
+          {modal}
+          <Toaster richColors position="top-right" closeButton />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+            key="person-jsonld"
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+            key="website-jsonld"
+          />
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
