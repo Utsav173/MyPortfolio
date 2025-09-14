@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+@plugin "@tailwindcss/typography";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
@@ -458,6 +460,16 @@
   /* Firefox */
 }
 
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 html {
   scroll-behavior: smooth;
   width: 100%;
@@ -474,5 +486,48 @@ html {
       )
     ) {
     scrollbar-gutter: stable;
+  }
+}
+
+/* --- Improved Code Block Styles --- */
+pre.shiki {
+  @apply relative max-h-[80svh] overflow-hidden rounded-lg border bg-card/50 p-0;
+
+  code {
+    @apply grid overflow-auto py-5 font-mono text-sm;
+  }
+
+  .line {
+    @apply relative px-5;
+  }
+
+  button.copy {
+    @apply absolute right-2.5 top-2.5 z-10 flex h-8 w-8 cursor-pointer select-none items-center justify-center rounded-md border bg-card/80 text-muted-foreground opacity-0 backdrop-blur-sm transition-all duration-200;
+  }
+
+  &:hover button.copy {
+    @apply opacity-100 hover:border-primary/50 hover:bg-primary/10 hover:text-primary;
+  }
+
+  button.copy svg {
+    @apply size-4;
+  }
+
+  button.copy svg[data-copy-icon] {
+    @apply block;
+  }
+  button.copy svg[data-copied-icon] {
+    @apply hidden;
+  }
+
+  button.copied {
+    @apply opacity-100 border-emerald-500/50 bg-emerald-500/10 text-emerald-500;
+  }
+
+  button.copied svg[data-copy-icon] {
+    @apply hidden;
+  }
+  button.copied svg[data-copied-icon] {
+    @apply block;
   }
 }

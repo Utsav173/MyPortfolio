@@ -1,455 +1,471 @@
 const projectsData = [
   {
-    "id": 998877665,
-    "name": "Note Sync Pro",
-    "description": "An AI-powered, modern, and minimalist blog platform built with a cutting-edge, full-stack TypeScript environment.",
-    "repoUrl": null,
-    "liveUrl": "https://notes-sync-pro.vercel.app/",
-    "imageUrl": "/images/projects/note-sync-pro.webp",
-    "projectType": "Full-Stack Web App",
-    "keyFeatures": [
-      "AI-powered writing assistant with Google Gemini for content creation, summarization, and tone adjustment.",
-      "Full post management (CRUD) with a rich text editor (Plate.js) supporting image uploads via UploadThing.",
-      "Secure custom JWT-based user authentication system.",
-      "Modern, responsive UI with Tailwind CSS v4, ShadCN UI, and Light/Dark modes.",
-      "SEO optimized with SSR, dynamic sitemaps, and JSON-LD structured data for rich search results."
+    id: 998877665,
+    name: 'Note Sync Pro',
+    description:
+      'An AI-powered, modern, and minimalist blog platform built with a cutting-edge, full-stack TypeScript environment.',
+    repoUrl: null,
+    liveUrl: 'https://notes-sync-pro.vercel.app/',
+    imageUrl: '/images/projects/note-sync-pro.webp',
+    projectType: 'Full-Stack Web App',
+    keyFeatures: [
+      'AI-powered writing assistant with Google Gemini for content creation, summarization, and tone adjustment.',
+      'Full post management (CRUD) with a rich text editor (Plate.js) supporting image uploads via UploadThing.',
+      'Secure custom JWT-based user authentication system.',
+      'Modern, responsive UI with Tailwind CSS v4, ShadCN UI, and Light/Dark modes.',
+      'SEO optimized with SSR, dynamic sitemaps, and JSON-LD structured data for rich search results.',
     ],
-    "techStack": [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Convex",
-      "Tailwind CSS",
-      "Plate.js",
-      "UploadThing",
-      "Vercel AI SDK",
-      "Google Gemini",
-      "JWT"
+    techStack: [
+      'Next.js',
+      'React',
+      'TypeScript',
+      'Convex',
+      'Tailwind CSS',
+      'Plate.js',
+      'UploadThing',
+      'Vercel AI SDK',
+      'Google Gemini',
+      'JWT',
     ],
-    "githubStats": { "stars": 0, "forks": 0 }
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 525828811,
-    "name": "MyPortfolio",
-    "description": "My personal portfolio website showcasing my skills, projects, and professional journey, built with TypeScript and modern web technologies.",
-    "repoUrl": "https://github.com/Utsav173/MyPortfolio",
-    "liveUrl": "https://khatriutsav.com",
-    "imageUrl": "/images/projects/my-portfolio.webp",
-    "projectType": "Full-Stack Web App",
-    "keyFeatures": [
-      "Showcases skills, projects, and professional journey",
-      "Built with Next.js, TypeScript, and modern tech",
-      "Fully responsive design"
+    id: 525828811,
+    name: 'MyPortfolio',
+    description:
+      'My personal portfolio website showcasing my skills, projects, and professional journey, built with TypeScript and modern web technologies.',
+    repoUrl: 'https://github.com/Utsav173/MyPortfolio',
+    liveUrl: 'https://www.khatriutsav.com',
+    imageUrl: '/images/projects/my-portfolio.webp',
+    projectType: 'Full-Stack Web App',
+    keyFeatures: [
+      'Showcases skills, projects, and professional journey',
+      'Built with Next.js, TypeScript, and modern tech',
+      'Fully responsive design',
     ],
-    "techStack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "JavaScript", "CSS", "Vercel"],
-    "githubStats": { "stars": 1, "forks": 0 }
+    techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'JavaScript', 'CSS', 'Vercel'],
+    githubStats: { stars: 1, forks: 0 },
   },
   {
-    "id": 992105629,
-    "name": "3js-hills",
-    "description": "An interactive 3D landscape animation featuring procedurally generated rolling hills, created using Three.js and TypeScript.",
-    "repoUrl": "https://github.com/Utsav173/2js-hills",
-    "liveUrl": "https://3js-hills.vercel.app",
-    "projectType": "3D Web Experience",
-    "keyFeatures": [
-      "Interactive 3D landscape",
-      "Procedurally generated terrain",
-      "Created with Three.js and TypeScript"
+    id: 992105629,
+    name: '3js-hills',
+    description:
+      'An interactive 3D landscape animation featuring procedurally generated rolling hills, created using Three.js and TypeScript.',
+    repoUrl: 'https://github.com/Utsav173/2js-hills',
+    liveUrl: 'https://3js-hills.vercel.app',
+    projectType: '3D Web Experience',
+    keyFeatures: [
+      'Interactive 3D landscape',
+      'Procedurally generated terrain',
+      'Created with Three.js and TypeScript',
     ],
-    "techStack": ["Three.js", "TypeScript", "JavaScript", "HTML5", "CSS3", "WebGL", "Vite"],
-    "githubStats": { "stars": 0, "forks": 0 }
+    techStack: ['Three.js', 'TypeScript', 'JavaScript', 'HTML5', 'CSS3', 'WebGL', 'Vite'],
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 991451039,
-    "name": "matrix-rain-3js",
-    "description": "A captivating visualizer emulating the iconic 'Matrix' digital rain effect, built with Three.js and TypeScript for a dynamic 3D experience.",
-    "repoUrl": "https://github.com/Utsav173/matrix-rain-3js",
-    "liveUrl": "https://matrix-rain-3js.vercel.app/",
-    "projectType": "3D Web Experience",
-    "keyFeatures": [
+    id: 991451039,
+    name: 'matrix-rain-3js',
+    description:
+      "A captivating visualizer emulating the iconic 'Matrix' digital rain effect, built with Three.js and TypeScript for a dynamic 3D experience.",
+    repoUrl: 'https://github.com/Utsav173/matrix-rain-3js',
+    liveUrl: 'https://matrix-rain-3js.vercel.app/',
+    projectType: '3D Web Experience',
+    keyFeatures: [
       "Iconic 'Matrix' digital rain effect",
-      "Dynamic 3D visualizer",
-      "Built with Three.js and TypeScript"
+      'Dynamic 3D visualizer',
+      'Built with Three.js and TypeScript',
     ],
-    "techStack": ["Three.js", "TypeScript", "JavaScript", "HTML5", "CSS3", "WebGL", "Vite"],
-    "githubStats": { "stars": 0, "forks": 0 }
+    techStack: ['Three.js', 'TypeScript', 'JavaScript', 'HTML5', 'CSS3', 'WebGL', 'Vite'],
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 991450187,
-    "name": "ticker-ai",
-    "description": "An AI-powered financial ticker application providing real-time stock market insights and data visualization using Next.js.",
-    "repoUrl": "https://github.com/Utsav173/ticker-ai",
-    "liveUrl": "https://ticker-ai-tau.vercel.app/",
-    "projectType": "Fintech Web App",
-    "keyFeatures": [
-      "AI-powered financial ticker",
-      "Real-time stock market insights",
-      "Data visualization with Chart.js"
+    id: 991450187,
+    name: 'ticker-ai',
+    description:
+      'An AI-powered financial ticker application providing real-time stock market insights and data visualization using Next.js.',
+    repoUrl: 'https://github.com/Utsav173/ticker-ai',
+    liveUrl: 'https://ticker-ai-tau.vercel.app/',
+    projectType: 'Fintech Web App',
+    keyFeatures: [
+      'AI-powered financial ticker',
+      'Real-time stock market insights',
+      'Data visualization with Chart.js',
     ],
-    "techStack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "AI", "Chart.js"],
-    "githubStats": { "stars": 0, "forks": 0 }
+    techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'AI', 'Chart.js'],
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 727342843,
-    "name": "Expense Tracker Pro",
-    "description": "AI-enhanced finance management with intelligent expense categorization, secure JWT auth, and Recharts data visualization.",
-    "repoUrl": "https://github.com/Utsav173/expense-tracker",
-    "liveUrl": "https://expense-pro.vercel.app/",
-    "imageUrl": "/images/projects/expense-pro.webp",
-    "projectType": "Full-Stack Web App",
-    "keyFeatures": [
-      "AI-enhanced expense categorization",
-      "Secure JWT authentication",
-      "Full-stack with Next.js, Hono.js, and Drizzle ORM",
-      "Interactive data visualization with Recharts"
+    id: 727342843,
+    name: 'Expense Tracker Pro',
+    description:
+      'AI-enhanced finance management with intelligent expense categorization, secure JWT auth, and Recharts data visualization.',
+    repoUrl: 'https://github.com/Utsav173/expense-tracker',
+    liveUrl: 'https://expense-pro.khatriutsav.com/',
+    imageUrl: '/images/projects/expense-pro.webp',
+    projectType: 'Full-Stack Web App',
+    keyFeatures: [
+      'AI-enhanced expense categorization',
+      'Secure JWT authentication',
+      'Full-stack with Next.js, Hono.js, and Drizzle ORM',
+      'Interactive data visualization with Recharts',
     ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "Hono.js",
-      "Drizzle ORM",
-      "PostgreSQL",
-      "NeonDB",
-      "Gemini AI",
-      "Recharts",
-      "JWT",
-      "Tailwind CSS"
+    techStack: [
+      'Next.js',
+      'TypeScript',
+      'Hono.js',
+      'Drizzle ORM',
+      'PostgreSQL',
+      'NeonDB',
+      'Gemini AI',
+      'Recharts',
+      'JWT',
+      'Tailwind CSS',
     ],
-    "githubStats": { "stars": 1, "forks": 0 }
+    githubStats: { stars: 1, forks: 0 },
   },
   {
-    "id": 932880305,
-    "name": "AI Recipe Maker (Mobile)",
-    "description": "A mobile application built with Expo (React Native) that leverages Gemini AI to dynamically generate culinary recipes based on user inputs.",
-    "repoUrl": "https://github.com/Utsav173/recipe-maker",
-    "projectType": "Mobile App",
-    "keyFeatures": [
-      "Generates recipes dynamically with Gemini AI",
-      "Built with Expo for cross-platform support",
-      "React Native for native performance"
+    id: 932880305,
+    name: 'AI Recipe Maker (Mobile)',
+    description:
+      'A mobile application built with Expo (React Native) that leverages Gemini AI to dynamically generate culinary recipes based on user inputs.',
+    repoUrl: 'https://github.com/Utsav173/recipe-maker',
+    projectType: 'Mobile App',
+    keyFeatures: [
+      'Generates recipes dynamically with Gemini AI',
+      'Built with Expo for cross-platform support',
+      'React Native for native performance',
     ],
-    "techStack": [
-      "React Native",
-      "Expo",
-      "TypeScript",
-      "JavaScript",
-      "Gemini AI",
-      "Mobile Development"
+    techStack: [
+      'React Native',
+      'Expo',
+      'TypeScript',
+      'JavaScript',
+      'Gemini AI',
+      'Mobile Development',
     ],
-    "githubStats": { "stars": 0, "forks": 0 }
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 657660151,
-    "name": "MDX Personal Blog",
-    "description": "Performance-centric Next.js blog with MDX & SSG.",
-    "repoUrl": "https://github.com/Utsav173/blog-sync",
-    "liveUrl": "https://blog-sync.vercel.app",
-    "imageUrl": "/images/projects/blog-sync.webp",
-    "projectType": "Web App",
-    "keyFeatures": [
-      "Performance-centric blog using MDX and SSG",
-      "Built with Next.js and TypeScript"
+    id: 657660151,
+    name: 'MDX Personal Blog',
+    description: 'Performance-centric Next.js blog with MDX & SSG.',
+    repoUrl: 'https://github.com/Utsav173/blog-sync',
+    liveUrl: 'https://blog-sync.vercel.app',
+    imageUrl: '/images/projects/blog-sync.webp',
+    projectType: 'Web App',
+    keyFeatures: [
+      'Performance-centric blog using MDX and SSG',
+      'Built with Next.js and TypeScript',
     ],
-    "techStack": ["Next.js", "TypeScript", "MDX", "Tailwind CSS", "Data Scraping", "React"],
-    "githubStats": { "stars": 1, "forks": 0 }
+    techStack: ['Next.js', 'TypeScript', 'MDX', 'Tailwind CSS', 'Data Scraping', 'React'],
+    githubStats: { stars: 1, forks: 0 },
   },
   {
-    "id": 952619337,
-    "name": "AI Card Generator",
-    "description": "Generate professional birthday and greeting card designs using AI. Features various templates and customization options.",
-    "repoUrl": "https://github.com/Utsav173/ai-card-gen",
-    "liveUrl": "https://ai-card-maker.vercel.app/",
-    "imageUrl": "/images/projects/ai-card-maker.webp",
-    "projectType": "AI Tool",
-    "keyFeatures": [
-      "AI-powered card generation",
-      "Multiple design templates and customizations",
-      "Built as a SaaS tool with Next.js"
+    id: 952619337,
+    name: 'AI Card Generator',
+    description:
+      'Generate professional birthday and greeting card designs using AI. Features various templates and customization options.',
+    repoUrl: 'https://github.com/Utsav173/ai-card-gen',
+    liveUrl: 'https://ai-card-maker.vercel.app/',
+    imageUrl: '/images/projects/ai-card-maker.webp',
+    projectType: 'AI Tool',
+    keyFeatures: [
+      'AI-powered card generation',
+      'Multiple design templates and customizations',
+      'Built as a SaaS tool with Next.js',
     ],
-    "techStack": ["Next.js", "TypeScript", "AI", "Vercel", "Tailwind CSS", "React"],
-    "githubStats": { "stars": 1, "forks": 0 }
+    techStack: ['Next.js', 'TypeScript', 'AI', 'Vercel', 'Tailwind CSS', 'React'],
+    githubStats: { stars: 1, forks: 0 },
   },
   {
-    "id": 922037774,
-    "name": "AI Image Generator (Flux)",
-    "description": "On-demand AI image generation using Next.js, TypeScript, and the Fal.ai API (Flux Model) for efficient backend processing.",
-    "repoUrl": "https://github.com/Utsav173/fal-flux-generation",
-    "liveUrl": "https://fal-flux-generation.vercel.app",
-    "projectType": "AI Tool",
-    "keyFeatures": [
-      "On-demand AI image generation",
-      "Integrates Fal.ai API (Flux Model)",
-      "Efficient backend processing"
+    id: 922037774,
+    name: 'AI Image Generator (Flux)',
+    description:
+      'On-demand AI image generation using Next.js, TypeScript, and the Fal.ai API (Flux Model) for efficient backend processing.',
+    repoUrl: 'https://github.com/Utsav173/fal-flux-generation',
+    liveUrl: 'https://fal-flux-generation.vercel.app',
+    projectType: 'AI Tool',
+    keyFeatures: [
+      'On-demand AI image generation',
+      'Integrates Fal.ai API (Flux Model)',
+      'Efficient backend processing',
     ],
-    "techStack": ["Next.js", "TypeScript", "Fal.ai API", "Tailwind CSS", "React", "AI"],
-    "githubStats": { "stars": 0, "forks": 0 }
+    techStack: ['Next.js', 'TypeScript', 'Fal.ai API', 'Tailwind CSS', 'React', 'AI'],
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 905732192,
-    "name": "Video Streaming Project",
-    "description": "A full-featured video streaming service built with modern web technologies, supporting on-demand video playback, user authentication, and scalable backend.",
-    "repoUrl": "https://github.com/Utsav173/video-streaming-project",
-    "liveUrl": null,
-    "imageUrl": null,
-    "projectType": "Full-Stack Web App",
-    "keyFeatures": [
-      "Live and on-demand video streaming",
-      "Scalable backend for video processing and delivery",
-      "Responsive UI for web and mobile devices"
+    id: 905732192,
+    name: 'Video Streaming Project',
+    description:
+      'A full-featured video streaming service built with modern web technologies, supporting on-demand video playback, user authentication, and scalable backend.',
+    repoUrl: 'https://github.com/Utsav173/video-streaming-project',
+    liveUrl: null,
+    imageUrl: null,
+    projectType: 'Full-Stack Web App',
+    keyFeatures: [
+      'Live and on-demand video streaming',
+      'Scalable backend for video processing and delivery',
+      'Responsive UI for web and mobile devices',
     ],
-    "techStack": [
-      "ffmpeg",
-      "streaming",
-      "Bun",
-      "Node.js",
-      "Hono.js",
-      "Next.js",
-      "TypeScript",
-      "React",
-      "Tailwind CSS"
+    techStack: [
+      'ffmpeg',
+      'streaming',
+      'Bun',
+      'Node.js',
+      'Hono.js',
+      'Next.js',
+      'TypeScript',
+      'React',
+      'Tailwind CSS',
     ],
-    "githubStats": { "stars": 0, "forks": 0 }
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 922044978,
-    "name": "Cloudflare PDF Parser",
-    "description": "A serverless Cloudflare Worker designed for parsing PDF statements and extracting structured JSON data efficiently.",
-    "repoUrl": "https://github.com/Utsav173/pdf-parser",
-    "projectType": "Backend Service",
-    "keyFeatures": [
-      "Serverless PDF parsing on the edge",
-      "Extracts structured JSON from PDFs",
-      "Built with Cloudflare Workers"
+    id: 922044978,
+    name: 'Cloudflare PDF Parser',
+    description:
+      'A serverless Cloudflare Worker designed for parsing PDF statements and extracting structured JSON data efficiently.',
+    repoUrl: 'https://github.com/Utsav173/pdf-parser',
+    projectType: 'Backend Service',
+    keyFeatures: [
+      'Serverless PDF parsing on the edge',
+      'Extracts structured JSON from PDFs',
+      'Built with Cloudflare Workers',
     ],
-    "techStack": ["Cloudflare Workers", "JavaScript", "PDF.js"],
-    "githubStats": { "stars": 0, "forks": 0 }
+    techStack: ['Cloudflare Workers', 'JavaScript', 'PDF.js'],
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 583853098,
-    "name": "GTU IMP Study Portal",
-    "description": "A comprehensive portal for GTU students providing important questions, study materials, and exam resources.",
-    "repoUrl": "https://github.com/Utsav173/gtu-imp",
-    "liveUrl": "https://gtu-imp.vercel.app",
-    "imageUrl": "/images/projects/gtu-imp.webp",
-    "projectType": "EdTech Platform",
-    "keyFeatures": [
-      "Centralized resource for GTU students",
-      "Provides important questions and study materials",
-      "Built with Next.js for performance"
+    id: 583853098,
+    name: 'GTU IMP Study Portal',
+    description:
+      'A comprehensive portal for GTU students providing important questions, study materials, and exam resources.',
+    repoUrl: 'https://github.com/Utsav173/gtu-imp',
+    liveUrl: 'https://gtu-imp.vercel.app',
+    imageUrl: '/images/projects/gtu-imp.webp',
+    projectType: 'EdTech Platform',
+    keyFeatures: [
+      'Centralized resource for GTU students',
+      'Provides important questions and study materials',
+      'Built with Next.js for performance',
     ],
-    "techStack": ["Next.js", "TypeScript", "Vercel", "React", "Tailwind CSS"],
-    "githubStats": { "stars": 0, "forks": 0 }
+    techStack: ['Next.js', 'TypeScript', 'Vercel', 'React', 'Tailwind CSS'],
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 908677971,
-    "name": "X-Splash Image Platform (Next.js)",
-    "description": "A Next.js based platform for AI image generation, publishing, and exploration, offering a modern user experience.",
-    "repoUrl": "https://github.com/Utsav173/x-splash-gen-next",
-    "liveUrl": "https://x-image-gen.vercel.app",
-    "projectType": "Web App",
-    "keyFeatures": [
-      "AI image generation and publishing",
-      "Community platform for content exploration",
-      "Modern UX with Next.js"
+    id: 908677971,
+    name: 'X-Splash Image Platform (Next.js)',
+    description:
+      'A Next.js based platform for AI image generation, publishing, and exploration, offering a modern user experience.',
+    repoUrl: 'https://github.com/Utsav173/x-splash-gen-next',
+    liveUrl: 'https://x-image-gen.vercel.app',
+    projectType: 'Web App',
+    keyFeatures: [
+      'AI image generation and publishing',
+      'Community platform for content exploration',
+      'Modern UX with Next.js',
     ],
-    "techStack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "AI", "Vercel"],
-    "githubStats": { "stars": 0, "forks": 0 }
+    techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'AI', 'Vercel'],
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 907457207,
-    "name": "X-Splash Image Platform (MERN)",
-    "description": "A full-stack image exploration and sharing platform built with the MERN stack (MongoDB, Express, React, Node.js).",
-    "repoUrl": "https://github.com/Utsav173/x-splash-gen",
-    "projectType": "Full-Stack Web App",
-    "keyFeatures": [
-      "Image exploration and sharing",
-      "Built with the MERN stack",
-      "Full-stack social platform"
+    id: 907457207,
+    name: 'X-Splash Image Platform (MERN)',
+    description:
+      'A full-stack image exploration and sharing platform built with the MERN stack (MongoDB, Express, React, Node.js).',
+    repoUrl: 'https://github.com/Utsav173/x-splash-gen',
+    projectType: 'Full-Stack Web App',
+    keyFeatures: [
+      'Image exploration and sharing',
+      'Built with the MERN stack',
+      'Full-stack social platform',
     ],
-    "techStack": [
-      "React",
-      "Node.js",
-      "Express.js",
-      "MongoDB",
-      "JavaScript",
-      "HTML",
-      "CSS",
-      "Mongoose"
+    techStack: [
+      'React',
+      'Node.js',
+      'Express.js',
+      'MongoDB',
+      'JavaScript',
+      'HTML',
+      'CSS',
+      'Mongoose',
     ],
-    "githubStats": { "stars": 0, "forks": 0 }
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 900219754,
-    "name": "Flux Ultra Image Generator",
-    "description": "An advanced AI image generation tool leveraging the Flux model, built with TypeScript for high-quality visual content creation.",
-    "repoUrl": "https://github.com/Utsav173/flux-ultra-gen",
-    "projectType": "AI Tool",
-    "keyFeatures": [
-      "Advanced AI image generation",
-      "Leverages the high-quality Flux model",
-      "Built with Next.js and TypeScript"
+    id: 900219754,
+    name: 'Flux Ultra Image Generator',
+    description:
+      'An advanced AI image generation tool leveraging the Flux model, built with TypeScript for high-quality visual content creation.',
+    repoUrl: 'https://github.com/Utsav173/flux-ultra-gen',
+    projectType: 'AI Tool',
+    keyFeatures: [
+      'Advanced AI image generation',
+      'Leverages the high-quality Flux model',
+      'Built with Next.js and TypeScript',
     ],
-    "techStack": ["TypeScript", "Next.js", "React", "Tailwind CSS", "AI", "Fal.ai"],
-    "githubStats": { "stars": 1, "forks": 0 }
+    techStack: ['TypeScript', 'Next.js', 'React', 'Tailwind CSS', 'AI', 'Fal.ai'],
+    githubStats: { stars: 1, forks: 0 },
   },
   {
-    "id": 900217037,
-    "name": "Stable Diffusion 3.5 Web App",
-    "description": "A web application enabling users to generate images using the Stable Diffusion 3.5 AI model with their own API keys.",
-    "repoUrl": "https://github.com/Utsav173/stable-diff-3.5",
-    "projectType": "AI Tool",
-    "keyFeatures": [
-      "Image generation with Stable Diffusion 3.5",
-      "Users can integrate their own API keys",
-      "Web interface for an AI model"
+    id: 900217037,
+    name: 'Stable Diffusion 3.5 Web App',
+    description:
+      'A web application enabling users to generate images using the Stable Diffusion 3.5 AI model with their own API keys.',
+    repoUrl: 'https://github.com/Utsav173/stable-diff-3.5',
+    projectType: 'AI Tool',
+    keyFeatures: [
+      'Image generation with Stable Diffusion 3.5',
+      'Users can integrate their own API keys',
+      'Web interface for an AI model',
     ],
-    "techStack": ["TypeScript", "Next.js", "React", "Tailwind CSS", "Stable Diffusion API", "AI"],
-    "githubStats": { "stars": 1, "forks": 0 }
+    techStack: ['TypeScript', 'Next.js', 'React', 'Tailwind CSS', 'Stable Diffusion API', 'AI'],
+    githubStats: { stars: 1, forks: 0 },
   },
   {
-    "id": 905732199,
-    "name": "IPO Insights Pro",
-    "description": "A web application for tracking the latest IPO insights, Grey Market Premiums (GMP), and related financial data.",
-    "repoUrl": "https://github.com/Utsav173/pro-ipo",
-    "liveUrl": "https://pro-ipo.vercel.app",
-    "projectType": "Fintech Web App",
-    "keyFeatures": [
-      "Tracks latest IPO insights and GMP",
-      "Data visualization for financial data",
-      "Built with Next.js and TypeScript"
+    id: 905732199,
+    name: 'IPO Insights Pro',
+    description:
+      'A web application for tracking the latest IPO insights, Grey Market Premiums (GMP), and related financial data.',
+    repoUrl: 'https://github.com/Utsav173/pro-ipo',
+    liveUrl: 'https://pro-ipo.vercel.app',
+    projectType: 'Fintech Web App',
+    keyFeatures: [
+      'Tracks latest IPO insights and GMP',
+      'Data visualization for financial data',
+      'Built with Next.js and TypeScript',
     ],
-    "techStack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Chart.js", "Data Scraping"],
-    "githubStats": { "stars": 1, "forks": 0 }
+    techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Chart.js', 'Data Scraping'],
+    githubStats: { stars: 1, forks: 0 },
   },
   {
-    "id": 904861772,
-    "name": "IPO GMP Pro Dashboard",
-    "description": "Advanced dashboard for tracking IPO Grey Market Premiums, allotment status, and subscription data, deployed on Cloudflare Pages.",
-    "repoUrl": "https://github.com/Utsav173/ipo-gmp-pro",
-    "liveUrl": "https://ipo-gmp-pro.pages.dev",
-    "projectType": "Fintech Web App",
-    "keyFeatures": [
-      "Advanced IPO tracking dashboard",
-      "Monitors GMP, allotment, and subscription data",
-      "Serverless deployment on Cloudflare Pages"
+    id: 904861772,
+    name: 'IPO GMP Pro Dashboard',
+    description:
+      'Advanced dashboard for tracking IPO Grey Market Premiums, allotment status, and subscription data, deployed on Cloudflare Pages.',
+    repoUrl: 'https://github.com/Utsav173/ipo-gmp-pro',
+    liveUrl: 'https://ipo-gmp-pro.pages.dev',
+    projectType: 'Fintech Web App',
+    keyFeatures: [
+      'Advanced IPO tracking dashboard',
+      'Monitors GMP, allotment, and subscription data',
+      'Serverless deployment on Cloudflare Pages',
     ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "Cloudflare Pages",
-      "Data Scraping",
-      "Tailwind CSS",
-      "React",
-      "Chart.js"
+    techStack: [
+      'Next.js',
+      'TypeScript',
+      'Cloudflare Pages',
+      'Data Scraping',
+      'Tailwind CSS',
+      'React',
+      'Chart.js',
     ],
-    "githubStats": { "stars": 1, "forks": 0 }
+    githubStats: { stars: 1, forks: 0 },
   },
   {
-    "id": 586172831,
-    "name": "GTU Sample Paper Archive",
-    "description": "A web resource providing access to a collection of GTU (Gujarat Technological University) sample papers for students.",
-    "repoUrl": "https://github.com/Utsav173/gtu-sample-paper",
-    "liveUrl": "https://samplepaper.vercel.app",
-    "projectType": "EdTech Resource",
-    "keyFeatures": [
-      "Archive of GTU sample papers",
-      "Easy access for students",
-      "Simple and fast static site"
+    id: 586172831,
+    name: 'GTU Sample Paper Archive',
+    description:
+      'A web resource providing access to a collection of GTU (Gujarat Technological University) sample papers for students.',
+    repoUrl: 'https://github.com/Utsav173/gtu-sample-paper',
+    liveUrl: 'https://samplepaper.vercel.app',
+    projectType: 'EdTech Resource',
+    keyFeatures: [
+      'Archive of GTU sample papers',
+      'Easy access for students',
+      'Simple and fast static site',
     ],
-    "techStack": ["HTML", "CSS", "JavaScript", "Vercel"],
-    "githubStats": { "stars": 0, "forks": 0 }
+    techStack: ['HTML', 'CSS', 'JavaScript', 'Vercel'],
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 592869786,
-    "name": "Simple Budget Calculator",
-    "description": "A client-side budget calculation tool built with vanilla JavaScript for straightforward financial planning.",
-    "repoUrl": "https://github.com/Utsav173/budget-calc",
-    "liveUrl": "https://budget-calc-one.vercel.app",
-    "projectType": "Utility Tool",
-    "keyFeatures": [
-      "Client-side budget calculations",
-      "No backend required",
-      "Built with vanilla JavaScript"
+    id: 592869786,
+    name: 'Simple Budget Calculator',
+    description:
+      'A client-side budget calculation tool built with vanilla JavaScript for straightforward financial planning.',
+    repoUrl: 'https://github.com/Utsav173/budget-calc',
+    liveUrl: 'https://budget-calc-one.vercel.app',
+    projectType: 'Utility Tool',
+    keyFeatures: [
+      'Client-side budget calculations',
+      'No backend required',
+      'Built with vanilla JavaScript',
     ],
-    "techStack": ["JavaScript", "HTML", "CSS"],
-    "githubStats": { "stars": 0, "forks": 0 }
+    techStack: ['JavaScript', 'HTML', 'CSS'],
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 628273765,
-    "name": "Contact Form Backend API",
-    "description": "A Node.js and Express.js backend service for handling contact form submissions from web applications.",
-    "repoUrl": "https://github.com/Utsav173/contact-form-backend",
-    "projectType": "Backend Service",
-    "keyFeatures": [
-      "Handles contact form submissions",
-      "Reusable backend API",
-      "Built with Node.js and Express.js"
+    id: 628273765,
+    name: 'Contact Form Backend API',
+    description:
+      'A Node.js and Express.js backend service for handling contact form submissions from web applications.',
+    repoUrl: 'https://github.com/Utsav173/contact-form-backend',
+    projectType: 'Backend Service',
+    keyFeatures: [
+      'Handles contact form submissions',
+      'Reusable backend API',
+      'Built with Node.js and Express.js',
     ],
-    "techStack": ["Node.js", "Express.js", "JavaScript"],
-    "githubStats": { "stars": 0, "forks": 0 }
+    techStack: ['Node.js', 'Express.js', 'JavaScript'],
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 640485531,
-    "name": "Appointment Booking Backend",
-    "description": "A backend system developed with Node.js and Express.js to manage appointment bookings, including API endpoints.",
-    "repoUrl": "https://github.com/Utsav173/Appoinment-booking-backend",
-    "projectType": "Backend Service",
-    "keyFeatures": [
-      "Manages appointment bookings",
-      "Provides RESTful API endpoints",
-      "Built with Node.js and MongoDB"
+    id: 640485531,
+    name: 'Appointment Booking Backend',
+    description:
+      'A backend system developed with Node.js and Express.js to manage appointment bookings, including API endpoints.',
+    repoUrl: 'https://github.com/Utsav173/Appoinment-booking-backend',
+    projectType: 'Backend Service',
+    keyFeatures: [
+      'Manages appointment bookings',
+      'Provides RESTful API endpoints',
+      'Built with Node.js and MongoDB',
     ],
-    "techStack": ["Node.js", "Express.js", "JavaScript", "MongoDB"],
-    "githubStats": { "stars": 0, "forks": 0 }
+    techStack: ['Node.js', 'Express.js', 'JavaScript', 'MongoDB'],
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 629585331,
-    "name": "Full-Stack Social Media App",
-    "description": "A feature-rich social media application built with JavaScript, HTML, and CSS, demonstrating full-stack development capabilities with React and Node.js/Express.",
-    "repoUrl": "https://github.com/Utsav173/full-stack-social-media",
-    "liveUrl": "https://full-stack-social-media-x1c9.vercel.app",
-    "projectType": "Full-Stack Web App",
-    "keyFeatures": [
-      "Feature-rich social media functionality",
-      "Full-stack with React and Node.js",
-      "JWT for authentication"
+    id: 629585331,
+    name: 'Full-Stack Social Media App',
+    description:
+      'A feature-rich social media application built with JavaScript, HTML, and CSS, demonstrating full-stack development capabilities with React and Node.js/Express.',
+    repoUrl: 'https://github.com/Utsav173/full-stack-social-media',
+    liveUrl: 'https://full-stack-social-media-x1c9.vercel.app',
+    projectType: 'Full-Stack Web App',
+    keyFeatures: [
+      'Feature-rich social media functionality',
+      'Full-stack with React and Node.js',
+      'JWT for authentication',
     ],
-    "techStack": [
-      "React",
-      "Node.js",
-      "Express.js",
-      "MongoDB",
-      "JavaScript",
-      "HTML",
-      "CSS",
-      "Mongoose",
-      "JWT"
+    techStack: [
+      'React',
+      'Node.js',
+      'Express.js',
+      'MongoDB',
+      'JavaScript',
+      'HTML',
+      'CSS',
+      'Mongoose',
+      'JWT',
     ],
-    "githubStats": { "stars": 0, "forks": 0 }
+    githubStats: { stars: 0, forks: 0 },
   },
   {
-    "id": 658353961,
-    "name": "Twitter Clone (T3 Stack)",
-    "description": "A Twitter-like application built using the T3 Stack (Next.js, TypeScript, Tailwind CSS, tRPC, Prisma), showcasing modern full-stack development.",
-    "repoUrl": "https://github.com/Utsav173/twitter-t3",
-    "liveUrl": "https://twitter-t3-theta.vercel.app",
-    "projectType": "Full-Stack Web App",
-    "keyFeatures": [
-      "Full-stack Twitter clone",
-      "Built with the modern T3 Stack",
-      "Features tRPC, Prisma, and NextAuth.js"
+    id: 658353961,
+    name: 'Twitter Clone (T3 Stack)',
+    description:
+      'A Twitter-like application built using the T3 Stack (Next.js, TypeScript, Tailwind CSS, tRPC, Prisma), showcasing modern full-stack development.',
+    repoUrl: 'https://github.com/Utsav173/twitter-t3',
+    liveUrl: 'https://twitter-t3-theta.vercel.app',
+    projectType: 'Full-Stack Web App',
+    keyFeatures: [
+      'Full-stack Twitter clone',
+      'Built with the modern T3 Stack',
+      'Features tRPC, Prisma, and NextAuth.js',
     ],
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "tRPC",
-      "Prisma",
-      "Tailwind CSS",
-      "NextAuth.js",
-      "React"
-    ],
-    "githubStats": { "stars": 0, "forks": 0 }
-  }
+    techStack: ['Next.js', 'TypeScript', 'tRPC', 'Prisma', 'Tailwind CSS', 'NextAuth.js', 'React'],
+    githubStats: { stars: 0, forks: 0 },
+  },
 ];
 
 export default projectsData;

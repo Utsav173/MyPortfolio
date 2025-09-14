@@ -75,7 +75,6 @@ const buttonHoverVariants: Variants = {
   },
 };
 
-// Optimized button variants with better performance
 const buttonVariants = {
   initial: {
     scale: 1,
@@ -99,7 +98,6 @@ const buttonVariants = {
   },
 } as unknown as Variants;
 
-// Shimmer animation variants
 const shimmerVariants = {
   initial: { x: '-100%', opacity: 0 },
   animate: {
@@ -192,7 +190,6 @@ export function HeroSection({ className, id }: { className?: string; id?: string
           role="group"
           aria-label="Primary actions"
         >
-          {/* Primary CTA Button with Colorful Effect */}
           <motion.div
             variants={shouldReduceMotion ? undefined : buttonHoverVariants}
             whileHover={shouldReduceMotion ? undefined : 'hover'}
@@ -212,7 +209,6 @@ export function HeroSection({ className, id }: { className?: string; id?: string
                 className="relative z-20 flex items-center justify-center"
                 aria-label="Explore my projects"
               >
-                {/* Animated Gradient Background */}
                 <div
                   className={cn(
                     'absolute inset-0 rounded-full',
@@ -223,7 +219,6 @@ export function HeroSection({ className, id }: { className?: string; id?: string
                   )}
                 />
 
-                {/* Secondary Gradient Layer */}
                 <div
                   className={cn(
                     'absolute inset-0 rounded-full',
@@ -234,7 +229,6 @@ export function HeroSection({ className, id }: { className?: string; id?: string
                   )}
                 />
 
-                {/* Content Container */}
                 <div className="relative z-10 flex items-center justify-center text-white dark:text-zinc-300">
                   <Sparkles className="mr-2 size-5 transition-all duration-300 group-hover:rotate-12 group-hover:scale-110" />
                   Explore Projects
@@ -244,35 +238,28 @@ export function HeroSection({ className, id }: { className?: string; id?: string
             </Button>
           </motion.div>
 
-          {/* Secondary CTA Button with Glass Morphism Effect */}
           <motion.div
             variants={shouldReduceMotion ? undefined : buttonVariants}
             initial="initial"
             whileHover={shouldReduceMotion ? undefined : 'hover'}
             whileTap={shouldReduceMotion ? undefined : 'tap'}
-            style={{ perspective: 1000 }} // Add perspective for 3D effect
+            style={{ perspective: 1000 }}
           >
             <Button
               variant="outline"
               asChild
               className={cn(
-                // Base styles - consolidated for better performance
                 'group relative h-auto overflow-hidden rounded-full px-8 py-4 text-base font-semibold',
                 'transition-all duration-300 ease-out will-change-transform',
 
-                // Glass morphism effect
                 'border border-white/20 bg-white/5 backdrop-blur-xl shadow-lg shadow-black/5',
 
-                // Hover states
                 'hover:border-white/30 hover:bg-white/10 hover:shadow-xl hover:shadow-black/10',
 
-                // Dark mode support
                 'dark:border-white/10 dark:bg-white/5 dark:hover:border-white/20 dark:hover:bg-white/10',
 
-                // Responsive sizing
                 'max-sm:px-4 max-sm:py-2.5 max-sm:text-sm sm:px-10 sm:py-4',
 
-                // Optimized pseudo-element for gradient background
                 'before:absolute before:inset-0 before:rounded-full before:opacity-0',
                 'before:bg-gradient-to-r before:from-emerald-400/10 before:via-teal-400/10 before:to-cyan-400/10',
                 'before:transition-opacity before:duration-300 hover:before:opacity-100'
@@ -286,7 +273,6 @@ export function HeroSection({ className, id }: { className?: string; id?: string
                 className="relative z-10 flex items-center justify-center"
                 aria-label="Download Utsav Khatri's Resume"
               >
-                {/* Optimized animated border - only renders on hover */}
                 <div
                   className={cn(
                     'absolute inset-0 rounded-full opacity-0 transition-opacity duration-300',
@@ -296,7 +282,6 @@ export function HeroSection({ className, id }: { className?: string; id?: string
                   )}
                 />
 
-                {/* Shimmer effect - using transform3d for better performance */}
                 {!shouldReduceMotion && (
                   <motion.div
                     className={cn(
@@ -314,9 +299,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
                   />
                 )}
 
-                {/* Content container */}
                 <div className="relative z-20 flex items-center justify-center">
-                  {/* Icon with optimized animations */}
                   <DownloadCloud
                     className={cn(
                       'mr-2.5 size-5 transition-all duration-300 ease-out',
@@ -324,7 +307,6 @@ export function HeroSection({ className, id }: { className?: string; id?: string
                     )}
                   />
 
-                  {/* Text with underline effect */}
                   <span
                     className={cn(
                       'relative transition-colors duration-300',
@@ -332,7 +314,6 @@ export function HeroSection({ className, id }: { className?: string; id?: string
                     )}
                   >
                     Download Resume
-                    {/* Optimized underline animation */}
                     <span
                       className={cn(
                         'absolute -bottom-1 left-0 h-0.5 w-0 rounded-full',
@@ -342,7 +323,6 @@ export function HeroSection({ className, id }: { className?: string; id?: string
                     />
                   </span>
 
-                  {/* Animated dot indicator */}
                   <div
                     className={cn(
                       'ml-2 opacity-0 transition-all duration-300 ease-out',

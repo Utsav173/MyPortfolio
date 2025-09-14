@@ -1,6 +1,7 @@
 import { ContactSection } from '@/components/sections/ContactSection';
 import { Metadata } from 'next';
 import { PageWrapper } from '@/components/layout/PageWrapper';
+import { SITE_URL } from '@/lib/config';
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -21,7 +22,7 @@ const contactPageSchema = {
   '@type': 'ContactPage',
   name: 'Contact Utsav Khatri',
   description: 'Contact form and details to get in touch with Utsav Khatri.',
-  url: `https://khatriutsav.com/contact`,
+  url: `${SITE_URL}/contact`,
   potentialAction: {
     '@type': 'CommunicateAction',
     target: {

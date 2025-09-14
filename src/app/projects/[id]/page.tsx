@@ -4,6 +4,7 @@ import { ProjectDetail } from '@/components/sections/ProjectDetail';
 import { Metadata } from 'next';
 import projectsData from '@/lib/projects-data';
 import { PageWrapper } from '@/components/layout/PageWrapper';
+import { SITE_URL } from '@/lib/config';
 
 async function getProjects(): Promise<Project[]> {
   return projectsData as Project[];
@@ -23,20 +24,19 @@ export async function generateMetadata({ params }: PageProps<'/projects/[id]'>):
     };
   }
 
-  const siteUrl = 'https://khatriutsav.com';
-  const imageUrl = project.imageUrl ? `${siteUrl}${project.imageUrl}` : `${siteUrl}/og-image.png`;
+  const imageUrl = project.imageUrl ? `${SITE_URL}${project.imageUrl}` : `${SITE_URL}/og-image.png`;
 
   return {
     title: project.name,
     description: project.description,
     keywords: project.techStack,
     alternates: {
-      canonical: `${siteUrl}/projects/${project.id}`,
+      canonical: `${SITE_URL}/projects/${project.id}`,
     },
     openGraph: {
       title: `${project.name} | Utsav Khatri`,
       description: project.description,
-      url: `${siteUrl}/projects/${project.id}`,
+      url: `${SITE_URL}/projects/${project.id}`,
       images: [
         {
           url: imageUrl,
@@ -62,14 +62,13 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
     notFound();
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://khatriutsav.com';
   const projectSchema = {
     '@context': 'https://schema.org',
     '@type': 'CreativeWork',
     name: project.name,
     description: project.description,
-    url: `${siteUrl}/projects/${project.id}`,
-    image: project.imageUrl ? `${siteUrl}${project.imageUrl}` : `${siteUrl}/og-image.png`,
+    url: `${SITE_URL}/projects/${project.id}`,
+    image: project.imageUrl ? `${SITE_URL}${project.imageUrl}` : `${SITE_URL}/og-image.png`,
     author: {
       '@type': 'Person',
       name: 'Utsav Khatri',

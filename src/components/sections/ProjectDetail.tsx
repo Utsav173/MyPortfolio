@@ -36,37 +36,36 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
   return (
     <div
       className={cn(
-        'p-0 w-[98vw] max-w-sm h-fit max-h-[95vh] flex flex-col',
-        'sm:w-[92vw] sm:max-w-2xl ',
-        'lg:w-[85vw] lg:max-w-4xl ',
-        'xl:max-w-5xl',
+        'p-0 w-full flex flex-col',
         'bg-background border-none shadow-2xl',
         'dark:bg-background dark:border-border',
-        'overflow-hidden'
+        'overflow-hidden rounded-lg'
       )}
     >
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => router.back()}
-        className="absolute top-2 left-2 z-10"
-      >
-        <ArrowLeft className="h-4 w-4" />
-      </Button>
-      <div
-        className={cn('flex-grow flex flex-col w-full overflow-hidden max-h-fit', 'lg:flex-row')}
-      >
+      <div className="p-4 flex items-center border-b">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => router.back()}
+          aria-label="Go back to projects"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Projects
+        </Button>
+      </div>
+
+      <div className={cn('flex-grow flex flex-col w-full overflow-hidden', 'lg:flex-row')}>
         {hasImage && (
           <div
             className={cn(
               'relative w-full flex-shrink-0 overflow-hidden',
-              'h-32 xs:h-40 sm:h-48',
+              'h-48 sm:h-64 md:h-72',
               'lg:w-1/2 lg:h-auto'
             )}
           >
             <Image
               src={project.imageUrl!}
-              alt={project.name}
+              alt={`Screenshot of the ${project.name} project`}
               fill
               className={cn('object-cover transition-all duration-300', 'dark:brightness-90')}
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -75,7 +74,7 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
           </div>
         )}
         <ScrollArea className={cn('flex-grow', 'h-full overflow-y-auto')}>
-          <div className={cn('space-y-3', 'p-3 xs:p-4 sm:p-5 lg:p-6 xl:p-8')}>
+          <div className={cn('space-y-4', 'p-4 sm:p-6 lg:p-8')}>
             <div className="text-left space-y-2">
               <Badge
                 variant="secondary"
@@ -90,7 +89,7 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
               <h1
                 className={cn(
                   'font-bold leading-tight',
-                  'text-lg xs:text-xl sm:text-2xl lg:text-3xl',
+                  'text-2xl sm:text-3xl lg:text-4xl',
                   'text-foreground dark:text-foreground'
                 )}
               >
@@ -99,7 +98,7 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
               <h3
                 className={cn(
                   'leading-relaxed',
-                  'text-xs xs:text-sm sm:text-base',
+                  'text-sm sm:text-base',
                   'text-muted-foreground dark:text-muted-foreground/90'
                 )}
               >
@@ -107,33 +106,34 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
               </h3>
             </div>
 
-            <div className="space-y-4 sm:space-y-5">
+            <div className="space-y-5 sm:space-y-6">
               <div>
                 <h4
                   className={cn(
-                    'font-semibold mb-2 sm:mb-3',
-                    'text-sm sm:text-base',
+                    'font-semibold mb-3',
+                    'text-base sm:text-lg',
                     'text-foreground dark:text-foreground'
                   )}
                 >
                   Key Features
                 </h4>
-                <ul className="space-y-1.5 sm:space-y-2">
+                <ul className="space-y-2">
                   {project.keyFeatures.map((feature, i) => (
                     <li
                       key={i}
                       className={cn(
-                        'flex items-start gap-2 sm:gap-3',
-                        'text-xs sm:text-sm',
+                        'flex items-start gap-3',
+                        'text-sm',
                         'text-muted-foreground dark:text-muted-foreground/90'
                       )}
                     >
                       <CheckCircle
                         className={cn(
                           'mt-0.5 shrink-0',
-                          'size-3 sm:size-4',
+                          'size-4',
                           'text-primary dark:text-primary'
                         )}
+                        aria-hidden="true"
                       />
                       <span className="leading-relaxed">{feature}</span>
                     </li>
@@ -144,14 +144,14 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
               <div>
                 <h4
                   className={cn(
-                    'font-semibold mb-2 sm:mb-3',
-                    'text-sm sm:text-base',
+                    'font-semibold mb-3',
+                    'text-base sm:text-lg',
                     'text-foreground dark:text-foreground'
                   )}
                 >
                   Tech Stack
                 </h4>
-                <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                <div className="flex flex-wrap gap-2">
                   {project.techStack.map((techName) => {
                     const tech = getTechDetails(techName);
                     return (
@@ -160,7 +160,12 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
                         variant="none"
                         className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs"
                       >
-                        <Icon icon={tech.icon} className="size-3.5" style={{ color: tech.color }} />
+                        <Icon
+                          icon={tech.icon}
+                          className="size-3.5"
+                          style={{ color: tech.color }}
+                          aria-hidden="true"
+                        />
                         <span>{tech.name}</span>
                       </Badge>
                     );
@@ -174,9 +179,9 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
 
       <div
         className={cn(
-          'flex-shrink-0 flex gap-2 sm:gap-3 border-t',
-          'p-3 xs:p-4 sm:p-5 lg:p-6',
-          'flex-col xs:flex-row',
+          'flex-shrink-0 flex gap-3 border-t',
+          'p-4 sm:p-6',
+          'flex-col sm:flex-row',
           'bg-background/95 backdrop-blur-sm',
           'border-border/50 dark:border-border/30',
           'dark:bg-background/90'
@@ -186,7 +191,7 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
           <Button
             asChild
             className={cn(
-              'flex-1 min-h-9 sm:min-h-10',
+              'flex-1 min-h-10',
               'shadow-sm group',
               'bg-black text-white hover:bg-black/90',
               'dark:bg-white dark:text-black dark:hover:bg-white/90'
@@ -196,25 +201,26 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
               <Icon
                 icon={'simple-icons:github'}
                 color={theme === 'dark' ? 'black' : 'white'}
-                className="mr-2 size-3.5 sm:size-4"
+                className="mr-2 size-4"
+                aria-hidden="true"
               />
-              <span className="text-xs sm:text-sm">Source Code</span>
+              <span className="text-sm">Source Code</span>
             </Link>
           </Button>
         ) : (
           <Badge
             variant="outline"
             className={cn(
-              'flex-1 min-h-9 sm:min-h-10 justify-center',
-              'text-xs sm:text-sm',
+              'flex-1 min-h-10 justify-center',
+              'text-sm',
               'bg-muted text-muted-foreground',
               'border border-border/50 dark:border-border/30',
               'shadow-sm',
               'flex items-center gap-1.5'
             )}
           >
-            <Icon icon={'lucide:lock'} className="size-3.5 sm:size-4" />
-            <span>Private Project (Contact for source code)</span>
+            <Icon icon={'lucide:lock'} className="size-4" aria-hidden="true" />
+            <span>Private Project</span>
           </Badge>
         )}
         {project.liveUrl && (
@@ -222,7 +228,7 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
             asChild
             variant="secondary"
             className={cn(
-              'flex-1 min-h-9 sm:min-h-10',
+              'flex-1 min-h-10',
               'bg-secondary text-secondary-foreground',
               'hover:bg-secondary/80 dark:hover:bg-secondary/70',
               'border border-border/50 dark:border-border/30',
@@ -230,8 +236,8 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
             )}
           >
             <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="mr-2 size-3.5 sm:size-4" />
-              <span className="text-xs sm:text-sm">Live Demo</span>
+              <ExternalLink className="mr-2 size-4" aria-hidden="true" />
+              <span className="text-sm">Live Demo</span>
             </Link>
           </Button>
         )}

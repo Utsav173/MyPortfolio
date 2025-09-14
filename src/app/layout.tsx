@@ -3,6 +3,8 @@ import { Geist, Geist_Mono, Noto_Sans_Gujarati, Noto_Sans_Devanagari } from 'nex
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
+import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from '@/lib/config';
+import { experiencesData } from '@/lib/experience-data';
 import './globals.css';
 
 const geistSans = Geist({
@@ -32,13 +34,12 @@ const notoSansDevanagari = Noto_Sans_Devanagari({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://khatriutsav.com'),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Utsav Khatri | Full Stack Developer',
-    template: '%s | Utsav Khatri',
+    default: SITE_TITLE,
+    template: `%s | Utsav Khatri`,
   },
-  description:
-    'Portfolio of Utsav Khatri, a results-oriented Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies with a keen interest in AI.',
+  description: SITE_DESCRIPTION,
   keywords: [
     'Utsav Khatri',
     'Full Stack Developer',
@@ -140,13 +141,13 @@ export const metadata: Metadata = {
     'FFmpeg',
     'Streaming',
   ],
-  authors: [{ name: 'Utsav Khatri', url: 'https://khatriutsav.com' }],
+  authors: [{ name: 'Utsav Khatri', url: SITE_URL }],
   creator: 'Utsav Khatri',
   openGraph: {
-    title: 'Utsav Khatri | Full Stack Developer',
+    title: SITE_TITLE,
     description:
       'Discover the portfolio of Utsav Khatri, showcasing expertise in modern web development, AI, and cloud technologies.',
-    url: 'https://khatriutsav.com',
+    url: SITE_URL,
     siteName: 'Utsav Khatri Portfolio',
     images: [
       {
@@ -161,7 +162,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Utsav Khatri | Full Stack Developer',
+    title: SITE_TITLE,
     description:
       'Explore projects and skills of Utsav Khatri, a Full Stack Developer focused on innovative web solutions.',
     images: ['/twitter-image.png'],
@@ -178,14 +179,8 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
-  },
-  verification: {
-    google: 'tNXFFpZE1VOHdcWpBlnAsX7avQThqRD6wjolUQaG4rU',
-  },
+  icons: { icon: '/favicon.svg', shortcut: '/favicon-16x16.png', apple: '/apple-touch-icon.png' },
+  verification: { google: 'tNXFFpZE1VOHdcWpBlnAsX7avQThqRD6wjolUQaG4rU' },
 };
 
 export const viewport: Viewport = {
@@ -195,48 +190,133 @@ export const viewport: Viewport = {
   ],
 };
 
-const personSchema = {
-  '@context': 'https://schema.org/',
-  '@type': 'Person',
-  name: 'Utsav Khatri',
-  url: 'https://khatriutsav.com',
-  image: `https://khatriutsav.com/images/utsav-khatri.webp`,
-  jobTitle: 'Full Stack Developer',
-  description:
-    'Results-oriented Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies with a keen interest in AI.',
-  sameAs: ['https://www.linkedin.com/in/utsav-khatri-in/', 'https://github.com/utsav173'],
-  knowsAbout: [
-    'React',
-    'Next.js',
-    'Node.js',
-    'TypeScript',
-    'JavaScript',
-    'AWS',
-    'Cloudflare',
-    'Generative AI',
-    'Full-Stack Development',
-  ],
+const monthMap: { [key: string]: string } = {
+  January: '01',
+  February: '02',
+  March: '03',
+  April: '04',
+  May: '05',
+  June: '06',
+  July: '07',
+  August: '08',
+  September: '09',
+  October: '10',
+  November: '11',
+  December: '12',
 };
 
-const websiteSchema = {
+const parseDuration = (duration: string) => {
+  const parts = duration.split(' - ');
+  const [startMonth, startYear] = parts[0].split(' ');
+  const startDate = `${startYear}-${monthMap[startMonth]}`;
+
+  let endDate = null;
+  if (parts[1] !== 'Present') {
+    const [endMonth, endYear] = parts[1].split(' ');
+    endDate = `${endYear}-${monthMap[endMonth]}`;
+  }
+  return { startDate, endDate };
+};
+
+const worksFor = experiencesData.map((exp) => ({
+  '@type': 'Organization',
+  name: exp.company.split(',')[0],
+}));
+
+const hasOccupation = experiencesData.flatMap((exp) =>
+  exp.roles.map((role) => {
+    const { startDate, endDate } = parseDuration(role.duration);
+    return {
+      '@type': 'Occupation',
+      name: role.title,
+      startDate: startDate,
+      ...(endDate && { endDate: endDate }),
+      worksFor: {
+        '@type': 'Organization',
+        name: exp.company.split(',')[0],
+      },
+    };
+  })
+);
+
+const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Utsav Khatri | Full Stack Developer',
-  url: 'https://khatriutsav.com',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `https://khatriutsav.com/?q={search_term_string}`,
-    'query-input': 'required name=search_term_string',
-  },
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${SITE_URL}/#person`,
+      name: 'Utsav Khatri',
+      url: SITE_URL,
+      image: `${SITE_URL}/images/utsav-khatri.webp`,
+      jobTitle: 'Full Stack Developer',
+      description: SITE_DESCRIPTION,
+      sameAs: ['https://www.linkedin.com/in/utsav-khatri-in/', 'https://github.com/utsav173'],
+      knowsAbout: [
+        'React',
+        'Next.js',
+        'Node.js',
+        'TypeScript',
+        'JavaScript',
+        'AWS',
+        'Cloudflare',
+        'Generative AI',
+        'Full-Stack Development',
+      ],
+      workLocation: {
+        '@type': 'Place',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Gujarat',
+          addressCountry: 'IN',
+        },
+      },
+      worksFor: worksFor,
+      hasOccupation: hasOccupation,
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: SITE_TITLE,
+      description: SITE_DESCRIPTION,
+      publisher: {
+        '@id': `${SITE_URL}/#person`,
+      },
+      inLanguage: 'en-US',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: `${SITE_URL}/?q={search_term_string}`,
+        },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${SITE_URL}/#webpage`,
+      url: SITE_URL,
+      name: `Home | ${SITE_TITLE}`,
+      isPartOf: {
+        '@id': `${SITE_URL}/#website`,
+      },
+      about: {
+        '@id': `${SITE_URL}/#person`,
+      },
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/og-image.png`,
+      },
+      datePublished: '2023-01-01T00:00:00+00:00',
+      dateModified: new Date().toISOString(),
+    },
+  ],
 };
 
 export default function RootLayout({
   children,
   modal,
-}: Readonly<{
-  children: React.ReactNode;
-  modal: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -257,13 +337,8 @@ export default function RootLayout({
           <Toaster richColors position="top-right" closeButton />
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-            key="person-jsonld"
-          />
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-            key="website-jsonld"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+            key="structured-data"
           />
         </ThemeProvider>
       </body>

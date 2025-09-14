@@ -3,6 +3,7 @@ import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { Metadata } from 'next';
 import projectsData from '@/lib/projects-data';
 import { PageWrapper } from '@/components/layout/PageWrapper';
+import { SITE_URL } from '@/lib/config';
 
 const FEATURED_PROJECT_IDS: (number | string)[] = [
   727342843, 657660151, 952619337, 525828811, 998877665, 583853098,
@@ -62,7 +63,7 @@ const projectsCollectionSchema = {
   name: "Utsav Khatri's Projects",
   description:
     'A comprehensive collection of web development, AI, and cloud projects by Utsav Khatri.',
-  url: `https://khatriutsav.com/projects`,
+  url: `${SITE_URL}/projects`,
 };
 
 export default async function ProjectsPage() {

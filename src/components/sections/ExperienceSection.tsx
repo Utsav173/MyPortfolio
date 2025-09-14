@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { motion, useScroll, useTransform, useReducedMotion, Variants } from 'motion/react';
 import { TECH_STACK_DETAILS } from '@/lib/tech-stack-data';
 import { useTheme } from 'next-themes';
+import { experiencesData } from '@/lib/experience-data';
 
 interface ExperienceSectionProps {
   className?: string;
@@ -23,54 +24,6 @@ const getTechDetails = (techName: string) => {
     }
   );
 };
-
-const experiencesData = [
-  {
-    company: 'Zignuts Technolab, Gujarat, India',
-    roles: [
-      {
-        title: 'Software Development Engineer',
-        duration: 'August 2025 - Present',
-      },
-      {
-        title: 'Web Developer',
-        duration: 'January 2023 - July 2025',
-      },
-    ],
-    responsibilities: [
-      'Spearheaded development of critical project components, demonstrating advanced technical leadership.',
-      'Engineered robust RESTful APIs using Node.js, Express.js, and PostgreSQL, improving response times via strategic query optimization and Redis caching.',
-      'Developed highly scalable backend services and microservices, ensuring efficient processing of substantial daily data transactions.',
-      'Led end-to-end design of complex, intuitive UIs with React.js, Redux, and Material-UI, enhancing user engagement and conversion.',
-      'Integrated comprehensive security modules, including JWT-based authentication and Role-Based Access Control (RBAC).',
-      'Mentoring and guiding junior engineers, fostering a culture of technical excellence.',
-      'Driving the adoption of new technologies and best practices to enhance product quality and development efficiency.',
-      'Collaborating with cross-functional teams to define, design, and ship new features.',
-    ],
-    keyProjects: [
-      {
-        name: 'Education Management Platform',
-        tech: ['Node.js', 'Sails.js', 'PostgreSQL', 'AWS SQS'],
-      },
-      {
-        name: 'Cloud Procurement & Bidding Platform',
-        tech: ['Node.js', 'Express.js', 'Socket.io', 'AWS'],
-      },
-      {
-        name: 'Financial Transaction Management System',
-        tech: ['Node.js', 'Sails.js', 'SQL', 'Recharts'],
-      },
-      {
-        name: 'Large-Scale Organization Management SaaS',
-        tech: ['React.js', 'Redux', 'Styled Components', 'Webpack'],
-      },
-      {
-        name: 'Restaurant Inventory Management System',
-        tech: ['Node.js', 'Strapi v4', 'PostgreSQL', 'JWT'],
-      },
-    ],
-  },
-];
 
 const headingVariants: Variants = {
   hidden: { opacity: 0, y: 30, filter: 'blur(3px)' },
@@ -112,36 +65,6 @@ const timelineContainerVariants: Variants = {
 
 export function ExperienceSection({ className, id }: ExperienceSectionProps) {
   const { theme } = useTheme();
-
-  const jobSchema = experiencesData
-    .map((exp) => {
-      return exp.roles.map((role) => ({
-        '@context': 'https://schema.org/',
-        '@type': 'JobPosting',
-        title: role.title,
-        description: exp.responsibilities.join(' '),
-        employerInteractionDuration: role.duration,
-        jobLocation: {
-          '@type': 'Place',
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: exp.company.split(',')[1]?.trim() || '',
-            addressRegion: exp.company.split(',')[2]?.trim() || '',
-            addressCountry: exp.company.split(',')[3]?.trim() || '',
-          },
-        },
-        hiringOrganization: {
-          '@type': 'Organization',
-          name: exp.company.split(',')[0]?.trim() || '',
-        },
-        datePosted: '2023-01-01',
-        validThrough: new Date().toISOString(),
-        employmentType: 'Full-time',
-        experienceRequirements: 'Experienced',
-      }));
-    })
-    .flat();
-
   const sectionRef = useRef<HTMLElement>(null);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
@@ -264,11 +187,6 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
           })}
         </motion.div>
       </div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jobSchema) }}
-        key="job-jsonld"
-      />
     </section>
   );
 }

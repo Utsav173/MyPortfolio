@@ -38,7 +38,7 @@ export function Navbar({ className, activeSection }: NavbarProps) {
     >
       <div
         className={cn(
-          'flex h-12 items-center justify-between gap-2 px-2.5 sm:h-[52px] sm:gap-4 sm:px-4',
+          'flex h-12 items-center justify-between gap-2 px-2.5 sm:h-[60px] sm:gap-4 sm:px-4',
           'w-full h-full rounded-full'
         )}
       >
@@ -51,8 +51,8 @@ export function Navbar({ className, activeSection }: NavbarProps) {
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.label}
-              href={isHomePage ? item.href : `/${item.href}`}
-              onClick={isHomePage ? handleNavClick : undefined}
+              href={isHomePage && item.label !== 'Blog' ? item.href : `/${item.href}`}
+              onClick={isHomePage && item.label !== 'Blog' ? handleNavClick : undefined}
               className={cn(
                 'relative rounded-md px-2.5 py-1.5 text-xs font-medium outline-none transition-all duration-300 ease-in-out focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:px-3 lg:py-2 lg:text-sm',
                 activeSection === item.href.substring(1)

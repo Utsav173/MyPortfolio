@@ -55,7 +55,8 @@ export default async function HomePage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const allProjectsData = await getProjects();
-  const searchQuery = (await searchParams)?.q as string;
+  const sp = await searchParams;
+  const searchQuery = sp?.q as string;
 
   return (
     <PageClient>

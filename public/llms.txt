@@ -73,7 +73,7 @@ Here's a detailed overview of some of my key projects:
 -   **Description:** My personal portfolio website showcasing my skills, projects, and professional journey, built with TypeScript and modern web technologies.
 -   **Key Features:** Showcases skills, projects, and professional journey; built with Next.js, TypeScript, and modern tech; fully responsive design.
 -   **Tech Stack:** Next.js, React, TypeScript, Tailwind CSS, JavaScript, CSS, Vercel.
--   **Live URL:** https://khatriutsav.com
+-   **Live URL:** https://www.khatriutsav.com
 
 ### 3js-hills
 -   **Description:** An interactive 3D landscape animation featuring procedurally generated rolling hills, created using Three.js and TypeScript.
@@ -97,7 +97,7 @@ Here's a detailed overview of some of my key projects:
 -   **Description:** AI-enhanced finance management with intelligent expense categorization, secure JWT auth, and Recharts data visualization.
 -   **Key Features:** AI-enhanced expense categorization, secure JWT authentication, full-stack with Next.js, Hono.js, and Drizzle ORM, interactive data visualization with Recharts.
 -   **Tech Stack:** Next.js, TypeScript, Hono.js, Drizzle ORM, PostgreSQL, NeonDB, Gemini AI, Recharts, JWT, Tailwind CSS.
--   **Live URL:** https://expense-pro.vercel.app/
+-   **Live URL:** https://expense-pro.khatriutsav.com/
 
 ### AI Recipe Maker (Mobile)
 -   **Description:** A mobile application built with Expo (React Native) that leverages Gemini AI to dynamically generate culinary recipes based on user inputs.

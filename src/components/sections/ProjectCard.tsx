@@ -58,7 +58,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, className }) => {
                 src={project.imageUrl!}
                 alt={project.name}
                 fill
-                sizes="(max-width: 768px) 100vw, 50vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover transition-transform duration-500 group-hover/card:scale-105"
               />
             </div>
