@@ -26,7 +26,7 @@ export function PostFooter({ post }: PostFooterProps) {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(42);
 
-  const shareUrl = `${SITE_URL}${post.slug}`;
+  const shareUrl = `${SITE_URL}/${post.slug}`;
   const shareText = encodeURIComponent(post.title);
 
   const copyLink = async () => {

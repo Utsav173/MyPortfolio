@@ -26,7 +26,7 @@ export function PostSchema({ post }: PostSchemaProps) {
     datePublished: new Date(post.date).toISOString(),
     dateModified: new Date(post.updated || post.date).toISOString(),
     image: post.image || `${SITE_URL}/api/og?title=${encodeURIComponent(post.title)}`,
-    url: `${SITE_URL}${post.slug}`,
+    url: `${SITE_URL}/${post.slug}`,
     author: {
       '@type': 'Person',
       name: post.author?.name || 'Utsav Khatri',
@@ -43,7 +43,7 @@ export function PostSchema({ post }: PostSchemaProps) {
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `${SITE_URL}${post.slug}`,
+      '@id': `${SITE_URL}/${post.slug}`,
     },
     keywords: post.tags?.join(', '),
     articleSection: 'Technology',
@@ -70,7 +70,7 @@ export function PostSchema({ post }: PostSchemaProps) {
         '@type': 'ListItem',
         position: 3,
         name: post.title,
-        item: `${SITE_URL}${post.slug}`,
+        item: `${SITE_URL}/${post.slug}`,
       },
     ],
   };

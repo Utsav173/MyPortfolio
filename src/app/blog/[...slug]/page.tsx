@@ -39,13 +39,13 @@ export async function generateMetadata({
     description: post.description,
     authors: [{ name: 'Utsav Khatri', url: SITE_URL }],
     alternates: {
-      canonical: `${SITE_URL}${post.slug}`,
+      canonical: `${SITE_URL}/${post.slug}`,
     },
     openGraph: {
       title: post.title,
       description: post.description ?? '',
       type: 'article',
-      url: `${SITE_URL}${post.slug}`,
+      url: `${SITE_URL}/${post.slug}`,
       publishedTime: new Date(post.date).toISOString(),
       ...(post.updated && { modifiedTime: new Date(post.updated).toISOString() }),
       images: [
