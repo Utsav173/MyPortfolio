@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Noto_Sans_Gujarati, Noto_Sans_Devanagari } from 'nex
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
-import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from '@/lib/config';
+import { SITE_URL } from '@/lib/config';
 import { experiencesData } from '@/lib/experience-data';
 import './globals.css';
 
@@ -32,6 +32,10 @@ const notoSansDevanagari = Noto_Sans_Devanagari({
   variable: '--font-noto-devanagari',
   display: 'swap',
 });
+
+const SITE_DESCRIPTION =
+  'Portfolio of Utsav Khatri, a results-oriented Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies with a keen interest in AI.';
+const SITE_TITLE = 'Utsav Khatri | Full Stack Developer';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
