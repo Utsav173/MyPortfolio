@@ -1,3 +1,8 @@
+/*
+ * IMPORTANT SEO NOTE: For better search engine indexing, ensure each project's `description`
+ * is unique, detailed, and comprehensive. Aim for a paragraph or two highlighting unique features,
+ * challenges, and technologies. This helps Google understand the value of each project page.
+ */
 const projectsData = [
   {
     id: 998877665,
