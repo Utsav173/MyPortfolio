@@ -13,7 +13,7 @@ This repository contains the source code for my personal portfolio website, buil
 
 ## Live Demo
 
-[utsav-khatri.vercel.app](https://www.khatriutsav.com)
+[khatriutsav.com](https://khatriutsav.com)
 
 ## About Me
 
@@ -125,7 +125,7 @@ To get a local copy up and running, follow these simple steps.
 
     # For generating absolute URLs (e.g., for metadata, sitemap, robots.txt)
     NEXT_PUBLIC_SITE_URL=http://localhost:3000 # For local development
-    # NEXT_PUBLIC_SITE_URL=https://www.khatriutsav.com/ # For production
+    # NEXT_PUBLIC_SITE_URL=https://khatriutsav.com/ # For production
     ```
 
     _**Note on `GMAIL_PASS`**_: It's highly recommended to use an "App Password" for Nodemailer if you have 2-Step Verification enabled on your Google account. [Learn more here](https://support.google.com/accounts/answer/185833).

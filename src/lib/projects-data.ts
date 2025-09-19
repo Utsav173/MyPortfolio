@@ -40,7 +40,7 @@ const projectsData = [
     description:
       'My personal portfolio website showcasing my skills, projects, and professional journey, built with TypeScript and modern web technologies.',
     repoUrl: 'https://github.com/Utsav173/MyPortfolio',
-    liveUrl: 'https://www.khatriutsav.com',
+    liveUrl: 'https://khatriutsav.com',
     imageUrl: '/images/projects/my-portfolio.webp',
     projectType: 'Full-Stack Web App',
     keyFeatures: [

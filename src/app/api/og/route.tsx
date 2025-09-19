@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
             flexDirection: 'column',
             alignItems: 'flex-start',
             justifyContent: 'center',
-            backgroundImage: 'url(https://www.khatriutsav.com/og-bg.png)',
+            backgroundImage: 'url(https://khatriutsav.com/og-bg.png)',
             backgroundSize: '1200px 630px',
             color: '#ffffff',
             fontWeight: 700,

@@ -73,7 +73,7 @@ Here's a detailed overview of some of my key projects:
 -   **Description:** My personal portfolio website showcasing my skills, projects, and professional journey, built with TypeScript and modern web technologies.
 -   **Key Features:** Showcases skills, projects, and professional journey; built with Next.js, TypeScript, and modern tech; fully responsive design.
 -   **Tech Stack:** Next.js, React, TypeScript, Tailwind CSS, JavaScript, CSS, Vercel.
--   **Live URL:** https://www.khatriutsav.com
+-   **Live URL:** https://khatriutsav.com
 
 ### 3js-hills
 -   **Description:** An interactive 3D landscape animation featuring procedurally generated rolling hills, created using Three.js and TypeScript.
