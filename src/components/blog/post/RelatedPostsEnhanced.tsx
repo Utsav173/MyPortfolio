@@ -70,7 +70,7 @@ export function RelatedPostsEnhanced({ posts, currentPost }: RelatedPostsEnhance
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Link href={post.slug} className="group block h-full">
+              <Link href={post.slug.split('/')[1]} className="group block h-full">
                 <Card className="h-full overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
                   {/* Image */}
                   {post.image && (
