@@ -30,6 +30,7 @@ interface ProjectsSectionProps {
   id?: string;
   initialProjects: Project[];
   searchQuery?: string;
+  isFromHomePage?: boolean;
 }
 
 export function ProjectsSection({
@@ -37,6 +38,7 @@ export function ProjectsSection({
   id,
   initialProjects,
   searchQuery,
+  isFromHomePage = false,
 }: ProjectsSectionProps) {
   const shouldReduceMotion = useReducedMotion();
   const { resolvedTheme } = useTheme();
@@ -156,7 +158,7 @@ export function ProjectsSection({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentDisplayedProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} theme={resolvedTheme} />
+            <ProjectCard key={project.id} project={project} theme={resolvedTheme} isFromHomePage />
           ))}
         </div>
 

@@ -172,7 +172,6 @@
   }
 }
 
-/* --- Add this new animation --- */
 @keyframes marquee-reverse {
   from {
     transform: translateX(-50%);
@@ -183,17 +182,13 @@
   }
 }
 
-@keyframes gradientShift {
+@keyframes subtle-gradient-sweep {
   0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
+    background-position: 150% 50%;
   }
 
   100% {
-    background-position: 0% 50%;
+    background-position: -50% 50%;
   }
 }
 
@@ -240,23 +235,19 @@
   }
 }
 
-/* Hero Name Gradient Animation */
 .hero-name-gradient {
   background: linear-gradient(
-    90deg,
-    oklch(var(--foreground-oklch-values)),
+    110deg,
     oklch(var(--primary-oklch-values)),
-    oklch(var(--foreground-oklch-values)),
-    oklch(var(--primary-oklch-values) / 0.8),
-    oklch(var(--foreground-oklch-values)),
-    oklch(var(--primary-oklch-values)),
-    oklch(var(--foreground-oklch-values))
+    oklch(var(--foreground-oklch-values)) 45%,
+    oklch(var(--foreground-oklch-values)) 55%,
+    oklch(var(--primary-oklch-values))
   );
-  background-size: 300% 100%;
+  background-size: 250% 100%;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientShift 6s ease-in-out infinite;
+  animation: subtle-gradient-sweep 10s linear infinite;
 }
 
 .hero-name-glow {
@@ -275,20 +266,17 @@
 
 .dark .hero-name-gradient {
   background: linear-gradient(
-    90deg,
-    oklch(var(--foreground-oklch-values)),
+    110deg,
     oklch(var(--primary-oklch-values)),
-    oklch(var(--foreground-oklch-values)),
-    oklch(var(--primary-oklch-values) / 0.9),
-    oklch(var(--foreground-oklch-values)),
-    oklch(var(--primary-oklch-values)),
-    oklch(var(--foreground-oklch-values))
+    oklch(var(--foreground-oklch-values)) 45%,
+    oklch(var(--foreground-oklch-values)) 55%,
+    oklch(var(--primary-oklch-values))
   );
-  background-size: 300% 100%;
+  background-size: 250% 100%;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientShift 6s ease-in-out infinite;
+  animation: subtle-gradient-sweep 10s linear infinite;
 }
 
 .dark .hero-name-glow {
@@ -298,12 +286,10 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Enhanced Button Styles */
 .resume-button-icon {
   animation: bounceOnce 0.6s ease-in-out;
 }
 
-/* Primary Button Enhanced Effects */
 .btn-primary-enhanced {
   position: relative;
   overflow: hidden;
@@ -350,7 +336,6 @@
     inset 0 1px 0 oklch(var(--primary-oklch-values) / 0.3);
 }
 
-/* Secondary Button Enhanced Effects */
 .btn-secondary-enhanced {
   position: relative;
   overflow: hidden;
@@ -400,7 +385,6 @@
     inset 0 1px 0 oklch(var(--primary-oklch-values) / 0.1);
 }
 
-/* Icon Animations */
 .icon-sparkle {
   animation: float 2s ease-in-out infinite;
 }
@@ -421,13 +405,11 @@
   transform: translateX(4px) scale(1.1);
 }
 
-/* Button Container Animations */
 .button-container {
   animation: float 3s ease-in-out infinite;
   animation-delay: 1s;
 }
 
-/* Gradient Fade Container */
 .gradient-fade-container {
   mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
   -webkit-mask-image: linear-gradient(
@@ -439,7 +421,6 @@
   );
 }
 
-/* Footer Gradient */
 .footer-gradient {
   background: linear-gradient(
     0deg,
@@ -455,19 +436,16 @@
 
 .no-scrollbar {
   -ms-overflow-style: none;
-  /* IE and Edge */
   scrollbar-width: none;
-  /* Firefox */
 }
 
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge, and Firefox */
 .scrollbar-hidden {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 html {
@@ -489,7 +467,6 @@ html {
   }
 }
 
-/* --- Improved Code Block Styles --- */
 pre.shiki {
   @apply relative max-h-[80svh] overflow-hidden rounded-lg border bg-card/50 p-0;
 

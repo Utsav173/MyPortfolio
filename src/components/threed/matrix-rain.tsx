@@ -38,6 +38,10 @@ const PlaneShaderMaterial = shaderMaterial(
     uThemeAdjust: 0,
     uPlaneColorDarkTheme: new THREE.Color(0x19193b),
     uPlaneColorLightTheme: new THREE.Color(0x205d75),
+    uGridColorDarkTheme: new THREE.Color(0x00ffff),
+    uGridColorLightTheme: new THREE.Color(0x3b82f6),
+    uGridLineThickness: 0.018,
+    uGridLineSpacing: 40.0,
     uNoiseStrengthHill1: 15.0,
     uNoiseStrengthHill2: 11.3,
     uNoiseStrengthHill3: 3.2,
@@ -47,14 +51,41 @@ const PlaneShaderMaterial = shaderMaterial(
     uOpacityFactorLight: 0.98,
   },
   ` varying vec3 vPosition; 
+    varying vec2 vUv;
     uniform float time; 
     uniform float uNoiseStrengthHill1; 
     uniform float uNoiseStrengthHill2; 
     uniform float uNoiseStrengthHill3; 
     uniform float uNoiseStrengthOverall; 
     uniform float uPlaneSize;
-    mat4 rotateMatrixX(float radian) { return mat4(1.,0.,0.,0.,0.,cos(radian),-sin(radian),0.,0.,sin(radian),cos(radian),0.,0.,0.,0.,1.);} vec3 mod289(vec3 x){return x-floor(x*(1./289.))*289.;} vec4 mod289(vec4 x){return x-floor(x*(1./289.))*289.;} vec4 permute(vec4 x){return mod289(((x*34.)+1.)*x);} vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-.85373472095314*r;} vec3 fade(vec3 t){return t*t*t*(t*(t*6.-15.)+10.);} float cnoise(vec3 P){vec3 Pi0=floor(P);vec3 Pi1=Pi0+vec3(1.);Pi0=mod289(Pi0);Pi1=mod289(Pi1);vec3 Pf0=fract(P);vec3 Pf1=Pf0-vec3(1.);vec4 ix=vec4(Pi0.x,Pi1.x,Pi0.x,Pi1.x);vec4 iy=vec4(Pi0.y,Pi0.y,Pi1.y,Pi1.y);vec4 iz0=vec4(Pi0.z,Pi0.z,Pi0.z,Pi0.z);vec4 iz1=vec4(Pi1.z,Pi1.z,Pi1.z,Pi1.z);vec4 ixy=permute(permute(ix)+iy);vec4 ixy0=permute(ixy+iz0);vec4 ixy1=permute(ixy+iz1);vec4 gx0=ixy0*(1./7.);vec4 gy0=fract(floor(gx0)*(1./7.))-.5;gx0=fract(gx0);vec4 gz0=vec4(.5)-abs(gx0)-abs(gy0);vec4 sz0=step(gz0,vec4(0.));gx0-=sz0*(step(0.,gx0)-.5);gy0-=sz0*(step(0.,gy0)-.5);vec4 gx1=ixy1*(1./7.);vec4 gy1=fract(floor(gx1)*(1./7.))-.5;gx1=fract(gx1);vec4 gz1=vec4(.5)-abs(gx1)-abs(gy1);vec4 sz1=step(gz1,vec4(0.));gx1-=sz1*(step(0.,gx1)-.5);gy1-=sz1*(step(0.,gy1)-.5);vec3 g000=vec3(gx0.x,gy0.x,gz0.x);vec3 g100=vec3(gx0.y,gy0.y,gz0.y);vec3 g010=vec3(gx0.z,gy0.z,gz0.z);vec3 g110=vec3(gx0.w,gy0.w,gz0.w);vec3 g001=vec3(gx1.x,gy1.x,gz1.x);vec3 g101=vec3(gx1.y,gy1.y,gz1.y);vec3 g011=vec3(gx1.z,gy1.z,gz1.z);vec3 g111=vec3(gx1.w,gy1.w,gz1.w);vec4 norm0=taylorInvSqrt(vec4(dot(g000,g000),dot(g010,g010),dot(g100,g100),dot(g110,g110)));g000*=norm0.x;g010*=norm0.y;g100*=norm0.z;g110*=norm0.w;vec4 norm1=taylorInvSqrt(vec4(dot(g001,g001),dot(g011,g011),dot(g101,g101),dot(g111,g111)));g001*=norm1.x;g011*=norm1.y;g101*=norm1.z;g111*=norm1.w;float n000=dot(g000,Pf0);float n100=dot(g100,vec3(Pf1.x,Pf0.y,Pf0.z));float n010=dot(g010,vec3(Pf0.x,Pf1.y,Pf0.z));float n110=dot(g110,vec3(Pf1.x,Pf1.y,Pf0.z));float n001=dot(g001,vec3(Pf0.x,Pf0.y,Pf1.z));float n101=dot(g101,vec3(Pf1.x,Pf0.y,Pf1.z));float n011=dot(g011,vec3(Pf0.x,Pf1.y,Pf1.z));float n111=dot(g111,Pf1);vec3 fade_xyz_val=fade(Pf0);vec4 n_z=mix(vec4(n000,n100,n010,n110),vec4(n001,n101,n011,n111),fade_xyz_val.z);vec2 n_yz=mix(n_z.xy,n_z.zw,fade_xyz_val.y);float n_xyz=mix(n_yz.x,n_yz.y,fade_xyz_val.x);return 2.2*n_xyz;} void main() { vec3 updatePosition = (rotateMatrixX(radians(90.0)) * vec4(position, 1.0)).xyz; float sin1 = sin(radians(updatePosition.x / (uPlaneSize/2.0) * 90.0)); vec3 noisePosition = updatePosition + vec3(0.0, 0.0, time * -18.0); float noise1 = cnoise(noisePosition * 0.065); float noise2 = cnoise(noisePosition * 0.045); float noise3 = cnoise(noisePosition * 0.28); vec3 lastPosition = updatePosition + vec3(0.0, noise1 * sin1 * uNoiseStrengthHill1 + noise2 * sin1 * uNoiseStrengthHill2 + noise3 * (abs(sin1) * 1.7 + 0.4) * uNoiseStrengthHill3 + pow(sin1, 2.0) * uNoiseStrengthOverall, 0.0); vPosition = lastPosition; gl_Position = projectionMatrix * modelViewMatrix * vec4(lastPosition, 1.0); }`,
-  ` varying vec3 vPosition; uniform float uThemeAdjust; uniform vec3 uPlaneColorDarkTheme; uniform vec3 uPlaneColorLightTheme; uniform float uPlaneSize; uniform float uOpacityFactorDark; uniform float uOpacityFactorLight; void main() { float opacityFactor = (110.0 - length(vPosition)) / uPlaneSize; float currentOpacityFactor = mix(uOpacityFactorDark, uOpacityFactorLight, uThemeAdjust); float baseOpacity = smoothstep(0.0, 0.9, opacityFactor) * currentOpacityFactor; vec3 color = mix(uPlaneColorDarkTheme, uPlaneColorLightTheme, uThemeAdjust); gl_FragColor = vec4(color, baseOpacity); }`
+    mat4 rotateMatrixX(float radian) { return mat4(1.,0.,0.,0.,0.,cos(radian),-sin(radian),0.,0.,sin(radian),cos(radian),0.,0.,0.,0.,1.);} vec3 mod289(vec3 x){return x-floor(x*(1./289.))*289.;} vec4 mod289(vec4 x){return x-floor(x*(1./289.))*289.;} vec4 permute(vec4 x){return mod289(((x*34.)+1.)*x);} vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-.85373472095314*r;} vec3 fade(vec3 t){return t*t*t*(t*(t*6.-15.)+10.);} float cnoise(vec3 P){vec3 Pi0=floor(P);vec3 Pi1=Pi0+vec3(1.);Pi0=mod289(Pi0);Pi1=mod289(Pi1);vec3 Pf0=fract(P);vec3 Pf1=Pf0-vec3(1.);vec4 ix=vec4(Pi0.x,Pi1.x,Pi0.x,Pi1.x);vec4 iy=vec4(Pi0.y,Pi0.y,Pi1.y,Pi1.y);vec4 iz0=vec4(Pi0.z,Pi0.z,Pi0.z,Pi0.z);vec4 iz1=vec4(Pi1.z,Pi1.z,Pi1.z,Pi1.z);vec4 ixy=permute(permute(ix)+iy);vec4 ixy0=permute(ixy+iz0);vec4 ixy1=permute(ixy+iz1);vec4 gx0=ixy0*(1./7.);vec4 gy0=fract(floor(gx0)*(1./7.))-.5;gx0=fract(gx0);vec4 gz0=vec4(.5)-abs(gx0)-abs(gy0);vec4 sz0=step(gz0,vec4(0.));gx0-=sz0*(step(0.,gx0)-.5);gy0-=sz0*(step(0.,gy0)-.5);vec4 gx1=ixy1*(1./7.);vec4 gy1=fract(floor(gx1)*(1./7.))-.5;gx1=fract(gx1);vec4 gz1=vec4(.5)-abs(gx1)-abs(gy1);vec4 sz1=step(gz1,vec4(0.));gx1-=sz1*(step(0.,gx1)-.5);gy1-=sz1*(step(0.,gy1)-.5);vec3 g000=vec3(gx0.x,gy0.x,gz0.x);vec3 g100=vec3(gx0.y,gy0.y,gz0.y);vec3 g010=vec3(gx0.z,gy0.z,gz0.z);vec3 g110=vec3(gx0.w,gy0.w,gz0.w);vec3 g001=vec3(gx1.x,gy1.x,gz1.x);vec3 g101=vec3(gx1.y,gy1.y,gz1.y);vec3 g011=vec3(gx1.z,gy1.z,gz1.z);vec3 g111=vec3(gx1.w,gy1.w,gz1.w);vec4 norm0=taylorInvSqrt(vec4(dot(g000,g000),dot(g010,g010),dot(g100,g100),dot(g110,g110)));g000*=norm0.x;g010*=norm0.y;g100*=norm0.z;g110*=norm0.w;vec4 norm1=taylorInvSqrt(vec4(dot(g001,g001),dot(g011,g011),dot(g101,g101),dot(g111,g111)));g001*=norm1.x;g011*=norm1.y;g101*=norm1.z;g111*=norm1.w;float n000=dot(g000,Pf0);float n100=dot(g100,vec3(Pf1.x,Pf0.y,Pf0.z));float n010=dot(g010,vec3(Pf0.x,Pf1.y,Pf0.z));float n110=dot(g110,vec3(Pf1.x,Pf1.y,Pf0.z));float n001=dot(g001,vec3(Pf0.x,Pf0.y,Pf1.z));float n101=dot(g101,vec3(Pf1.x,Pf0.y,Pf1.z));float n011=dot(g011,vec3(Pf0.x,Pf1.y,Pf1.z));float n111=dot(g111,Pf1);vec3 fade_xyz_val=fade(Pf0);vec4 n_z=mix(vec4(n000,n100,n010,n110),vec4(n001,n101,n011,n111),fade_xyz_val.z);vec2 n_yz=mix(n_z.xy,n_z.zw,fade_xyz_val.y);float n_xyz=mix(n_yz.x,n_yz.y,fade_xyz_val.x);return 2.2*n_xyz;} void main() { vUv = uv; vec3 updatePosition = (rotateMatrixX(radians(90.0)) * vec4(position, 1.0)).xyz; float sin1 = sin(radians(updatePosition.x / (uPlaneSize/2.0) * 90.0)); vec3 noisePosition = updatePosition + vec3(0.0, 0.0, time * -18.0); float noise1 = cnoise(noisePosition * 0.065); float noise2 = cnoise(noisePosition * 0.045); float noise3 = cnoise(noisePosition * 0.28); vec3 lastPosition = updatePosition + vec3(0.0, noise1 * sin1 * uNoiseStrengthHill1 + noise2 * sin1 * uNoiseStrengthHill2 + noise3 * (abs(sin1) * 1.7 + 0.4) * uNoiseStrengthHill3 + pow(sin1, 2.0) * uNoiseStrengthOverall, 0.0); vPosition = lastPosition; gl_Position = projectionMatrix * modelViewMatrix * vec4(lastPosition, 1.0); }`,
+  ` varying vec3 vPosition; 
+    varying vec2 vUv;
+    uniform float uThemeAdjust; 
+    uniform vec3 uPlaneColorDarkTheme; 
+    uniform vec3 uPlaneColorLightTheme; 
+    uniform vec3 uGridColorDarkTheme;
+    uniform vec3 uGridColorLightTheme;
+    uniform float uGridLineThickness;
+    uniform float uGridLineSpacing;
+    uniform float uPlaneSize; 
+    uniform float uOpacityFactorDark; 
+    uniform float uOpacityFactorLight; 
+    void main() { 
+      float opacityFactor = (110.0 - length(vPosition)) / uPlaneSize; 
+      float currentOpacityFactor = mix(uOpacityFactorDark, uOpacityFactorLight, uThemeAdjust); 
+      float baseOpacity = smoothstep(0.0, 0.9, opacityFactor) * currentOpacityFactor; 
+      vec3 color = mix(uPlaneColorDarkTheme, uPlaneColorLightTheme, uThemeAdjust); 
+      vec3 gridColor = mix(uGridColorDarkTheme, uGridColorLightTheme, uThemeAdjust);
+      
+      float gridX = smoothstep(uGridLineThickness, 0.0, abs(fract(vUv.x * uGridLineSpacing) - 0.5) * 2.0);
+      float gridY = smoothstep(uGridLineThickness, 0.0, abs(fract(vUv.y * uGridLineSpacing) - 0.5) * 2.0);
+      float gridFactor = max(gridX, gridY);
+
+      vec3 finalColor = mix(color, gridColor, gridFactor);
+      
+      gl_FragColor = vec4(finalColor, baseOpacity); 
+    }`
 );
 
 const RainParticleShaderMaterial = shaderMaterial(
@@ -296,6 +327,10 @@ const PlaneComponentR3F: React.FC<{
     () => ({
       uPlaneColorDarkTheme: planeConfig.planeColorForDarkTheme,
       uPlaneColorLightTheme: planeConfig.planeColorForLightTheme,
+      uGridColorDarkTheme: planeConfig.gridColorForDarkTheme,
+      uGridColorLightTheme: planeConfig.gridColorForLightTheme,
+      uGridLineThickness: planeConfig.gridLineThickness,
+      uGridLineSpacing: planeConfig.gridLineSpacing,
       uNoiseStrengthHill1: planeConfig.noiseStrength.hill1,
       uNoiseStrengthHill2: planeConfig.noiseStrength.hill2,
       uNoiseStrengthHill3: planeConfig.noiseStrength.hill3,
@@ -523,8 +558,8 @@ const RainEffectComponentR3F: React.FC<{
       [isMobile, rainConfig]
     );
     const maxParticles = useMemo(() => streamCount * streamLength, [streamCount, streamLength]);
-    const xSpreadFactor = useMemo(() => (isMobile ? 0.35 : 0.45), [isMobile]);
-    const zSpreadFactor = useMemo(() => (isMobile ? 0.25 : 0.35), [isMobile]);
+    const xSpreadFactor = useMemo(() => (isMobile ? 0.22 : 0.45), [isMobile]); // Reduced for mobile density
+    const zSpreadFactor = useMemo(() => (isMobile ? 0.2 : 0.35), [isMobile]); // Reduced for mobile density
     const getTrailColor = useCallback(
       (idx: number, len: number, base: THREE.Color): THREE.Color => {
         const baseFade = 1 - idx / len;
@@ -652,7 +687,7 @@ const RainEffectComponentR3F: React.FC<{
           continue;
         }
         p.y -= p.speedY * cD;
-        if (p.streamIndex > 0 && Math.random() < 0.006) {
+        if (p.streamIndex > 0 && Math.random() < 0.008) {
           p.charMap = getRandomCharMap();
           instanceOffsetAttribute.setXYZW(i, p.charMap.u, p.charMap.v, p.charMap.w, p.charMap.h);
           needsOffsetUpdate = true;
@@ -827,12 +862,12 @@ const CanvasErrorFallback = () => (
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      background: '#222',
+      background: '#02040a',
       color: 'white',
       flexDirection: 'column',
     }}
   >
-    <h2>Oops! Something went wrong in the 3D scene.</h2>
+    <h2>Oops! Something went wrong rendering the 3D scene.</h2>
   </div>
 );
 
@@ -850,24 +885,24 @@ const detectInitialQuality = (): 'low' | 'medium' | 'high' => {
   const cores = navigator.hardwareConcurrency || 4;
   const saveData = (navigator as any).connection?.saveData === true;
   if (saveData) return 'low';
-  if (isMobile && (dm <= 3 || cores <= 4)) return 'low';
+  if (isMobile && (dm <= 4 || cores <= 4)) return 'low';
   if (isMobile || dm <= 4 || cores <= 6) return 'medium';
   return 'high';
 };
 
 const capDpr = (quality: 'low' | 'medium' | 'high') =>
   quality === 'high'
-    ? [1, typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 1.25) : 1]
+    ? [1, typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 1.5) : 1]
     : quality === 'medium'
-      ? [1, 1.0]
+      ? [1, 1.2]
       : [1, 1.0];
 
 const scaleInt = (v: number, quality: 'low' | 'medium' | 'high') =>
   quality === 'high'
     ? v
     : quality === 'medium'
-      ? Math.max(1, Math.floor(v * 0.7))
-      : Math.max(1, Math.floor(v * 0.45));
+      ? Math.max(1, Math.floor(v * 0.75))
+      : Math.max(1, Math.floor(v * 0.4));
 
 const ThreeScene: React.FC<ThreeSceneProps> = ({ currentTheme, cameraControls, dynamicConfig }) => {
   const parsedActiveCfg = useMemo(() => {
@@ -880,27 +915,31 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ currentTheme, cameraControls, d
   const [dpr, setDpr] = useState<[number, number]>(() => capDpr(quality) as [number, number]);
 
   const timeRef = useRef(0);
-  const effectiveRain = useMemo(() => {
-    const base = parsedActiveCfg.rain;
+  const effectiveConfig = useMemo(() => {
+    const baseRain = parsedActiveCfg.rain;
+    const baseSplash = parsedActiveCfg.splashParticles;
     return {
-      ...base,
-      streamCountDesktop: scaleInt(base.streamCountDesktop, quality),
-      streamCountDesktopLight:
-        base.streamCountDesktopLight !== undefined
-          ? scaleInt(base.streamCountDesktopLight, quality)
-          : scaleInt(base.streamCountDesktop, quality), // provide a default value
-      streamCountMobile: scaleInt(base.streamCountMobile, quality),
-      streamLengthDesktop: scaleInt(base.streamLengthDesktop, quality),
-      streamLengthMobile: scaleInt(base.streamLengthMobile, quality),
-      charHeight:
-        quality === 'high'
-          ? base.charHeight
-          : quality === 'medium'
-            ? base.charHeight * 1.05
-            : base.charHeight * 1.1,
+      ...parsedActiveCfg,
+      rain: {
+        ...baseRain,
+        streamCountDesktop: scaleInt(baseRain.streamCountDesktop, quality),
+        streamCountDesktopLight:
+          baseRain.streamCountDesktopLight !== undefined
+            ? scaleInt(baseRain.streamCountDesktopLight, quality)
+            : scaleInt(baseRain.streamCountDesktop, quality),
+        streamCountMobile: scaleInt(baseRain.streamCountMobile, quality),
+        streamLengthDesktop: scaleInt(baseRain.streamLengthDesktop, quality),
+        streamLengthMobile: scaleInt(baseRain.streamLengthMobile, quality),
+      },
+      splashParticles: {
+        ...baseSplash,
+        maxParticles: scaleInt(baseSplash.maxParticles, quality),
+        particlesPerSplash: scaleInt(baseSplash.particlesPerSplash, quality),
+      },
     };
-  }, [parsedActiveCfg.rain, quality]);
-  const bloomConfig = parsedActiveCfg.effects.bloom;
+  }, [parsedActiveCfg, quality]);
+
+  const bloomConfig = effectiveConfig.effects.bloom;
   const bloomEnabled = bloomConfig.enabled && quality !== 'low';
 
   useEffect(() => {
@@ -912,13 +951,13 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ currentTheme, cameraControls, d
       <Canvas
         camera={{
           position: [
-            parsedActiveCfg.camera.initialXPos,
-            parsedActiveCfg.camera.initialYPos,
-            parsedActiveCfg.camera.initialZPos,
+            effectiveConfig.camera.initialXPos,
+            effectiveConfig.camera.initialYPos,
+            effectiveConfig.camera.initialZPos,
           ],
-          fov: parsedActiveCfg.camera.fov,
-          near: parsedActiveCfg.camera.near,
-          far: parsedActiveCfg.camera.far,
+          fov: effectiveConfig.camera.fov,
+          near: effectiveConfig.camera.near,
+          far: effectiveConfig.camera.far,
         }}
         gl={{
           antialias: false,
@@ -933,24 +972,24 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ currentTheme, cameraControls, d
         shadows={false}
       >
         <PerformanceMonitor
-          flipflops={2}
+          flipflops={3}
           onDecline={() => setQuality((q) => (q === 'high' ? 'medium' : 'low'))}
           onIncline={() => setQuality((q) => (q === 'low' ? 'medium' : 'high'))}
         />
-        {typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches ? (
-          bloomEnabled ? (
+        <Suspense fallback={null}>
+          {bloomEnabled ? (
             <EffectComposer>
               <Bloom
-                intensity={Math.min(bloomConfig.intensity, 0.25)}
+                intensity={bloomConfig.intensity}
                 luminanceThreshold={bloomConfig.luminanceThreshold}
                 luminanceSmoothing={bloomConfig.luminanceSmoothing}
-                kernelSize={KernelSize.SMALL}
-                mipmapBlur={false}
+                kernelSize={getKernelSize(quality === 'medium' ? 'SMALL' : bloomConfig.kernelSize)}
+                mipmapBlur={bloomConfig.mipmapBlur}
               />
               <SceneContent
                 currentTheme={currentTheme}
                 cameraControls={cameraControls}
-                parsedActiveCfg={{ ...parsedActiveCfg, rain: effectiveRain }}
+                parsedActiveCfg={effectiveConfig}
                 timeRef={timeRef}
               />
             </EffectComposer>
@@ -958,20 +997,11 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ currentTheme, cameraControls, d
             <SceneContent
               currentTheme={currentTheme}
               cameraControls={cameraControls}
-              parsedActiveCfg={{ ...parsedActiveCfg, rain: effectiveRain }}
+              parsedActiveCfg={effectiveConfig}
               timeRef={timeRef}
             />
-          )
-        ) : (
-          <Suspense fallback={<CanvasErrorFallback />}>
-            <SceneContent
-              currentTheme={currentTheme}
-              cameraControls={cameraControls}
-              parsedActiveCfg={{ ...parsedActiveCfg, rain: effectiveRain }}
-              timeRef={timeRef}
-            />
-          </Suspense>
-        )}
+          )}
+        </Suspense>
       </Canvas>
     </div>
   );

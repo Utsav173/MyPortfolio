@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 
 interface ProjectDetailProps {
   project: Project;
+  isFromHomePage?: boolean;
 }
 
 const getTechDetails = (techName: string) => {
@@ -28,7 +29,7 @@ const getTechDetails = (techName: string) => {
   );
 };
 
-export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
+export const ProjectDetail: FC<ProjectDetailProps> = ({ project, isFromHomePage }) => {
   const { theme } = useTheme();
   const hasImage = !!project.imageUrl;
   const router = useRouter();
@@ -42,17 +43,19 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project }) => {
         'overflow-hidden rounded-lg'
       )}
     >
-      <div className="p-4 flex items-center border-b">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => router.back()}
-          aria-label="Go back to projects"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Projects
-        </Button>
-      </div>
+      {!isFromHomePage && (
+        <div className="p-4 flex items-center border-b">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.replace(isFromHomePage ? '/' : '/#projects')}
+            aria-label="Go back to projects"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Projects
+          </Button>
+        </div>
+      )}
 
       <div className={cn('flex-grow flex flex-col w-full overflow-hidden', 'lg:flex-row')}>
         {hasImage && (

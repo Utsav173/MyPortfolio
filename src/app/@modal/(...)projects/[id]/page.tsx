@@ -8,12 +8,13 @@ async function getProject(id: string): Promise<Project | undefined> {
   return projects.find((p) => String(p.id) === id);
 }
 
-export default async function ProjectModal({ params }: { params: Promise<{ id: string }> }) {
+export default async function ProjectModal({ params, searchParams }: PageProps<'/projects/[id]'>) {
   const project = await getProject((await params).id);
+  const isFromHomePage = (await searchParams)?.ref === 'home';
 
   if (!project) {
     notFound();
   }
 
-  return <Modal project={project} />;
+  return <Modal project={project} isFromHomePage={isFromHomePage} />;
 }

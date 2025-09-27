@@ -18,7 +18,10 @@ export function PageWrapper({ children }: { children: ReactNode }) {
     <div className="flex min-h-dvh w-full flex-col overflow-x-hidden bg-background">
       <Navbar activeSection={activeSection} />
       <CommandPalette isOpen={isCommandPaletteOpen} setIsOpen={setCommandPaletteOpen} />
-      <main id="main-content" className="relative z-0 flex-grow w-full">
+      <main
+        id="main-content"
+        className="relative z-0 flex-grow w-full flex flex-1 items-center justify-center pt-10"
+      >
         {children}
       </main>
       <FooterSection />

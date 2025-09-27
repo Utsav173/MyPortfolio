@@ -69,6 +69,7 @@ export default async function HomePage({
         className="content-section"
         initialProjects={allProjectsData}
         searchQuery={searchQuery}
+        isFromHomePage
       />
       <ContactSection id="contact" className="content-section" />
       <FooterSection />

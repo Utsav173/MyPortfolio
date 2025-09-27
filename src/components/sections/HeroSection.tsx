@@ -65,12 +65,11 @@ const scrollIndicatorVariants: Variants = {
 
 const buttonHoverVariants: Variants = {
   hover: {
-    scale: 1.02,
-    y: -2,
+    scale: 1.03,
     transition: { duration: 0.2, ease: 'easeOut' },
   },
   tap: {
-    scale: 0.98,
+    scale: 0.97,
     transition: { duration: 0.1 },
   },
 };
@@ -178,17 +177,21 @@ export function HeroSection({ className, id }: { className?: string; id?: string
           variants={shouldReduceMotion ? undefined : itemVariants}
           className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground md:mt-8 md:text-xl"
         >
-          A <span className="font-semibold text-primary">Full Stack Developer</span> based in
-          Gujarat, India, crafting high-performance web experiences.
+          A{' '}
+          <span className="font-semibold text-primary dark:text-slate-100">
+            Full Stack Developer
+          </span>{' '}
+          and{' '}
+          <span className="font-semibold text-primary dark:text-slate-100">Software Engineer</span>{' '}
+          based in Gujarat, India, specializing in modern web development with React, Next.js,
+          TypeScript, Node.js, and AI-powered applications.
         </motion.p>
 
         <motion.div
           variants={shouldReduceMotion ? undefined : itemVariants}
-          className={cn(
-            'mt-8 flex select-none flex-col items-center justify-center gap-4 sm:flex-row md:mt-10'
-          )}
+          className="mt-8 flex select-none flex-col items-center justify-center gap-4 sm:flex-row md:mt-10"
           role="group"
-          aria-label="Primary actions"
+          aria-label="Primary navigation actions"
         >
           <motion.div
             variants={shouldReduceMotion ? undefined : buttonHoverVariants}
@@ -199,7 +202,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
               asChild
               className={cn(
                 'group relative h-auto overflow-hidden rounded-full border px-8 py-4 text-base font-semibold transition-all duration-500 ease-out sm:px-10 sm:py-4',
-                'bg-zinc-200 dark:bg-transparent',
+                'bg-transparent',
                 'max-sm:px-4 max-sm:py-2.5 max-sm:text-sm'
               )}
             >
@@ -347,9 +350,9 @@ export function HeroSection({ className, id }: { className?: string; id?: string
         variants={shouldReduceMotion ? {} : scrollIndicatorVariants}
         className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2"
         aria-hidden="true"
+        role="presentation"
       >
         <div className="relative">
-          <div className="absolute inset-0 rounded-full bg-primary/20 blur-md animate-pulse" />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -361,6 +364,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
             strokeLinecap="round"
             strokeLinejoin="round"
             className="relative lucide lucide-arrow-down text-muted-foreground/70 transition-colors hover:text-primary"
+            aria-label="Scroll down to view more content"
           >
             <path d="M12 5v14" />
             <path d="m19 12-7 7-7-7" />

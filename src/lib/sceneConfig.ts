@@ -16,28 +16,32 @@ export const defaultSceneConfig = {
     collisionSegments: 24,
     timeFactor: 0.15,
     hillDarkColorHex: '#273161',
-    hillLightColorHex: '#4A5568',
+    gridColorDarkHex: '#3a73bd',
+    hillLightColorHex: '#312e81',
+    gridColorLightHex: '#000000',
+    gridLineThickness: 0.05,
+    gridLineSpacing: 55,
     noiseStrength: {
-      hill1: 12,
-      hill2: 9,
-      hill3: 2.8,
-      overall: 38,
+      hill1: 10,
+      hill2: 6,
+      hill3: 3,
+      overall: 33,
     },
-    opacityFactorDark: 0.85,
-    opacityFactorLight: 0.88,
+    opacityFactorDark: 0.95,
+    opacityFactorLight: 0.93,
   },
   rain: {
     charHeight: 1.4,
     charAspect: 0.7,
-    streamCountMobile: 25,
-    streamCountDesktop: 60,
-    streamCountDesktopLight: 50,
-    streamLengthMobile: 5,
-    streamLengthDesktop: 8,
+    streamCountMobile: 40,
+    streamCountDesktop: 80,
+    streamCountDesktopLight: 60,
+    streamLengthMobile: 6,
+    streamLengthDesktop: 9,
     yTop: 85,
     yBottom: -25,
     speedBaseMin: 8,
-    speedBaseMax: 32,
+    speedBaseMax: 45,
 
     leadColorDarkHex: '#a2d9ff',
     trailColorBaseDarkHex: '#0089de',
@@ -59,14 +63,14 @@ export const defaultSceneConfig = {
   },
   splashParticles: {
     enabled: true,
-    maxParticles: 1000,
-    particlesPerSplash: 5,
+    maxParticles: 1300,
+    particlesPerSplash: 8,
     size: 0.35,
     speedMin: 2,
-    speedMax: 5,
-    lift: 4,
+    speedMax: 8,
+    lift: 4.5,
     gravity: 9.8,
-    lifespan: 0.6,
+    lifespan: 0.65,
   },
   camera: {
     fov: 30,
@@ -80,8 +84,8 @@ export const defaultSceneConfig = {
     initialLookAtZ: 0,
   },
   themeColors: {
-    darkBgHex: '#05050c',
-    lightBgHex: '#F0F5FF',
+    darkBgHex: '#02040a',
+    lightBgHex: '#f1f5f9',
   },
   effects: {
     bloomDark: {
@@ -90,13 +94,13 @@ export const defaultSceneConfig = {
       luminanceSmoothing: 0.8,
       intensity: 2.0,
       kernelSize: 'MEDIUM',
-      mipmapBlur: false,
+      mipmapBlur: true,
     } as BloomConfig,
     bloomLight: {
       enabled: true,
-      luminanceThreshold: 0.8,
+      luminanceThreshold: 0.9,
       luminanceSmoothing: 0.3,
-      intensity: 0.6,
+      intensity: 1.0,
       kernelSize: 'MEDIUM',
       mipmapBlur: false,
     } as BloomConfig,
@@ -111,9 +115,14 @@ export const defaultSceneConfig = {
 export type SceneConfig = typeof defaultSceneConfig;
 
 export interface ParsedPlaneConfig
-  extends Omit<SceneConfig['plane'], 'hillDarkColorHex' | 'hillLightColorHex'> {
+  extends Omit<
+    SceneConfig['plane'],
+    'hillDarkColorHex' | 'hillLightColorHex' | 'gridColorDarkHex' | 'gridColorLightHex'
+  > {
   planeColorForDarkTheme: THREE.Color;
   planeColorForLightTheme: THREE.Color;
+  gridColorForDarkTheme: THREE.Color;
+  gridColorForLightTheme: THREE.Color;
 }
 
 export interface ParsedRainConfig
@@ -194,8 +203,12 @@ export function parseConfigColors(
   const parsedPlane: any = { ...config.plane };
   parsedPlane.planeColorForDarkTheme = new THREE.Color(config.plane.hillDarkColorHex);
   parsedPlane.planeColorForLightTheme = new THREE.Color(config.plane.hillLightColorHex);
+  parsedPlane.gridColorForDarkTheme = new THREE.Color(config.plane.gridColorDarkHex);
+  parsedPlane.gridColorForLightTheme = new THREE.Color(config.plane.gridColorLightHex);
   delete parsedPlane.hillDarkColorHex;
   delete parsedPlane.hillLightColorHex;
+  delete parsedPlane.gridColorDarkHex;
+  delete parsedPlane.gridColorLightHex;
 
   const bloomIntensity =
     currentTheme === 'light' ? config.rain.bloomIntensityLight : config.rain.bloomIntensity;

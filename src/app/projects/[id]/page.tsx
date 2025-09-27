@@ -55,8 +55,10 @@ export async function generateMetadata({ params }: PageProps<'/projects/[id]'>):
   };
 }
 
-export default async function ProjectPage({ params }: PageProps<'/projects/[id]'>) {
+export default async function ProjectPage({ params, searchParams }: PageProps<'/projects/[id]'>) {
   const project = await getProject((await params).id);
+
+  const isFromHomePage = (await searchParams)?.ref === 'home';
 
   if (!project) {
     notFound();
@@ -79,15 +81,13 @@ export default async function ProjectPage({ params }: PageProps<'/projects/[id]'
 
   return (
     <PageWrapper>
-      <div className="flex items-center justify-center p-4">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
-          key="project-jsonld"
-        />
-        <div className="max-w-5xl w-full">
-          <ProjectDetail project={project} />
-        </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
+        key="project-jsonld"
+      />
+      <div className="flex-1 max-w-5xl max-sm:w-full">
+        <ProjectDetail project={project} isFromHomePage={isFromHomePage} />
       </div>
     </PageWrapper>
   );

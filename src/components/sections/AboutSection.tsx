@@ -81,20 +81,20 @@ const AboutSectionComponent = ({ className, id }: { className?: string; id?: str
               className="space-y-6 text-base text-muted-foreground md:text-lg"
             >
               <p>
-                I&apos;m a dynamic and results-oriented Full Stack Developer with comprehensive
-                experience in designing, developing, and deploying scalable, cloud-native web
-                applications and robust APIs. My journey in tech is driven by a passion for solving
-                complex problems and building impactful solutions.
+                I&apos;m a results-driven Full Stack Developer with a proven ability to design,
+                build, and deploy scalable, cloud-native web applications. My core expertise lies in
+                the MERN stack, particularly with React, Next.js, and Node.js, where I focus on
+                writing clean, efficient, and maintainable code.
               </p>
               <p>
-                With proven expertise in React.js, Next.js, Node.js, and TypeScript, I consistently
-                aim to deliver high-impact digital products. I&apos;m particularly excited about the
-                intersection of web development and Artificial Intelligence, exploring ways to
-                create more intelligent and intuitive user experiences.
+                What truly excites me is the intersection of web development and Artificial
+                Intelligence. I am passionate about exploring ways to build smarter, more intuitive
+                user experiences by integrating intelligent features into modern applications.
               </p>
               <p>
-                Beyond coding, I believe in collaborative growth and enjoy mentoring, sharing
-                knowledge, and continuously learning in the ever-evolving tech landscape.
+                Beyond the code, I am a firm believer in collaborative growth. I enjoy sharing
+                knowledge, mentoring others, and continuously learning in our ever-evolving
+                industry.
               </p>
             </motion.div>
           </div>

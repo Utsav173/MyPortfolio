@@ -22,14 +22,19 @@ import { TECH_STACK_DETAILS } from '@/lib/tech-stack-data'; // Import TECH_STACK
 
 interface ModalProps {
   project: Project;
+  isFromHomePage?: boolean;
 }
 
-export function Modal({ project }: ModalProps) {
+export function Modal({ project, isFromHomePage }: ModalProps) {
   const { theme } = useTheme();
   const router = useRouter();
 
+  const handleGoBack = () => {
+    return isFromHomePage ? router.back() : router.push('/');
+  };
+
   return (
-    <Dialog open onOpenChange={() => router.back()}>
+    <Dialog open onOpenChange={handleGoBack}>
       <DialogContent
         className={cn(
           'p-0 w-[98vw] max-w-sm h-fit max-h-[95vh] flex flex-col',
