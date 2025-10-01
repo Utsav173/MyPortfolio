@@ -5,7 +5,7 @@ import { memo } from 'react';
 const FooterSectionComponent = () => {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="relative z-20 w-full border-t border-border/30 bg-background/80 dark:bg-background/60 backdrop-blur-xl shadow-[0_-2px_24px_0_rgba(0,0,0,0.10)]">
+    <footer className="relative z-20 w-full border-t border-border/30 bg-background/80 dark:bg-background/60 backdrop-blur-xl shadow-[0_-2px_24px_0_rgba(0,0,0,0.10)] mt-4">
       <div className="mx-auto flex flex-col items-center justify-center gap-2 py-8 px-4 max-w-4xl">
         <div className="mb-3 flex items-center gap-2">
           <span className="inline-block h-1 w-16 rounded-full bg-gradient-to-r from-primary/70 via-primary/40 to-transparent dark:from-primary/80 dark:via-primary/50 dark:to-transparent" />

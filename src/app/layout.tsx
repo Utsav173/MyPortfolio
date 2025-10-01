@@ -46,6 +46,7 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   keywords: [
     'Utsav Khatri',
+    'Khatri Utsav',
     'Full Stack Developer',
     'Software Engineer',
     'React Developer',
@@ -144,6 +145,9 @@ export const metadata: Metadata = {
     'Radix UI',
     'FFmpeg',
     'Streaming',
+    'Khatri Utsav Ahemdabad',
+    'Khatri',
+    'khatri utsav web developer'
   ],
   authors: [{ name: 'Utsav Khatri', url: SITE_URL }],
   creator: 'Utsav Khatri',
