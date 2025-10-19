@@ -86,23 +86,17 @@ export default async function PostPage({ params }: PageProps<'/blog/[...slug]'>)
       <PostSchema post={post} />
       <ReadingProgress />
 
-      <article className="min-h-screen mx-auto container">
-        {/* Hero Section */}
+      <article className="min-h-screen">
         <PostHero post={post} />
 
-        {/* Main Content Area */}
-        <div className="container px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 max-w-7xl mx-auto relative">
-            {/* Sidebar - Desktop */}
-            <aside className="hidden lg:block lg:col-span-3 sticky top-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+          <div className="max-w-7xl mx-auto">
+            <aside className="hidden lg:block fixed left-4 -lg:left-[max(1rem,calc((100vw-80rem)/2))] top-24 w-64 lg:w-72 h-[calc(100vh-7rem)] overflow-y-auto z-10">
               <PostSidebar post={post} />
             </aside>
 
-            {/* Main Content */}
-            <main className="lg:col-span-9 xl:col-span-8">
+            <main className="max-w-3xl mx-auto lg:ml-auto lg:mr-auto">
               <PostContent post={post} />
-
-              {/* Post Footer */}
               <PostFooter post={post} />
             </main>
           </div>
@@ -114,7 +108,6 @@ export default async function PostPage({ params }: PageProps<'/blog/[...slug]'>)
         )}
       </article>
 
-      {/* Floating Actions */}
       <FloatingActions post={post} />
     </>
   );
