@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <PageWrapper>
+      <h1 className="sr-only">About Me</h1>
       <AboutSection id="about" />
     </PageWrapper>
   );

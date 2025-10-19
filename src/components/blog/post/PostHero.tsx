@@ -105,7 +105,7 @@ export function PostHero({ post }: PostHeroProps) {
           >
             {/* Author */}
             <div className="flex items-center gap-3">
-              <Avatar className="h-12 w-12 border-2 border-primary/20">
+              <Avatar className="h-10 w-10">
                 <AvatarImage src="/images/utsav-khatri.webp" alt="Utsav Khatri" />
                 <AvatarFallback>UK</AvatarFallback>
               </Avatar>

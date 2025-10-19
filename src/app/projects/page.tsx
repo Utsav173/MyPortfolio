@@ -71,6 +71,7 @@ export default async function ProjectsPage() {
 
   return (
     <PageWrapper>
+      <h1 className="sr-only">Projects</h1>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectsCollectionSchema) }}

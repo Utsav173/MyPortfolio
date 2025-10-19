@@ -1,17 +1,17 @@
-// src/components/blog/post/PostFooter.tsx
 'use client';
 
 import { motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Twitter, Linkedin, Facebook, Link2, Check, Github, Mail, ThumbsUp } from 'lucide-react';
-import { useState } from 'react';
+import { Twitter, Linkedin, Facebook, Link2, Check, Github, Mail, ThumbsUp, Share2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { SITE_URL } from '@/lib/config';
 import { cn } from '@/lib/utils';
+import { slug } from 'github-slugger';
 
 interface PostFooterProps {
   post: {
@@ -25,21 +25,98 @@ export function PostFooter({ post }: PostFooterProps) {
   const [copied, setCopied] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(42);
+  const [isNativeShareSupported, setIsNativeShareSupported] = useState(false);
+
+  useEffect(() => {
+    if ('share' in navigator) {
+      setIsNativeShareSupported(true);
+    }
+  }, []);
 
   const shareUrl = `${SITE_URL}/${post.slug}`;
-  const shareText = encodeURIComponent(post.title);
+  const shareText = `Check out this article: ${post.title}`;
 
   const copyLink = async () => {
-    await navigator.clipboard.writeText(shareUrl);
-    setCopied(true);
-    toast.success('Link copied to clipboard!');
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      toast.success('Link copied to clipboard!');
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      toast.error('Failed to copy link.');
+      console.error('Failed to copy: ', err);
+    }
+  };
+
+  const handleNativeShare = async () => {
+    try {
+      await navigator.share({
+        title: post.title,
+        text: shareText,
+        url: shareUrl,
+      });
+    } catch (err) {
+      if ((err as Error).name !== 'AbortError') {
+        console.error('Error sharing:', err);
+        toast.error('Could not open share dialog.');
+      }
+    }
   };
 
   const handleLike = () => {
     setLiked(!liked);
     setLikeCount(liked ? likeCount - 1 : likeCount + 1);
     toast.success(liked ? 'Like removed' : 'Thanks for the like!');
+  };
+
+  const ShareOptions = () => {
+    if (isNativeShareSupported) {
+      return (
+        <Button size="lg" variant="outline" onClick={handleNativeShare}>
+          <Share2 className="mr-2 h-4 w-4" />
+          Share Article
+        </Button>
+      );
+    }
+    return (
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-muted-foreground mr-2">Share:</span>
+        <a
+          href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${encodeURIComponent(post.title)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on Twitter"
+          className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'h-10 w-10')}
+        >
+          <Twitter className="h-4 w-4" />
+        </a>
+        <a
+          href={`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on LinkedIn"
+          className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'h-10 w-10')}
+        >
+          <Linkedin className="h-4 w-4" />
+        </a>
+        <a
+          href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on Facebook"
+          className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'h-10 w-10')}
+        >
+          <Facebook className="h-4 w-4" />
+        </a>
+        <Button size="icon" variant="outline" className="h-10 w-10" onClick={copyLink} aria-label="Copy link">
+          {copied ? (
+            <Check className="h-4 w-4 text-green-500" />
+          ) : (
+            <Link2 className="h-4 w-4" />
+          )}
+        </Button>
+      </div>
+    );
   };
 
   return (
@@ -73,47 +150,8 @@ export function PostFooter({ post }: PostFooterProps) {
             {liked ? 'Liked' : 'Like'} ({likeCount})
           </Button>
 
-          {/* Share Buttons */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground mr-2">Share:</span>
-            <Button size="icon" variant="outline" className="h-10 w-10" asChild>
-              <a
-                href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on Twitter"
-              >
-                <Twitter className="h-4 w-4" />
-              </a>
-            </Button>
-            <Button size="icon" variant="outline" className="h-10 w-10" asChild>
-              <a
-                href={`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on LinkedIn"
-              >
-                <Linkedin className="h-4 w-4" />
-              </a>
-            </Button>
-            <Button size="icon" variant="outline" className="h-10 w-10" asChild>
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on Facebook"
-              >
-                <Facebook className="h-4 w-4" />
-              </a>
-            </Button>
-            <Button size="icon" variant="outline" className="h-10 w-10" onClick={copyLink}>
-              {copied ? (
-                <Check className="h-4 w-4 text-green-500" />
-              ) : (
-                <Link2 className="h-4 w-4" />
-              )}
-            </Button>
-          </div>
+          {/* Share Options */}
+          <ShareOptions />
         </div>
       </div>
 
@@ -130,14 +168,14 @@ export function PostFooter({ post }: PostFooterProps) {
         <div className="flex flex-col sm:flex-row gap-6">
           {/* Author Image */}
           <div className="flex-shrink-0">
-            <div className="relative h-24 w-24 sm:h-32 sm:w-32">
+            <div className="relative h-24 w-24 sm:h-24 sm:w-24">
               <Image
                 src="/images/utsav-khatri.webp"
                 alt="Utsav Khatri"
                 fill
                 className="rounded-full object-cover ring-4 ring-primary/10"
               />
-              <div className="absolute -bottom-2 -right-2 rounded-full bg-primary p-2">
+              <div className="absolute -bottom-1 -right-1 rounded-full bg-primary p-2">
                 <Check className="h-4 w-4 text-primary-foreground" />
               </div>
             </div>
@@ -198,7 +236,7 @@ export function PostFooter({ post }: PostFooterProps) {
           <h3 className="text-lg font-semibold">Explore More Topics</h3>
           <div className="flex flex-wrap gap-2">
             {post.tags.map((tag) => (
-              <Link key={tag} href={`/blog?tag=${tag.toLowerCase().replace(/ /g, '-')}`}>
+              <Link key={tag} href={`/blog/tags/${slug(tag)}`}>
                 <Badge
                   variant="secondary"
                   className="px-3 py-1.5 text-sm hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer"

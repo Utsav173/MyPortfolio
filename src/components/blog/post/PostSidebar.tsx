@@ -81,7 +81,7 @@ export function PostSidebar({ post }: PostSidebarProps) {
   };
 
   return (
-    <div className="sticky top-24 space-y-4">
+    <div className="space-y-4">
       {/* Table of Contents */}
       {post.toc && post.toc.length > 0 && (
         <motion.div

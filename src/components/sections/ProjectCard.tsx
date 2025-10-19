@@ -41,6 +41,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, className, isFromHo
   return (
     <MotionLink
       href={`/projects/${project.id}?ref=${isFromHomePage ? 'home' : 'projects'}`}
+      aria-label={`View details for project: ${project.name}`}
       whileHover={
         shouldReduceMotion
           ? {}

@@ -112,7 +112,7 @@ export function PostItem({
               {/* Tags */}
               <div className="flex flex-wrap gap-1.5">
                 {tags?.slice(0, 3).map((tag) => (
-                  <Badge key={tag} variant="secondary" className="text-xs px-2 py-0.5">
+                  <Badge key={tag} variant="secondary" className="text-xs px-2 py-0.5 opacity-25 hover:opacity-100">
                     {tag}
                   </Badge>
                 ))}
@@ -149,11 +149,11 @@ export function FeaturedPostItem({
       className="group"
     >
       <Link href={slug}>
-        <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-card to-card hover:border-primary/40 transition-all duration-300">
+        <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/20 via-card to-card hover:border-primary/40 transition-all duration-300">
           <div className="grid md:grid-cols-2 gap-6">
             {/* Content */}
-            <div className="p-8 space-y-4">
-              <Badge variant="default" className="mb-2">
+            <div className="p-8 space-y-4 col-span-2">
+              <Badge variant="default" className="mb-2 dark:text-pretty dark:text-black">
                 Featured Post
               </Badge>
 
@@ -176,7 +176,7 @@ export function FeaturedPostItem({
 
               <div className="flex flex-wrap gap-2 pt-2">
                 {tags?.map((tag) => (
-                  <Badge key={tag} variant="secondary">
+                  <Badge key={tag} variant="secondary" className='opacity-50 hover:opacity-100'>
                     {tag}
                   </Badge>
                 ))}

@@ -6,10 +6,12 @@ import { getAllTags } from '@/lib/utils';
 import { slug } from 'github-slugger';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticDate = new Date('2025-10-19');
+
   const projects = projectsData;
   const projectUrls = projects.map((project) => ({
     url: `${SITE_URL}/projects/${project.id}`,
-    lastModified: new Date(),
+    lastModified: staticDate,
     changeFrequency: 'yearly' as const,
     priority: 0.7,
   }));
@@ -17,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = ['', '/about', '/skills', '/experience', '/projects', '/contact', '/blog'].map(
     (route) => ({
       url: `${SITE_URL}${route}`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: 'monthly' as const,
       priority: route === '' ? 1 : 0.8,
     })
@@ -31,5 +33,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
-  return [...routes, ...projectUrls, ...postUrls];
+  const tags = getAllTags(posts);
+  const tagUrls = Object.keys(tags).map((tag) => {
+    return {
+      url: `${SITE_URL}/blog/tags/${slug(tag)}`,
+      lastModified: staticDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    };
+  });
+
+  return [...routes, ...projectUrls, ...postUrls, ...tagUrls];
 }

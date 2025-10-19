@@ -1,14 +1,14 @@
-
 export interface Project {
   id: number | string;
   name: string;
   description: string;
-  repoUrl: string;
+  repoUrl: string | null;
   liveUrl?: string | null;
   imageUrl?: string;
   projectType: string;
   techStack: string[];
   keyFeatures: string[];
+  seo: string[];
   githubStats: {
     stars: number;
     forks: number;

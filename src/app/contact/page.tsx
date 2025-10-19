@@ -43,6 +43,7 @@ const contactPageSchema = {
 export default function ContactPage() {
   return (
     <PageWrapper>
+      <h1 className="sr-only">Contact Me</h1>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }}

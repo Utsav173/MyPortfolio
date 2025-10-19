@@ -24,33 +24,12 @@ export async function generateMetadata({ params }: PageProps<'/projects/[id]'>):
     };
   }
 
-  const imageUrl = project.imageUrl ? `${SITE_URL}${project.imageUrl}` : `${SITE_URL}/og-image.png`;
-
   return {
     title: project.name,
     description: project.description,
-    keywords: project.techStack,
+    keywords: project.seo, 
     alternates: {
       canonical: `${SITE_URL}/projects/${project.id}`,
-    },
-    openGraph: {
-      title: `${project.name} | Utsav Khatri`,
-      description: project.description,
-      url: `${SITE_URL}/projects/${project.id}`,
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: project.name,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${project.name} | Utsav Khatri`,
-      description: project.description,
-      images: [imageUrl],
     },
   };
 }
@@ -70,13 +49,25 @@ export default async function ProjectPage({ params, searchParams }: PageProps<'/
     name: project.name,
     description: project.description,
     url: `${SITE_URL}/projects/${project.id}`,
-    image: project.imageUrl ? `${SITE_URL}${project.imageUrl}` : `${SITE_URL}/og-image.png`,
+    image: {
+      '@type': 'ImageObject',
+      url: project.imageUrl ? `${SITE_URL}${project.imageUrl}` : `${SITE_URL}/og-image.png`,
+      width: 1200,
+      height: 630,
+    },
     author: {
       '@type': 'Person',
       name: 'Utsav Khatri',
+      url: SITE_URL,
     },
+    copyrightHolder: {
+      '@type': 'Person',
+      name: 'Utsav Khatri',
+      url: SITE_URL,
+    },
+    isAccessibleForFree: true,
     datePublished: '2023-01-01',
-    keywords: project.techStack.join(', '),
+    keywords: project.seo.join(', '),
   };
 
   return (

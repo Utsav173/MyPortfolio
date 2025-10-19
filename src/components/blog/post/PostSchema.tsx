@@ -14,18 +14,27 @@ interface PostSchemaProps {
       url?: string;
     };
     image?: string;
+    body: string;
   };
 }
 
 export function PostSchema({ post }: PostSchemaProps) {
+  const wordCount = post.body.split(/\s+/).length;
+
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
+    '@id': `${SITE_URL}/${post.slug}`, 
     headline: post.title,
     description: post.description,
     datePublished: new Date(post.date).toISOString(),
     dateModified: new Date(post.updated || post.date).toISOString(),
-    image: post.image || `${SITE_URL}/api/og?title=${encodeURIComponent(post.title)}`,
+    image: {
+      '@type': 'ImageObject',
+      url: post.image || `${SITE_URL}/api/og?title=${encodeURIComponent(post.title)}`,
+      width: 1200,
+      height: 630,
+    },
     url: `${SITE_URL}/${post.slug}`,
     author: {
       '@type': 'Person',
@@ -38,7 +47,9 @@ export function PostSchema({ post }: PostSchemaProps) {
       url: SITE_URL,
       logo: {
         '@type': 'ImageObject',
-        url: `${SITE_URL}/logo.png`,
+        url: `${SITE_URL}/favicon.svg`,
+        width: 96,
+        height: 96,
       },
     },
     mainEntityOfPage: {
@@ -46,8 +57,10 @@ export function PostSchema({ post }: PostSchemaProps) {
       '@id': `${SITE_URL}/${post.slug}`,
     },
     keywords: post.tags?.join(', '),
-    articleSection: 'Technology',
-    inLanguage: 'en',
+    articleSection: post.tags?.[0] || 'Technology',
+    inLanguage: 'en-US',
+    commentCount: 0, // Placeholder for future implementation
+    wordCount: wordCount,
   };
 
   const breadcrumbSchema = {
@@ -75,49 +88,6 @@ export function PostSchema({ post }: PostSchemaProps) {
     ],
   };
 
-  const websiteSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    url: SITE_URL,
-    name: 'Utsav Khatri',
-    description: 'Full Stack Developer & Technical Writer',
-    publisher: {
-      '@type': 'Person',
-      name: 'Utsav Khatri',
-    },
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${SITE_URL}/blog?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
-  };
-
-  const personSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Utsav Khatri',
-    url: SITE_URL,
-    jobTitle: 'Full Stack Developer',
-    description: 'Full Stack Developer specializing in React, Next.js, and modern web technologies',
-    sameAs: [
-      'https://twitter.com/Utsav_Khatri_',
-      'https://www.linkedin.com/in/utsav-khatri-in/',
-      'https://github.com/utsavkhatri',
-    ],
-    knowsAbout: [
-      'Web Development',
-      'React',
-      'Next.js',
-      'TypeScript',
-      'Node.js',
-      'AI',
-      'Machine Learning',
-    ],
-  };
-
   return (
     <>
       <script
@@ -127,14 +97,6 @@ export function PostSchema({ post }: PostSchemaProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
     </>
   );

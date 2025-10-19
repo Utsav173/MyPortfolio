@@ -29,6 +29,7 @@ export const metadata: Metadata = {
 export default function ExperiencePage() {
   return (
     <PageWrapper>
+      <h1 className="sr-only">Experience</h1>
       <ExperienceSection id="experience" />
     </PageWrapper>
   );
