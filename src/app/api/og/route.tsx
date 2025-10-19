@@ -18,10 +18,6 @@ export async function GET(req: NextRequest) {
         ? title.substring(0, 140).split(' ').slice(0, -1).join(' ') + '...'
         : title;
 
-    const fontBold = await fetch(
-      new URL('../../../assets/fonts/Inter-Bold.ttf', import.meta.url)
-    ).then((res) => res.arrayBuffer());
-
     return new ImageResponse(
       (
         <div
@@ -31,59 +27,107 @@ export async function GET(req: NextRequest) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
-            justifyContent: 'center',
-            backgroundImage: 'url(https://khatriutsav.com/og-bg.png)',
-            backgroundSize: '1200px 630px',
-            color: '#ffffff',
-            fontWeight: 700,
+            justifyContent: 'space-between',
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)',
             padding: '80px',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
           }}
         >
+          {/* Top section */}
           <div
             style={{
-              fontSize: 24,
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              color: '#cbd5e1',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
             }}
           >
-            Utsav Khatri&apos;s Blog
+            <div
+              style={{
+                width: '4px',
+                height: '32px',
+                background: 'linear-gradient(180deg, #3b82f6 0%, #8b5cf6 100%)',
+                borderRadius: '2px',
+              }}
+            />
+            <div
+              style={{
+                fontSize: 28,
+                fontWeight: 600,
+                color: '#e2e8f0',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Utsav Khatri
+            </div>
           </div>
+
+          {/* Main title */}
           <div
             style={{
-              fontSize: 60,
-              lineHeight: 1.1,
-              marginTop: '20px',
-              maxWidth: '1000px',
-              textShadow: '2px 2px 8px rgba(0,0,0,0.5)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px',
+              flex: 1,
+              justifyContent: 'center',
+              marginTop: '-80px',
             }}
           >
-            {heading}
+            <div
+              style={{
+                fontSize: 72,
+                fontWeight: 700,
+                lineHeight: 1.1,
+                maxWidth: '1000px',
+                color: '#ffffff',
+                letterSpacing: '-0.03em',
+              }}
+            >
+              {heading}
+            </div>
           </div>
+
+          {/* Bottom section */}
           <div
             style={{
-              position: 'absolute',
-              bottom: '60px',
-              left: '80px',
-              fontSize: 20,
-              color: '#94a3b8',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
             }}
           >
-            {SITE_URL.replace('https://', '')}
+            <div
+              style={{
+                fontSize: 24,
+                color: '#64748b',
+                fontWeight: 500,
+              }}
+            >
+              {SITE_URL.replace('https://', '')}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                gap: '8px',
+              }}
+            >
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: i === 1 ? '#3b82f6' : '#334155',
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
       ),
       {
         width: 1200,
         height: 630,
-        fonts: [
-          {
-            name: 'Inter',
-            data: fontBold,
-            style: 'normal',
-            weight: 700,
-          },
-        ],
       }
     );
   } catch (error) {
