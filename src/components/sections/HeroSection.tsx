@@ -175,7 +175,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
         </motion.h1>
         <motion.p
           variants={shouldReduceMotion ? undefined : itemVariants}
-          className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground md:mt-8 md:text-xl"
+          className="mx-auto mt-6 max-w-2xl text-sm text-muted-foreground md:mt-8 sm:text-md md:text-xl"
         >
           A{' '}
           <span className="font-semibold text-primary dark:text-slate-100">

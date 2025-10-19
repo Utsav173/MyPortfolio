@@ -154,14 +154,14 @@ export function FeaturedPostItem({
     >
       <Link href={slug}>
         <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/20 via-card to-card hover:border-primary/40 transition-all duration-300">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className={cn('grid gap-6', image && 'md:grid-cols-2')}>
             {/* Content */}
-            <div className="p-8 space-y-4 col-span-2">
+            <div className="p-6 md:p-8 space-y-4">
               <Badge variant="default" className="mb-2 dark:text-pretty dark:text-black">
                 Featured Post
               </Badge>
 
-              <h2 className="text-5xl font-bold tracking-tight group-hover:text-primary transition-colors">
+              <h2 className="text-4xl sm:text-5xl font-bold tracking-tight group-hover:text-primary transition-colors">
                 {title}
               </h2>
 

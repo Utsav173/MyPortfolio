@@ -44,13 +44,13 @@ export default function PageClient({ children }: { children: ReactNode }) {
 
       if (!mainContainerRef.current) return;
       const sections = gsap.utils.toArray<HTMLElement>('.content-section');
-      if (sections.length < 2) return;
+      if (sections.length < 3) return;
 
       const cameraTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: mainContainerRef.current,
           start: 'top top',
-          endTrigger: sections[2],
+          endTrigger: sections[3],
           end: 'bottom bottom',
           scrub: 1.5,
         },
@@ -63,7 +63,7 @@ export default function PageClient({ children }: { children: ReactNode }) {
           zPos: 140,
           lookAtY: 10,
           lookAtZ: -40,
-          ease: 'power2.inOut',
+          ease: 'power2.in',
         })
         .to(cameraControlsRef.current, {
           xPos: 15,
@@ -72,12 +72,20 @@ export default function PageClient({ children }: { children: ReactNode }) {
           lookAtY: 20,
           lookAtZ: -70,
           ease: 'power2.inOut',
+        })
+        .to(cameraControlsRef.current, {
+          xPos: 30,
+          yPos: -20,
+          zPos: 100,
+          lookAtY: 20,
+          lookAtZ: -70,
+          ease: 'power2.out',
         });
 
       const opacityTrigger = ScrollTrigger.create({
         trigger: sections[2],
-        start: 'top bottom',
-        end: 'top center',
+        start: '90% bottom',
+        end: 'bottom center',
         scrub: true,
         onUpdate: (self) => {
           if (matrixContainerRef.current) {

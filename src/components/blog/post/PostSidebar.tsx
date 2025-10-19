@@ -3,16 +3,10 @@
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { type Toc, type TocEntry } from '@/types';
-import { motion } from 'motion/react';
-import { Button } from '@/components/ui/button';
-import { Share2, Bookmark, Download, ChevronRight } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface PostSidebarProps {
   post: {
     toc: Toc;
-    slug: string;
-    title: string;
   };
 }
 
@@ -20,35 +14,35 @@ export function PostSidebar({ post }: PostSidebarProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: `-80px 0% -80% 0%` }
-    );
+    const handleObserver = (entries: IntersectionObserverEntry[]) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          setActiveId(entry.target.id);
+          return;
+        }
+      }
+    };
+
+    const observer = new IntersectionObserver(handleObserver, {
+      rootMargin: '-80px 0% -70% 0%',
+      threshold: 1.0,
+    });
 
     const getIds = (entries: TocEntry[]): string[] => {
       return entries.flatMap((entry) => [entry.url.substring(1), ...getIds(entry.items)]);
     };
 
     const ids = getIds(post.toc);
-    const elements = ids.map((id) => document.getElementById(id)).filter(Boolean);
+    const elements = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
 
-    elements.forEach((el) => {
-      if (el) observer.observe(el);
-    });
+    elements.forEach((el) => observer.observe(el));
 
-    return () =>
-      elements.forEach((el) => {
-        if (el) observer.unobserve(el);
-      });
+    return () => elements.forEach((el) => observer.unobserve(el));
   }, [post.toc]);
 
-  const TocEntry = ({ entry, depth = 0 }: { entry: TocEntry; depth?: number }) => {
+  const TocEntry = ({ entry }: { entry: TocEntry }) => {
     const isActive = entry.url.substring(1) === activeId;
 
     return (
@@ -58,21 +52,23 @@ export function PostSidebar({ post }: PostSidebarProps) {
           onClick={(e) => {
             e.preventDefault();
             const element = document.querySelector(entry.url);
-            element?.scrollIntoView({ behavior: 'smooth' });
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
           }}
           className={cn(
-            'group flex items-center gap-2 py-2 text-sm transition-all hover:text-primary',
-            depth > 0 && 'pl-4',
-            isActive ? 'font-medium text-primary' : 'text-muted-foreground hover:translate-x-1'
+            'block border-l-2 py-1 pl-4 text-sm transition-all',
+            isActive
+              ? 'border-primary font-medium text-primary'
+              : 'border-transparent text-muted-foreground hover:border-border hover:text-foreground'
           )}
         >
-          {isActive && <ChevronRight className="h-3 w-3 text-primary" />}
-          <span className={cn('line-clamp-2', isActive && 'text-primary')}>{entry.title}</span>
+          {entry.title}
         </a>
         {entry.items.length > 0 && (
-          <ul className="space-y-1 border-l border-border/50 ml-2">
+          <ul className="mt-2 space-y-2 pl-4">
             {entry.items.map((child) => (
-              <TocEntry key={child.url} entry={child} depth={depth + 1} />
+              <TocEntry key={child.url} entry={child} />
             ))}
           </ul>
         )}
@@ -80,28 +76,22 @@ export function PostSidebar({ post }: PostSidebarProps) {
     );
   };
 
+  if (!post.toc || post.toc.length === 0) {
+    return null;
+  }
+
   return (
     <div className="space-y-4">
-      {/* Table of Contents */}
-      {post.toc && post.toc.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-          className="rounded-lg border bg-card p-4 shadow-sm"
-        >
-          <h3 className="mb-4 font-semibold text-sm uppercase tracking-wider text-muted-foreground">
-            On This Page
-          </h3>
-          <nav>
-            <ul className="space-y-1">
-              {post.toc.map((entry) => (
-                <TocEntry key={entry.url} entry={entry} />
-              ))}
-            </ul>
-          </nav>
-        </motion.div>
-      )}
+      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        On this page
+      </h3>
+      <nav>
+        <ul className="space-y-2">
+          {post.toc.map((entry) => (
+            <TocEntry key={entry.url} entry={entry} />
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 }

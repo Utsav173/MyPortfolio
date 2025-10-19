@@ -140,7 +140,7 @@ export function PostFooter({ post }: PostFooterProps) {
       className="mt-16 space-y-12"
     >
       {/* Engagement Section */}
-      <div className="rounded-2xl bg-gradient-to-r from-primary/5 via-background to-primary/5 border p-8 text-center">
+      <div className="rounded-2xl bg-gradient-to-r from-primary/5 via-background to-primary/5 border p-6 sm:p-8 text-center">
         <h3 className="mb-2 text-lg font-semibold">Did you find this article helpful?</h3>
         <p className="mb-6 text-sm text-muted-foreground">
           Consider sharing it with others who might benefit from it
@@ -175,7 +175,7 @@ export function PostFooter({ post }: PostFooterProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="rounded-2xl border bg-card p-8 shadow-sm"
+        className="rounded-2xl border bg-card p-6 sm:p-8 shadow-sm"
       >
         <div className="flex flex-col sm:flex-row gap-6">
           {/* Author Image */}
