@@ -6,7 +6,17 @@ import Link from 'next/link';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Twitter, Linkedin, Facebook, Link2, Check, Github, Mail, ThumbsUp, Share2 } from 'lucide-react';
+import {
+  Twitter,
+  Linkedin,
+  Facebook,
+  Link2,
+  Check,
+  Github,
+  Mail,
+  ThumbsUp,
+  Share2,
+} from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { SITE_URL } from '@/lib/config';
@@ -108,12 +118,14 @@ export function PostFooter({ post }: PostFooterProps) {
         >
           <Facebook className="h-4 w-4" />
         </a>
-        <Button size="icon" variant="outline" className="h-10 w-10" onClick={copyLink} aria-label="Copy link">
-          {copied ? (
-            <Check className="h-4 w-4 text-green-500" />
-          ) : (
-            <Link2 className="h-4 w-4" />
-          )}
+        <Button
+          size="icon"
+          variant="outline"
+          className="h-10 w-10"
+          onClick={copyLink}
+          aria-label="Copy link"
+        >
+          {copied ? <Check className="h-4 w-4 text-green-500" /> : <Link2 className="h-4 w-4" />}
         </Button>
       </div>
     );

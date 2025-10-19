@@ -112,7 +112,11 @@ export function PostItem({
               {/* Tags */}
               <div className="flex flex-wrap gap-1.5">
                 {tags?.slice(0, 3).map((tag) => (
-                  <Badge key={tag} variant="secondary" className="text-xs px-2 py-0.5 opacity-25 hover:opacity-100">
+                  <Badge
+                    key={tag}
+                    variant="secondary"
+                    className="text-xs px-2 py-0.5 opacity-25 hover:opacity-100"
+                  >
                     {tag}
                   </Badge>
                 ))}
@@ -157,7 +161,7 @@ export function FeaturedPostItem({
                 Featured Post
               </Badge>
 
-              <h2 className="text-3xl font-bold tracking-tight group-hover:text-primary transition-colors">
+              <h2 className="text-5xl font-bold tracking-tight group-hover:text-primary transition-colors">
                 {title}
               </h2>
 
@@ -176,7 +180,7 @@ export function FeaturedPostItem({
 
               <div className="flex flex-wrap gap-2 pt-2">
                 {tags?.map((tag) => (
-                  <Badge key={tag} variant="secondary" className='opacity-50 hover:opacity-100'>
+                  <Badge key={tag} variant="secondary" className="opacity-50 hover:opacity-100">
                     {tag}
                   </Badge>
                 ))}

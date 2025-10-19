@@ -25,37 +25,37 @@ One of Next.js's most significant SEO benefits lies in its rendering capabilitie
 
 Search engine crawlers (like Googlebot) can easily read and index the content of pre-rendered pages. This ensures that all your valuable content—project descriptions, blog posts, skill sets—is immediately available and understandable to search engines, leading to better indexing and ranking.
 
-*   **Static Site Generation (SSG) with `getStaticProps`**: Ideal for pages whose content doesn't change frequently (e.g., blog posts, project showcases). Pages are built at compile time, resulting in lightning-fast load times and excellent SEO.
+- **Static Site Generation (SSG) with `getStaticProps`**: Ideal for pages whose content doesn't change frequently (e.g., blog posts, project showcases). Pages are built at compile time, resulting in lightning-fast load times and excellent SEO.
 
-    ```typescript
-    // Example: content/blog/[slug].tsx
-    export async function getStaticProps({ params }) {
-      const post = await getPostBySlug(params.slug);
-      return {
-        props: { post },
-      };
-    }
+  ```typescript
+  // Example: content/blog/[slug].tsx
+  export async function getStaticProps({ params }) {
+    const post = await getPostBySlug(params.slug);
+    return {
+      props: { post },
+    };
+  }
 
-    export async function getStaticPaths() {
-      const posts = await getAllPosts();
-      const paths = posts.map((post) => ({
-        params: { slug: post.slug },
-      }));
-      return { paths, fallback: false };
-    }
-    ```
+  export async function getStaticPaths() {
+    const posts = await getAllPosts();
+    const paths = posts.map((post) => ({
+      params: { slug: post.slug },
+    }));
+    return { paths, fallback: false };
+  }
+  ```
 
-*   **Server-Side Rendering (SSR) with `getServerSideProps`**: Best for pages with dynamic, user-specific, or frequently updated content (e.g., a dashboard, a personalized feed). Pages are rendered on each request.
+- **Server-Side Rendering (SSR) with `getServerSideProps`**: Best for pages with dynamic, user-specific, or frequently updated content (e.g., a dashboard, a personalized feed). Pages are rendered on each request.
 
-    ```typescript
-    // Example: pages/dashboard.tsx
-    export async function getServerSideProps(context) {
-      const userData = await fetchUserData(context.req);
-      return {
-        props: { userData },
-      };
-    }
-    ```
+  ```typescript
+  // Example: pages/dashboard.tsx
+  export async function getServerSideProps(context) {
+    const userData = await fetchUserData(context.req);
+    return {
+      props: { userData },
+    };
+  }
+  ```
 
 ## Optimizing Metadata for Search Engines
 
@@ -63,9 +63,9 @@ Metadata provides search engines with crucial information about your page's cont
 
 **Key Metadata Elements:**
 
-*   **Title Tag (`<title>`):** The most important on-page SEO element. It should be concise, descriptive, and include relevant keywords. Each page should have a unique title.
-*   **Meta Description (`<meta name="description">`):** A brief summary of your page's content. While not a direct ranking factor, a compelling meta description can significantly improve click-through rates (CTR) from search results.
-*   **Keywords (`<meta name="keywords">` - less important now):** Historically used for keywords, but search engines largely ignore this tag today due to abuse. Focus on natural keyword integration within your content.
+- **Title Tag (`<title>`):** The most important on-page SEO element. It should be concise, descriptive, and include relevant keywords. Each page should have a unique title.
+- **Meta Description (`<meta name="description">`):** A brief summary of your page's content. While not a direct ranking factor, a compelling meta description can significantly improve click-through rates (CTR) from search results.
+- **Keywords (`<meta name="keywords">` - less important now):** Historically used for keywords, but search engines largely ignore this tag today due to abuse. Focus on natural keyword integration within your content.
 
 **Implementation in Next.js (App Router example):**
 
@@ -119,10 +119,10 @@ Structured data, often implemented using JSON-LD, helps search engines understan
 
 **Common Schemas for a Portfolio:**
 
-*   **`Article` or `BlogPosting`**: For your blog posts.
-*   **`Person`**: For your "About Me" page.
-*   **`WebPage`**: For general pages.
-*   **`Project` or `CreativeWork`**: For individual project showcases.
+- **`Article` or `BlogPosting`**: For your blog posts.
+- **`Person`**: For your "About Me" page.
+- **`WebPage`**: For general pages.
+- **`Project` or `CreativeWork`**: For individual project showcases.
 
 **Implementation Example (for a Blog Post):**
 
@@ -200,9 +200,9 @@ Images are often the heaviest assets on a webpage, and slow-loading images can s
 
 **Benefits of `next/image`:**
 
-*   **Automatic Optimization:** Images are automatically optimized, resized, and served in modern formats (like WebP) based on the user's device and browser.
-*   **Lazy Loading:** Images outside the viewport are not loaded until the user scrolls near them, improving initial page load times.
-*   **Layout Shift Prevention:** Prevents Cumulative Layout Shift (CLS) by reserving space for images before they load.
+- **Automatic Optimization:** Images are automatically optimized, resized, and served in modern formats (like WebP) based on the user's device and browser.
+- **Lazy Loading:** Images outside the viewport are not loaded until the user scrolls near them, improving initial page load times.
+- **Layout Shift Prevention:** Prevents Cumulative Layout Shift (CLS) by reserving space for images before they load.
 
 **Usage:**
 
@@ -228,74 +228,77 @@ function MyProjectImage() {
 
 These two files are fundamental for guiding search engine crawlers.
 
-*   **`sitemap.xml`**: A map of all the pages on your site that you want search engines to crawl and index. It helps crawlers discover all your content, especially on larger sites or those with complex navigation. Next.js allows you to dynamically generate this.
+- **`sitemap.xml`**: A map of all the pages on your site that you want search engines to crawl and index. It helps crawlers discover all your content, especially on larger sites or those with complex navigation. Next.js allows you to dynamically generate this.
 
-    ```typescript
-    // Example: src/app/sitemap.ts (as seen in your project)
-    import { MetadataRoute } from 'next';
-    import { allPosts } from 'contentlayer/generated';
-    import siteMetadata from '@/lib/siteMetadata';
+  ```typescript
+  // Example: src/app/sitemap.ts (as seen in your project)
+  import { MetadataRoute } from 'next';
+  import { allPosts } from 'contentlayer/generated';
+  import siteMetadata from '@/lib/siteMetadata';
 
-    export default function sitemap(): MetadataRoute.Sitemap {
-      const posts = allPosts.map((post) => ({
-        url: `${siteMetadata.siteUrl}/blog/${post.slug}`,
-        lastModified: post.date,
-        changeFrequency: 'weekly' as const,
-        priority: 0.8,
-      }));
+  export default function sitemap(): MetadataRoute.Sitemap {
+    const posts = allPosts.map((post) => ({
+      url: `${siteMetadata.siteUrl}/blog/${post.slug}`,
+      lastModified: post.date,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }));
 
-      const routes = ['', '/blog', '/projects', '/experience', '/skills', '/about', '/contact'].map((route) => ({
+    const routes = ['', '/blog', '/projects', '/experience', '/skills', '/about', '/contact'].map(
+      (route) => ({
         url: `${siteMetadata.siteUrl}${route}`,
         lastModified: new Date().toISOString(),
         changeFrequency: 'weekly' as const,
         priority: 0.8,
-      }));
+      })
+    );
 
-      return [...routes, ...posts];
-    }
-    ```
-    **Crucial Enhancement:** Ensure all your project detail pages (`/projects/[id]`) are also included in this sitemap. You'll need to fetch all project IDs and map them similarly to how blog posts are handled.
+    return [...routes, ...posts];
+  }
+  ```
 
-*   **`robots.txt`**: Tells search engine crawlers which pages or sections of your site they are allowed or disallowed to access. Use it to prevent indexing of private areas or duplicate content.
+  **Crucial Enhancement:** Ensure all your project detail pages (`/projects/[id]`) are also included in this sitemap. You'll need to fetch all project IDs and map them similarly to how blog posts are handled.
 
-    ```typescript
-    // Example: src/app/robots.ts (as seen in your project)
-    import { MetadataRoute } from 'next';
+- **`robots.txt`**: Tells search engine crawlers which pages or sections of your site they are allowed or disallowed to access. Use it to prevent indexing of private areas or duplicate content.
 
-    export default function robots(): MetadataRoute.Robots {
-      return {
-        rules: {
-          userAgent: '*',
-          allow: '/',
-          disallow: ['/studio/', '/cdn-cgi/', '/_next/'],
-        },
-        sitemap: 'https://www.utsavkhatri.com/sitemap.xml',
-      };
-    }
-    ```
+  ```typescript
+  // Example: src/app/robots.ts (as seen in your project)
+  import { MetadataRoute } from 'next';
+
+  export default function robots(): MetadataRoute.Robots {
+    return {
+      rules: {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/studio/', '/cdn-cgi/', '/_next/'],
+      },
+      sitemap: 'https://www.utsavkhatri.com/sitemap.xml',
+    };
+  }
+  ```
 
 ## Internal Linking Strategy
 
 A robust internal linking structure is vital for SEO. It helps:
 
-*   **Distribute Link Equity:** Passes "link juice" around your site, boosting the authority of linked pages.
-*   **Improve Discoverability:** Helps crawlers find new and important pages.
-*   **Enhance User Experience:** Guides users to related content, increasing engagement.
+- **Distribute Link Equity:** Passes "link juice" around your site, boosting the authority of linked pages.
+- **Improve Discoverability:** Helps crawlers find new and important pages.
+- **Enhance User Experience:** Guides users to related content, increasing engagement.
 
 **Best Practices:**
 
-*   Link relevant blog posts to each other.
-*   Link from blog posts to relevant projects.
-*   Link from project pages to related skills or technologies.
-*   Use descriptive anchor text (the visible, clickable text of a hyperlink) that includes keywords.
+- Link relevant blog posts to each other.
+- Link from blog posts to relevant projects.
+- Link from project pages to related skills or technologies.
+- Use descriptive anchor text (the visible, clickable text of a hyperlink) that includes keywords.
 
 ## Performance Optimization (Core Web Vitals)
 
 Google considers page experience a ranking factor, and Core Web Vitals (Largest Contentful Paint, First Input Delay, Cumulative Layout Shift) are key metrics. Next.js inherently helps with many of these, but continuous optimization is necessary.
 
-*   **Fast Loading (LCP):** Next.js's SSR/SSG and image optimization contribute significantly.
-*   **Interactivity (FID):** Minimize heavy JavaScript execution on initial load.
-*   **Visual Stability (CLS):** Use `next/image` and define dimensions for all media.
+- **Fast Loading (LCP):** Next.js's SSR/SSG and image optimization contribute significantly.
+- **Interactivity (FID):** Minimize heavy JavaScript execution on initial load.
+- **Visual Stability (CLS):** Use `next/image` and define dimensions for all media.
 
 ## Mobile-First Indexing
 
@@ -305,9 +308,9 @@ Google primarily uses the mobile version of your content for indexing and rankin
 
 SEO is an ongoing process. Regularly monitor your site's performance using tools like:
 
-*   **Google Search Console:** Essential for identifying crawl errors, indexing status, search queries, and Core Web Vitals reports.
-*   **Google Analytics:** To understand user behavior, traffic sources, and engagement.
-*   **Lighthouse (built into Chrome DevTools):** For on-demand audits of performance, accessibility, best practices, and SEO.
+- **Google Search Console:** Essential for identifying crawl errors, indexing status, search queries, and Core Web Vitals reports.
+- **Google Analytics:** To understand user behavior, traffic sources, and engagement.
+- **Lighthouse (built into Chrome DevTools):** For on-demand audits of performance, accessibility, best practices, and SEO.
 
 ## Conclusion
 

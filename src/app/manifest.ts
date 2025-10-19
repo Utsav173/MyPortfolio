@@ -4,7 +4,8 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Utsav Khatri | Full Stack Developer',
     short_name: 'Utsav Khatri',
-    description: 'Portfolio of Utsav Khatri, a Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies.',
+    description:
+      'Portfolio of Utsav Khatri, a Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies.',
     start_url: '/',
     display: 'standalone',
     background_color: '#0a0f1c',

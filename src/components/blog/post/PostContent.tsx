@@ -1,4 +1,3 @@
-// src/components/blog/post/PostContent.tsx
 'use client';
 
 import { MDXContent } from '@/components/blog/mdx-components';
@@ -35,7 +34,8 @@ export function PostContent({ post }: PostContentProps) {
         'prose-table:overflow-hidden prose-table:rounded-lg prose-table:shadow-sm',
         'prose-th:bg-muted prose-th:font-semibold',
         'prose-td:border-border',
-        'prose-hr:border-border'
+        'prose-hr:border-border',
+        "max-sm:px-4 "
       )}
     >
       <MDXContent code={post.body} />

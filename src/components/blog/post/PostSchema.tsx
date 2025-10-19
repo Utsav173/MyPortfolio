@@ -24,7 +24,7 @@ export function PostSchema({ post }: PostSchemaProps) {
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    '@id': `${SITE_URL}/${post.slug}`, 
+    '@id': `${SITE_URL}/${post.slug}`,
     headline: post.title,
     description: post.description,
     datePublished: new Date(post.date).toISOString(),

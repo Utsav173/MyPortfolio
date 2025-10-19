@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps<'/projects/[id]'>):
   return {
     title: project.name,
     description: project.description,
-    keywords: project.seo, 
+    keywords: project.seo,
     alternates: {
       canonical: `${SITE_URL}/projects/${project.id}`,
     },

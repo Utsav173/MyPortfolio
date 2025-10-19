@@ -7,7 +7,8 @@
     "build": "velite && next build",
     "start": "next start",
     "lint": "next lint",
-    "velite:build": "velite"
+    "velite:build": "velite",
+    "format": "prettier . --write"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

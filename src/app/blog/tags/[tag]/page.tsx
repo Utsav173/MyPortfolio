@@ -9,8 +9,9 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
-
-export async function generateMetadata({ params }: PageProps<"/blog/tags/[tag]" >): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps<'/blog/tags/[tag]'>): Promise<Metadata> {
   const { tag } = await params;
   const allTags = getAllTags(posts);
   const title = Object.keys(allTags).find((t) => slugger(t) === tag) || tag;
@@ -45,9 +46,7 @@ export default async function TagPage({ params }: PageProps<'/blog/tags/[tag]'>)
             <p className="text-sm font-semibold uppercase tracking-wider text-primary">
               Tag Archive
             </p>
-            <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight">
-              &#35;{title}
-            </h1>
+            <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight">&#35;{title}</h1>
             <p className="mt-4 text-lg text-muted-foreground">
               {filteredPosts.length} {filteredPosts.length === 1 ? 'post' : 'posts'} found.
             </p>

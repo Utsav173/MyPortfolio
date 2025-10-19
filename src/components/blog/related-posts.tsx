@@ -11,7 +11,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
   }
 
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className="mx-auto sm:max-w-5xl">
       <h2 className="text-2xl font-bold tracking-tight mb-8 text-center">Related Articles</h2>
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (

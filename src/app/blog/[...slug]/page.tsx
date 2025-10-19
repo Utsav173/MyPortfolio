@@ -34,6 +34,8 @@ export async function generateMetadata({
   const ogSearchParams = new URLSearchParams();
   ogSearchParams.set('title', post.title);
 
+  const ogImageUrl = `${SITE_URL}/api/og?${ogSearchParams.toString()}`;
+
   return {
     title: post.title,
     description: post.description,
@@ -50,7 +52,7 @@ export async function generateMetadata({
       ...(post.updated && { modifiedTime: new Date(post.updated).toISOString() }),
       images: [
         {
-          url: `/api/og?${ogSearchParams.toString()}`,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: post.title,
@@ -61,7 +63,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: post.title,
       description: post.description ?? '',
-      images: [`/api/og?${ogSearchParams.toString()}`],
+      images: [ogImageUrl],
     },
   };
 }
@@ -89,20 +91,19 @@ export default async function PostPage({ params }: PageProps<'/blog/[...slug]'>)
       <article className="min-h-screen">
         <PostHero post={post} />
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-          <div className="max-w-7xl mx-auto">
+        <div className="mx-auto px-4 lg:px-8 py-8 lg:py-12 sm:max-w-7xl">
             <aside className="hidden lg:block fixed left-4 -lg:left-[max(1rem,calc((100vw-80rem)/2))] top-24 w-64 lg:w-72 h-[calc(100vh-7rem)] overflow-y-auto z-10">
               <PostSidebar post={post} />
             </aside>
 
-            <main className="max-w-3xl mx-auto lg:ml-auto lg:mr-auto">
+            <main className="min-w-0 sm:max-w-4xl flex-grow">
               <PostContent post={post} />
               <PostFooter post={post} />
             </main>
-          </div>
+
+            <div className="hidden lg:block w-72 flex-shrink-0"></div>
         </div>
 
-        {/* Related Posts */}
         {relatedPosts.length > 0 && (
           <RelatedPostsEnhanced posts={relatedPosts} currentPost={post} />
         )}
