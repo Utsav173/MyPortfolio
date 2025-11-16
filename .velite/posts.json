@@ -4,7 +4,7 @@
     "title": "Beyond Chatbots: The Architecture of Modern AI Agents",
     "description": "AI is evolving from simple chatbots to autonomous agents that can reason, plan, and execute complex tasks. This deep dive explores the core architectural patterns—like the ReAct loop, tool use, and memory—that power this new generation of AI.",
     "date": "2025-09-28T00:00:00.000Z",
-    "published": true,
+    "published": false,
     "tags": [
       "AI",
       "Architecture",
@@ -149,7 +149,7 @@
     "title": "Mastering Next.js SEO - Advanced Strategies for Skyrocketing Your Portfolio's Visibility",
     "description": "Unlock the full potential of your Next.js portfolio with advanced SEO strategies. Learn how to leverage SSR, SSG, structured data, and more to rank higher and attract more visitors.",
     "date": "2025-09-14T00:00:00.000Z",
-    "published": true,
+    "published": false,
     "tags": [
       "Next.js",
       "SEO",

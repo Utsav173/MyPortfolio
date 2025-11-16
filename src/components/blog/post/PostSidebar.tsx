@@ -81,7 +81,7 @@ export function PostSidebar({ post }: PostSidebarProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 backdrop-blur-xl rounded-xl p-2">
       <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
         On this page
       </h3>

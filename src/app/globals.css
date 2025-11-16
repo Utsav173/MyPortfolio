@@ -673,7 +673,7 @@ pre {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   code {
-    @apply grid overflow-auto py-5 font-mono text-sm;
+    @apply grid overflow-auto p-3 font-mono text-sm;
   }
 
   .line {
