@@ -14,6 +14,12 @@ import { cn } from '@/lib/utils';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { KernelSize } from 'postprocessing';
 
+import {
+  PlaneShaderMaterial,
+  RainParticleShaderMaterial,
+  SplashParticleShaderMaterial,
+} from './shaders';
+
 const getKernelSize = (sizeStr?: string): KernelSize => {
   if (!sizeStr) return KernelSize.LARGE;
   switch (sizeStr.toUpperCase()) {
@@ -32,73 +38,7 @@ const getKernelSize = (sizeStr?: string): KernelSize => {
   }
 };
 
-const PlaneShaderMaterial = shaderMaterial(
-  {
-    time: 0,
-    uThemeAdjust: 0,
-    uPlaneColorDarkTheme: new THREE.Color(0x19193b),
-    uPlaneColorLightTheme: new THREE.Color(0x205d75),
-    uGridColorDarkTheme: new THREE.Color(0x00ffff),
-    uGridColorLightTheme: new THREE.Color(0x3b82f6),
-    uGridLineThickness: 0.018,
-    uGridLineSpacing: 40.0,
-    uNoiseStrengthHill1: 15.0,
-    uNoiseStrengthHill2: 11.3,
-    uNoiseStrengthHill3: 3.2,
-    uNoiseStrengthOverall: 46.5,
-    uPlaneSize: 256.0,
-    uOpacityFactorDark: 0.87,
-    uOpacityFactorLight: 0.98,
-  },
-  ` varying vec3 vPosition; 
-    varying vec2 vUv;
-    uniform float time; 
-    uniform float uNoiseStrengthHill1; 
-    uniform float uNoiseStrengthHill2; 
-    uniform float uNoiseStrengthHill3; 
-    uniform float uNoiseStrengthOverall; 
-    uniform float uPlaneSize;
-    mat4 rotateMatrixX(float radian) { return mat4(1.,0.,0.,0.,0.,cos(radian),-sin(radian),0.,0.,sin(radian),cos(radian),0.,0.,0.,0.,1.);} vec3 mod289(vec3 x){return x-floor(x*(1./289.))*289.;} vec4 mod289(vec4 x){return x-floor(x*(1./289.))*289.;} vec4 permute(vec4 x){return mod289(((x*34.)+1.)*x);} vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-.85373472095314*r;} vec3 fade(vec3 t){return t*t*t*(t*(t*6.-15.)+10.);} float cnoise(vec3 P){vec3 Pi0=floor(P);vec3 Pi1=Pi0+vec3(1.);Pi0=mod289(Pi0);Pi1=mod289(Pi1);vec3 Pf0=fract(P);vec3 Pf1=Pf0-vec3(1.);vec4 ix=vec4(Pi0.x,Pi1.x,Pi0.x,Pi1.x);vec4 iy=vec4(Pi0.y,Pi0.y,Pi1.y,Pi1.y);vec4 iz0=vec4(Pi0.z,Pi0.z,Pi0.z,Pi0.z);vec4 iz1=vec4(Pi1.z,Pi1.z,Pi1.z,Pi1.z);vec4 ixy=permute(permute(ix)+iy);vec4 ixy0=permute(ixy+iz0);vec4 ixy1=permute(ixy+iz1);vec4 gx0=ixy0*(1./7.);vec4 gy0=fract(floor(gx0)*(1./7.))-.5;gx0=fract(gx0);vec4 gz0=vec4(.5)-abs(gx0)-abs(gy0);vec4 sz0=step(gz0,vec4(0.));gx0-=sz0*(step(0.,gx0)-.5);gy0-=sz0*(step(0.,gy0)-.5);vec4 gx1=ixy1*(1./7.);vec4 gy1=fract(floor(gx1)*(1./7.))-.5;gx1=fract(gx1);vec4 gz1=vec4(.5)-abs(gx1)-abs(gy1);vec4 sz1=step(gz1,vec4(0.));gx1-=sz1*(step(0.,gx1)-.5);gy1-=sz1*(step(0.,gy1)-.5);vec3 g000=vec3(gx0.x,gy0.x,gz0.x);vec3 g100=vec3(gx0.y,gy0.y,gz0.y);vec3 g010=vec3(gx0.z,gy0.z,gz0.z);vec3 g110=vec3(gx0.w,gy0.w,gz0.w);vec3 g001=vec3(gx1.x,gy1.x,gz1.x);vec3 g101=vec3(gx1.y,gy1.y,gz1.y);vec3 g011=vec3(gx1.z,gy1.z,gz1.z);vec3 g111=vec3(gx1.w,gy1.w,gz1.w);vec4 norm0=taylorInvSqrt(vec4(dot(g000,g000),dot(g010,g010),dot(g100,g100),dot(g110,g110)));g000*=norm0.x;g010*=norm0.y;g100*=norm0.z;g110*=norm0.w;vec4 norm1=taylorInvSqrt(vec4(dot(g001,g001),dot(g011,g011),dot(g101,g101),dot(g111,g111)));g001*=norm1.x;g011*=norm1.y;g101*=norm1.z;g111*=norm1.w;float n000=dot(g000,Pf0);float n100=dot(g100,vec3(Pf1.x,Pf0.y,Pf0.z));float n010=dot(g010,vec3(Pf0.x,Pf1.y,Pf0.z));float n110=dot(g110,vec3(Pf1.x,Pf1.y,Pf0.z));float n001=dot(g001,vec3(Pf0.x,Pf0.y,Pf1.z));float n101=dot(g101,vec3(Pf1.x,Pf0.y,Pf1.z));float n011=dot(g011,vec3(Pf0.x,Pf1.y,Pf1.z));float n111=dot(g111,Pf1);vec3 fade_xyz_val=fade(Pf0);vec4 n_z=mix(vec4(n000,n100,n010,n110),vec4(n001,n101,n011,n111),fade_xyz_val.z);vec2 n_yz=mix(n_z.xy,n_z.zw,fade_xyz_val.y);float n_xyz=mix(n_yz.x,n_yz.y,fade_xyz_val.x);return 2.2*n_xyz;} void main() { vUv = uv; vec3 updatePosition = (rotateMatrixX(radians(90.0)) * vec4(position, 1.0)).xyz; float sin1 = sin(radians(updatePosition.x / (uPlaneSize/2.0) * 90.0)); vec3 noisePosition = updatePosition + vec3(0.0, 0.0, time * -18.0); float noise1 = cnoise(noisePosition * 0.065); float noise2 = cnoise(noisePosition * 0.045); float noise3 = cnoise(noisePosition * 0.28); vec3 lastPosition = updatePosition + vec3(0.0, noise1 * sin1 * uNoiseStrengthHill1 + noise2 * sin1 * uNoiseStrengthHill2 + noise3 * (abs(sin1) * 1.7 + 0.4) * uNoiseStrengthHill3 + pow(sin1, 2.0) * uNoiseStrengthOverall, 0.0); vPosition = lastPosition; gl_Position = projectionMatrix * modelViewMatrix * vec4(lastPosition, 1.0); }`,
-  ` varying vec3 vPosition; 
-    varying vec2 vUv;
-    uniform float uThemeAdjust; 
-    uniform vec3 uPlaneColorDarkTheme; 
-    uniform vec3 uPlaneColorLightTheme; 
-    uniform vec3 uGridColorDarkTheme;
-    uniform vec3 uGridColorLightTheme;
-    uniform float uGridLineThickness;
-    uniform float uGridLineSpacing;
-    uniform float uPlaneSize; 
-    uniform float uOpacityFactorDark; 
-    uniform float uOpacityFactorLight; 
-    void main() { 
-      float opacityFactor = (110.0 - length(vPosition)) / uPlaneSize; 
-      float currentOpacityFactor = mix(uOpacityFactorDark, uOpacityFactorLight, uThemeAdjust); 
-      float baseOpacity = smoothstep(0.0, 0.9, opacityFactor) * currentOpacityFactor; 
-      vec3 color = mix(uPlaneColorDarkTheme, uPlaneColorLightTheme, uThemeAdjust); 
-      vec3 gridColor = mix(uGridColorDarkTheme, uGridColorLightTheme, uThemeAdjust);
-      
-      float gridX = smoothstep(uGridLineThickness, 0.0, abs(fract(vUv.x * uGridLineSpacing) - 0.5) * 2.0);
-      float gridY = smoothstep(uGridLineThickness, 0.0, abs(fract(vUv.y * uGridLineSpacing) - 0.5) * 2.0);
-      float gridFactor = max(gridX, gridY);
 
-      vec3 finalColor = mix(color, gridColor, gridFactor);
-      
-      gl_FragColor = vec4(finalColor, baseOpacity); 
-    }`
-);
-
-const RainParticleShaderMaterial = shaderMaterial(
-  { uAtlasMap: new THREE.Texture() },
-  ` precision highp float; attribute vec4 instanceOffset; attribute vec4 instanceColorOpacity; varying vec2 vAtlasUv; varying vec4 vColorOpacity; void main() { vAtlasUv = uv * instanceOffset.zw + instanceOffset.xy; vColorOpacity = instanceColorOpacity; gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(position, 1.0); }`,
-  ` precision mediump float; uniform sampler2D uAtlasMap; varying vec2 vAtlasUv; varying vec4 vColorOpacity; void main() { vec4 texColor = texture2D(uAtlasMap, vAtlasUv); if (texColor.a < 0.05) discard; gl_FragColor = vec4(vColorOpacity.rgb * texColor.rgb, texColor.a * vColorOpacity.a); }`
-);
-
-const SplashParticleShaderMaterial = shaderMaterial(
-  { uAtlasMap: new THREE.Texture() },
-  ` precision highp float; attribute vec4 instanceOffset; attribute vec4 instanceColorOpacity; varying vec2 vAtlasUv; varying vec4 vColorOpacity; void main() { vAtlasUv = uv * instanceOffset.zw + instanceOffset.xy; vColorOpacity = instanceColorOpacity; gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(position, 1.0); }`,
-  ` precision mediump float; uniform sampler2D uAtlasMap; varying vec2 vAtlasUv; varying vec4 vColorOpacity; void main() { vec4 texColor = texture2D(uAtlasMap, vAtlasUv); if (texColor.a < 0.01) discard; gl_FragColor = vec4(vColorOpacity.rgb * texColor.rgb, texColor.a * vColorOpacity.a); }`
-);
 
 extend({
   PlaneShaderMaterial,
@@ -306,23 +246,25 @@ const getPlaneHeightAt = (
 };
 
 const PlaneComponentR3F: React.FC<{
-  themeAdjust: number;
+  themeAdjustRef: React.MutableRefObject<number>;
   planeConfig: ParsedSceneConfig['plane'];
   timeRef: React.MutableRefObject<number>;
-}> = React.memo(({ themeAdjust, planeConfig, timeRef }) => {
+}> = React.memo(({ themeAdjustRef, planeConfig, timeRef }) => {
   const materialRef = useRef<any>(null!);
-  useEffect(() => {
-    if (materialRef.current) {
-      materialRef.current.uniforms.uThemeAdjust.value = themeAdjust;
-    }
-  }, [themeAdjust]);
   useFrame((_state, delta) => {
     const clamped = Math.min(delta, 0.05);
-    if (materialRef.current?.time !== undefined) {
-      materialRef.current.time += clamped * planeConfig.timeFactor;
-      timeRef.current = materialRef.current.time;
+    if (materialRef.current) {
+      if (materialRef.current.time !== undefined) {
+        materialRef.current.time += clamped * planeConfig.timeFactor;
+        timeRef.current = materialRef.current.time;
+      }
+      // Update theme adjust uniform
+      if (materialRef.current.uniforms?.uThemeAdjust) {
+        materialRef.current.uniforms.uThemeAdjust.value = themeAdjustRef.current;
+      }
     }
   });
+
   const materialProps = useMemo(
     () => ({
       uPlaneColorDarkTheme: planeConfig.planeColorForDarkTheme,
@@ -358,7 +300,7 @@ const PlaneComponentR3F: React.FC<{
         transparent
         depthWrite={false}
         side={THREE.FrontSide}
-        uThemeAdjust={themeAdjust}
+        uThemeAdjust={themeAdjustRef.current}
       />
     </mesh>
   );
@@ -373,9 +315,10 @@ type RainParticleData = {
   speedY: number;
   streamIndex: number;
   charMap: { u: number; v: number; w: number; h: number };
-  color: THREE.Color;
+
   opacity: number;
   currentStreamId: number;
+  fadeFactor: number;
 };
 interface SplashParticleData {
   id: number;
@@ -387,7 +330,6 @@ interface SplashParticleData {
   scale: number;
   opacity: number;
   charMap: { u: number; v: number; w: number; h: number };
-  color: THREE.Color;
 }
 type TriggerSplashFn = (position: THREE.Vector3) => void;
 
@@ -400,9 +342,6 @@ const SplashParticleSystemR3F: React.FC<{
   const particles = useRef<SplashParticleData[]>([]).current;
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const { splashCharMap } = atlasData;
-  const splashBaseRenderColor = useMemo(() => {
-    return config.splashColor.clone();
-  }, [config.splashColor]);
   useEffect(() => {
     if (!config.enabled) return;
     particles.length = 0;
@@ -417,14 +356,12 @@ const SplashParticleSystemR3F: React.FC<{
         scale: 1,
         opacity: 0,
         charMap: splashCharMap,
-        color: splashBaseRenderColor.clone(),
       });
     }
   }, [
     config.maxParticles,
     config.lifespan,
     splashCharMap,
-    splashBaseRenderColor,
     config.enabled,
     particles,
   ]);
@@ -443,12 +380,11 @@ const SplashParticleSystemR3F: React.FC<{
           p.life = p.maxLife;
           p.scale = config.size;
           p.opacity = 1.0;
-          p.color.copy(splashBaseRenderColor);
           activatedCount++;
         }
       }
     },
-    [config, particles, splashBaseRenderColor]
+    [config, particles]
   );
   const instanceOffsetAttribute = useMemo(
     () => new THREE.InstancedBufferAttribute(new Float32Array(config.maxParticles * 4), 4),
@@ -481,7 +417,7 @@ const SplashParticleSystemR3F: React.FC<{
         dummy.updateMatrix();
         meshRef.current!.setMatrixAt(p.id, dummy.matrix);
         instanceOffsetAttribute.setXYZW(p.id, p.charMap.u, p.charMap.v, p.charMap.w, p.charMap.h);
-        instanceColorOpacityAttribute.setXYZW(p.id, p.color.r, p.color.g, p.color.b, p.opacity);
+        instanceColorOpacityAttribute.setW(p.id, p.opacity);
       } else if (instanceColorOpacityAttribute.getW(p.id) > 0) {
         instanceColorOpacityAttribute.setW(p.id, 0);
         needsUpdate = true;
@@ -491,6 +427,12 @@ const SplashParticleSystemR3F: React.FC<{
       meshRef.current!.instanceMatrix.needsUpdate = true;
       instanceOffsetAttribute.needsUpdate = true;
       instanceColorOpacityAttribute.needsUpdate = true;
+
+      // Update Uniforms
+      const mat = meshRef.current!.material as any;
+      if (mat.uniforms) {
+        mat.uniforms.uSplashColor.value.copy(config.splashColor);
+      }
     }
   });
   if (!config.enabled) return null;
@@ -524,26 +466,27 @@ const RainEffectComponentR3F: React.FC<{
   planeConfig: ParsedSceneConfig['plane'];
   planeSize: number;
   atlasData: AtlasData;
-  themeAdjust: number;
+  themeAdjustRef: React.MutableRefObject<number>;
   onRainImpact: TriggerSplashFn | null;
   timeRef: React.MutableRefObject<number>;
 }> = React.memo(
-  ({ rainConfig, planeConfig, planeSize, atlasData, themeAdjust, onRainImpact, timeRef }) => {
+  ({ rainConfig, planeConfig, planeSize, atlasData, themeAdjustRef, onRainImpact, timeRef }) => {
     const instancedMeshRef = useRef<THREE.InstancedMesh>(null!);
     const particles = useRef<RainParticleData[]>([]).current;
     const nextStreamId = useRef(0);
     const dummyObject = useMemo(() => new THREE.Object3D(), []);
     const { currentLeadColor, currentTrailColorBase } = useMemo(() => {
+      const adjust = themeAdjustRef.current;
       return {
-        currentLeadColor: themeAdjust === 0 ? rainConfig.leadColorDark : rainConfig.leadColorLight,
+        currentLeadColor: adjust === 0 ? rainConfig.leadColorDark : rainConfig.leadColorLight,
         currentTrailColorBase:
-          themeAdjust === 0 ? rainConfig.trailColorBaseDark : rainConfig.trailColorBaseLight,
+          adjust === 0 ? rainConfig.trailColorBaseDark : rainConfig.trailColorBaseLight,
       };
-    }, [themeAdjust, rainConfig]);
+    }, [themeAdjustRef, rainConfig]);
     const defaultCharMap = atlasData.defaultCharMap;
     const { width: screenWidth } = useThree((state) => state.size);
     const isMobile = useMemo(() => screenWidth < 768, [screenWidth]);
-    const isLightMode = themeAdjust === 1;
+    const isLightMode = themeAdjustRef.current > 0.5;
     const streamCount = useMemo(
       () =>
         isMobile
@@ -557,18 +500,27 @@ const RainEffectComponentR3F: React.FC<{
       () => (isMobile ? rainConfig.streamLengthMobile : rainConfig.streamLengthDesktop),
       [isMobile, rainConfig]
     );
+    const getColorsForTheme = useCallback(
+      (adjust: number) => {
+        const lead = new THREE.Color().lerpColors(
+          rainConfig.leadColorDark,
+          rainConfig.leadColorLight,
+          adjust
+        );
+        const trail = new THREE.Color().lerpColors(
+          rainConfig.trailColorBaseDark,
+          rainConfig.trailColorBaseLight,
+          adjust
+        );
+        return { lead, trail };
+      },
+      [rainConfig]
+    );
+
     const maxParticles = useMemo(() => streamCount * streamLength, [streamCount, streamLength]);
     const xSpreadFactor = useMemo(() => (isMobile ? 0.22 : 0.45), [isMobile]); // Reduced for mobile density
     const zSpreadFactor = useMemo(() => (isMobile ? 0.2 : 0.35), [isMobile]); // Reduced for mobile density
-    const getTrailColor = useCallback(
-      (idx: number, len: number, base: THREE.Color): THREE.Color => {
-        const baseFade = 1 - idx / len;
-        const fade = Math.pow(baseFade, 1.5) * 0.85;
-        const randomJitter = 1.0 - Math.random() * 0.15;
-        return base.clone().multiplyScalar(fade * randomJitter);
-      },
-      []
-    );
+
     const getRandomCharMap = useCallback((): {
       u: number;
       v: number;
@@ -580,27 +532,33 @@ const RainEffectComponentR3F: React.FC<{
     }, [atlasData.charUVMap, defaultCharMap]);
     useEffect(() => {
       if (particles.length > 0 && instancedMeshRef.current?.geometry) {
-        particles.forEach((p) => {
-          p.color =
-            p.streamIndex === 0
-              ? currentLeadColor.clone()
-              : getTrailColor(p.streamIndex, streamLength, currentTrailColorBase);
-        });
-        const attr = instancedMeshRef.current.geometry.getAttribute('instanceColorOpacity') as
+        const fadeAttr = instancedMeshRef.current.geometry.getAttribute('aFadeFactor') as
           | THREE.InstancedBufferAttribute
           | undefined;
-        if (attr) {
-          particles.forEach((p, i) => attr.setXYZW(i, p.color.r, p.color.g, p.color.b, p.opacity));
-          attr.needsUpdate = true;
+        const opacityAttr = instancedMeshRef.current.geometry.getAttribute(
+          'instanceColorOpacity'
+        ) as THREE.InstancedBufferAttribute | undefined;
+
+        if (fadeAttr && opacityAttr) {
+          particles.forEach((p, i) => {
+            fadeAttr.setX(i, p.fadeFactor);
+            opacityAttr.setW(i, p.opacity);
+          });
+          fadeAttr.needsUpdate = true;
+          opacityAttr.needsUpdate = true;
         }
       }
-    }, [currentLeadColor, currentTrailColorBase, getTrailColor, streamLength, particles]);
+    }, [streamLength, particles]);
     const instanceOffsetAttribute = useMemo(
       () => new THREE.InstancedBufferAttribute(new Float32Array(maxParticles * 4), 4),
       [maxParticles]
     );
     const instanceColorOpacityAttribute = useMemo(
       () => new THREE.InstancedBufferAttribute(new Float32Array(maxParticles * 4), 4),
+      [maxParticles]
+    );
+    const instanceFadeFactorAttribute = useMemo(
+      () => new THREE.InstancedBufferAttribute(new Float32Array(maxParticles), 1),
       [maxParticles]
     );
     useEffect(() => {
@@ -624,12 +582,10 @@ const RainEffectComponentR3F: React.FC<{
             speedY: bS * (j === 0 ? 1 : 0.82 + Math.random() * 0.13),
             streamIndex: j,
             charMap: getRandomCharMap(),
-            color:
-              j === 0
-                ? currentLeadColor.clone()
-                : getTrailColor(j, streamLength, currentTrailColorBase),
+
             opacity: j === 0 ? 0.99 : Math.max(0.15, 0.9 - (j / streamLength) * 0.85),
             currentStreamId: cSId,
+            fadeFactor: 1 - j / streamLength,
           });
         }
       }
@@ -637,16 +593,19 @@ const RainEffectComponentR3F: React.FC<{
         const geom = instancedMeshRef.current.geometry;
         geom.setAttribute('instanceOffset', instanceOffsetAttribute);
         geom.setAttribute('instanceColorOpacity', instanceColorOpacityAttribute);
+        geom.setAttribute('aFadeFactor', instanceFadeFactorAttribute);
         particles.forEach((p, idx) => {
           dummyObject.position.set(p.x, p.y, p.z);
           dummyObject.updateMatrix();
           instancedMeshRef.current.setMatrixAt(idx, dummyObject.matrix);
           instanceOffsetAttribute.setXYZW(idx, p.charMap.u, p.charMap.v, p.charMap.w, p.charMap.h);
-          instanceColorOpacityAttribute.setXYZW(idx, p.color.r, p.color.g, p.color.b, p.opacity);
+          instanceColorOpacityAttribute.setW(idx, p.opacity);
+          instanceFadeFactorAttribute.setX(idx, p.fadeFactor);
         });
         instancedMeshRef.current.instanceMatrix.needsUpdate = true;
         instanceOffsetAttribute.needsUpdate = true;
         instanceColorOpacityAttribute.needsUpdate = true;
+        instanceFadeFactorAttribute.needsUpdate = true;
       }
     }, [
       atlasData,
@@ -658,17 +617,26 @@ const RainEffectComponentR3F: React.FC<{
       streamLength,
       maxParticles,
       getRandomCharMap,
-      currentLeadColor,
-      getTrailColor,
-      currentTrailColorBase,
       dummyObject,
       particles,
       instanceOffsetAttribute,
       instanceColorOpacityAttribute,
+      instanceFadeFactorAttribute
     ]);
-    useFrame((_state, delta) => {
-      if (!instancedMeshRef.current || particles.length === 0 || maxParticles === 0) return;
+    useFrame((state, delta) => {
+      if (!instancedMeshRef.current || !atlasData) return;
+
+      // Update Uniforms for smooth color transition (GPU handles the rest)
+      const mat = instancedMeshRef.current.material as any;
+      if (mat.uniforms) {
+        const currentThemeAdjust = themeAdjustRef.current;
+        const { lead, trail } = getColorsForTheme(currentThemeAdjust);
+        mat.uniforms.uLeadColor.value.copy(lead);
+        mat.uniforms.uTrailColor.value.copy(trail);
+      }
+
       const cD = Math.min(delta, 0.05);
+      timeRef.current += cD;
       const streamsToReset = new Set<number>();
       let needsMatrixUpdate = false;
       let needsOffsetUpdate = false;
@@ -676,8 +644,14 @@ const RainEffectComponentR3F: React.FC<{
       const halfPlaneX = (planeSize / 2) * xSpreadFactor;
       const halfPlaneZ = (planeSize / 2) * zSpreadFactor;
       const timeNow = timeRef.current;
+
+      // Wind effect
+      const windX = Math.sin(timeNow * 0.5) * 0.5;
+      const windZ = Math.cos(timeNow * 0.3) * 0.3;
+
       for (let i = 0; i < particles.length; i++) {
         let p = particles[i];
+
         if (streamsToReset.has(p.currentStreamId)) {
           if (p.opacity > 0) {
             p.opacity = Math.max(0, p.opacity - cD * 5);
@@ -686,7 +660,12 @@ const RainEffectComponentR3F: React.FC<{
           }
           continue;
         }
+
+        // Apply gravity and wind
         p.y -= p.speedY * cD;
+        p.x += windX * cD; // Wind
+        p.z += windZ * cD; // Wind
+
         if (p.streamIndex > 0 && Math.random() < 0.008) {
           p.charMap = getRandomCharMap();
           instanceOffsetAttribute.setXYZW(i, p.charMap.u, p.charMap.v, p.charMap.w, p.charMap.h);
@@ -719,8 +698,7 @@ const RainEffectComponentR3F: React.FC<{
           instancedMeshRef.current.setMatrixAt(i, dummyObject.matrix);
           needsMatrixUpdate = true;
         }
-        instanceOffsetAttribute.setXYZW(i, p.charMap.u, p.charMap.v, p.charMap.w, p.charMap.h);
-        instanceColorOpacityAttribute.setXYZW(i, p.color.r, p.color.g, p.color.b, p.opacity);
+        instanceColorOpacityAttribute.setW(i, p.opacity);
         if (p.opacity > 0) needsColorOpacityUpdate = true;
       }
       if (streamsToReset.size > 0) {
@@ -739,14 +717,10 @@ const RainEffectComponentR3F: React.FC<{
             p.z = nSZ;
             p.speedY = bS * (isLead ? 1 : 0.82 + Math.random() * 0.13);
             p.charMap = getRandomCharMap();
-            p.color = isLead
-              ? currentLeadColor.clone()
-              : getTrailColor(p.streamIndex, streamLength, currentTrailColorBase);
             p.opacity = isLead ? 0.99 : Math.max(0.15, 0.9 - (p.streamIndex / streamLength) * 0.85);
             p.currentStreamId = nCSId;
             instanceOffsetAttribute.setXYZW(i, p.charMap.u, p.charMap.v, p.charMap.w, p.charMap.h);
-            instanceColorOpacityAttribute.setXYZW(i, p.color.r, p.color.g, p.color.b, p.opacity);
-            needsOffsetUpdate = true;
+            instanceColorOpacityAttribute.setW(i, p.opacity);
             needsColorOpacityUpdate = true;
           }
         }
@@ -774,6 +748,8 @@ const RainEffectComponentR3F: React.FC<{
         {/* @ts-ignore */}
         <rainParticleShaderMaterial
           uAtlasMap={atlasData.atlasTexture}
+          uLeadColor={currentLeadColor}
+          uTrailColor={currentTrailColorBase}
           transparent
           depthWrite={false}
           side={THREE.FrontSide}
@@ -800,26 +776,50 @@ const SceneContent: React.FC<{
       }
     };
   }, [atlasData]);
-  const themeAdjust = currentTheme === 'dark' ? 0 : 1;
-  useEffect(() => {
-    const newBgColor =
-      themeAdjust === 0 ? parsedActiveCfg.themeColors.darkBg : parsedActiveCfg.themeColors.lightBg;
-    gl.setClearColor(newBgColor, 1.0);
-    if (scene.fog) {
-      (scene.fog as THREE.Fog | THREE.FogExp2).color.copy(newBgColor);
-    }
-  }, [themeAdjust, gl, scene, parsedActiveCfg.themeColors]);
-  useFrame(() => {
+  const themeAdjustRef = useRef(currentTheme === 'dark' ? 0 : 1);
+  const targetThemeAdjust = currentTheme === 'dark' ? 0 : 1;
+
+  useFrame((_state, delta) => {
+    const clampedDelta = Math.min(delta, 0.05);
+    themeAdjustRef.current = THREE.MathUtils.lerp(
+      themeAdjustRef.current,
+      targetThemeAdjust,
+      clampedDelta * 10.0
+    );
+
+    // Update camera
     camera.position.set(cameraControls.xPos, cameraControls.yPos, cameraControls.zPos);
     camera.lookAt(cameraControls.lookAtX, cameraControls.lookAtY, cameraControls.lookAtZ);
+
+    // Update fog and clear color based on smoothed themeAdjust
+    const t = themeAdjustRef.current;
+    const darkBg = parsedActiveCfg.themeColors.darkBg;
+    const lightBg = parsedActiveCfg.themeColors.lightBg;
+    const currentBg = new THREE.Color().lerpColors(darkBg, lightBg, t);
+
+    gl.setClearColor(currentBg, 1.0);
+    if (scene.fog) {
+      (scene.fog as THREE.Fog | THREE.FogExp2).color.copy(currentBg);
+      // Also lerp fog density
+      const densityDark = parsedActiveCfg.effects.fog?.densityDarkTheme ?? 0.01;
+      const densityLight = parsedActiveCfg.effects.fog?.densityLightTheme ?? 0.004;
+      const currentDensity = THREE.MathUtils.lerp(densityDark, densityLight, t);
+      if ('density' in scene.fog) {
+        (scene.fog as THREE.FogExp2).density = currentDensity;
+      }
+    }
   });
+
+
   const fogDensity =
-    themeAdjust === 0
+    targetThemeAdjust === 0
       ? parsedActiveCfg.effects.fog?.densityDarkTheme
       : parsedActiveCfg.effects.fog?.densityLightTheme;
   const fogEnabled = parsedActiveCfg.effects.fog?.enabled ?? true;
   const bgColor =
-    themeAdjust === 0 ? parsedActiveCfg.themeColors.darkBg : parsedActiveCfg.themeColors.lightBg;
+    targetThemeAdjust === 0
+      ? parsedActiveCfg.themeColors.darkBg
+      : parsedActiveCfg.themeColors.lightBg;
   return (
     <>
       {fogEnabled && fogDensity !== undefined && (
@@ -827,7 +827,7 @@ const SceneContent: React.FC<{
       )}
       <ambientLight intensity={0.3} />
       <PlaneComponentR3F
-        themeAdjust={themeAdjust}
+        themeAdjustRef={themeAdjustRef}
         planeConfig={parsedActiveCfg.plane}
         timeRef={timeRef}
       />
@@ -837,7 +837,7 @@ const SceneContent: React.FC<{
           planeConfig={parsedActiveCfg.plane}
           planeSize={parsedActiveCfg.plane.size}
           atlasData={atlasData}
-          themeAdjust={themeAdjust}
+          themeAdjustRef={themeAdjustRef}
           onRainImpact={triggerSplashRef.current}
           timeRef={timeRef}
         />
@@ -854,22 +854,7 @@ const SceneContent: React.FC<{
 });
 SceneContent.displayName = 'SceneContent';
 
-const CanvasErrorFallback = () => (
-  <div
-    style={{
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      background: '#02040a',
-      color: 'white',
-      flexDirection: 'column',
-    }}
-  >
-    <h2>Oops! Something went wrong rendering the 3D scene.</h2>
-  </div>
-);
+
 
 interface ThreeSceneProps {
   currentTheme: string | undefined;

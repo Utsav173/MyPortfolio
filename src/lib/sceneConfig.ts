@@ -48,7 +48,7 @@ export const defaultSceneConfig = {
     leadColorLightHex: '#3c6dde',
     trailColorBaseLightHex: '#1e3a8a',
     splashColorHex: '#82acff',
-    splashColorLightHex: '#2aa7f5',
+    splashColorLightHex: '#3b82f6',
 
     bloomIntensity: {
       lead: 2.4,
