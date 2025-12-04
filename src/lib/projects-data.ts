@@ -235,7 +235,7 @@ const projectsData = [
     description:
       'Generate professional birthday and greeting card designs using AI. Features various templates and customization options.',
     repoUrl: 'https://github.com/Utsav173/ai-card-gen',
-    liveUrl: 'https://ai-card-maker.vercel.app/',
+    liveUrl: 'https://ai-card-maker.khatriutsav.com/',
     imageUrl: '/images/projects/ai-card-maker.webp',
     projectType: 'AI Tool',
     keyFeatures: [

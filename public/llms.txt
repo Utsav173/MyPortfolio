@@ -114,7 +114,7 @@ Here's a detailed overview of some of my key projects:
 -   **Description:** Generate professional birthday and greeting card designs using AI. Features various templates and customization options.
 -   **Key Features:** AI-powered card generation, multiple design templates and customizations, built as a SaaS tool with Next.js.
 -   **Tech Stack:** Next.js, TypeScript, AI, Vercel, Tailwind CSS, React.
--   **Live URL:** https://ai-card-maker.vercel.app/
+-   **Live URL:** https://ai-card-maker.khatriutsav.com/
 
 ### AI Image Generator (Flux)
 -   **Description:** On-demand AI image generation using Next.js, TypeScript, and the Fal.ai API (Flux Model) for efficient backend processing.
