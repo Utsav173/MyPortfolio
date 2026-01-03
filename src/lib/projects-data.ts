@@ -212,7 +212,7 @@ const projectsData = [
     name: 'MDX Personal Blog',
     description: 'Performance-centric Next.js blog with MDX & SSG.',
     repoUrl: 'https://github.com/Utsav173/blog-sync',
-    liveUrl: 'https://blog-sync.vercel.app',
+    liveUrl: 'https://blog-sync.khatriutsav.com',
     imageUrl: '/images/projects/blog-sync.webp',
     projectType: 'Web App',
     keyFeatures: [

@@ -108,7 +108,7 @@ Here's a detailed overview of some of my key projects:
 -   **Description:** Performance-centric Next.js blog with MDX & SSG.
 -   **Key Features:** Performance-centric blog using MDX and SSG.
 -   **Tech Stack:** Next.js, TypeScript, MDX, Tailwind CSS, Data Scraping, React.
--   **Live URL:** https://blog-sync.vercel.app
+-   **Live URL:** https://blog-sync.khatriutsav.com
 
 ### AI Card Generator
 -   **Description:** Generate professional birthday and greeting card designs using AI. Features various templates and customization options.
