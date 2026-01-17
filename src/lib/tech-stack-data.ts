@@ -468,4 +468,16 @@ export const TECH_STACK_DETAILS: TechDetails = {
     darkmodecolor: '#FFFFFF',
     name: 'Streaming',
   },
+  stripe: {
+    icon: 'logos:stripe',
+    color: '#000000',
+    darkmodecolor: '#FFFFFF',
+    name: 'Stripe',
+  },
+  supabase: {
+    icon: 'logos:supabase',
+    color: '#000000',
+    darkmodecolor: '#FFFFFF',
+    name: 'Supabase',
+  },
 };

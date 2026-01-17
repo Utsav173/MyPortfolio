@@ -31,6 +31,10 @@ export const experiencesData = [
         tech: ['Node.js', 'Express.js', 'Socket.io', 'AWS'],
       },
       {
+        name: 'Artist Autograph SaaS',
+        tech: ['Next.js', 'Supabase', 'Stripe', 'Material UI', 'TypeScript'],
+      },
+      {
         name: 'Financial Transaction Management System',
         tech: ['Node.js', 'Sails.js', 'SQL', 'Recharts'],
       },
