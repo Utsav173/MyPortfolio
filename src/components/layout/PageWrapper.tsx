@@ -15,7 +15,7 @@ export function PageWrapper({ children }: { children: ReactNode }) {
   const activeSection = pathname.split('/')[1] || 'hero';
 
   return (
-    <div className="flex min-h-dvh w-full flex-col overflow-x-hidden bg-background">
+    <div className="flex min-h-dvh w-full flex-col overflow-x-clip bg-background">
       <Navbar activeSection={activeSection} />
       <CommandPalette isOpen={isCommandPaletteOpen} setIsOpen={setCommandPaletteOpen} />
       <main

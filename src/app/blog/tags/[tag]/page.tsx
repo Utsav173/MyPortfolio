@@ -33,10 +33,19 @@ export async function generateStaticParams() {
 }
 
 export default async function TagPage({ params }: PageProps<'/blog/tags/[tag]'>) {
+  // src/app/blog/tags/[tag]/page.tsx
   const { tag } = await params;
   const allTags = getAllTags(posts);
   const title = Object.keys(allTags).find((t) => slugger(t) === tag) || tag;
-  const filteredPosts = sortPosts(getPostsByTagSlug(posts, tag));
+  const rawPosts = sortPosts(getPostsByTagSlug(posts, tag));
+
+  // Map to the interface expected by PostGrid
+  const filteredPosts = rawPosts.map((post) => ({
+    ...post,
+    readingTime: post.metadata.readingTime,
+    tags: post.tags || [],
+    description: post.description || '',
+  }));
 
   return (
     <PageWrapper>
@@ -52,7 +61,7 @@ export default async function TagPage({ params }: PageProps<'/blog/tags/[tag]'>)
             </p>
           </div>
 
-          <PostGrid featuredPost={null} posts={filteredPosts} view="list" />
+          <PostGrid featuredPost={undefined} posts={filteredPosts} view="list" />
 
           <div className="mt-16 text-center">
             <Button asChild variant="outline">

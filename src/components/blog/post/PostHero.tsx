@@ -2,7 +2,6 @@
 'use client';
 
 import Image from 'next/image';
-import { Badge } from '@/components/ui/badge';
 import { CalendarIcon, ClockIcon, Eye } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -24,74 +23,51 @@ interface PostHeroProps {
 
 export function PostHero({ post }: PostHeroProps) {
   return (
-    <section className="relative w-full overflow-hidden border-b border-border bg-background">
-      {/* The "Magical" Radial Gradient Glow */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10"
-        style={{
-          backgroundImage:
-            'radial-gradient(ellipse 80% 50% at 50% -20%, oklch(var(--primary-oklch-values) / 0.8), transparent)',
-        }}
-      />
-
-      <div className="container relative mx-auto max-w-5xl px-4 py-16 sm:px-6 md:py-24">
-        <div className="flex flex-col items-center text-center">
-          <div className="mb-6 flex flex-wrap justify-center gap-2">
-            {post.tags?.map((tag) => (
-              <Badge
-                key={tag}
-                variant="secondary"
-                className="px-3 py-1 text-xs opacity-25 hover:opacity-100"
-              >
-                {tag}
-              </Badge>
-            ))}
+    <section className="relative w-full border-b border-border/40 bg-background pt-24 pb-12">
+      <div className="container relative mx-auto max-w-5xl px-4 sm:px-6">
+        <div className="flex flex-col items-start text-left max-w-4xl">
+          {/* Tags as Section Header */}
+          <div className="mb-8 flex flex-wrap gap-4 text-sm font-mono text-primary font-bold uppercase tracking-widest">
+            {post.tags?.map((tag) => <span key={tag}>#{tag}</span>)}
           </div>
 
-          <h1 className="mb-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+          {/* Title - Massive Editorial Style */}
+          <h1 className="mb-8 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-foreground leading-[0.9]">
             {post.title}
           </h1>
 
+          {/* Description */}
           {post.description && (
-            <p className="mb-8 max-w-3xl text-base text-muted-foreground sm:text-lg opacity-75 hover:opacity-100">
+            <p className="mb-12 max-w-2xl text-xl sm:text-2xl text-muted-foreground leading-relaxed font-light">
               {post.description}
             </p>
           )}
 
-          <div className="flex flex-col items-center gap-y-6 sm:flex-row sm:gap-x-8">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-11 w-11">
-                <AvatarImage src="/images/utsav-khatri.webp" alt="Utsav Khatri" />
-                <AvatarFallback>UK</AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-semibold text-foreground">Utsav Khatri</p>
-                <p className="text-sm text-muted-foreground">Full Stack Developer</p>
+          {/* Author & Meta Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-[auto,1fr] gap-6 sm:gap-12 items-center w-full border-y border-border/40 py-6">
+            {/* Meta Stats */}
+            <div className="flex flex-wrap gap-x-8 gap-y-2 text-xs font-mono text-muted-foreground uppercase tracking-wider sm:justify-self-end">
+              <div className="flex items-center gap-2">
+                <CalendarIcon className="h-3.5 w-3.5" />
+                <span>Published {formatDate(post.date)}</span>
               </div>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <CalendarIcon className="h-4 w-4" />
-                <span>{formatDate(post.date)}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <ClockIcon className="h-4 w-4" />
+              <div className="flex items-center gap-2">
+                <ClockIcon className="h-3.5 w-3.5" />
                 <span>{post.metadata.readingTime} min read</span>
               </div>
               {post.metadata.views && (
-                <div className="flex items-center gap-1.5">
-                  <Eye className="h-4 w-4" />
+                <div className="flex items-center gap-2">
+                  <Eye className="h-3.5 w-3.5" />
                   <span>{post.metadata.views.toLocaleString()} views</span>
                 </div>
               )}
             </div>
           </div>
 
+          {/* Hero Image */}
           {post.image && (
-            <div className="relative mt-12 w-full max-w-4xl overflow-hidden rounded-xl shadow-lg">
-              <div className="relative aspect-[16/9] w-full">
+            <div className="relative mt-16 w-full overflow-hidden shadow-2xl bg-muted/20 border border-border/20">
+              <div className="relative aspect-[21/9] w-full">
                 <Image src={post.image} alt={post.title} fill className="object-cover" priority />
               </div>
             </div>

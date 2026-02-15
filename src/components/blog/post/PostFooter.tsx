@@ -4,19 +4,8 @@ import { motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import {
-  Twitter,
-  Linkedin,
-  Facebook,
-  Link2,
-  Check,
-  Github,
-  Mail,
-  ThumbsUp,
-  Share2,
-} from 'lucide-react';
+import { Twitter, Linkedin, Link2, Check, ThumbsUp, Share2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { SITE_URL } from '@/lib/config';
@@ -82,50 +71,47 @@ export function PostFooter({ post }: PostFooterProps) {
   const ShareOptions = () => {
     if (isNativeShareSupported) {
       return (
-        <Button size="lg" variant="outline" onClick={handleNativeShare}>
-          <Share2 className="mr-2 h-4 w-4" />
-          Share Article
+        <Button size="sm" variant="outline" onClick={handleNativeShare} className="h-9">
+          <Share2 className="mr-2 h-3.5 w-3.5" />
+          Share
         </Button>
       );
     }
     return (
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-muted-foreground mr-2">Share:</span>
+      <div className="flex items-center gap-1">
+        <span className="text-xs text-muted-foreground mr-2 font-mono uppercase tracking-wider">
+          Share:
+        </span>
         <a
           href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${encodeURIComponent(post.title)}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Share on Twitter"
-          className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'h-10 w-10')}
+          className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'h-8 w-8')}
         >
-          <Twitter className="h-4 w-4" />
+          <Twitter className="h-3.5 w-3.5" />
         </a>
         <a
           href={`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Share on LinkedIn"
-          className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'h-10 w-10')}
+          className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'h-8 w-8')}
         >
-          <Linkedin className="h-4 w-4" />
-        </a>
-        <a
-          href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Share on Facebook"
-          className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'h-10 w-10')}
-        >
-          <Facebook className="h-4 w-4" />
+          <Linkedin className="h-3.5 w-3.5" />
         </a>
         <Button
           size="icon"
-          variant="outline"
-          className="h-10 w-10"
+          variant="ghost"
+          className="h-8 w-8"
           onClick={copyLink}
           aria-label="Copy link"
         >
-          {copied ? <Check className="h-4 w-4 text-green-500" /> : <Link2 className="h-4 w-4" />}
+          {copied ? (
+            <Check className="h-3.5 w-3.5 text-green-500" />
+          ) : (
+            <Link2 className="h-3.5 w-3.5" />
+          )}
         </Button>
       </div>
     );
@@ -137,128 +123,50 @@ export function PostFooter({ post }: PostFooterProps) {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="mt-16 space-y-12"
+      className="mt-20 space-y-12 max-w-4xl mx-auto"
     >
-      {/* Engagement Section */}
-      <div className="rounded-2xl bg-gradient-to-r from-primary/5 via-background to-primary/5 border p-6 sm:p-8 text-center">
-        <h3 className="mb-2 text-lg font-semibold">Did you find this article helpful?</h3>
-        <p className="mb-6 text-sm text-muted-foreground">
-          Consider sharing it with others who might benefit from it
-        </p>
+      <Separator />
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          {/* Like Button */}
+      {/* Engagement Section */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 py-4">
+        <div className="flex items-center gap-4">
           <Button
-            size="lg"
             variant={liked ? 'default' : 'outline'}
             onClick={handleLike}
             className={cn(
-              'min-w-[120px] transition-all',
-              liked &&
-                'bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600'
+              'transition-all h-9',
+              liked && 'bg-primary text-primary-foreground border-primary'
             )}
           >
-            <ThumbsUp className={cn('mr-2 h-4 w-4', liked && 'fill-current')} />
-            {liked ? 'Liked' : 'Like'} ({likeCount})
+            <ThumbsUp className={cn('mr-2 h-3.5 w-3.5', liked && 'fill-current')} />
+            {liked ? 'Liked' : 'Like'} <span className="ml-1 opacity-60">({likeCount})</span>
           </Button>
-
-          {/* Share Options */}
-          <ShareOptions />
+          <p className="text-sm text-muted-foreground hidden sm:block">Found this helpful?</p>
         </div>
+
+        <ShareOptions />
       </div>
 
       <Separator />
 
-      {/* Author Bio Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="rounded-2xl border bg-card p-6 sm:p-8 shadow-sm"
-      >
-        <div className="flex flex-col sm:flex-row gap-6">
-          {/* Author Image */}
-          <div className="flex-shrink-0">
-            <div className="relative h-24 w-24 sm:h-24 sm:w-24">
-              <Image
-                src="/images/utsav-khatri.webp"
-                alt="Utsav Khatri"
-                fill
-                className="rounded-full object-cover ring-4 ring-primary/10"
-              />
-              <div className="absolute -bottom-1 -right-1 rounded-full bg-primary p-2">
-                <Check className="h-4 w-4 text-primary-foreground" />
-              </div>
-            </div>
-          </div>
-
-          {/* Author Info */}
-          <div className="flex-1 space-y-4">
-            <div>
-              <h3 className="text-2xl font-bold">Utsav Khatri</h3>
-              <p className="text-muted-foreground">Full Stack Developer & Technical Writer</p>
-            </div>
-
-            <p className="text-muted-foreground leading-relaxed">
-              Passionate about building high-performance web applications and sharing knowledge
-              through technical writing. I specialize in React, Next.js, and modern web
-              technologies. Always exploring new tools and techniques to create better digital
-              experiences.
-            </p>
-
-            {/* Social Links */}
-            <div className="flex flex-wrap gap-3">
-              <Button variant="outline" size="sm" asChild>
-                <Link
-                  href="https://www.linkedin.com/in/utsav-khatri-in/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Linkedin className="mr-2 h-4 w-4" />
-                  LinkedIn
-                </Link>
-              </Button>
-              <Button variant="outline" size="sm" asChild>
-                <Link href="https://github.com/utsav173" target="_blank" rel="noopener noreferrer">
-                  <Github className="mr-2 h-4 w-4" />
-                  GitHub
-                </Link>
-              </Button>
-              <Button variant="outline" size="sm" asChild>
-                <Link href="mailto:contact@utsavkhatri.com">
-                  <Mail className="mr-2 h-4 w-4" />
-                  Email
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-
       {/* Tags Section */}
       {post.tags && post.tags.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="space-y-4"
-        >
-          <h3 className="text-lg font-semibold">Explore More Topics</h3>
-          <div className="flex flex-wrap gap-2">
+        <div className="py-4 max-sm:mx-3">
+          <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground mb-4">
+            Filed Under
+          </h3>
+          <div className="flex flex-wrap gap-4">
             {post.tags.map((tag) => (
-              <Link key={tag} href={`/blog/tags/${slug(tag)}`}>
-                <Badge
-                  variant="secondary"
-                  className="px-3 py-1.5 text-sm hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer"
-                >
-                  {tag}
-                </Badge>
+              <Link
+                key={tag}
+                href={`/blog?tags=${slug(tag)}`}
+                className="text-sm font-mono text-foreground hover:text-primary transition-colors border-b border-border/40 hover:border-primary pb-0.5"
+              >
+                #{tag}
               </Link>
             ))}
           </div>
-        </motion.div>
+        </div>
       )}
     </motion.div>
   );

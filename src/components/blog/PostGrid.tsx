@@ -1,17 +1,28 @@
-import { PostItem, FeaturedPostItem } from './post-item';
+import { PostItem, FeaturedPostItem } from '@/components/blog/post-item';
+
+interface BlogPost {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  tags: string[];
+  image?: string;
+  readingTime: number;
+  views?: number;
+}
 
 interface PostGridProps {
-  featuredPost: any | null;
-  posts: any[];
+  featuredPost?: BlogPost;
+  posts: BlogPost[];
   view: 'grid' | 'list';
 }
 
 export function PostGrid({ featuredPost, posts, view }: PostGridProps) {
   return (
     <>
-      {/* Featured Post */}
+      {/* Featured Post - Full Width */}
       {featuredPost && (
-        <div className="mb-12">
+        <div className="mb-20">
           <FeaturedPostItem
             slug={featuredPost.slug}
             date={featuredPost.date}
@@ -19,13 +30,17 @@ export function PostGrid({ featuredPost, posts, view }: PostGridProps) {
             description={featuredPost.description}
             tags={featuredPost.tags}
             image={featuredPost.image}
-            featured
+            readingTime={featuredPost.readingTime}
           />
         </div>
       )}
 
       {/* Regular Posts Grid/List */}
-      <div className={view === 'grid' ? 'grid gap-6 sm:grid-cols-2 lg:grid-cols-3' : 'space-y-6'}>
+      <div
+        className={
+          view === 'grid' ? 'grid gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-2' : 'space-y-12'
+        }
+      >
         {posts.map((post, index) => (
           <PostItem
             slug={post.slug}
@@ -36,7 +51,7 @@ export function PostGrid({ featuredPost, posts, view }: PostGridProps) {
             image={post.image}
             readingTime={post.readingTime}
             views={post.views}
-            key={index}
+            key={post.slug}
           />
         ))}
       </div>

@@ -3,7 +3,8 @@
 import Image from 'next/image';
 import * as runtime from 'react/jsx-runtime';
 import { cn } from '@/lib/utils';
-import { ReactNode } from 'react';
+import { ReactNode, useRef, useState } from 'react';
+import { Check, Copy } from 'lucide-react';
 
 interface CalloutProps {
   children?: ReactNode;
@@ -25,9 +26,43 @@ function Callout({ children, type = 'default', ...props }: CalloutProps) {
   );
 }
 
+function Pre({ children, ...props }: any) {
+  const preRef = useRef<HTMLPreElement>(null);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const copy = async () => {
+    if (preRef.current) {
+      await navigator.clipboard.writeText(preRef.current.textContent || '');
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    }
+  };
+
+  return (
+    <div className="relative group">
+      <pre ref={preRef} {...props}>
+        {children}
+      </pre>
+      <button
+        disabled={isCopied}
+        onClick={copy}
+        className="absolute right-4 top-4 z-20 inline-flex h-8 w-8 items-center justify-center rounded-md border bg-background/50 p-2 opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 disabled:opacity-100 hover:bg-background"
+        aria-label="Copy code"
+      >
+        {isCopied ? (
+          <Check className="h-4 w-4 text-green-500" />
+        ) : (
+          <Copy className="h-4 w-4 text-foreground" />
+        )}
+      </button>
+    </div>
+  );
+}
+
 const sharedComponents = {
   Image,
   Callout,
+  pre: Pre,
 };
 
 const useMDXComponent = (code: string) => {

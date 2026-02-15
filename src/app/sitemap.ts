@@ -1,9 +1,11 @@
 import { MetadataRoute } from 'next';
 import projectsData from '@/lib/projects-data';
+import { skillsData } from '@/lib/skills-data';
 import { SITE_URL } from '@/lib/config';
 import { posts } from '@site/content';
 import { getAllTags } from '@/lib/utils';
 import { slug } from 'github-slugger';
+import slugify from 'slugify';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticDate = new Date('2025-10-19');
@@ -43,5 +45,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   });
 
-  return [...routes, ...projectUrls, ...postUrls, ...tagUrls];
+  const allSkills = skillsData.flatMap((category) => category.skills);
+  const skillUrls = allSkills.map((skill) => ({
+    url: `${SITE_URL}/skills/${slugify(skill.name, { lower: true })}`,
+    lastModified: staticDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  return [...routes, ...projectUrls, ...postUrls, ...tagUrls, ...skillUrls];
 }

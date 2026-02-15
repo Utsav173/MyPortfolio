@@ -2,17 +2,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Calendar, ArrowRight, Clock, Eye } from 'lucide-react';
+import { Calendar, Clock, ArrowUpRight } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
 import { motion, useReducedMotion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
@@ -45,91 +37,65 @@ export function PostItem({
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={
-        shouldReduceMotion
-          ? {}
-          : { y: -4, transition: { type: 'spring', stiffness: 300, damping: 20 } }
-      }
-      className="h-full"
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className="group flex flex-col h-full border-b border-border/40 pb-8 hover:border-border transition-colors duration-300"
     >
-      <Link href={slug} className="block h-full">
-        <Card
-          className={cn(
-            'group relative flex h-full cursor-pointer flex-col overflow-hidden',
-            'border border-border/50 bg-card/50 backdrop-blur-sm',
-            'transition-all duration-300 hover:border-primary/30',
-            'hover:shadow-lg hover:shadow-primary/5',
-            featured && 'ring-2 ring-primary/20'
-          )}
-        >
-          {/* Optional Image */}
-          {image && (
-            <div className="relative h-48 w-full overflow-hidden bg-muted">
-              <Image
-                src={image}
-                alt={title}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-            </div>
-          )}
+      <Link href={`/${slug}`} className="flex flex-col h-full focus:outline-none">
+        {/* Image - 3:2 Aspect Ratio */}
+        {image && (
+          <div className="relative aspect-[3/2] w-full overflow-hidden mb-6 bg-muted/20">
+            <Image
+              src={image}
+              alt={title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            {/* Subtle Overlay on Hover */}
+            <div className="absolute inset-0 bg-primary/0 transition-colors duration-300 group-hover:bg-primary/5" />
+          </div>
+        )}
 
-          <CardHeader className="space-y-3">
-            {/* Meta Information */}
-            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Calendar className="h-3 w-3" />
-                <time dateTime={date}>{formatDate(date)}</time>
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock className="h-3 w-3" />
-                {readingTime} min read
-              </span>
-              {views && (
-                <span className="flex items-center gap-1">
-                  <Eye className="h-3 w-3" />
-                  {views} views
+        <div className="flex flex-col flex-1">
+          {/* Meta Information Check */}
+          <div className="flex items-center gap-3 text-xs font-mono text-muted-foreground mb-3 uppercase tracking-wider">
+            <time dateTime={date} className="flex items-center gap-1.5">
+              {formatDate(date)}
+            </time>
+            <span>•</span>
+            <span className="flex items-center gap-1.5">{readingTime} min read</span>
+          </div>
+
+          {/* Title */}
+          <h3 className="text-2xl font-bold tracking-tight mb-3 group-hover:text-primary transition-colors duration-300 leading-tight">
+            {title}
+          </h3>
+
+          {/* Description */}
+          <p className="text-muted-foreground leading-relaxed mb-6 line-clamp-3 text-base/7 flex-1">
+            {description}
+          </p>
+
+          {/* Footer: Tags & Action */}
+          <div className="flex items-center justify-between mt-auto pt-2">
+            <div className="flex flex-wrap gap-x-3 gap-y-2">
+              {tags?.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs font-mono text-muted-foreground/60 group-hover:text-primary/80 transition-colors duration-300"
+                >
+                  #{tag}
                 </span>
-              )}
+              ))}
             </div>
 
-            {/* Title */}
-            <CardTitle className="line-clamp-2 text-xl font-semibold tracking-tight transition-colors group-hover:text-primary">
-              {title}
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent className="flex-grow">
-            <CardDescription className="line-clamp-3 text-muted-foreground">
-              {description}
-            </CardDescription>
-          </CardContent>
-
-          <CardFooter className="pt-4">
-            <div className="flex w-full items-center justify-between">
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1.5">
-                {tags?.slice(0, 3).map((tag) => (
-                  <Badge
-                    key={tag}
-                    variant="secondary"
-                    className="text-xs px-2 py-0.5 opacity-25 hover:opacity-100"
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-
-              {/* Read More Arrow */}
-              <div className="flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-all duration-300 group-hover:opacity-100">
-                Read
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </div>
+            <div className="flex items-center gap-1 text-sm font-medium text-foreground border-b border-transparent group-hover:border-primary transition-colors duration-300 pb-0.5">
+              Read
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </div>
-          </CardFooter>
-        </Card>
+          </div>
+        </div>
       </Link>
     </motion.article>
   );
@@ -147,55 +113,65 @@ export function FeaturedPostItem({
 }: PostItemProps) {
   return (
     <motion.article
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-      className="group"
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative w-full overflow-hidden"
     >
-      <Link href={slug}>
-        <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/20 via-card to-card hover:border-primary/40 transition-all duration-300">
-          <div className={cn('grid gap-6', image && 'md:grid-cols-2')}>
-            {/* Content */}
-            <div className="p-6 md:p-8 space-y-4">
-              <Badge variant="default" className="mb-2 dark:text-pretty dark:text-black">
-                Featured Post
-              </Badge>
-
-              <h2 className="text-4xl sm:text-5xl font-bold tracking-tight group-hover:text-primary transition-colors">
-                {title}
-              </h2>
-
-              <p className="text-muted-foreground text-lg line-clamp-3">{description}</p>
-
-              <div className="flex items-center gap-4 text-sm text-muted-foreground pt-4">
-                <span className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
-                  {formatDate(date)}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  {readingTime} min read
-                </span>
-              </div>
-
-              <div className="flex flex-wrap gap-2 pt-2">
-                {tags?.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="opacity-50 hover:opacity-100">
-                    {tag}
-                  </Badge>
-                ))}
+      <Link href={`/${slug}`} className="block group">
+        <div className="grid lg:grid-cols-[1.5fr,1fr] gap-8 lg:gap-12 items-start">
+          {/* Left: Content */}
+          <div className="flex flex-col justify-center order-2 lg:order-1 relative z-10 pl-6 border-l-4 border-primary/20 group-hover:border-primary transition-colors duration-500 py-2">
+            {/* Tag & Meta */}
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              <span className="text-xs font-bold text-primary tracking-widest uppercase">
+                Featured Story
+              </span>
+              <span className="h-px w-8 bg-border" />
+              <div className="flex items-center gap-3 text-xs font-mono text-muted-foreground uppercase tracking-wider">
+                <time dateTime={date}>{formatDate(date)}</time>
+                <span>•</span>
+                <span>{readingTime} min read</span>
               </div>
             </div>
 
-            {/* Image */}
-            {image && (
-              <div className="relative h-full min-h-[300px] md:min-h-[400px]">
-                <Image src={image} alt={title} fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-background/20" />
-              </div>
-            )}
+            {/* Title */}
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 text-foreground group-hover:text-primary transition-colors duration-300 leading-[1.1]">
+              {title}
+            </h2>
+
+            {/* Description */}
+            <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl text-balance">
+              {description}
+            </p>
+
+            {/* Tags */}
+            <div className="flex flex-wrap gap-4">
+              {tags?.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 text-xs font-mono border border-border/50 text-muted-foreground bg-secondary/30 group-hover:border-primary/30 group-hover:text-primary/80 transition-all duration-300"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
           </div>
-        </Card>
+
+          {/* Right: Image */}
+          {image && (
+            <div className="order-1 lg:order-2 relative aspect-[16/9] lg:aspect-square w-full overflow-hidden rounded-sm group-hover:shadow-2xl transition-all duration-500">
+              <Image
+                src={image}
+                alt={title}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </div>
+          )}
+        </div>
       </Link>
     </motion.article>
   );

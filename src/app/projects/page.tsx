@@ -43,6 +43,15 @@ export const metadata: Metadata = {
   title: 'Projects',
   description:
     'A collection of projects by Utsav Khatri, showcasing skills in full-stack development, AI, and more.',
+  alternates: {
+    canonical: `${SITE_URL}/projects`,
+  },
+  openGraph: {
+    title: 'Projects',
+    description:
+      'A collection of projects by Utsav Khatri, showcasing skills in full-stack development, AI, and more.',
+    url: `${SITE_URL}/projects`,
+  },
   keywords: [
     'Projects',
     'Portfolio',

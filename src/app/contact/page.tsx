@@ -6,6 +6,14 @@ import { SITE_URL } from '@/lib/config';
 export const metadata: Metadata = {
   title: 'Contact',
   description: 'Get in touch with Utsav Khatri to discuss projects, ideas, or opportunities.',
+  alternates: {
+    canonical: `${SITE_URL}/contact`,
+  },
+  openGraph: {
+    title: 'Contact',
+    description: 'Get in touch with Utsav Khatri to discuss projects, ideas, or opportunities.',
+    url: `${SITE_URL}/contact`,
+  },
   keywords: [
     'Contact Utsav Khatri',
     'Get in Touch',

@@ -2,7 +2,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { Search, FileText, ArrowLeft } from 'lucide-react';
+import { Search, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -17,38 +17,27 @@ export function EmptyState({ searchTerm, hasFilters }: EmptyStateProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center justify-center py-20 text-center"
+      className="flex flex-col items-center justify-center py-24 text-center"
     >
-      <div className="mb-6 p-6 rounded-full bg-muted/50">
-        {searchTerm ? (
-          <Search className="h-12 w-12 text-muted-foreground" />
-        ) : (
-          <FileText className="h-12 w-12 text-muted-foreground" />
-        )}
+      <div className="mb-6 opacity-20">
+        <Search className="h-16 w-16" />
       </div>
 
-      <h2 className="text-2xl font-semibold mb-2">
+      <h2 className="text-xl font-bold tracking-tight mb-3">
         {searchTerm ? 'No results found' : 'No posts yet'}
       </h2>
 
-      <p className="text-muted-foreground mb-8 max-w-md">
+      <p className="text-muted-foreground mb-8 max-w-sm text-sm leading-relaxed">
         {searchTerm
-          ? `We couldn't find any posts matching "${searchTerm}". Try adjusting your search or filters.`
+          ? `We couldn't find any articles matching "${searchTerm}". Try adjusting your search keywords.`
           : hasFilters
-            ? 'No posts match the selected filters. Try selecting different tags or clearing filters.'
-            : 'Check back soon for new content!'}
+            ? 'No articles match the selected filters.'
+            : 'The journal is currently empty. Check back soon for new stories.'}
       </p>
 
       <div className="flex gap-4">
-        <Button variant="default" asChild>
-          <Link href="/blog">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            View All Posts
-          </Link>
-        </Button>
-
-        <Button variant="outline" asChild>
-          <Link href="/">Go Home</Link>
+        <Button variant="outline" asChild className="h-10 px-6">
+          <Link href="/blog">Clear all filters</Link>
         </Button>
       </div>
     </motion.div>

@@ -81,33 +81,88 @@ export default async function PostPage({ params }: PageProps<'/blog/[...slug]'>)
     notFound();
   }
 
-  const relatedPosts = getRelatedPosts(posts, post);
+  const relatedPosts = getRelatedPosts(posts, post).map((p: any) => ({
+    slug: p.slug,
+    title: p.title,
+    description: p.description || '',
+    date: p.date,
+    tags: p.tags || [],
+    image: p.image,
+    readingTime: p.readingTime || p.metadata?.readingTime || 5, // Handle both locations
+  }));
+
+  // Construct a safe post object for components that mimics the structure they expect
+  // This is sometimes needed if the raw 'post' type differs slightly from component props
+  const safePost = {
+    ...post,
+    tags: post.tags || [],
+    metadata: {
+      readingTime: (post as any).readingTime || (post.metadata as any)?.readingTime || 5,
+      views: (post.metadata as any)?.views,
+    },
+    // Ensure specific fields required by components are present
+    image: (post as any).image,
+    toc: post.toc,
+    body: post.body,
+  };
 
   return (
     <>
       <PostSchema post={post} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: SITE_URL,
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Blog',
+                item: `${SITE_URL}/blog`,
+              },
+              {
+                '@type': 'ListItem',
+                position: 3,
+                name: post.title,
+                item: `${SITE_URL}/${post.slug}`,
+              },
+            ],
+          }),
+        }}
+        key="breadcrumb-jsonld"
+      />
       <ReadingProgress />
+      <article className="min-h-screen pb-20">
+        <PostHero post={safePost} />
 
-      <article className="min-h-screen">
-        <PostHero post={post} />
-
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-12 px-4 py-8 lg:grid-cols-[288px,1fr] lg:px-8 lg:py-12">
-          <aside className="hidden lg:block fixed left-4 -lg:left-[max(1rem,calc((100vw-80rem)/2))] top-24 w-64 lg:w-72 h-[calc(100vh-7rem)] overflow-y-auto z-10">
-            <PostSidebar post={post} />
-          </aside>
-
-          <main className="min-w-0 lg:col-start-2">
-            <PostContent post={post} />
-            <PostFooter post={post} />
-          </main>
+        <div className="container px-4 sm:px-6 mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_200px] gap-12 max-w-6xl mx-auto">
+            <main className="min-w-0">
+              <PostContent post={{ body: post.body }} />
+            </main>
+            <aside className="hidden lg:block pt-8">
+              <div className="sticky top-24">
+                <PostSidebar post={{ toc: post.toc }} />
+              </div>
+            </aside>
+          </div>
         </div>
 
+        <PostFooter post={safePost} />
+
         {relatedPosts.length > 0 && (
-          <RelatedPostsEnhanced posts={relatedPosts} currentPost={post} />
+          <RelatedPostsEnhanced posts={relatedPosts} currentPost={{ tags: post.tags || [] }} />
         )}
       </article>
-
-      <FloatingActions post={post} />
+      <FloatingActions post={safePost} />
     </>
   );
 }

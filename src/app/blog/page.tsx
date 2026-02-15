@@ -1,3 +1,4 @@
+// src/app/blog/page.tsx
 import { posts } from '@site/content';
 import { sortPosts, getAllTags, sortTagsByCount } from '@/lib/utils';
 import { Metadata } from 'next';
@@ -23,15 +24,22 @@ export default async function BlogPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const sp = await searchParams;
-  const searchTerm = sp?.q as string | undefined;
-  const activeTags = sp?.tag ? (Array.isArray(sp.tag) ? sp.tag : [sp.tag]) : [];
+  const searchTerm = (sp?.q as string) || '';
+  const activeTagsParam = sp?.tags;
+  const activeTags = activeTagsParam
+    ? Array.isArray(activeTagsParam)
+      ? activeTagsParam
+      : activeTagsParam.split(',')
+    : [];
+
   const view = (sp?.view as 'grid' | 'list') || 'grid';
 
   const sorted = sortPosts(posts.filter((post) => post.published));
-  const allTags = getAllTags(posts);
-  const sortedTags = sortTagsByCount(getAllTags(posts));
+  const allTagsMap = getAllTags(posts); // Record<string, number>
+  const allTags = Object.keys(allTagsMap); // string[]
+  const sortedTags = sortTagsByCount(allTagsMap);
 
-  const filteredPosts = (() => {
+  const filteredPostsRaw = (() => {
     let filtered = sorted;
 
     if (searchTerm) {
@@ -52,36 +60,61 @@ export default async function BlogPage({
     return filtered;
   })();
 
-  // Get featured post (most recent or specially marked)
-  const featuredPost = !searchTerm && activeTags.length === 0 ? filteredPosts[0] : null;
-  const regularPosts = featuredPost ? filteredPosts.slice(1) : filteredPosts;
+  // Map to the interface expected by PostGrid
+  const filteredPosts = filteredPostsRaw.map((post) => ({
+    ...post,
+    readingTime: post.metadata.readingTime,
+    tags: post.tags || [],
+    description: post.description || '',
+  }));
+
+  // Get featured post (only if no filters active)
+  const hasFilters = searchTerm.length > 0 || activeTags.length > 0;
+  const showFeatured = !hasFilters && view === 'grid' && filteredPosts.length > 0;
+
+  const featuredPost = showFeatured ? filteredPosts[0] : undefined;
+  const regularPosts = showFeatured ? filteredPosts.slice(1) : filteredPosts;
 
   return (
-    <div className="min-h-screen container mx-auto mt-16">
-      <div className="container px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">Utsav&apos;s Tech Blog</h1>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            My thoughts on web development, AI, and modern technology.
+    <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-24 md:py-32">
+      {/* Asymmetric Header Section */}
+      <div className="grid lg:grid-cols-[2fr,1fr] gap-12 mb-24 items-end">
+        <div>
+          <h1 className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter text-foreground mb-6 leading-[0.9]">
+            The <br /> Journal.
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-lg leading-relaxed">
+            Engineering thoughts, deep dives, and experiments in web development and AI.
           </p>
         </div>
-        <Suspense fallback={<BlogSkeleton />}>
-          <BlogFilter
-            tags={allTags}
-            sortedTags={sortedTags}
-            searchTerm={searchTerm}
-            activeTags={activeTags}
-            view={view}
-            postsCount={filteredPosts.length}
-          />
-
-          {filteredPosts?.length > 0 ? (
-            <PostGrid featuredPost={featuredPost} posts={regularPosts} view={view} />
-          ) : (
-            <EmptyState searchTerm={searchTerm} hasFilters={activeTags.length > 0} />
-          )}
-        </Suspense>
+        <div className="hidden lg:flex flex-col items-end text-right space-y-4 pb-2">
+          <div className="text-sm font-mono uppercase tracking-wider text-muted-foreground">
+            Total Articles
+          </div>
+          <div className="text-4xl font-bold text-foreground">
+            {posts.length < 10 ? `0${posts.length}` : posts.length}
+          </div>
+        </div>
       </div>
+
+      <Suspense fallback={<BlogSkeleton />}>
+        {/* Filter & Controls */}
+        <BlogFilter
+          tags={allTags}
+          sortedTags={sortedTags}
+          searchTerm={searchTerm}
+          activeTags={activeTags}
+          view={view}
+          postsCount={filteredPosts.length}
+        />
+
+        {/* Content Area */}
+        {filteredPosts.length > 0 ? (
+          <PostGrid featuredPost={featuredPost} posts={regularPosts} view={view} />
+        ) : (
+          <EmptyState searchTerm={searchTerm} hasFilters={hasFilters} />
+        )}
+      </Suspense>
     </div>
   );
 }

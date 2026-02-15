@@ -68,13 +68,42 @@ export default async function ProjectPage({ params, searchParams }: PageProps<'/
     isAccessibleForFree: true,
     datePublished: '2023-01-01',
     keywords: project.seo.join(', '),
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${SITE_URL}/projects/${project.id}`,
+    },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: SITE_URL,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Projects',
+        item: `${SITE_URL}/#projects`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: project.name,
+        item: `${SITE_URL}/projects/${project.id}`,
+      },
+    ],
   };
 
   return (
     <PageWrapper>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([projectSchema, breadcrumbSchema]) }}
         key="project-jsonld"
       />
       <div className="flex-1 max-w-5xl max-sm:w-full">

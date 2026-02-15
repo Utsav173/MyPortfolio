@@ -57,10 +57,10 @@ export function PostSidebar({ post }: PostSidebarProps) {
             }
           }}
           className={cn(
-            'block border-l-2 py-1 pl-4 text-sm transition-all',
+            'block py-2 pl-4 text-sm transition-all duration-300 -ml-px border-l-2',
             isActive
-              ? 'border-primary font-medium text-primary'
-              : 'border-transparent text-muted-foreground hover:border-border hover:text-foreground'
+              ? 'border-primary font-medium text-foreground'
+              : 'border-transparent text-muted-foreground hover:border-border/60 hover:text-foreground'
           )}
         >
           {entry.title}
@@ -81,12 +81,12 @@ export function PostSidebar({ post }: PostSidebarProps) {
   }
 
   return (
-    <div className="space-y-4 backdrop-blur-xl rounded-xl p-2">
-      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-        On this page
+    <div className="pt-2 max-h-[calc(100vh-96px)] overflow-y-auto scrollbar-none">
+      <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground mb-4">
+        Table of Contents
       </h3>
-      <nav>
-        <ul className="space-y-2">
+      <nav className="relative">
+        <ul className="space-y-0 border-l border-border/40">
           {post.toc.map((entry) => (
             <TocEntry key={entry.url} entry={entry} />
           ))}
