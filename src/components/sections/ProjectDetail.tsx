@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { type FC } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -66,11 +65,10 @@ export const ProjectDetail: FC<ProjectDetailProps> = ({ project, isFromHomePage 
               'lg:w-1/2 lg:h-auto'
             )}
           >
-            <Image
+            <img
               src={project.imageUrl!}
               alt={`Screenshot of the ${project.name} project`}
-              fill
-              className={cn('object-cover transition-all duration-300', 'dark:brightness-90')}
+              className="object-cover transition-transform duration-500 group-hover/card:scale-105 h-full"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent lg:hidden" />

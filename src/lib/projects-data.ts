@@ -11,7 +11,8 @@ const projectsData = [
       'A minimalist, high-performance personal finance tracker with offline-first sync, multi-currency support, and biometric security.',
     repoUrl: 'https://github.com/Utsav173/zenledger',
     liveUrl: 'https://zenledger.khatriutsav.com',
-    imageUrl: '/images/projects/zenledger.webp',
+    imageUrl:
+      'https://cdn.jsdelivr.net/gh/Utsav173/assests@master/portfolio-images/projects/zenledger.webp',
     keyFeatures: [
       'Offline-First Sync with Convex',
       'Sparkline Dashboard for trend visualization',
@@ -35,7 +36,8 @@ const projectsData = [
       'An AI-powered, modern, and minimalist blog platform built with a cutting-edge, full-stack TypeScript environment.',
     repoUrl: null,
     liveUrl: 'https://notes-sync-pro.vercel.app/',
-    imageUrl: '/images/projects/note-sync-pro.webp',
+    imageUrl:
+      'https://cdn.jsdelivr.net/gh/Utsav173/assests@master/portfolio-images/projects/note-sync-pro.webp',
     projectType: 'Full-Stack Web App',
     keyFeatures: [
       'AI-powered writing assistant with Google Gemini for content creation, summarization, and tone adjustment.',
@@ -75,7 +77,8 @@ const projectsData = [
       'My personal portfolio website showcasing my skills, projects, and professional journey, built with TypeScript and modern web technologies.',
     repoUrl: 'https://github.com/Utsav173/MyPortfolio',
     liveUrl: 'https://khatriutsav.com',
-    imageUrl: '/images/projects/my-portfolio.webp',
+    imageUrl:
+      'https://cdn.jsdelivr.net/gh/Utsav173/assests@master/portfolio-images/projects/my-portfolio.webp',
     projectType: 'Full-Stack Web App',
     keyFeatures: [
       'Showcases skills, projects, and professional journey',
@@ -170,7 +173,8 @@ const projectsData = [
       'AI-enhanced finance management with intelligent expense categorization, secure JWT auth, and Recharts data visualization.',
     repoUrl: 'https://github.com/Utsav173/expense-tracker',
     liveUrl: 'https://expense-pro.khatriutsav.com/',
-    imageUrl: '/images/projects/expense-pro.webp',
+    imageUrl:
+      'https://cdn.jsdelivr.net/gh/Utsav173/assests@master/portfolio-images/projects/expense-pro.webp',
     projectType: 'Full-Stack Web App',
     keyFeatures: [
       'AI-enhanced expense categorization',
@@ -237,7 +241,8 @@ const projectsData = [
     description: 'Performance-centric Next.js blog with MDX & SSG.',
     repoUrl: 'https://github.com/Utsav173/blog-sync',
     liveUrl: 'https://blog-sync.khatriutsav.com',
-    imageUrl: '/images/projects/blog-sync.webp',
+    imageUrl:
+      'https://cdn.jsdelivr.net/gh/Utsav173/assests@master/portfolio-images/projects/blog-sync.webp',
     projectType: 'Web App',
     keyFeatures: [
       'Performance-centric blog using MDX and SSG',
@@ -260,7 +265,8 @@ const projectsData = [
       'Generate professional birthday and greeting card designs using AI. Features various templates and customization options.',
     repoUrl: 'https://github.com/Utsav173/ai-card-gen',
     liveUrl: 'https://ai-card-maker.khatriutsav.com/',
-    imageUrl: '/images/projects/ai-card-maker.webp',
+    imageUrl:
+      'https://cdn.jsdelivr.net/gh/Utsav173/assests@master/portfolio-images/projects/ai-card-maker.webp',
     projectType: 'AI Tool',
     keyFeatures: [
       'AI-powered card generation',
@@ -366,7 +372,8 @@ const projectsData = [
       'A comprehensive portal for GTU students providing important questions, study materials, and exam resources.',
     repoUrl: 'https://github.com/Utsav173/gtu-imp',
     liveUrl: 'https://gtu-imp.vercel.app',
-    imageUrl: '/images/projects/gtu-imp.webp',
+    imageUrl:
+      'https://cdn.jsdelivr.net/gh/Utsav173/assests@master/portfolio-images/projects/gtu-imp.webp',
     projectType: 'EdTech Platform',
     keyFeatures: [
       'Centralized resource for GTU students',

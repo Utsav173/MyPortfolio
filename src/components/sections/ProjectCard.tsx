@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { type FC } from 'react';
 import { Card, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -58,13 +57,12 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, className, isFromHo
         )}
       >
         {hasImage && (
-          <div className="relative aspect-[16/9] w-full overflow-hidden border-b border-border/50">
-            <Image
+          <div className="relative aspect-video w-full overflow-hidden border-b border-border/50">
+            <img
               src={project.imageUrl!}
               alt={project.name}
-              fill
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover/card:scale-105"
+              className="object-cover transition-transform duration-500 group-hover/card:scale-105 h-full"
             />
           </div>
         )}
