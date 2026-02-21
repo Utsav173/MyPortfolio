@@ -5,6 +5,29 @@
  */
 const projectsData = [
   {
+    id: 1007,
+    name: 'ZenLedger',
+    description:
+      'A minimalist, high-performance personal finance tracker with offline-first sync, multi-currency support, and biometric security.',
+    repoUrl: 'https://github.com/Utsav173/zenledger',
+    liveUrl: 'https://zenledger.khatriutsav.com',
+    keyFeatures: [
+      'Offline-First Sync with Convex',
+      'Sparkline Dashboard for trend visualization',
+      'Biometric Lock (FaceID/TouchID)',
+      'Utilitarian "Future Financial Brutalism" design',
+    ],
+    techStack: ['React Native', 'Expo', 'Convex', 'TypeScript', 'LegendList'],
+    seo: [
+      'personal finance tracker',
+      'react native convex app',
+      'expense manager',
+      'offline-first sync',
+      'future financial brutalism',
+    ],
+    githubStats: { stars: 0, forks: 0 },
+  },
+  {
     id: 998877665,
     name: 'Note Sync Pro',
     description:
