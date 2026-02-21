@@ -11,6 +11,7 @@ const projectsData = [
       'A minimalist, high-performance personal finance tracker with offline-first sync, multi-currency support, and biometric security.',
     repoUrl: 'https://github.com/Utsav173/zenledger',
     liveUrl: 'https://zenledger.khatriutsav.com',
+    imageUrl: '/images/projects/zenledger.webp',
     keyFeatures: [
       'Offline-First Sync with Convex',
       'Sparkline Dashboard for trend visualization',

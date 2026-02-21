@@ -1,17 +1,16 @@
 import PageClient from '@/components/layout/PageClient';
-import { HeroSection } from '@/components/sections/HeroSection';
 import { AboutSection } from '@/components/sections/AboutSection';
-import { SkillsSection } from '@/components/sections/SkillsSection';
-import { ExperienceSection } from '@/components/sections/ExperienceSection';
-import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { ContactSection } from '@/components/sections/ContactSection';
+import { ExperienceSection } from '@/components/sections/ExperienceSection';
 import FooterSection from '@/components/sections/FooterSection';
-import { Project } from '@/lib/types';
+import { HeroSection } from '@/components/sections/HeroSection';
+import { ProjectsSection } from '@/components/sections/ProjectsSection';
+import { SkillsSection } from '@/components/sections/SkillsSection';
 import projectsData from '@/lib/projects-data';
-import { SearchParams } from 'next/dist/server/request/search-params';
+import { Project } from '@/lib/types';
 
 const FEATURED_PROJECT_IDS: (number | string)[] = [
-  727342843, 657660151, 952619337, 525828811, 998877665, 583853098,
+  1007, 727342843, 657660151, 952619337, 525828811, 998877665, 583853098,
 ];
 
 async function getProjects(): Promise<Project[]> {

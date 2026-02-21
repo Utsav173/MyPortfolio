@@ -1,12 +1,12 @@
-import { Project } from '@/lib/types';
-import { ProjectsSection } from '@/components/sections/ProjectsSection';
-import { Metadata } from 'next';
-import projectsData from '@/lib/projects-data';
 import { PageWrapper } from '@/components/layout/PageWrapper';
+import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { SITE_URL } from '@/lib/config';
+import projectsData from '@/lib/projects-data';
+import { Project } from '@/lib/types';
+import { Metadata } from 'next';
 
 const FEATURED_PROJECT_IDS: (number | string)[] = [
-  727342843, 657660151, 952619337, 525828811, 998877665, 583853098,
+  1007, 727342843, 657660151, 952619337, 525828811, 998877665, 583853098,
 ];
 
 async function getProjects(): Promise<Project[]> {
