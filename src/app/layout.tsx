@@ -102,6 +102,9 @@ export const metadata: Metadata = {
   },
   icons: { icon: '/favicon.svg', shortcut: '/favicon-16x16.png', apple: '/apple-touch-icon.png' },
   verification: { google: 'tNXFFpZE1VOHdcWpBlnAsX7avQThqRD6wjolUQaG4rU' },
+  alternates: {
+    canonical: './',
+  },
 };
 
 export const viewport: Viewport = {
