@@ -39,6 +39,16 @@ function CommandDialog({
   className?: string;
   showCloseButton?: boolean;
 }) {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <Dialog {...props}>
       <DialogHeader className="sr-only">

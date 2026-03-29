@@ -70,7 +70,12 @@ const SkillCarousel = ({
 };
 
 export function SkillsSection({ className, id }: { className?: string; id?: string }) {
+  const [mounted, setMounted] = React.useState(false);
   const { theme } = useTheme();
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <section id={id} className={cn('skills-section', className)}>
@@ -85,7 +90,7 @@ export function SkillsSection({ className, id }: { className?: string; id?: stri
               key={category.category}
               categoryData={category}
               isReverse={idx % 2 !== 0}
-              resolvedTheme={theme}
+              resolvedTheme={mounted ? theme : undefined}
             />
           ))}
         </div>

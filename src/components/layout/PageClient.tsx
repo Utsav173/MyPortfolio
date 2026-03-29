@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, type ReactNode } from 'react';
+import React, { useRef, useState, type ReactNode, useEffect } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import dynamic from 'next/dynamic';
 import MatrixRain from '../threed/matrix-rain';
@@ -10,7 +10,9 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const CommandPalette = dynamic(() => import('../CommandPalette').then((mod) => mod.default));
+const CommandPalette = dynamic(() => import('../CommandPalette').then((mod) => mod.default), {
+  ssr: false,
+});
 
 interface CameraControlsRef {
   xPos: number;
@@ -22,9 +24,15 @@ interface CameraControlsRef {
 }
 
 export default function PageClient({ children }: { children: ReactNode }) {
+  const [mounted, setMounted] = useState(false);
   const [isCommandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [isMatrixMounted, setIsMatrixMounted] = useState(true);
   const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const cameraControlsRef = useRef<CameraControlsRef>({
     xPos: 0,
     yPos: 100,

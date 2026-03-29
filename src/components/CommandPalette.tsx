@@ -45,10 +45,13 @@ const ICONS_MAP: {
 };
 
 const CommandPaletteComponent = ({ isOpen, setIsOpen }: CommandPaletteProps) => {
+  const [mounted, setMounted] = React.useState(false);
   const { setTheme } = useTheme();
   const router = useRouter();
 
   useEffect(() => {
+    setMounted(true);
+
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -66,6 +69,8 @@ const CommandPaletteComponent = ({ isOpen, setIsOpen }: CommandPaletteProps) => 
     },
     [setIsOpen]
   );
+
+  if (!mounted) return null;
 
   return (
     <CommandDialog open={isOpen} onOpenChange={setIsOpen} aria-label="Command Palette">

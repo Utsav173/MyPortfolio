@@ -1,13 +1,18 @@
 'use client';
 
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const ModeToggleComponent = () => {
+  const [mounted, setMounted] = React.useState(false);
   const { setTheme, resolvedTheme } = useTheme();
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleTheme = () => {
     setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
@@ -19,7 +24,7 @@ const ModeToggleComponent = () => {
       size="icon"
       onClick={toggleTheme}
       className={cn('size-9 shrink-0 rounded-full')}
-      aria-label={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode`}
+      aria-label={mounted ? `Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode` : 'Toggle theme'}
     >
       <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
       <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
