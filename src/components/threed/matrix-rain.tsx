@@ -364,6 +364,19 @@ const SplashParticleSystemR3F: React.FC<{
     () => new THREE.InstancedBufferAttribute(new Float32Array(config.maxParticles * 4), 4),
     [config.maxParticles]
   );
+
+  // GPU Cleanup: dispose geometry, material, and buffer attributes on unmount
+  useEffect(() => {
+    return () => {
+      if (meshRef.current) {
+        meshRef.current.geometry?.dispose();
+        const mat = meshRef.current.material;
+        if (Array.isArray(mat)) mat.forEach((m) => m.dispose());
+        else mat?.dispose();
+      }
+    };
+  }, []);
+
   useFrame((_state, delta) => {
     if (!meshRef.current || !config.enabled || particles.length === 0) return;
     const clampedDelta = Math.min(delta, 0.05);
@@ -541,6 +554,19 @@ const RainEffectComponentR3F: React.FC<{
       () => new THREE.InstancedBufferAttribute(new Float32Array(maxParticles), 1),
       [maxParticles]
     );
+
+    // GPU Cleanup: dispose all GPU resources on unmount to prevent VRAM leaks
+    useEffect(() => {
+      return () => {
+        if (instancedMeshRef.current) {
+          instancedMeshRef.current.geometry?.dispose();
+          const mat = instancedMeshRef.current.material;
+          if (Array.isArray(mat)) mat.forEach((m) => m.dispose());
+          else mat?.dispose();
+        }
+      };
+    }, []);
+
     useEffect(() => {
       if (!atlasData || maxParticles === 0 || particles.length === maxParticles) return;
       particles.length = 0;
@@ -753,11 +779,14 @@ const SceneContent: React.FC<{
   const triggerSplashRef = useRef<any | null>(null);
   useEffect(() => {
     return () => {
+      // Dispose atlas texture from GPU memory
       if (atlasData?.atlasTexture) {
         atlasData.atlasTexture.dispose();
       }
+      // Force WebGL context to release any queued resources
+      gl.renderLists.dispose();
     };
-  }, [atlasData]);
+  }, [atlasData, gl]);
   const themeAdjustRef = useRef(currentTheme === 'dark' ? 0 : 1);
   const targetThemeAdjust = currentTheme === 'dark' ? 0 : 1;
 
@@ -890,8 +919,18 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ currentTheme, cameraControls, d
       currentTheme === 'dark' ? 'dark' : 'light'
     );
   }, [dynamicConfig, currentTheme]);
-  const [quality, setQuality] = useState<'low' | 'medium' | 'high'>(() => detectInitialQuality());
-  const [dpr, setDpr] = useState<[number, number]>(() => capDpr(quality) as [number, number]);
+  // Progressive Quality: Force 'low' (240p equivalent) initially for instant render
+  const [quality, setQuality] = useState<'low' | 'medium' | 'high'>('low');
+  const [dpr, setDpr] = useState<[number, number]>(() => capDpr('low') as [number, number]);
+
+  useEffect(() => {
+    // Temporal Upgrade: Move to HD quality after initial "fast-load"
+    const timer = setTimeout(() => {
+      const optimalQuality = detectInitialQuality();
+      setQuality(optimalQuality);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const timeRef = useRef(0);
   const effectiveConfig = useMemo(() => {

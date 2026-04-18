@@ -3,12 +3,15 @@
 import React, { useRef, useState, type ReactNode, useEffect } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import dynamic from 'next/dynamic';
-import MatrixRain from '../threed/matrix-rain';
 import { useTheme } from 'next-themes';
 import { useActiveSectionObserver } from '@/hooks/useActiveSectionObserver';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+const MatrixRain = dynamic(() => import('../threed/matrix-rain').then((mod) => mod.default), {
+  ssr: false,
+});
 
 const CommandPalette = dynamic(() => import('../CommandPalette').then((mod) => mod.default), {
   ssr: false,
