@@ -1,6 +1,7 @@
 import { SkillsSection } from '@/components/sections/SkillsSection';
 import { Metadata } from 'next';
 import { PageWrapper } from '@/components/layout/PageWrapper';
+import { SITE_URL } from '@/lib/config';
 
 const skills = [
   'React.js',
@@ -56,6 +57,9 @@ export const metadata: Metadata = {
   description:
     'Explore the technical toolkit of Utsav Khatri, including expertise in frontend, backend, databases, cloud technologies, and AI.',
   keywords: skills,
+  alternates: {
+    canonical: `${SITE_URL}/skills`,
+  },
 };
 
 const skillsSchema = {

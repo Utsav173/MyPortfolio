@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { posts } from '@site/content';
 import { getPostsByTagSlug, getAllTags, sortPosts } from '@/lib/utils';
 import { Metadata } from 'next';
@@ -36,7 +37,13 @@ export default async function TagPage({ params }: PageProps<'/blog/tags/[tag]'>)
   // src/app/blog/tags/[tag]/page.tsx
   const { tag } = await params;
   const allTags = getAllTags(posts);
-  const title = Object.keys(allTags).find((t) => slugger(t) === tag) || tag;
+  const tagKey = Object.keys(allTags).find((t) => slugger(t) === tag);
+
+  if (!tagKey) {
+    notFound();
+  }
+
+  const title = tagKey;
   const rawPosts = sortPosts(getPostsByTagSlug(posts, tag));
 
   // Map to the interface expected by PostGrid

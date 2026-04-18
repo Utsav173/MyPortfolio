@@ -8,6 +8,14 @@ import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { SkillsSection } from '@/components/sections/SkillsSection';
 import projectsData from '@/lib/projects-data';
 import { Project } from '@/lib/types';
+import { Metadata } from 'next';
+import { SITE_URL } from '@/lib/config';
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: SITE_URL,
+  },
+};
 
 const FEATURED_PROJECT_IDS: (number | string)[] = [
   1007, 727342843, 657660151, 952619337, 525828811, 998877665, 583853098,

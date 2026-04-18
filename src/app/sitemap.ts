@@ -20,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const routes = ['', '/about', '/skills', '/experience', '/projects', '/contact', '/blog'].map(
     (route) => ({
-      url: `${SITE_URL}${route}`,
+      url: `${SITE_URL}${route}`.replace(/\/$/, '') || SITE_URL, // Ensure no trailing slash for consistent canonicals
       lastModified: staticDate,
       changeFrequency: 'monthly' as const,
       priority: route === '' ? 1 : 0.8,
