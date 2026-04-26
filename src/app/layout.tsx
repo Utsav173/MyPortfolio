@@ -34,19 +34,19 @@ const notoSansDevanagari = Noto_Sans_Devanagari({
 });
 
 const SITE_DESCRIPTION =
-  'Portfolio of Utsav Khatri, a results-oriented Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and Cloud Technologies with a keen interest in AI.';
-const SITE_TITLE = 'Utsav Khatri | Full Stack Developer';
+  'Khatri Utsav - Full Stack Developer specializing in React, Node.js, Next.js, TypeScript, and AI. Explore innovative web solutions and high-performance applications.';
+const SITE_TITLE = 'Khatri Utsav | Full Stack Developer';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: SITE_TITLE,
-    template: `%s | Utsav Khatri`,
+    default: 'Khatri Utsav',
+    template: `%s | Khatri Utsav`,
   },
   description: SITE_DESCRIPTION,
   keywords: [
-    'Utsav Khatri',
     'Khatri Utsav',
+    'Utsav Khatri',
     'Full Stack Developer',
     'Software Engineer',
     'React Developer',
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     'API Development',
     'Portfolio',
     'Web Developer Gujarat',
-    'Khatri Utsav Ahemdabad',
+    'Khatri Utsav Ahmedabad',
     'Khatri',
     'khatri utsav web developer',
   ],
@@ -67,15 +67,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: SITE_TITLE,
     description:
-      'Discover the portfolio of Utsav Khatri, showcasing expertise in modern web development, AI, and cloud technologies.',
+      'Explore the work and expertise of Khatri Utsav, a Full Stack Developer specializing in modern web development, AI, and cloud technologies.',
     url: SITE_URL,
-    siteName: 'Utsav Khatri Portfolio',
+    siteName: 'Khatri Utsav',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Utsav Khatri - Full Stack Developer Portfolio',
+        alt: 'Khatri Utsav - Full Stack Developer',
       },
     ],
     locale: 'en_US',
@@ -85,7 +85,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: SITE_TITLE,
     description:
-      'Explore projects and skills of Utsav Khatri, a Full Stack Developer focused on innovative web solutions.',
+      'Explore projects and skills of Khatri Utsav, a Full Stack Developer focused on innovative web solutions and AI.',
     images: ['/twitter-image.png'],
     creator: '@Utsav_Khatri_',
   },
@@ -169,7 +169,7 @@ const structuredData = {
     {
       '@type': 'Person',
       '@id': `${SITE_URL}/#person`,
-      name: 'Utsav Khatri',
+      name: 'Khatri Utsav',
       url: SITE_URL,
       image: {
         '@type': 'ImageObject',
@@ -177,7 +177,7 @@ const structuredData = {
         url: `${SITE_URL}/images/utsav-khatri.webp`,
         width: 375,
         height: 375,
-        caption: 'Utsav Khatri, Full Stack Developer',
+        caption: 'Khatri Utsav, Full Stack Developer',
       },
       jobTitle: 'Full Stack Developer',
       description: SITE_DESCRIPTION,
@@ -259,7 +259,7 @@ const structuredData = {
       datePublished: '2023-01-01T00:00:00+00:00',
       dateModified: '2025-10-19T12:00:00+00:00',
       keywords:
-        'Utsav Khatri, Full Stack Developer, Software Engineer, React, Next.js, TypeScript, Node.js, AI, Portfolio',
+        'Khatri Utsav, Full Stack Developer, Software Engineer, React, Next.js, TypeScript, Node.js, AI',
     },
   ],
 };

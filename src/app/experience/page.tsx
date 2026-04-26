@@ -6,14 +6,14 @@ import { SITE_URL } from '@/lib/config';
 export const metadata: Metadata = {
   title: 'Experience',
   description:
-    'Discover the professional journey of Utsav Khatri, including roles, responsibilities, and key projects.',
+    'Explore the professional journey of Khatri Utsav, including roles, responsibilities, and key projects in full-stack engineering.',
   alternates: {
     canonical: `${SITE_URL}/experience`,
   },
   openGraph: {
     title: 'Experience',
     description:
-      'Discover the professional journey of Utsav Khatri, including roles, responsibilities, and key projects.',
+      'Explore the professional journey of Khatri Utsav, including roles, responsibilities, and key projects in full-stack engineering.',
     url: `${SITE_URL}/experience`,
   },
   keywords: [

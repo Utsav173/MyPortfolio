@@ -12,7 +12,7 @@ import { BlogSkeleton } from '@/components/blog/BlogSkeleton';
 
 export const metadata: Metadata = {
   title: 'Blog',
-  description: 'My thoughts on web development, AI, and modern technology.',
+  description: 'Khatri Utsav - Engineering thoughts, deep dives, and experiments in web development and AI.',
   alternates: {
     canonical: `${SITE_URL}/blog`,
   },

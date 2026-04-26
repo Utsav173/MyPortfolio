@@ -146,7 +146,7 @@ export function HeroSection({ className, id }: { className?: string; id?: string
         </motion.p>
         <motion.h1
           id="hero-heading"
-          aria-label="Utsav Khatri"
+          aria-label="Khatri Utsav"
           variants={shouldReduceMotion ? undefined : nameContainerVariants}
           style={{ perspective: '800px' }}
           className={cn(

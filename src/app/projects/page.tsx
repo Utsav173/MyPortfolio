@@ -42,14 +42,14 @@ async function getProjects(): Promise<Project[]> {
 export const metadata: Metadata = {
   title: 'Projects',
   description:
-    'A collection of projects by Utsav Khatri, showcasing skills in full-stack development, AI, and more.',
+    'Explore projects by Khatri Utsav, showcasing expertise in full-stack development, AI, and modern web technologies.',
   alternates: {
     canonical: `${SITE_URL}/projects`,
   },
   openGraph: {
     title: 'Projects',
     description:
-      'A collection of projects by Utsav Khatri, showcasing skills in full-stack development, AI, and more.',
+      'Explore projects by Khatri Utsav, showcasing expertise in full-stack development, AI, and modern web technologies.',
     url: `${SITE_URL}/projects`,
   },
   keywords: [
@@ -69,9 +69,9 @@ export const metadata: Metadata = {
 const projectsCollectionSchema = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  name: "Utsav Khatri's Projects",
+  name: 'Khatri Utsav Projects',
   description:
-    'A comprehensive collection of web development, AI, and cloud projects by Utsav Khatri.',
+    'A comprehensive collection of web development, AI, and cloud projects by Khatri Utsav.',
   url: `${SITE_URL}/projects`,
 };
 

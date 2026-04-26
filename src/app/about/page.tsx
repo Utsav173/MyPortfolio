@@ -5,7 +5,7 @@ import { SITE_URL } from '@/lib/config';
 
 const TITLE = 'About Me';
 const DESCRIPTION =
-  'Learn more about Utsav Khatri, a Full Stack Developer with a passion for building scalable web applications and exploring AI.';
+  'Khatri Utsav - Full Stack Developer with a passion for building scalable web applications and exploring AI.';
 
 export const metadata: Metadata = {
   title: TITLE,
