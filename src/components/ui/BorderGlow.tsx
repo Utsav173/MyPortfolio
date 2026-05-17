@@ -225,7 +225,6 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
       ref={cardRef}
       onPointerMove={handlePointerMove}
       className={`border-glow-card ${className}`}
-      suppressHydrationWarning={true}
       style={
         {
           '--card-bg': backgroundColor,

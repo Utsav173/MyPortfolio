@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { motion, useReducedMotion, Variants } from 'motion/react';
 import { cn } from '@/lib/utils';
 import BorderGlow from '@/components/ui/BorderGlow';
-import { useTheme } from 'next-themes';
 
 const sectionVariants: Variants = {
   hidden: { opacity: 0 },
@@ -27,8 +26,6 @@ const itemVariants: Variants = {
 
 const AboutSectionComponent = ({ className, id }: { className?: string; id?: string }) => {
   const shouldReduceMotion = useReducedMotion();
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === 'dark';
 
   return (
     <motion.section
@@ -48,12 +45,12 @@ const AboutSectionComponent = ({ className, id }: { className?: string; id?: str
           >
             <BorderGlow
               borderRadius={28}
-              backgroundColor={isDark ? '#120f17' : '#ffffff'}
+              backgroundColor="var(--card)"
               glowRadius={54}
               glowIntensity={1.9}
               edgeSensitivity={42}
               coneSpread={37}
-              fillOpacity={isDark ? 0.08 : 0.04}
+              fillOpacity={0.06}
               colors={['#c084fc', '#f472b6', '#38bdf8']}
               animated={false}
               className="group w-full max-w-[320px] sm:max-w-[350px] md:max-w-[400px] cursor-pointer rounded-[28px]"

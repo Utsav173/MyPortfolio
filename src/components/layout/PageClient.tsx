@@ -133,7 +133,7 @@ export default function PageClient({ children }: { children: ReactNode }) {
   );
 
   return (
-    <div ref={mainContainerRef} className="flex min-h-dvh w-full flex-col overflow-x-hidden">
+    <div ref={mainContainerRef} className="flex min-h-dvh w-full flex-col">
       <div
         ref={matrixContainerRef}
         className="pointer-events-none fixed inset-0 -z-10 h-full w-full"
@@ -151,24 +151,16 @@ export default function PageClient({ children }: { children: ReactNode }) {
                 <Aurora
                   colorStops={
                     resolvedTheme === 'dark'
-                      ? ['#0d0d0f', '#1a1f2e', '#0d0d0f'] // Graphite-navy: sits on top of OLED black
-                      : ['#f5f6fa', '#dde2ef', '#f5f6fa'] // Graphite-blue: barely-there on white
+                      ? ['#0d0d0f', '#1a1f2e', '#0d0d0f']
+                      : ['#f5f6fa', '#dde2ef', '#f5f6fa']
                   }
                   blend={0.35}
                   amplitude={0.7}
                   speed={0.18}
                 />
               </div>
-              {/* Radial vignette to prevent hard edges bleeding into content */}
-              <div
-                className="absolute inset-0 w-full h-full pointer-events-none"
-                style={{
-                  background:
-                    resolvedTheme === 'dark'
-                      ? 'radial-gradient(ellipse 80% 60% at 50% 40%, transparent 30%, oklch(0.060 0.003 250 / 0.65) 100%)'
-                      : 'radial-gradient(ellipse 80% 60% at 50% 40%, transparent 30%, oklch(0.980 0.003 250 / 0.60) 100%)',
-                }}
-              />
+              {/* Radial vignette — CSS-driven so it reacts to .dark instantly */}
+              <div className="absolute inset-0 w-full h-full pointer-events-none aurora-vignette" />
             </div>
           ) : (
             <LuxeBackground

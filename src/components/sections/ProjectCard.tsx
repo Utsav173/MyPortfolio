@@ -9,7 +9,7 @@ import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
 import { TECH_STACK_DETAILS } from '@/lib/tech-stack-data';
 import { useTheme } from 'next-themes';
-import { useReducedMotion, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import { Project } from '@/lib/types';
 import BorderGlow from '@/components/ui/BorderGlow';
 
@@ -33,13 +33,10 @@ const getTechDetails = (techName: string) => {
 const MotionLink = motion(Link);
 
 export const ProjectCard: FC<ProjectCardProps> = ({ project, className, isFromHomePage }) => {
-  const shouldReduceMotion = useReducedMotion();
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
   const techToDisplay = project.techStack.slice(0, 5);
   const hasImage = !!project.imageUrl;
-
-  const cardBg = isDark ? '#120f17' : '#ffffff';
 
   return (
     <MotionLink
@@ -50,7 +47,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, className, isFromHo
     >
       <BorderGlow
         borderRadius={28}
-        backgroundColor={cardBg}
+        backgroundColor="var(--card)"
         glowRadius={54}
         glowIntensity={1.9}
         edgeSensitivity={42}

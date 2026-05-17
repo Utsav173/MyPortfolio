@@ -269,9 +269,8 @@ export default function RootLayout({
   modal,
 }: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
-        suppressHydrationWarning={true}
         className={cn(
           'font-sans antialiased',
           geistSans.variable,
@@ -280,7 +279,7 @@ export default function RootLayout({
           notoSansDevanagari.variable
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
           <a href="#main-content" className="skip-to-content-link">
             Skip to main content
           </a>
