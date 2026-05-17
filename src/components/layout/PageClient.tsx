@@ -9,7 +9,14 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const MatrixRain = dynamic(() => import('../threed/matrix-rain').then((mod) => mod.default), {
+const LuxeBackground = dynamic(
+  () => import('../threed/LuxeBackground').then((mod) => mod.default),
+  {
+    ssr: false,
+  }
+);
+
+const Aurora = dynamic(() => import('../threed/Aurora').then((mod) => mod.default), {
   ssr: false,
 });
 
@@ -28,12 +35,19 @@ interface CameraControlsRef {
 
 export default function PageClient({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [isCommandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [isMatrixMounted, setIsMatrixMounted] = useState(true);
   const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const cameraControlsRef = useRef<CameraControlsRef>({
@@ -124,9 +138,44 @@ export default function PageClient({ children }: { children: ReactNode }) {
         ref={matrixContainerRef}
         className="pointer-events-none fixed inset-0 -z-10 h-full w-full"
       >
-        {isMatrixMounted && (
-          <MatrixRain cameraControls={cameraControlsRef.current} currentTheme={resolvedTheme} />
-        )}
+        {isMatrixMounted &&
+          (mounted && isMobile ? (
+            <div className="relative w-full h-full overflow-hidden bg-background">
+              {/* Aurora — subtle ambient depth layer, no interaction needed */}
+              <div
+                className="absolute inset-0 w-full h-full"
+                style={{
+                  opacity: resolvedTheme === 'dark' ? 0.55 : 0.35,
+                }}
+              >
+                <Aurora
+                  colorStops={
+                    resolvedTheme === 'dark'
+                      ? ['#0d0d0f', '#1a1f2e', '#0d0d0f'] // Graphite-navy: sits on top of OLED black
+                      : ['#f5f6fa', '#dde2ef', '#f5f6fa'] // Graphite-blue: barely-there on white
+                  }
+                  blend={0.35}
+                  amplitude={0.7}
+                  speed={0.18}
+                />
+              </div>
+              {/* Radial vignette to prevent hard edges bleeding into content */}
+              <div
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                style={{
+                  background:
+                    resolvedTheme === 'dark'
+                      ? 'radial-gradient(ellipse 80% 60% at 50% 40%, transparent 30%, oklch(0.060 0.003 250 / 0.65) 100%)'
+                      : 'radial-gradient(ellipse 80% 60% at 50% 40%, transparent 30%, oklch(0.980 0.003 250 / 0.60) 100%)',
+                }}
+              />
+            </div>
+          ) : (
+            <LuxeBackground
+              cameraControls={cameraControlsRef.current}
+              currentTheme={resolvedTheme}
+            />
+          ))}
       </div>
 
       <Navbar className="z-50" activeSection={activeSection} />

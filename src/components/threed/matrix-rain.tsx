@@ -1,9 +1,16 @@
+/**
+ * @deprecated This component has been superseded by `LuxeBackground` located at
+ * `src/components/threed/LuxeBackground.tsx`. The Matrix Rain aesthetic (WebGL,
+ * neon characters, cyber-green colour scheme) was retired in favour of a warm modern
+ * / quiet luxury design system. This file is kept for historical reference only and
+ * should NOT be re-imported in new code. Remove after any required archival period.
+ */
 'use client';
 
 import React, { useRef, useMemo, useEffect, useState, useCallback, Suspense } from 'react';
 import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
 import * as THREE from 'three';
-import { shaderMaterial, PerformanceMonitor } from '@react-three/drei';
+import { PerformanceMonitor } from '@react-three/drei';
 import {
   SceneConfig,
   defaultSceneConfig as importedDefaultConfig,

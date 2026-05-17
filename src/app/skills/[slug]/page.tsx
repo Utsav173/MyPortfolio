@@ -26,13 +26,16 @@ function getProjectsBySkill(skillName: string): Project[] {
   // Normalize skill name for comparison (e.g. "React.js" -> "react")
   const normalizedSkillName = skillName.toLowerCase().replace(/\.js$/, ''); // Handle "Node.js" vs "Node"
 
-  return (projectsData as Project[]).filter((project) =>
-    project.techStack.some((tech) => {
-      const normalizedTech = tech.toLowerCase().replace(/\.js$/, '');
-      return (
-        normalizedTech.includes(normalizedSkillName) || normalizedSkillName.includes(normalizedTech)
-      );
-    })
+  return (projectsData as Project[]).filter(
+    (project) =>
+      project.published &&
+      project.techStack.some((tech) => {
+        const normalizedTech = tech.toLowerCase().replace(/\.js$/, '');
+        return (
+          normalizedTech.includes(normalizedSkillName) ||
+          normalizedSkillName.includes(normalizedTech)
+        );
+      })
   );
 }
 

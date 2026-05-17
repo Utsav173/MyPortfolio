@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { type FC } from 'react';
-import { Card, CardTitle, CardDescription } from '@/components/ui/card';
+import { CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Star } from 'lucide-react';
 import { Icon } from '@iconify/react';
@@ -11,6 +11,7 @@ import { TECH_STACK_DETAILS } from '@/lib/tech-stack-data';
 import { useTheme } from 'next-themes';
 import { useReducedMotion, motion } from 'motion/react';
 import { Project } from '@/lib/types';
+import BorderGlow from '@/components/ui/BorderGlow';
 
 interface ProjectCardProps {
   project: Project;
@@ -33,27 +34,35 @@ const MotionLink = motion(Link);
 
 export const ProjectCard: FC<ProjectCardProps> = ({ project, className, isFromHomePage }) => {
   const shouldReduceMotion = useReducedMotion();
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   const techToDisplay = project.techStack.slice(0, 5);
   const hasImage = !!project.imageUrl;
+
+  const cardBg = isDark ? '#120f17' : '#ffffff';
 
   return (
     <MotionLink
       href={`/projects/${project.id}?ref=${isFromHomePage ? 'home' : 'projects'}`}
       aria-label={`View details for project: ${project.name}`}
-      whileHover={
-        shouldReduceMotion
-          ? {}
-          : { y: -6, transition: { type: 'spring', stiffness: 350, damping: 20 } }
-      }
-      className={cn('h-full', className)}
+      className={cn('h-full block', className)}
       scroll={false}
     >
-      <Card
+      <BorderGlow
+        borderRadius={28}
+        backgroundColor={cardBg}
+        glowRadius={54}
+        glowIntensity={1.9}
+        edgeSensitivity={42}
+        coneSpread={37}
+        fillOpacity={isDark ? 0.08 : 0.04}
+        colors={['#c084fc', '#f472b6', '#38bdf8']}
+        animated={false}
         className={cn(
-          'group/card relative flex h-full cursor-pointer flex-col overflow-hidden rounded-xl',
-          'border border-border/50 bg-card/90 shadow-md transition-all duration-300',
-          'hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10'
+          'group/card h-full cursor-pointer overflow-hidden rounded-[28px]',
+          'transition-all duration-300',
+          'hover:shadow-xl',
+          isDark ? 'hover:shadow-white/5' : 'hover:shadow-black/10'
         )}
       >
         {hasImage && (
@@ -62,7 +71,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, className, isFromHo
               src={project.imageUrl!}
               alt={project.name}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover/card:scale-105 h-full"
+              className="object-cover transition-transform duration-500 group-hover/card:scale-105 h-full w-full"
             />
           </div>
         )}
@@ -72,8 +81,8 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, className, isFromHo
               {project.name}
             </CardTitle>
             {project.githubStats.stars > 0 && (
-              <span className="flex shrink-0 items-center gap-1 pt-1 text-sm text-muted-foreground transition-colors group-hover/card:text-amber-500">
-                <Star className="size-4 group-hover/card:fill-amber-400" />
+              <span className="flex shrink-0 items-center gap-1 pt-1 text-sm text-muted-foreground transition-colors group-hover/card:text-primary">
+                <Star className="size-4 group-hover/card:fill-primary" />
                 {project.githubStats.stars}
               </span>
             )}
@@ -88,14 +97,13 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, className, isFromHo
                 <Badge
                   key={tech.name}
                   variant="outline"
-                  className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs "
+                  className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs"
                 >
                   <Icon
                     icon={tech.icon}
                     className="size-3.5"
                     style={{
-                      color:
-                        theme === 'dark' && tech.darkmodecolor ? tech.darkmodecolor : tech.color,
+                      color: isDark && tech.darkmodecolor ? tech.darkmodecolor : tech.color,
                     }}
                   />
                   <span>{tech.name}</span>
@@ -104,7 +112,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, className, isFromHo
             })}
           </div>
         </div>
-      </Card>
+      </BorderGlow>
     </MotionLink>
   );
 };

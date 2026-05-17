@@ -5,7 +5,7 @@ import projectsData from '@/lib/projects-data';
 
 async function getProject(id: string): Promise<Project | undefined> {
   const projects: Project[] = projectsData as Project[];
-  return projects.find((p) => String(p.id) === id);
+  return projects.find((p) => String(p.id) === id && p.published);
 }
 
 export default async function ProjectModal({ params, searchParams }: PageProps<'/projects/[id]'>) {

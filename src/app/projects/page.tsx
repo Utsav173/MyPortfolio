@@ -6,11 +6,11 @@ import { Project } from '@/lib/types';
 import { Metadata } from 'next';
 
 const FEATURED_PROJECT_IDS: (number | string)[] = [
-  1007, 727342843, 657660151, 952619337, 525828811, 998877665, 583853098,
+  1007, 998877665, 525828811, 727342843, 952619337, 657660151,
 ];
 
 async function getProjects(): Promise<Project[]> {
-  let projects: Project[] = projectsData as Project[];
+  let projects: Project[] = (projectsData as Project[]).filter((p) => p.published);
 
   projects.sort((a, b) => {
     const aFeaturedIndex = FEATURED_PROJECT_IDS.indexOf(a.id);

@@ -46,6 +46,7 @@ const projectsData = [
       'Gemma model finance app',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: true,
   },
   {
     id: 998877665,
@@ -87,6 +88,7 @@ const projectsData = [
       'Full-stack TypeScript blog',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: true,
   },
   {
     id: 525828811,
@@ -114,6 +116,7 @@ const projectsData = [
       'Utsav Khatri portfolio',
     ],
     githubStats: { stars: 1, forks: 0 },
+    published: true,
   },
   {
     id: 992105629,
@@ -137,6 +140,7 @@ const projectsData = [
       'Vite Three.js starter',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 991451039,
@@ -160,6 +164,7 @@ const projectsData = [
       'Matrix code simulation',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 991450187,
@@ -183,6 +188,7 @@ const projectsData = [
       'AI-powered trading insights',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 727342843,
@@ -221,6 +227,7 @@ const projectsData = [
       'Gemini AI integration',
     ],
     githubStats: { stars: 1, forks: 0 },
+    published: true,
   },
   {
     id: 932880305,
@@ -252,6 +259,7 @@ const projectsData = [
       'mobile cooking assistant',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 657660151,
@@ -275,6 +283,7 @@ const projectsData = [
       'web scraping for content',
     ],
     githubStats: { stars: 1, forks: 0 },
+    published: true,
   },
   {
     id: 952619337,
@@ -300,6 +309,7 @@ const projectsData = [
       'SaaS AI application',
     ],
     githubStats: { stars: 1, forks: 0 },
+    published: true,
   },
   {
     id: 922037774,
@@ -324,6 +334,7 @@ const projectsData = [
       'generative art application',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 905732192,
@@ -358,6 +369,7 @@ const projectsData = [
       'Next.js video app',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 922044978,
@@ -382,6 +394,7 @@ const projectsData = [
       'PDF.js on Cloudflare',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 583853098,
@@ -407,6 +420,7 @@ const projectsData = [
       'GTU important questions',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 908677971,
@@ -431,6 +445,7 @@ const projectsData = [
       'image exploration app',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 907457207,
@@ -464,6 +479,7 @@ const projectsData = [
       'Express.js API example',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 900219754,
@@ -488,6 +504,7 @@ const projectsData = [
       'TypeScript AI project',
     ],
     githubStats: { stars: 1, forks: 0 },
+    published: false,
   },
   {
     id: 900217037,
@@ -512,6 +529,7 @@ const projectsData = [
       'generative AI playground',
     ],
     githubStats: { stars: 1, forks: 0 },
+    published: false,
   },
   {
     id: 905732199,
@@ -536,6 +554,7 @@ const projectsData = [
       'grey market premium tracker',
     ],
     githubStats: { stars: 1, forks: 0 },
+    published: false,
   },
   {
     id: 904861772,
@@ -568,6 +587,7 @@ const projectsData = [
       'Next.js on Cloudflare Pages',
     ],
     githubStats: { stars: 1, forks: 0 },
+    published: false,
   },
   {
     id: 586172831,
@@ -592,6 +612,7 @@ const projectsData = [
       'Vercel static hosting',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 592869786,
@@ -616,6 +637,7 @@ const projectsData = [
       'budget planning utility',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 628273765,
@@ -640,6 +662,7 @@ const projectsData = [
       'REST API for forms',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 640485531,
@@ -664,6 +687,7 @@ const projectsData = [
       'backend for appointments',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 629585331,
@@ -698,6 +722,7 @@ const projectsData = [
       'social networking site code',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
   {
     id: 658353961,
@@ -722,6 +747,7 @@ const projectsData = [
       'NextAuth.js example',
     ],
     githubStats: { stars: 0, forks: 0 },
+    published: false,
   },
 ];
 

@@ -7,7 +7,7 @@ import { PageWrapper } from '@/components/layout/PageWrapper';
 import { SITE_URL } from '@/lib/config';
 
 async function getProjects(): Promise<Project[]> {
-  return projectsData as Project[];
+  return (projectsData as Project[]).filter((p) => p.published);
 }
 
 async function getProject(id: string): Promise<Project | undefined> {

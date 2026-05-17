@@ -4,6 +4,8 @@ import { memo } from 'react';
 import Image from 'next/image';
 import { motion, useReducedMotion, Variants } from 'motion/react';
 import { cn } from '@/lib/utils';
+import BorderGlow from '@/components/ui/BorderGlow';
+import { useTheme } from 'next-themes';
 
 const sectionVariants: Variants = {
   hidden: { opacity: 0 },
@@ -25,6 +27,8 @@ const itemVariants: Variants = {
 
 const AboutSectionComponent = ({ className, id }: { className?: string; id?: string }) => {
   const shouldReduceMotion = useReducedMotion();
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
 
   return (
     <motion.section
@@ -42,20 +46,17 @@ const AboutSectionComponent = ({ className, id }: { className?: string; id?: str
             variants={shouldReduceMotion ? undefined : itemVariants}
             className="flex justify-center"
           >
-            <motion.div
-              className="group w-full max-w-[380px] cursor-pointer overflow-hidden rounded-2xl border-4 border-primary/10 shadow-2xl transition-all duration-300 ease-out hover:border-primary/50 hover:shadow-primary/20 md:max-w-full"
-              whileHover={
-                shouldReduceMotion
-                  ? undefined
-                  : {
-                      scale: 1.02,
-                      transition: {
-                        type: 'spring',
-                        stiffness: 300,
-                        damping: 15,
-                      },
-                    }
-              }
+            <BorderGlow
+              borderRadius={28}
+              backgroundColor={isDark ? '#120f17' : '#ffffff'}
+              glowRadius={54}
+              glowIntensity={1.9}
+              edgeSensitivity={42}
+              coneSpread={37}
+              fillOpacity={isDark ? 0.08 : 0.04}
+              colors={['#c084fc', '#f472b6', '#38bdf8']}
+              animated={false}
+              className="group w-full max-w-[320px] sm:max-w-[350px] md:max-w-[400px] cursor-pointer rounded-[28px]"
             >
               <Image
                 src="/images/utsav-khatri.webp"
@@ -66,7 +67,7 @@ const AboutSectionComponent = ({ className, id }: { className?: string; id?: str
                 sizes="(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 375px"
                 priority
               />
-            </motion.div>
+            </BorderGlow>
           </motion.div>
           <div>
             <motion.h2

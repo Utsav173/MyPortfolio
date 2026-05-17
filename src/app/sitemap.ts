@@ -10,7 +10,7 @@ import slugify from 'slugify';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticDate = new Date('2025-10-19');
 
-  const projects = projectsData;
+  const projects = projectsData.filter((project: any) => project.published);
   const projectUrls = projects.map((project) => ({
     url: `${SITE_URL}/projects/${project.id}`,
     lastModified: staticDate,
