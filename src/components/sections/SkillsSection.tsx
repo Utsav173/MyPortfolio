@@ -28,6 +28,16 @@ const SkillItem = ({ skill, resolvedTheme }: { skill: SkillItemData; resolvedThe
   );
 };
 
+// Helper to ensure the carousel has enough items to span wider than the viewport, preventing snaps
+const getFilledSkills = (skills: SkillItemData[]) => {
+  const minItems = 15;
+  let filled = [...skills];
+  while (filled.length < minItems) {
+    filled = [...filled, ...skills];
+  }
+  return filled;
+};
+
 const SkillCarousel = ({
   categoryData,
   isReverse,
@@ -38,7 +48,8 @@ const SkillCarousel = ({
   resolvedTheme?: string;
 }) => {
   const CategoryIcon = categoryData.categoryIcon;
-  const duration = categoryData.skills.length * 3.5;
+  const filledSkills = getFilledSkills(categoryData.skills);
+  const duration = filledSkills.length * 2.8; // Uniform speed factor
 
   return (
     <div className="carousel-section">
@@ -54,9 +65,9 @@ const SkillCarousel = ({
         >
           {[...Array(2)].map((_, setIndex) => (
             <div key={setIndex} className="carousel-set" aria-hidden={setIndex === 1}>
-              {categoryData.skills.map((skill, idx) => (
+              {filledSkills.map((skill, idx) => (
                 <SkillItem
-                  key={`${skill.name}-${idx}`}
+                  key={`${skill.name}-${setIndex}-${idx}`}
                   skill={skill}
                   resolvedTheme={resolvedTheme}
                 />

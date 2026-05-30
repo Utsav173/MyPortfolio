@@ -868,6 +868,7 @@ pre {
   display: flex;
   width: fit-content;
   animation: marquee var(--duration, 30s) linear infinite;
+  will-change: transform;
 }
 
 .carousel-track.reverse {

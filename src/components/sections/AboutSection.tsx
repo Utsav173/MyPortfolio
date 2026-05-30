@@ -1,10 +1,8 @@
 'use client';
 
 import { memo } from 'react';
-import Image from 'next/image';
 import { motion, useReducedMotion, Variants } from 'motion/react';
 import { cn } from '@/lib/utils';
-import BorderGlow from '@/components/ui/BorderGlow';
 
 const sectionVariants: Variants = {
   hidden: { opacity: 0 },
@@ -30,72 +28,43 @@ const AboutSectionComponent = ({ className, id }: { className?: string; id?: str
   return (
     <motion.section
       id={id}
-      className={cn('bg-transparent min-h-dvh py-20 md:py-28 lg:py-32', className)}
+      className={cn('bg-transparent min-h-dvh py-20 md:py-28 lg:py-32 flex items-center', className)}
       variants={shouldReduceMotion ? undefined : sectionVariants}
       initial={shouldReduceMotion ? undefined : 'hidden'}
       whileInView={shouldReduceMotion ? undefined : 'visible'}
       viewport={{ once: true, amount: 0.2 }}
       aria-labelledby="about-heading"
     >
-      <div className="container mx-auto px-4">
-        <div className="grid items-center gap-12 md:grid-cols-2 lg:gap-24">
+      <div className="container mx-auto px-4 max-w-3xl">
+        <div className="text-center md:text-left">
+          <motion.h2
+            id="about-heading"
+            variants={shouldReduceMotion ? undefined : itemVariants}
+            className="mb-8 text-3xl font-bold tracking-tighter sm:text-4xl md:text-[2.8rem] lg:text-[3.2rem]"
+          >
+            A Little More <span className="text-primary">About Me</span>
+          </motion.h2>
           <motion.div
             variants={shouldReduceMotion ? undefined : itemVariants}
-            className="flex justify-center"
+            className="space-y-6 text-base text-muted-foreground md:text-lg"
           >
-            <BorderGlow
-              borderRadius={28}
-              backgroundColor="var(--card)"
-              glowRadius={54}
-              glowIntensity={1.9}
-              edgeSensitivity={42}
-              coneSpread={37}
-              fillOpacity={0.06}
-              colors={['#c084fc', '#f472b6', '#38bdf8']}
-              animated={false}
-              className="group w-full max-w-[320px] sm:max-w-[350px] md:max-w-[400px] cursor-pointer rounded-[28px]"
-            >
-              <Image
-                src="/images/utsav-khatri.webp"
-                alt="Professional headshot of Utsav Khatri, Full Stack Developer"
-                width={375}
-                height={375}
-                className="aspect-square w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                sizes="(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 375px"
-                priority
-              />
-            </BorderGlow>
+            <p>
+              I&apos;m a results-driven Full Stack Developer with a proven ability to design,
+              build, and deploy scalable, cloud-native web applications. My core expertise lies in
+              the MERN stack, particularly with React, Next.js, and Node.js, where I focus on
+              writing clean, efficient, and maintainable code.
+            </p>
+            <p>
+              What truly excites me is the intersection of web development and Artificial
+              Intelligence. I am passionate about exploring ways to build smarter, more intuitive
+              user experiences by integrating intelligent features into modern applications.
+            </p>
+            <p>
+              Beyond the code, I am a firm believer in collaborative growth. I enjoy sharing
+              knowledge, mentoring others, and continuously learning in our ever-evolving
+              industry.
+            </p>
           </motion.div>
-          <div>
-            <motion.h2
-              id="about-heading"
-              variants={shouldReduceMotion ? undefined : itemVariants}
-              className="mb-8 text-3xl font-bold tracking-tighter sm:text-4xl md:text-[2.8rem] lg:text-[3.2rem]"
-            >
-              A Little More <span className="text-primary">About Me</span>
-            </motion.h2>
-            <motion.div
-              variants={shouldReduceMotion ? undefined : itemVariants}
-              className="space-y-6 text-base text-muted-foreground md:text-lg"
-            >
-              <p>
-                I&apos;m a results-driven Full Stack Developer with a proven ability to design,
-                build, and deploy scalable, cloud-native web applications. My core expertise lies in
-                the MERN stack, particularly with React, Next.js, and Node.js, where I focus on
-                writing clean, efficient, and maintainable code.
-              </p>
-              <p>
-                What truly excites me is the intersection of web development and Artificial
-                Intelligence. I am passionate about exploring ways to build smarter, more intuitive
-                user experiences by integrating intelligent features into modern applications.
-              </p>
-              <p>
-                Beyond the code, I am a firm believer in collaborative growth. I enjoy sharing
-                knowledge, mentoring others, and continuously learning in our ever-evolving
-                industry.
-              </p>
-            </motion.div>
-          </div>
         </div>
       </div>
     </motion.section>
