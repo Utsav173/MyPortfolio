@@ -172,7 +172,7 @@ export default function PageClient({ children }: { children: ReactNode }) {
 
       <Navbar className="z-50" activeSection={activeSection} />
       <CommandPalette isOpen={isCommandPaletteOpen} setIsOpen={setCommandPaletteOpen} />
-      <main id="main-content" className="relative z-0 flex-grow w-full">
+      <main id="main-content" className="relative z-0 flex-grow w-full overflow-x-hidden">
         {children}
       </main>
     </div>

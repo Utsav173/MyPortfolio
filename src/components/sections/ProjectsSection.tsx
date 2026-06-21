@@ -112,7 +112,11 @@ export function ProjectsSection({
   });
 
   return (
-    <section id={id} className={cn('py-20 md:py-28', className)} ref={containerRef}>
+    <section
+      id={id}
+      className={cn('py-20 md:py-28 overflow-x-hidden', className)}
+      ref={containerRef}
+    >
       <div className="container mx-auto px-4">
         <motion.h2
           variants={shouldReduceMotion ? {} : headingVariants}

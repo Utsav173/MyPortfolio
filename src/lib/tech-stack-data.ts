@@ -384,6 +384,12 @@ export const TECH_STACK_DETAILS: TechDetails = {
     name: 'Stable Diffusion API',
   },
   python: { icon: 'logos:python', color: '#3776AB', name: 'Python' },
+  django: {
+    icon: 'logos:django-icon',
+    color: '#092e20',
+    darkmodecolor: '#44b78b',
+    name: 'Django',
+  },
   'jupyter notebook': { icon: 'logos:jupyter', color: '#F37626', name: 'Jupyter Notebook' },
   'openai api': { icon: 'ri:openai-fill', color: '#412991', name: 'OpenAI API' },
   'fetch api': { icon: 'material-symbols:api-outline', color: '#007ACC', name: 'Fetch API' },

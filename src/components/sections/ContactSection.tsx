@@ -143,7 +143,10 @@ const ContactSectionComponent = ({ className, id }: { className?: string; id?: s
   return (
     <motion.section
       id={id}
-      className={cn('bg-secondary/20 py-20 dark:bg-secondary/5 md:py-28 lg:py-32', className)}
+      className={cn(
+        'bg-secondary/20 py-20 dark:bg-secondary/5 md:py-28 lg:py-32 overflow-x-hidden',
+        className
+      )}
       variants={shouldReduceMotion ? undefined : sectionVariants}
       initial={shouldReduceMotion ? undefined : 'hidden'}
       whileInView={shouldReduceMotion ? undefined : 'visible'}

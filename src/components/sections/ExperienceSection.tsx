@@ -81,7 +81,7 @@ export function ExperienceSection({ className, id }: ExperienceSectionProps) {
       id={id}
       ref={sectionRef}
       className={cn(
-        'bg-secondary/20 dark:bg-secondary/5 py-20 md:py-28 lg:py-32 w-full',
+        'bg-secondary/20 dark:bg-secondary/5 py-20 md:py-28 lg:py-32 w-full overflow-x-hidden',
         className
       )}
     >

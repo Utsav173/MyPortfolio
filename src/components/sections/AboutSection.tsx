@@ -28,7 +28,10 @@ const AboutSectionComponent = ({ className, id }: { className?: string; id?: str
   return (
     <motion.section
       id={id}
-      className={cn('bg-transparent min-h-dvh py-20 md:py-28 lg:py-32 flex items-center', className)}
+      className={cn(
+        'bg-transparent min-h-dvh py-20 md:py-28 lg:py-32 flex items-center',
+        className
+      )}
       variants={shouldReduceMotion ? undefined : sectionVariants}
       initial={shouldReduceMotion ? undefined : 'hidden'}
       whileInView={shouldReduceMotion ? undefined : 'visible'}
@@ -49,10 +52,10 @@ const AboutSectionComponent = ({ className, id }: { className?: string; id?: str
             className="space-y-6 text-base text-muted-foreground md:text-lg"
           >
             <p>
-              I&apos;m a results-driven Full Stack Developer with a proven ability to design,
-              build, and deploy scalable, cloud-native web applications. My core expertise lies in
-              the MERN stack, particularly with React, Next.js, and Node.js, where I focus on
-              writing clean, efficient, and maintainable code.
+              I&apos;m a results-driven Full Stack Developer with a proven ability to design, build,
+              and deploy scalable, cloud-native web applications. My core expertise lies in the MERN
+              stack, particularly with React, Next.js, and Node.js, where I focus on writing clean,
+              efficient, and maintainable code.
             </p>
             <p>
               What truly excites me is the intersection of web development and Artificial
@@ -61,8 +64,7 @@ const AboutSectionComponent = ({ className, id }: { className?: string; id?: str
             </p>
             <p>
               Beyond the code, I am a firm believer in collaborative growth. I enjoy sharing
-              knowledge, mentoring others, and continuously learning in our ever-evolving
-              industry.
+              knowledge, mentoring others, and continuously learning in our ever-evolving industry.
             </p>
           </motion.div>
         </div>

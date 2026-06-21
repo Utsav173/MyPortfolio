@@ -23,6 +23,10 @@ export const experiencesData = [
     ],
     keyProjects: [
       {
+        name: 'Music Industry Multi-Org SaaS',
+        tech: ['Next.js', 'MUI', 'PostgreSQL', 'WebSockets', 'Python'],
+      },
+      {
         name: 'Education Management Platform',
         tech: ['Node.js', 'Sails.js', 'PostgreSQL', 'AWS SQS'],
       },

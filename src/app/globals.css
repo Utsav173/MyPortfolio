@@ -791,6 +791,7 @@ pre {
   width: 100%;
   padding: 4rem 0;
   background: linear-gradient(to bottom, transparent 0%, var(--background) 95% 100%);
+  overflow-x: hidden;
 }
 
 .skills-container {
