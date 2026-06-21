@@ -291,6 +291,21 @@ export default function RootLayout({
             dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
             key="structured-data"
           />
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+                form:tool-form-active {
+                  outline: 2px dashed var(--color-primary, #3b82f6) !important;
+                  outline-offset: 4px !important;
+                  background-color: oklch(var(--primary-oklch-values) / 0.03) !important;
+                }
+                button:tool-submit-active {
+                  outline: 2px dashed var(--color-primary, #3b82f6) !important;
+                  outline-offset: 2px !important;
+                }
+              `,
+            }}
+          />
         </ThemeProvider>
       </body>
     </html>

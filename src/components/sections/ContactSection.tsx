@@ -101,40 +101,65 @@ const ContactSectionComponent = ({ className, id }: { className?: string; id?: s
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       setErrors({});
-      const validationResult = contactFormSchema.safeParse(formData);
+      const nativeEvent = event.nativeEvent as any;
+      const isAgent = nativeEvent && nativeEvent.agentInvoked;
+
+      const data = new FormData(event.currentTarget);
+      const submissionData = {
+        name: (data.get('name') as string) || formData.name,
+        email: (data.get('email') as string) || formData.email,
+        message: (data.get('message') as string) || formData.message,
+      };
+
+      const validationResult = contactFormSchema.safeParse(submissionData);
       if (!validationResult.success) {
         const fieldErrors = validationResult.error.flatten().fieldErrors;
         setErrors(fieldErrors);
         sonnerToast.error('Validation Failed', {
           description: 'Please check the form for errors.',
         });
+        if (isAgent) {
+          nativeEvent.respondWith(
+            Promise.resolve(`Validation failed: ${JSON.stringify(fieldErrors)}`)
+          );
+        }
         return;
       }
       setIsSubmitting(true);
-      try {
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(validationResult.data),
-        });
-        const result = await response.json();
-        if (response.ok) {
-          sonnerToast.success('Message Sent!', {
-            description: result.message || "Thanks for reaching out. I'll get back to you soon.",
+
+      const submitPromise = (async () => {
+        try {
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(validationResult.data),
           });
-          setFormData({ name: '', email: '', message: '' });
-        } else {
-          sonnerToast.error('Submission Failed', {
-            description: result.message || 'Could not send your message. Please try again.',
+          const result = await response.json();
+          if (response.ok) {
+            sonnerToast.success('Message Sent!', {
+              description: result.message || "Thanks for reaching out. I'll get back to you soon.",
+            });
+            setFormData({ name: '', email: '', message: '' });
+            return result.message || 'Message sent successfully. Thanks for reaching out!';
+          } else {
+            sonnerToast.error('Submission Failed', {
+              description: result.message || 'Could not send your message. Please try again.',
+            });
+            if (result.errors) setErrors(result.errors);
+            return `Submission failed: ${result.message || 'Unknown server error'}`;
+          }
+        } catch (error) {
+          sonnerToast.error('Submission Error', {
+            description: 'An unexpected error occurred. Please try again later.',
           });
-          if (result.errors) setErrors(result.errors);
+          return 'Submission failed: An unexpected error occurred on the network.';
+        } finally {
+          setIsSubmitting(false);
         }
-      } catch (error) {
-        sonnerToast.error('Submission Error', {
-          description: 'An unexpected error occurred. Please try again later.',
-        });
-      } finally {
-        setIsSubmitting(false);
+      })();
+
+      if (isAgent) {
+        nativeEvent.respondWith(submitPromise);
       }
     },
     [formData]
@@ -186,6 +211,8 @@ const ContactSectionComponent = ({ className, id }: { className?: string; id?: s
             </div>
           </motion.div>
           <motion.form
+            toolname="contact-developer"
+            tooldescription="Send a direct message or inquiry to full stack developer Khatri Utsav"
             variants={shouldReduceMotion ? undefined : itemVariants}
             onSubmit={handleSubmit}
             className="space-y-6"
@@ -210,6 +237,7 @@ const ContactSectionComponent = ({ className, id }: { className?: string; id?: s
                 onChange={handleChange}
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? 'name-error' : undefined}
+                toolparamdescription="Your full name"
               />
               {errors.name && (
                 <p
@@ -237,6 +265,7 @@ const ContactSectionComponent = ({ className, id }: { className?: string; id?: s
                 onChange={handleChange}
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? 'email-error' : undefined}
+                toolparamdescription="Your email address so the developer can reply to you"
               />
               {errors.email && (
                 <p
@@ -265,6 +294,7 @@ const ContactSectionComponent = ({ className, id }: { className?: string; id?: s
                 aria-invalid={!!errors.message}
                 aria-describedby={errors.message ? 'message-error' : undefined}
                 className="min-h-[120px]"
+                toolparamdescription="The message content, project details, or question you want to send"
               />
               {errors.message && (
                 <p

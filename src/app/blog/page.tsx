@@ -76,8 +76,60 @@ export default async function BlogPage({
   const featuredPost = showFeatured ? filteredPosts[0] : undefined;
   const regularPosts = showFeatured ? filteredPosts.slice(1) : filteredPosts;
 
+  const blogCollectionSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${SITE_URL}/blog#webpage`,
+        url: `${SITE_URL}/blog`,
+        name: 'Khatri Utsav - Blog',
+        description: 'Engineering thoughts, deep dives, and experiments in web development and AI.',
+        isPartOf: {
+          '@id': `${SITE_URL}/#website`,
+        },
+        about: {
+          '@id': `${SITE_URL}/#person`,
+        },
+        mainEntity: {
+          '@type': 'ItemList',
+          numberOfItems: filteredPosts.length,
+          itemListElement: filteredPosts.map((post, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: `${SITE_URL}/${post.slug}`,
+            name: post.title,
+          })),
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${SITE_URL}/blog#breadcrumb`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: SITE_URL,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Blog',
+            item: `${SITE_URL}/blog`,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-24 md:py-32">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogCollectionSchema) }}
+        key="blog-collection-jsonld"
+      />
       {/* Asymmetric Header Section */}
       <div className="grid lg:grid-cols-[2fr,1fr] gap-12 mb-24 items-end">
         <div>

@@ -49,6 +49,44 @@ export function ProjectsSection({
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.1 });
 
+  const handleFormSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const data = new FormData(e.currentTarget);
+      const query = (data.get('q') as string) || '';
+      setSearchTerm(query);
+      setDisplayedCount(PROJECTS_INITIAL_DISPLAY_COUNT);
+
+      const nativeEvent = e.nativeEvent as any;
+      if (nativeEvent && nativeEvent.agentInvoked) {
+        const queryLower = query.toLowerCase();
+        const matching = initialProjects
+          .filter(
+            (p) =>
+              p.name.toLowerCase().includes(queryLower) ||
+              p.description.toLowerCase().includes(queryLower) ||
+              p.techStack?.some((t) => t.toLowerCase().includes(queryLower))
+          )
+          .map((p) => ({
+            id: p.id,
+            name: p.name,
+            description: p.description,
+            techStack: p.techStack,
+            liveUrl: p.liveUrl,
+            repoUrl: p.repoUrl,
+          }));
+
+        const responseText =
+          matching.length > 0
+            ? `Found ${matching.length} matching projects:\n${JSON.stringify(matching, null, 2)}`
+            : 'No matching projects found.';
+
+        nativeEvent.respondWith(Promise.resolve(responseText));
+      }
+    },
+    [initialProjects]
+  );
+
   const availableFilters = useMemo(() => {
     const allTechs = new Set<string>();
     initialProjects.forEach((p) => p.techStack?.forEach((tech) => allTechs.add(tech)));
@@ -127,18 +165,26 @@ export function ProjectsSection({
           Selected <span className="text-primary">Creations</span>
         </motion.h2>
 
-        <div className="mb-8 max-w-4xl mx-auto">
+        <form
+          toolname="search-projects"
+          tooldescription="Search and filter portfolio projects by keywords, tech stack, or description"
+          toolautosubmit
+          onSubmit={handleFormSubmit}
+          className="mb-8 max-w-4xl mx-auto"
+        >
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
               type="search"
+              name="q"
               placeholder="Search projects by name, description, or technology..."
               className="w-full pl-10 pr-4 py-2 h-12 text-base"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              toolparamdescription="Search query to filter projects by name, description, or tag/technology."
             />
           </div>
-        </div>
+        </form>
 
         <div className="mb-16">
           <div className="flex flex-wrap items-center justify-center gap-2 lg:gap-3 max-w-4xl mx-auto">

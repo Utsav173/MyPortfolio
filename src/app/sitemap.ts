@@ -8,7 +8,7 @@ import { slug } from 'github-slugger';
 import slugify from 'slugify';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const staticDate = new Date('2025-10-19');
+  const staticDate = new Date('2026-06-21');
 
   const projects = projectsData.filter((project: any) => project.published);
   const projectUrls = projects.map((project) => ({
