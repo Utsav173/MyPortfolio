@@ -104,6 +104,9 @@ export const metadata: Metadata = {
   verification: { google: 'tNXFFpZE1VOHdcWpBlnAsX7avQThqRD6wjolUQaG4rU' },
   alternates: {
     canonical: SITE_URL,
+    types: {
+      'application/rss+xml': `${SITE_URL}/feed.xml`,
+    },
   },
 };
 
@@ -170,6 +173,9 @@ const structuredData = {
       '@type': 'Person',
       '@id': `${SITE_URL}/#person`,
       name: 'Khatri Utsav',
+      alternateName: ['Utsav Khatri', 'Utsav K. Khatri'],
+      disambiguatingDescription:
+        'Utsav Khatri (published as "Khatri Utsav") is an Indian full stack developer based in Ahmedabad, Gujarat, creator of the Temporal finance app and author of engineering guides on SEO, GEO and AI-integrated web development.',
       url: SITE_URL,
       image: {
         '@type': 'ImageObject',
@@ -259,8 +265,38 @@ const structuredData = {
       },
       datePublished: '2023-01-01T00:00:00+00:00',
       dateModified: new Date().toISOString(),
+      speakable: {
+        '@type': 'SpeakableSpecification',
+        cssSelector: ['h1', '#main-content p'],
+      },
       keywords:
         'Khatri Utsav, Full Stack Developer, Software Engineer, React, Next.js, TypeScript, Node.js, AI',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': 'https://temporal.khatriutsav.com/#app',
+      name: 'Temporal',
+      url: 'https://temporal.khatriutsav.com',
+      applicationCategory: 'FinanceApplication',
+      applicationSubCategory: 'Personal Finance, Portfolio Management',
+      operatingSystem: 'iOS, Android, Web',
+      description:
+        "A high-performance financial intelligence ecosystem built for 'Financial Purity'. It combines a Swiss Brutalist aesthetic with on-device AI for seamless transaction tracking, multi-asset portfolio management, and high-precision data visualization.",
+      author: {
+        '@id': `${SITE_URL}/#person`,
+      },
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+      featureList: [
+        'On-device AI pipeline using Google Gemma via LiteRT for offline financial data extraction',
+        '60fps virtualized transaction histories with zero lag',
+        'AI orchestration layer combining LLM inference with programmatic extraction',
+        'Generative financial art visualizing spending velocity and net-worth trends',
+        'Offline-first SQLite-driven architecture with local-first synchronization',
+      ],
     },
   ],
 };

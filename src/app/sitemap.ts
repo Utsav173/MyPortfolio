@@ -8,12 +8,12 @@ import { slug } from 'github-slugger';
 import slugify from 'slugify';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const staticDate = new Date('2026-06-21');
+  const buildDate = new Date();
 
   const projects = projectsData.filter((project: any) => project.published);
   const projectUrls = projects.map((project) => ({
     url: `${SITE_URL}/projects/${project.id}`,
-    lastModified: staticDate,
+    lastModified: buildDate,
     changeFrequency: 'yearly' as const,
     priority: 0.7,
   }));
@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = ['', '/about', '/skills', '/experience', '/projects', '/contact', '/blog'].map(
     (route) => ({
       url: `${SITE_URL}${route}`.replace(/\/$/, '') || SITE_URL, // Ensure no trailing slash for consistent canonicals
-      lastModified: staticDate,
+      lastModified: buildDate,
       changeFrequency: 'monthly' as const,
       priority: route === '' ? 1 : 0.8,
     })
@@ -39,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const tagUrls = Object.keys(tags).map((tag) => {
     return {
       url: `${SITE_URL}/blog/tags/${slug(tag)}`,
-      lastModified: staticDate,
+      lastModified: buildDate,
       changeFrequency: 'weekly' as const,
       priority: 0.6,
     };
@@ -48,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allSkills = skillsData.flatMap((category) => category.skills);
   const skillUrls = allSkills.map((skill) => ({
     url: `${SITE_URL}/skills/${slugify(skill.name, { lower: true })}`,
-    lastModified: staticDate,
+    lastModified: buildDate,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));

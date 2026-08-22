@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "velite && next dev --turbo",
-    "build": "velite && next build",
+    "build": "velite && node scripts/generate-llms-full.mjs && next build && node scripts/ping-indexnow.mjs",
     "start": "next start",
     "lint": "next lint",
     "velite:build": "velite",

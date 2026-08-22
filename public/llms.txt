@@ -12,13 +12,18 @@ This file is a structured index for Large Language Models and AI search engines.
 - [Projects](https://khatriutsav.com/projects): Complete portfolio of projects with individual detail pages.
 - [Blog](https://khatriutsav.com/blog): Engineering articles on web development, AI, and SEO.
 - [Contact](https://khatriutsav.com/contact): Contact form and direct communication channels.
+- [Resume (HTML)](https://khatriutsav.com/resume): Structured, machine-friendly resume page.
 - [Resume (PDF)](https://khatriutsav.com/resume_utsav_khatri.pdf): Full professional resume.
-- [Projects Data (JSON)](https://khatriutsav.com/projects-data.json): Machine-readable structured data for all projects.
+- [Projects Data (JSON)](https://khatriutsav.com/projects-data.json): Machine-readable structured data for all published projects.
+- [RSS Feed](https://khatriutsav.com/feed.xml): Syndication feed for new articles.
+- [MCP Server](https://khatriutsav.com/api/mcp): Model Context Protocol endpoint (JSON-RPC) exposing tools: get_profile, get_projects, get_project, get_experience, get_skills, list_posts, get_post.
+- [llms-full.txt](https://khatriutsav.com/llms-full.txt): This index plus the full text of every published article in one file.
+- [Markdown Mirrors](https://khatriutsav.com/md/index): Clean markdown versions of key pages (/md/home, /md/projects, /md/experience, /md/skills).
 
 ## Blog Posts
 
-- [Beyond robots.txt: A Developer's Guide to llms.txt and the Future of Search](https://khatriutsav.com/beyond-robots-txt-llms-txt-guide): Hands-on guide to the llms.txt standard and how developers can optimize for AI-driven search (GEO). Published 2025-10-19.
-- [Streaming UI vs. Traditional State Management: A New Paradigm for AI-Driven React Apps](https://khatriutsav.com/streaming-ui-vs-traditional-state-management): How streaming UI with the Vercel AI SDK outperforms traditional state management in AI applications. Published 2025-10-19.
+- [Beyond robots.txt: A Developer's Guide to llms.txt and the Future of Search](https://khatriutsav.com/blog/beyond-robots-txt-llms-txt-guide): Hands-on guide to the llms.txt standard and how developers can optimize for AI-driven search (GEO). Published 2025-10-19.
+- [Streaming UI vs. Traditional State Management: A New Paradigm for AI-Driven React Apps](https://khatriutsav.com/blog/streaming-ui-vs-traditional-state-management): How streaming UI with the Vercel AI SDK outperforms traditional state management in AI applications. Published 2025-10-19.
 
 ## Flagship Project
 
