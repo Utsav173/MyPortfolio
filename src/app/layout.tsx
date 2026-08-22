@@ -40,7 +40,7 @@ const SITE_TITLE = 'Khatri Utsav | Full Stack Developer';
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Khatri Utsav',
+    default: SITE_TITLE,
     template: `%s | Khatri Utsav`,
   },
   description: SITE_DESCRIPTION,
@@ -188,6 +188,7 @@ const structuredData = {
         'https://www.linkedin.com/in/utsav-khatri-in/',
         'https://github.com/utsav173',
         'https://twitter.com/Utsav_Khatri_',
+        'https://temporal.khatriutsav.com',
       ],
       knowsAbout: [
         'React',
@@ -257,7 +258,7 @@ const structuredData = {
         height: 630,
       },
       datePublished: '2023-01-01T00:00:00+00:00',
-      dateModified: '2025-10-19T12:00:00+00:00',
+      dateModified: new Date().toISOString(),
       keywords:
         'Khatri Utsav, Full Stack Developer, Software Engineer, React, Next.js, TypeScript, Node.js, AI',
     },
