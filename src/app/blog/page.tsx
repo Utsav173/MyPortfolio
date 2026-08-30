@@ -9,6 +9,7 @@ import { EmptyState } from '@/components/blog/EmptyState';
 import { PostGrid } from '@/components/blog/PostGrid';
 import { Suspense } from 'react';
 import { BlogSkeleton } from '@/components/blog/BlogSkeleton';
+import { GooglePreferredSource } from '@/components/blog/GooglePreferredSource';
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -131,7 +132,7 @@ export default async function BlogPage({
         key="blog-collection-jsonld"
       />
       {/* Asymmetric Header Section */}
-      <div className="grid lg:grid-cols-[2fr,1fr] gap-12 mb-24 items-end">
+      <div className="grid lg:grid-cols-[2fr,1fr] gap-8 sm:gap-12 mb-16 sm:mb-24 items-end">
         <div>
           <h1 className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter text-foreground mb-6 leading-[0.9]">
             The <br /> Journal.
@@ -140,12 +141,15 @@ export default async function BlogPage({
             Engineering thoughts, deep dives, and experiments in web development and AI.
           </p>
         </div>
-        <div className="hidden lg:flex flex-col items-end text-right space-y-4 pb-2">
-          <div className="text-sm font-mono uppercase tracking-wider text-muted-foreground">
-            Total Articles
-          </div>
-          <div className="text-4xl font-bold text-foreground">
-            {posts.length < 10 ? `0${posts.length}` : posts.length}
+        <div className="flex flex-row lg:flex-col items-center lg:items-end justify-between lg:justify-end gap-4 pb-2">
+          <GooglePreferredSource variant="compact" />
+          <div className="text-right">
+            <div className="text-sm font-mono uppercase tracking-wider text-muted-foreground">
+              Total Articles
+            </div>
+            <div className="text-3xl sm:text-4xl font-bold text-foreground">
+              {posts.length < 10 ? `0${posts.length}` : posts.length}
+            </div>
           </div>
         </div>
       </div>

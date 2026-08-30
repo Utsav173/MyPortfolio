@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { SITE_URL } from '@/lib/config';
 import { cn } from '@/lib/utils';
 import { slug } from 'github-slugger';
+import { GooglePreferredSource } from '@/components/blog/GooglePreferredSource';
 
 interface PostFooterProps {
   post: {
@@ -146,6 +147,9 @@ export function PostFooter({ post }: PostFooterProps) {
 
         <ShareOptions />
       </div>
+
+      {/* Google Preferred Source Priority Card */}
+      <GooglePreferredSource variant="card" />
 
       <Separator />
 
