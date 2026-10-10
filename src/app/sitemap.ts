@@ -18,14 +18,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const routes = ['', '/about', '/skills', '/experience', '/projects', '/contact', '/blog'].map(
-    (route) => ({
-      url: `${SITE_URL}${route}`.replace(/\/$/, '') || SITE_URL, // Ensure no trailing slash for consistent canonicals
-      lastModified: buildDate,
-      changeFrequency: 'monthly' as const,
-      priority: route === '' ? 1 : 0.8,
-    })
-  );
+  const routes = [
+    '',
+    '/about',
+    '/skills',
+    '/experience',
+    '/projects',
+    '/contact',
+    '/blog',
+    '/resume',
+  ].map((route) => ({
+    url: `${SITE_URL}${route}`.replace(/\/$/, '') || SITE_URL, // Ensure no trailing slash for consistent canonicals
+    lastModified: buildDate,
+    changeFrequency: 'monthly' as const,
+    priority: route === '' ? 1 : 0.8,
+  }));
 
   const publishedPosts = posts.filter((post) => post.published);
   const postUrls = publishedPosts.map((post) => ({

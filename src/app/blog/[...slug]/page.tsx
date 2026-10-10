@@ -27,8 +27,14 @@ export async function generateMetadata({
 }: PageProps<'/blog/[...slug]'>): Promise<Metadata> {
   const post = await getPostFromParams(params);
 
-  if (!post) {
-    return {};
+  if (!post || !post.published) {
+    return {
+      title: 'Post Not Found',
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
   }
 
   const ogSearchParams = new URLSearchParams();
@@ -69,9 +75,11 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  return posts.map((post) => ({
-    slug: post.slugAsParams.split('/'),
-  }));
+  return posts
+    .filter((post) => post.published)
+    .map((post) => ({
+      slug: post.slugAsParams.split('/'),
+    }));
 }
 
 export default async function PostPage({ params }: PageProps<'/blog/[...slug]'>) {

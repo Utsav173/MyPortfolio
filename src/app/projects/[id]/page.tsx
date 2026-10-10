@@ -21,6 +21,10 @@ export async function generateMetadata({ params }: PageProps<'/projects/[id]'>):
   if (!project) {
     return {
       title: 'Project Not Found',
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 

@@ -15,13 +15,25 @@ export async function generateMetadata({
 }: PageProps<'/blog/tags/[tag]'>): Promise<Metadata> {
   const { tag } = await params;
   const allTags = getAllTags(posts);
-  const title = Object.keys(allTags).find((t) => slugger(t) === tag) || tag;
+  const tagKey = Object.keys(allTags).find((t) => slugger(t) === tag);
+
+  if (!tagKey) {
+    return {
+      title: 'Tag Not Found',
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
+  const normalizedTagSlug = slugger(tagKey);
 
   return {
-    title: `Posts tagged with "${title}"`,
-    description: `Browse all articles and posts tagged with "${title}" on Utsav Khatri's blog.`,
+    title: `Posts tagged with "${tagKey}"`,
+    description: `Browse all articles and posts tagged with "${tagKey}" on Utsav Khatri's blog.`,
     alternates: {
-      canonical: `${SITE_URL}/blog/tags/${tag}`,
+      canonical: `${SITE_URL}/blog/tags/${normalizedTagSlug}`,
     },
   };
 }

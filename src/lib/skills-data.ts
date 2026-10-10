@@ -21,7 +21,7 @@ export const skillsData: SkillCategoryData[] = [
       { name: 'Next.js', iconifyString: 'teenyicons:nextjs-outline' },
       { name: 'Redux', iconifyString: 'logos:redux' },
       { name: 'TypeScript', iconifyString: 'logos:typescript-icon' },
-      { name: 'JavaScript (ES6+)', iconifyString: 'logos:javascript' },
+      { name: 'JavaScript', iconifyString: 'logos:javascript' },
       { name: 'HTML5', iconifyString: 'logos:html-5' },
       { name: 'CSS3', iconifyString: 'logos:css-3' },
       { name: 'Tailwind CSS', iconifyString: 'logos:tailwindcss-icon' },

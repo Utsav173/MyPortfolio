@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import { skillsData, SkillItemData } from '@/lib/skills-data';
 import projectsData from '@/lib/projects-data';
@@ -46,6 +46,10 @@ export async function generateMetadata({ params }: SkillPageProps): Promise<Meta
   if (!skill) {
     return {
       title: 'Skill Not Found',
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
@@ -77,6 +81,9 @@ export async function generateStaticParams() {
 
 export default async function SkillPage({ params }: SkillPageProps) {
   const slug = (await params).slug;
+  if (slug === 'javascript-(es6+)' || slug === 'javascript-(es6 )' || slug === 'javascript-es6') {
+    redirect('/skills/javascript');
+  }
   const skill = getSkillBySlug(slug);
 
   if (!skill) {
